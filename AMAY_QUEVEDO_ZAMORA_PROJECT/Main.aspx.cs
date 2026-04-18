@@ -13,5 +13,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
 
         }
+
+        protected void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
