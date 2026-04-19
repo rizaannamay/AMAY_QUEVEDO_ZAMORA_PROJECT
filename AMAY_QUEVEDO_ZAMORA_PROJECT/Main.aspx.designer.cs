@@ -33,48 +33,84 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// txtSearch control.
+        /// btnHome control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.LinkButton btnHome;
 
         /// <summary>
-        /// txtPost control.
+        /// btnCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPost;
+        protected global::System.Web.UI.WebControls.LinkButton btnCat;
 
         /// <summary>
-        /// btnPost control.
+        /// btnPin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnPost;
+        protected global::System.Web.UI.WebControls.LinkButton btnPin;
 
         /// <summary>
-        /// btnMedia control.
+        /// btnGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnMedia;
+        protected global::System.Web.UI.WebControls.LinkButton btnGroup;
 
         /// <summary>
-        /// btnEvent control.
+        /// btnSet control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnEvent;
+        protected global::System.Web.UI.WebControls.LinkButton btnSet;
+
+        /// <summary>
+        /// MainMultiView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView MainMultiView;
+
+        /// <summary>
+        /// ViewBoard control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View ViewBoard;
+
+        /// <summary>
+        /// ViewCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View ViewCategories;
+
+        /// <summary>
+        /// ViewSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View ViewSettings;
     }
 }
