@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CTU LOGO.jpg" />
     <Content Include="login.aspx" />
     <Content Include="Main.aspx" />
     <Content Include="Web.config" />

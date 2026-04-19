@@ -17,19 +17,23 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtUsername.Text;
-            string password = txtPassword.Text;
+            string username = txtUsername.Text.Trim();
+            string password = txtPassword.Text.Trim();
 
-            // Demo accounts with roles
+            // Demo accounts
             if (username == "student" && password == "1234")
             {
-                Session["UserRole"] = "Student"; // store role
-                Response.Redirect("MainForm.aspx"); // goes to Announcement Board
+                Session["UserRole"] = "Student";
+                Session["Username"] = username;
+
+                Response.Redirect("Main.aspx");
             }
             else if (username == "teacher" && password == "admin")
             {
-                Session["UserRole"] = "Teacher"; // store role
-                Response.Redirect("MainForm.aspx"); // goes to Announcement Board
+                Session["UserRole"] = "Teacher";
+                Session["Username"] = username;
+
+                Response.Redirect("Main.aspx");
             }
             else
             {

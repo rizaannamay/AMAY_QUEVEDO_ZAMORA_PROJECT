@@ -109,6 +109,23 @@
         }
 
         .badge { background: #e7f3ff; color: #1877f2; padding: 2px 8px; border-radius: 5px; font-size: 12px; }
+
+        /* Smooth hover */
+        .card:hover {
+            transform: translateY(-2px);
+            transition: 0.2s;
+        }
+
+        /* Better button look */
+        .badge {
+            border:none;
+            cursor:pointer;
+        }
+
+        /* Smooth dropdown */
+        asp\\:Panel {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
 <body>

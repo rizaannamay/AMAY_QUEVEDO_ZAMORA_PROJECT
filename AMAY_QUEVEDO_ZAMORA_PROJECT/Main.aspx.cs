@@ -7,9 +7,30 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // 🚫 Prevent access if not logged in
+            if (Session["UserRole"] == null)
+            {
+                Response.Redirect("login.aspx");
+            }
+
             if (!IsPostBack)
             {
                 MainMultiView.ActiveViewIndex = 0;
+
+                string role = Session["UserRole"].ToString();
+                string username = Session["Username"].ToString();
+
+                // 🎯 Role-based UI
+                if (role == "Student")
+                {
+                    btnSet.Visible = false;
+                    btnGroup.Visible = false;
+                }
+                else if (role == "Teacher")
+                {
+                    btnSet.Visible = true;
+                    btnGroup.Visible = true;
+                }
             }
         }
 
@@ -18,14 +39,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             LinkButton btn = (LinkButton)sender;
             string section = btn.CommandArgument;
 
-            // Reset Styles
+            // Reset styles
             btnHome.CssClass = "sidebar-item";
             btnCat.CssClass = "sidebar-item";
             btnPin.CssClass = "sidebar-item";
             btnSet.CssClass = "sidebar-item";
             btnGroup.CssClass = "sidebar-item";
 
-            // Set Active
+            // Set active
             btn.CssClass = "sidebar-item active";
 
             switch (section)
@@ -43,6 +64,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     MainMultiView.ActiveViewIndex = 0;
                     break;
             }
+        }
+
+        // 🔓 Logout
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();
+            Response.Redirect("login.aspx");
         }
     }
 }
