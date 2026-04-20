@@ -501,9 +501,6 @@
             <div class="sidebar-item active" id="navHome">
                 <i class="fas fa-newspaper"></i> Announcement Board
             </div>
-            <div class="sidebar-item" id="navCategories">
-                <i class="fas fa-th-large"></i> Categories
-            </div>
             <div class="sidebar-item" id="navPinned">
                 <i class="fas fa-thumbtack"></i> Pinned Announcements
             </div>
