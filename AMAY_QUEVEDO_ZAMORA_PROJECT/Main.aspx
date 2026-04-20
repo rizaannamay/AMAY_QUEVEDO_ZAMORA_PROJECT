@@ -480,8 +480,7 @@
 <div class="header">
     <div class="header-left">
         <div class="campus-logo">
-            <i class="fas fa-graduation-cap" style="margin-right: 6px;"></i> CampusPortal
-        </div>
+            <i class="fas fa-graduation-cap" style="margin-right: 6px;"></i> Campus Announcement</div>
         <div class="search-bar">
             <i class="fas fa-search"></i>
             <input type="text" id="searchInput" placeholder="Search Announcements...">
@@ -507,9 +506,6 @@
             <div class="divider"></div>
             <div class="sidebar-item" id="darkModeToggle">
                 <i class="fas fa-moon"></i> Dark Mode
-            </div>
-            <div class="sidebar-item" id="createGroupBtn">
-                <i class="fas fa-users"></i> Create Group
             </div>
             <div class="sidebar-item" id="settingsBtn">
                 <i class="fas fa-cog"></i> Settings
