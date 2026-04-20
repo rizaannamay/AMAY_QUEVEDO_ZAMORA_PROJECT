@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Campus Announcement Portal - Facebook Layout</title>
+    <title>Campus Announcement Portal - Dynamic Posts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -62,8 +62,26 @@
             background-color: var(--fb-blue);
             color: white;
         }
+        body.dark-mode .empty-state {
+            color: #b0b3b8;
+        }
+        body.dark-mode .empty-icon {
+            background-color: #3a3b3c;
+            color: #b0b3b8;
+        }
+        body.dark-mode .post-card {
+            background-color: #242526;
+            border-color: #3e4042;
+        }
+        body.dark-mode .post-stats, body.dark-mode .reactions-row {
+            border-top-color: #3e4042;
+            border-bottom-color: #3e4042;
+        }
+        body.dark-mode .reaction-btn:hover {
+            background-color: #3a3b3c;
+        }
 
-        /* === HEADER (Facebook style) === */
+        /* === HEADER === */
         .header {
             background-color: #ffffff;
             height: 56px;
@@ -86,18 +104,12 @@
             gap: 8px;
         }
 
-        .fb-logo {
-            background: linear-gradient(135deg, #1877f2, #0c63d4);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .fb-logo i {
-            font-size: 24px;
-            color: white;
+        .campus-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--fb-blue);
+            letter-spacing: -0.5px;
+            cursor: pointer;
         }
 
         .search-bar {
@@ -149,7 +161,7 @@
             background-repeat: no-repeat;
         }
 
-        /* MAIN GRID: 3 columns exactly like Facebook */
+        /* MAIN GRID */
         .app-container {
             display: grid;
             grid-template-columns: 360px minmax(0, 680px) 360px;
@@ -159,7 +171,7 @@
             padding: 0 16px;
         }
 
-        /* LEFT SIDEBAR - matches photo: Announcement Board, Categories, Pinned, Dark Mode, Create Group, Settings */
+        /* LEFT SIDEBAR */
         .sidebar-card {
             background: white;
             border-radius: 8px;
@@ -247,14 +259,15 @@
             background-color: #f0f2f5;
         }
 
-        /* FILTER ROW: All, Events, Exams, Suspensions (exactly as photo) */
+        /* FILTER ROW */
         .filter-row {
             display: flex;
             gap: 8px;
             padding: 8px 16px;
             background: white;
-            border-radius: 8px 8px 0 0;
-            border-bottom: 1px solid var(--fb-border);
+            border-radius: 8px;
+            border: 1px solid var(--fb-border);
+            margin-bottom: 16px;
         }
         .filter-chip {
             padding: 6px 20px;
@@ -277,6 +290,10 @@
             border-radius: 8px;
             border: 1px solid var(--fb-border);
             margin-bottom: 16px;
+            display: none;
+        }
+        .post-card.visible {
+            display: block;
         }
         .post-header {
             display: flex;
@@ -352,7 +369,40 @@
             background-color: #f0f2f5;
         }
 
-        /* RIGHT SIDEBAR: Pinned Announcements + Notifications (exactly as photo reference) */
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--fb-border);
+        }
+        .empty-icon {
+            font-size: 56px;
+            color: #bcc0c4;
+            margin-bottom: 16px;
+            background: #f0f2f5;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1c1e21;
+        }
+        .empty-subtitle {
+            color: #65676b;
+            font-size: 15px;
+        }
+
+        /* RIGHT SIDEBAR */
         .right-card {
             background: white;
             border-radius: 8px;
@@ -366,53 +416,44 @@
             padding: 12px 16px;
             border-bottom: 1px solid var(--fb-border);
         }
-        .pinned-item {
+        .empty-message {
+            padding: 32px 16px;
+            text-align: center;
+            color: #65676b;
+            font-size: 14px;
+        }
+        .empty-message i {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+            color: #bcc0c4;
+        }
+        .pinned-item, .notification-item {
             padding: 12px 16px;
             border-bottom: 1px solid #f0f2f5;
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .pinned-item:hover {
+        .pinned-item:hover, .notification-item:hover {
             background-color: #f0f2f5;
         }
         .pinned-title {
             font-weight: 600;
             font-size: 14px;
         }
-        .pinned-meta {
-            font-size: 11px;
+        .pinned-meta, .notification-text {
+            font-size: 12px;
             color: #65676b;
             margin-top: 4px;
         }
-        .notification-item {
-            display: flex;
-            gap: 12px;
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f2f5;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .notification-item:hover {
-            background-color: #f0f2f5;
-        }
         .notification-avatar {
-            width: 36px;
-            height: 36px;
+            display: inline-block;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: #e4e6eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--fb-blue);
-        }
-        .notification-text {
-            font-size: 13px;
-            flex: 1;
-        }
-        .notification-time {
-            font-size: 11px;
-            color: #65676b;
-            margin-top: 2px;
+            text-align: center;
+            line-height: 32px;
+            margin-right: 10px;
         }
 
         @media (max-width: 1100px) {
@@ -438,12 +479,12 @@
 
 <div class="header">
     <div class="header-left">
-        <div class="fb-logo">
-            <i class="fab fa-facebook-f"></i>
+        <div class="campus-logo">
+            <i class="fas fa-graduation-cap" style="margin-right: 6px;"></i> CampusPortal
         </div>
         <div class="search-bar">
             <i class="fas fa-search"></i>
-            <input type="text" placeholder="Search Campus Announcements...">
+            <input type="text" id="searchInput" placeholder="Search Announcements...">
         </div>
     </div>
     <div class="header-right">
@@ -454,7 +495,7 @@
 </div>
 
 <div class="app-container">
-    <!-- LEFT SIDEBAR - exactly as photo: Announcement Board, Categories, Pinned, Dark Mode, Create Group, Settings -->
+    <!-- LEFT SIDEBAR -->
     <div class="left-sidebar">
         <div class="sidebar-card">
             <div class="sidebar-item active" id="navHome">
@@ -481,191 +522,328 @@
 
     <!-- MAIN FEED -->
     <div class="main-feed">
-        <!-- Create post card: "Post an announcement..." + Photos/Video + Event -->
+        <!-- Create Post Card -->
         <div class="create-card">
             <div class="create-top">
                 <div class="avatar-md"></div>
-                <div class="dummy-post-input" id="postTrigger">Post an announcement...</div>
+                <div class="dummy-post-input" id="postTrigger">What's on your mind, Admin?</div>
             </div>
             <div class="post-actions">
-                <div class="post-action-btn"><i class="fas fa-image" style="color:#45bd62;"></i> Photos/Video</div>
-                <div class="post-action-btn"><i class="fas fa-calendar-alt" style="color:#1877f2;"></i> Event</div>
-                <div class="post-action-btn"><i class="fas fa-video" style="color:#f3425f;"></i> Live</div>
+                <div class="post-action-btn" id="photoVideoBtn"><i class="fas fa-image" style="color:#45bd62;"></i> Photos/Video</div>
+                <div class="post-action-btn" id="eventBtn"><i class="fas fa-calendar-alt" style="color:#1877f2;"></i> Event</div>
+                <div class="post-action-btn" id="pollBtn"><i class="fas fa-poll" style="color:#f3425f;"></i> Poll</div>
             </div>
         </div>
 
-        <!-- Filter chips: All, Events, Exams, Suspensions (matches photo exactly) -->
-        <div class="post-card" style="padding: 0;">
-            <div class="filter-row">
-                <div class="filter-chip active" data-filter="all">All</div>
-                <div class="filter-chip" data-filter="events">Events</div>
-                <div class="filter-chip" data-filter="exams">Exams</div>
-                <div class="filter-chip" data-filter="suspensions">Suspensions</div>
-            </div>
+        <!-- Filter Chips -->
+        <div class="filter-row">
+            <div class="filter-chip active" data-filter="all">All</div>
+            <div class="filter-chip" data-filter="events">Events</div>
+            <div class="filter-chip" data-filter="exams">Exams</div>
+            <div class="filter-chip" data-filter="suspensions">Suspensions</div>
         </div>
 
-        <!-- POST 1: Riza Ann R. Amay - Pinned - Suspension (exactly as photo) -->
-        <div class="post-card" data-category="suspensions" data-pinned="true">
-            <div class="post-header">
-                <div class="avatar-md" style="background: #e44d3a;"></div>
-                <div class="post-info">
-                    <div class="post-name">
-                        Riza Ann R. Amay 
-                        <span class="pin-badge"><i class="fas fa-thumbtack"></i> Pinned</span>
-                        <span class="category-badge">Suspension</span>
-                    </div>
-                    <div class="post-time">Today at 9:00 AM • Suspension</div>
-                </div>
-                <i class="fas fa-ellipsis-h" style="color:#65676b; cursor:pointer;"></i>
-            </div>
-            <div class="post-content">
-                <h4>⚠️ Class Suspension Due to Weather</h4>
-                <p>Due to the severe weather conditions, all classes are suspended today, April 24th. Please stay safe and check this portal for further updates.</p>
-            </div>
-            <div class="post-stats">
-                <span><i class="fas fa-thumbs-up"></i> 76 Likes</span>
-                <span>8 comments • 3 shares</span>
-            </div>
-            <div class="reactions-row">
-                <div class="reaction-btn"><i class="far fa-thumbs-up"></i> Like</div>
-                <div class="reaction-btn"><i class="far fa-comment"></i> Comment</div>
-                <div class="reaction-btn"><i class="fas fa-share"></i> Share</div>
-            </div>
-        </div>
+        <!-- Posts Container -->
+        <div id="postsContainer"></div>
 
-        <!-- POST 2: Mary Chris Quevedo - Exams (exactly as photo) -->
-        <div class="post-card" data-category="exams">
-            <div class="post-header">
-                <div class="avatar-md" style="background: #2d7a4b;"></div>
-                <div class="post-info">
-                    <div class="post-name">
-                        Mary Chris Quevedo 
-                        <span class="category-badge">Exams</span>
-                    </div>
-                    <div class="post-time">1 day ago • Exams</div>
-                </div>
-                <i class="fas fa-ellipsis-h" style="color:#65676b;"></i>
+        <!-- Empty State (shown when no posts) -->
+        <div id="emptyState" class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-newspaper"></i>
             </div>
-            <div class="post-content">
-                <h4>📚 Exam Schedule for Midterms</h4>
-                <p>The midterm exam schedule is now available. Please check the announcement board for your specific exam dates and times.</p>
-            </div>
-            <div class="post-stats">
-                <span><i class="fas fa-thumbs-up"></i> 45 Likes</span>
-                <span>12 comments • 2 shares</span>
-            </div>
-            <div class="reactions-row">
-                <div class="reaction-btn"><i class="far fa-thumbs-up"></i> Like</div>
-                <div class="reaction-btn"><i class="far fa-comment"></i> Comment</div>
-                <div class="reaction-btn"><i class="fas fa-share"></i> Share</div>
-            </div>
-        </div>
-
-        <!-- Additional event post to match Facebook richness -->
-        <div class="post-card" data-category="events">
-            <div class="post-header">
-                <div class="avatar-md" style="background: #e9a23b;"></div>
-                <div class="post-info">
-                    <div class="post-name">
-                        Student Council 
-                        <span class="category-badge">Events</span>
-                    </div>
-                    <div class="post-time">Yesterday at 3:30 PM</div>
-                </div>
-            </div>
-            <div class="post-content">
-                <h4>🎉 Campus Music Fest 2026</h4>
-                <p>Join us this Friday at the Quad! Free food, live bands, and raffle prizes. See you there!</p>
-            </div>
-            <div class="post-stats">
-                <span><i class="fas fa-thumbs-up"></i> 112 Likes</span>
-                <span>24 comments • 8 shares</span>
-            </div>
-            <div class="reactions-row">
-                <div class="reaction-btn"><i class="far fa-thumbs-up"></i> Like</div>
-                <div class="reaction-btn"><i class="far fa-comment"></i> Comment</div>
-                <div class="reaction-btn"><i class="fas fa-share"></i> Share</div>
-            </div>
+            <div class="empty-title">No announcements yet</div>
+            <div class="empty-subtitle">Be the first to post an announcement. Click "What's on your mind?" above to share campus news, events, or updates.</div>
         </div>
     </div>
 
-    <!-- RIGHT SIDEBAR: Pinned Announcements + Notifications (exactly as photo reference) -->
+    <!-- RIGHT SIDEBAR -->
     <div class="right-sidebar">
-        <!-- Pinned Announcements card -->
-        <div class="right-card">
+        <!-- Pinned Announcements Card -->
+        <div class="right-card" id="pinnedCard">
             <div class="right-header">
                 <i class="fas fa-thumbtack" style="color:#1877f2;"></i> Pinned Announcements
             </div>
-            <div class="pinned-item">
-                <div class="pinned-title"><i class="fas fa-cloud-rain" style="color:#65676b;"></i> Class Suspension Due to Weather</div>
-                <div class="pinned-meta">Today at 9:00 AM • Suspension • Riza Ann R. Amay</div>
-            </div>
-            <div class="pinned-item">
-                <div class="pinned-title"><i class="fas fa-calendar-alt"></i> Midterm Exam Guidelines</div>
-                <div class="pinned-meta">Yesterday • Exams • Registrar Office</div>
-            </div>
-            <div class="pinned-item">
-                <div class="pinned-title"><i class="fas fa-music"></i> Campus Music Fest 2026</div>
-                <div class="pinned-meta">April 22 • Events • Student Council</div>
+            <div id="pinnedList" class="empty-message">
+                <i class="fas fa-thumbtack"></i>
+                No pinned announcements yet
             </div>
         </div>
 
-        <!-- Notifications card (exactly like photo: Tim Suarez commented, Exam Schedule notification) -->
-        <div class="right-card">
+        <!-- Notifications Card -->
+        <div class="right-card" id="notificationsCard">
             <div class="right-header">
                 <i class="fas fa-bell"></i> Notifications
             </div>
-            <div class="notification-item">
-                <div class="notification-avatar"><i class="fas fa-user-circle"></i></div>
-                <div class="notification-text">
-                    <strong>Tim Suarez</strong> commented on your post...
-                    <div class="notification-time">2 minutes ago</div>
-                </div>
-            </div>
-            <div class="notification-item">
-                <div class="notification-avatar"><i class="fas fa-graduation-cap"></i></div>
-                <div class="notification-text">
-                    <strong>Exam Schedule for Midterms</strong> was posted by Mary Chris Quevedo
-                    <div class="notification-time">Yesterday</div>
-                </div>
-            </div>
-            <div class="notification-item">
-                <div class="notification-avatar"><i class="fas fa-chalkboard-user"></i></div>
-                <div class="notification-text">
-                    <strong>Student Council</strong> added a new event: Music Fest
-                    <div class="notification-time">2 days ago</div>
-                </div>
+            <div id="notificationsList" class="empty-message">
+                <i class="fas fa-bell-slash"></i>
+                No new notifications
             </div>
         </div>
 
-        <!-- Campus tip card (bonus, keeps consistency) -->
+        <!-- Campus Quick Links -->
         <div class="right-card">
             <div class="right-header">📢 Campus Quick Links</div>
-            <div class="pinned-item">📅 Academic Calendar</div>
-            <div class="pinned-item">📖 Library Resources</div>
-            <div class="pinned-item">💬 Student Support Hub</div>
+            <div style="padding: 12px 16px;">
+                <div style="margin-bottom: 8px;"><i class="fas fa-calendar-alt"></i> Academic Calendar</div>
+                <div style="margin-bottom: 8px;"><i class="fas fa-book"></i> Library Resources</div>
+                <div><i class="fas fa-question-circle"></i> Student Support</div>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Post Creation Modal (simple prompt) -->
 <script>
-    // Dark Mode Toggle
-    const darkToggle = document.getElementById('darkModeToggle');
-    if (darkToggle) {
-        darkToggle.addEventListener('click', function () {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('campusDarkMode', isDark);
-            const icon = darkToggle.querySelector('i');
-            if (isDark) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
+    // Data storage
+    let posts = [];
+    let nextId = 1;
+    let currentFilter = 'all';
+    let currentView = 'home'; // home, pinned
+
+    // DOM elements
+    const postsContainer = document.getElementById('postsContainer');
+    const emptyState = document.getElementById('emptyState');
+    const pinnedList = document.getElementById('pinnedList');
+    const notificationsList = document.getElementById('notificationsList');
+    const searchInput = document.getElementById('searchInput');
+
+    // Helper: format time ago
+    function timeAgo(date) {
+        const seconds = Math.floor((new Date() - date) / 1000);
+        if (seconds < 60) return 'just now';
+        const minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+        const hours = Math.floor(minutes / 60);
+        if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+        const days = Math.floor(hours / 24);
+        return `${days} day${days > 1 ? 's' : ''} ago`;
+    }
+
+    // Render posts based on filter and search
+    function renderPosts() {
+        let filteredPosts = [...posts];
+
+        // Filter by view (pinned vs home)
+        if (currentView === 'pinned') {
+            filteredPosts = filteredPosts.filter(p => p.pinned);
+        }
+
+        // Filter by category
+        if (currentFilter !== 'all') {
+            filteredPosts = filteredPosts.filter(p => p.category === currentFilter);
+        }
+
+        // Search filter
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        if (searchTerm) {
+            filteredPosts = filteredPosts.filter(p => p.title.toLowerCase().includes(searchTerm) || p.content.toLowerCase().includes(searchTerm));
+        }
+
+        // Sort by date (newest first)
+        filteredPosts.sort((a, b) => b.date - a.date);
+
+        if (filteredPosts.length === 0) {
+            postsContainer.innerHTML = '';
+            emptyState.style.display = 'block';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+
+        postsContainer.innerHTML = filteredPosts.map(post => `
+            <div class="post-card visible" data-id="${post.id}" data-category="${post.category}" data-pinned="${post.pinned}">
+                <div class="post-header">
+                    <div class="avatar-md" style="background: ${post.avatarColor}"></div>
+                    <div class="post-info">
+                        <div class="post-name">
+                            ${post.author}
+                            ${post.pinned ? '<span class="pin-badge"><i class="fas fa-thumbtack"></i> Pinned</span>' : ''}
+                            <span class="category-badge">${post.categoryLabel}</span>
+                        </div>
+                        <div class="post-time">${timeAgo(post.date)} • ${post.categoryLabel}</div>
+                    </div>
+                    <i class="fas fa-ellipsis-h" style="color:#65676b; cursor:pointer;"></i>
+                </div>
+                <div class="post-content">
+                    <h4>${escapeHtml(post.title)}</h4>
+                    <p>${escapeHtml(post.content)}</p>
+                </div>
+                <div class="post-stats">
+                    <span><i class="fas fa-thumbs-up"></i> ${post.likes} Likes</span>
+                    <span>0 comments • 0 shares</span>
+                </div>
+                <div class="reactions-row">
+                    <div class="reaction-btn like-btn" data-id="${post.id}"><i class="far fa-thumbs-up"></i> Like</div>
+                    <div class="reaction-btn"><i class="far fa-comment"></i> Comment</div>
+                    <div class="reaction-btn"><i class="fas fa-share"></i> Share</div>
+                </div>
+            </div>
+        `).join('');
+
+        // Attach like event listeners
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const id = parseInt(this.getAttribute('data-id'));
+                const post = posts.find(p => p.id === id);
+                if (post) {
+                    post.likes++;
+                    renderPosts();
+                    renderPinnedAndNotifications();
+                }
+            });
         });
     }
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function (m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // Render pinned announcements and notifications
+    function renderPinnedAndNotifications() {
+        const pinnedPosts = posts.filter(p => p.pinned);
+        if (pinnedPosts.length === 0) {
+            pinnedList.innerHTML = '<i class="fas fa-thumbtack"></i><br>No pinned announcements yet';
+        } else {
+            pinnedList.innerHTML = pinnedPosts.map(post => `
+                <div class="pinned-item">
+                    <div class="pinned-title">📌 ${escapeHtml(post.title)}</div>
+                    <div class="pinned-meta">${timeAgo(post.date)} • ${post.categoryLabel} • ${post.author}</div>
+                </div>
+            `).join('');
+        }
+
+        // Notifications: show when someone likes or new post (demo)
+        const recentActivities = [];
+        posts.forEach(post => {
+            recentActivities.push(`${post.author} posted "${post.title.substring(0, 40)}${post.title.length > 40 ? '...' : ''}"`);
+        });
+        if (recentActivities.length === 0) {
+            notificationsList.innerHTML = '<i class="fas fa-bell-slash"></i><br>No new notifications';
+        } else {
+            notificationsList.innerHTML = recentActivities.slice(0, 5).map(act => `
+                <div class="notification-item">
+                    <div class="notification-avatar"><i class="fas fa-user-circle"></i></div>
+                    <div class="notification-text">
+                        <strong>New update</strong><br>${act}
+                        <div class="notification-time">just now</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Create new post
+    function createPost(title, content, category, categoryLabel, isPinned = false) {
+        const newPost = {
+            id: nextId++,
+            author: "Admin User",
+            authorAvatar: "A",
+            avatarColor: `hsl(${Math.floor(Math.random() * 360)}, 65%, 55%)`,
+            title: title,
+            content: content,
+            category: category,
+            categoryLabel: categoryLabel,
+            date: new Date(),
+            likes: 0,
+            pinned: isPinned
+        };
+        posts.unshift(newPost);
+        renderPosts();
+        renderPinnedAndNotifications();
+
+        // Show success message
+        alert(`✅ Announcement "${title}" has been posted!`);
+    }
+
+    // Open post creation modal
+    function openPostCreator() {
+        const category = prompt("Select category:\n1 - Events\n2 - Exams\n3 - Suspensions\n\nEnter number (1-3):", "1");
+        let catValue, catLabel;
+        if (category === "1") { catValue = "events"; catLabel = "Events"; }
+        else if (category === "2") { catValue = "exams"; catLabel = "Exams"; }
+        else if (category === "3") { catValue = "suspensions"; catLabel = "Suspensions"; }
+        else { alert("Invalid category. Using Events."); catValue = "events"; catLabel = "Events"; }
+
+        const title = prompt("Announcement Title:", "");
+        if (!title) return;
+
+        const content = prompt("Announcement Content:", "");
+        if (!content) return;
+
+        const wantPinned = confirm("Do you want to PIN this announcement? (Yes = Pinned)");
+
+        createPost(title, content, catValue, catLabel, wantPinned);
+    }
+
+    // Event listeners
+    document.getElementById('postTrigger')?.addEventListener('click', openPostCreator);
+    document.getElementById('photoVideoBtn')?.addEventListener('click', openPostCreator);
+    document.getElementById('eventBtn')?.addEventListener('click', openPostCreator);
+    document.getElementById('pollBtn')?.addEventListener('click', openPostCreator);
+
+    // Filter chips
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.getAttribute('data-filter');
+            if (currentView === 'pinned') {
+                // stay in pinned view but apply filter
+                renderPosts();
+            } else {
+                renderPosts();
+            }
+        });
+    });
+
+    // Navigation
+    const navHome = document.getElementById('navHome');
+    const navPinned = document.getElementById('navPinned');
+    const navCategories = document.getElementById('navCategories');
+
+    navHome?.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+        navHome.classList.add('active');
+        currentView = 'home';
+        currentFilter = 'all';
+        // reset filter chips
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        document.querySelector('.filter-chip[data-filter="all"]')?.classList.add('active');
+        renderPosts();
+    });
+
+    navPinned?.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+        navPinned.classList.add('active');
+        currentView = 'pinned';
+        renderPosts();
+    });
+
+    navCategories?.addEventListener('click', () => {
+        alert("📂 Categories: Events, Exams, Suspensions — Select a filter above to see announcements by category.");
+    });
+
+    // Dark Mode
+    const darkToggle = document.getElementById('darkModeToggle');
+    darkToggle?.addEventListener('click', function () {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('campusDarkMode', isDark);
+        const icon = darkToggle.querySelector('i');
+        if (isDark) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    });
+
     if (localStorage.getItem('campusDarkMode') === 'true') {
         document.body.classList.add('dark-mode');
         const darkIcon = document.querySelector('#darkModeToggle i');
@@ -675,92 +853,17 @@
         }
     }
 
-    // Filter posts by category (All / Events / Exams / Suspensions)
-    const filterChips = document.querySelectorAll('.filter-chip');
-    const allPosts = document.querySelectorAll('.post-card[data-category]');
-    function filterPosts(activeFilter) {
-        allPosts.forEach(post => {
-            const category = post.getAttribute('data-category');
-            if (activeFilter === 'all') {
-                post.style.display = 'block';
-            } else {
-                post.style.display = category === activeFilter ? 'block' : 'none';
-            }
-        });
-    }
-    filterChips.forEach(chip => {
-        chip.addEventListener('click', function () {
-            filterChips.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            filterPosts(this.getAttribute('data-filter'));
-        });
-    });
-
-    // Sidebar navigation: Home, Categories, Pinned
-    const navHome = document.getElementById('navHome');
-    const navCategories = document.getElementById('navCategories');
-    const navPinned = document.getElementById('navPinned');
-    function setActiveSidebar(activeEl) {
-        [navHome, navCategories, navPinned].forEach(el => el && el.classList.remove('active'));
-        activeEl.classList.add('active');
-    }
-    if (navHome) {
-        navHome.addEventListener('click', () => {
-            setActiveSidebar(navHome);
-            filterPosts('all');
-            const allChip = document.querySelector('.filter-chip[data-filter="all"]');
-            if (allChip) allChip.classList.add('active');
-            filterChips.forEach(c => c.classList.remove('active'));
-            if (allChip) allChip.classList.add('active');
-            allPosts.forEach(p => p.style.display = 'block');
-        });
-    }
-    if (navCategories) {
-        navCategories.addEventListener('click', () => {
-            setActiveSidebar(navCategories);
-            alert("🔍 Categories: Academics, Events, Sports, Admissions — coming soon!");
-        });
-    }
-    if (navPinned) {
-        navPinned.addEventListener('click', () => {
-            setActiveSidebar(navPinned);
-            allPosts.forEach(post => {
-                const isPinned = post.getAttribute('data-pinned') === 'true';
-                post.style.display = isPinned ? 'block' : 'none';
-            });
-            filterChips.forEach(c => c.classList.remove('active'));
-        });
-    }
-    // Create Group + Settings demo
     document.getElementById('createGroupBtn')?.addEventListener('click', () => alert("✨ Create a new study group or club on campus!"));
     document.getElementById('settingsBtn')?.addEventListener('click', () => alert("⚙️ Notification & privacy settings"));
-    document.getElementById('postTrigger')?.addEventListener('click', () => alert("📢 Create announcement: share news, events, or alerts."));
 
-    // Like button interactive counter
-    const likeBtns = document.querySelectorAll('.reaction-btn:first-child');
-    likeBtns.forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            const statsSpan = this.closest('.post-card')?.querySelector('.post-stats span:first-child');
-            if (statsSpan) {
-                let likeText = statsSpan.innerText;
-                let match = likeText.match(/\d+/);
-                let likes = match ? parseInt(match[0]) : 0;
-                if (!this.classList.contains('liked')) {
-                    likes++;
-                    statsSpan.innerHTML = `<i class="fas fa-thumbs-up"></i> ${likes} Likes`;
-                    this.classList.add('liked');
-                    this.style.color = '#1877f2';
-                } else {
-                    likes--;
-                    statsSpan.innerHTML = `<i class="fas fa-thumbs-up"></i> ${likes} Likes`;
-                    this.classList.remove('liked');
-                    this.style.color = '#65676b';
-                }
-            } else {
-                alert("👍 Liked!");
-            }
-        });
+    // Search
+    searchInput?.addEventListener('input', () => {
+        renderPosts();
     });
+
+    // Initial render (empty)
+    renderPosts();
+    renderPinnedAndNotifications();
 </script>
 </body>
 </html>
