@@ -577,13 +577,7 @@
             </div>
         </div>
 
-        <!-- Campus Quick Links -->
-        <div class="right-card">
-            <div class="right-header">📢 Campus Quick Links</div>
-            <div style="padding: 12px 16px;">
-                <div style="margin-bottom: 8px;"><i class="fas fa-calendar-alt"></i> Academic Calendar</div>
-                <div style="margin-bottom: 8px;"><i class="fas fa-book"></i> Library Resources</div>
-                <div><i class="fas fa-question-circle"></i> Student Support</div>
+       
             </div>
         </div>
     </div>
