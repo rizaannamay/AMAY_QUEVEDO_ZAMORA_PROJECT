@@ -257,12 +257,6 @@
             color: #1a3a5c;
         }
 
-        .menu-item.active {
-            background: #e8f0fe;
-            color: #1a3a5c;
-            border-left-color: #1a3a5c;
-        }
-
         .dropdown-icon {
             margin-left: auto;
             font-size: 12px;
@@ -375,7 +369,7 @@
             left: 24px;
         }
 
-        /* Announcement Cards */
+        /* Announcement Cards - Social Media Style */
         .announcement-board {
             padding: 5px;
         }
@@ -383,88 +377,192 @@
         .announcement-card {
             background: white;
             border-radius: 20px;
-            padding: 22px;
             margin-bottom: 20px;
             border: 1px solid rgba(26,58,92,0.08);
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            overflow: hidden;
         }
 
         .announcement-card:hover {
-            transform: translateX(5px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             border-color: rgba(26,58,92,0.2);
         }
 
-        .badge-group {
-            margin-bottom: 12px;
+        /* Post Header */
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 22px 12px 22px;
         }
 
-        .badge {
+        .post-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-author {
+            font-weight: 700;
+            color: #1a3a5c;
+            font-size: 16px;
+        }
+
+        .post-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: #7a8e9e;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
+        .post-category {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 2px 10px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            margin-right: 8px;
         }
 
-        .badge-exam { background: #e3f2fd; color: #1976d2; }
-        .badge-suspension { background: #ffebee; color: #c62828; }
-        .badge-event { background: #e8f5e9; color: #2e7d32; }
-        .badge-pinned { background: #fff3e0; color: #e65100; }
+        .post-category-exam { background: #e3f2fd; color: #1976d2; }
+        .post-category-suspension { background: #ffebee; color: #c62828; }
+        .post-category-event { background: #e8f5e9; color: #2e7d32; }
 
-        .announcement-title {
+        /* Pin Button Top Right */
+        .pin-btn-top {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: #b0c4de;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            width: 36px;
+            height: 36px;
+        }
+
+        .pin-btn-top:hover {
+            background: #f0f2f5;
+        }
+
+        .pin-btn-top.pinned {
+            color: #e65100;
+        }
+
+        /* Post Content */
+        .post-content {
+            padding: 0 22px 16px 22px;
+        }
+
+        .post-title {
             font-size: 18px;
             font-weight: 700;
             color: #1a3a5c;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .announcement-meta {
-            display: flex;
-            gap: 20px;
-            font-size: 12px;
-            color: #7a8e9e;
+        .post-text {
+            color: #2c3e50;
+            line-height: 1.5;
             margin-bottom: 12px;
         }
 
-        .announcement-content {
-            color: #2c3e50;
-            line-height: 1.5;
-            margin-bottom: 16px;
+        .post-image {
+            margin-top: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 100%;
         }
 
+        .post-image img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        /* Post Stats */
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            padding: 10px 22px;
+            border-top: 1px solid #eef2f6;
+            border-bottom: 1px solid #eef2f6;
+            color: #7a8e9e;
+            font-size: 13px;
+        }
+
+        .post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .post-stats span:hover {
+            color: #1a3a5c;
+        }
+
+        /* Action Buttons - Like, Comment, Share at Bottom */
         .action-buttons {
             display: flex;
-            gap: 15px;
-            padding-top: 12px;
-            border-top: 1px solid #eef2f6;
+            gap: 5px;
+            padding: 8px 22px;
         }
 
         .action-btn {
-            background: #f8fafc;
+            flex: 1;
+            background: none;
             border: none;
-            padding: 6px 16px;
-            border-radius: 30px;
+            padding: 10px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             color: #5a6e7c;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
         }
 
         .action-btn:hover {
-            background: #e8f0fe;
+            background: #f0f2f5;
             color: #1a3a5c;
+        }
+
+        .action-btn.liked {
+            color: #dc2626;
+        }
+
+        .action-btn.liked i {
+            font-weight: 900;
         }
 
         /* Comments Section */
         .comments-section {
-            margin-top: 16px;
-            padding-top: 16px;
+            padding: 0 22px 18px 22px;
             border-top: 1px solid #eef2f6;
             display: none;
         }
@@ -476,7 +574,7 @@
         .comment-input {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin: 15px 0;
         }
 
         .comment-input input {
@@ -497,18 +595,57 @@
             cursor: pointer;
             font-weight: 600;
             color: white;
+            transition: all 0.3s;
+        }
+
+        .comment-input button:hover {
+            transform: scale(1.02);
         }
 
         .comment {
-            padding: 8px 0;
+            padding: 10px 0;
             font-size: 13px;
             border-bottom: 1px solid #eef2f6;
-            color: #2c3e50;
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            background: #e8f0fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #1a3a5c;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
         }
 
         .comment-author {
             font-weight: bold;
             color: #1a3a5c;
+        }
+
+        .comment-text {
+            color: #2c3e50;
+            margin-top: 2px;
+        }
+
+        .comment-time {
+            font-size: 10px;
+            color: #b0c4de;
+            margin-top: 4px;
         }
 
         .no-comments {
@@ -656,18 +793,6 @@
             margin-top: 20px;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 50px;
-            color: #b0c4de;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
         /* Responsive */
         @media (max-width: 900px) {
             .main-layout {
@@ -694,7 +819,6 @@
                 <button class="search-btn" onclick="searchAnnouncements()">Search</button>
             </div>
             <div style="display: flex; gap: 15px; align-items: center;">
-                <!-- Notification Bell -->
                 <div class="notification-bell" onclick="toggleNotificationDropdown()">
                     <i class="fas fa-bell bell-icon"></i>
                     <span id="notificationBadge" class="badge-red">3</span>
@@ -740,7 +864,6 @@
             <!-- LEFT SIDEBAR -->
             <aside>
                 <div class="card">
-                    <!-- Profile -->
                     <div class="profile-section">
                         <div class="profile-avatar">
                             <i class="fas fa-user-graduate"></i>
@@ -749,7 +872,6 @@
                         <div class="profile-email">john.delacruz@ctu.edu.ph</div>
                     </div>
 
-                    <!-- Category Dropdown -->
                     <div class="card-header">
                         <i class="fas fa-filter"></i> Filters
                     </div>
@@ -764,7 +886,6 @@
                         <button class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                     </div>
 
-                    <!-- Pinned Items Dropdown -->
                     <div class="card-header" style="margin-top: 5px;">
                         <i class="fas fa-thumbtack"></i> Pinned Items
                     </div>
@@ -783,23 +904,19 @@
                         </div>
                     </div>
 
-                    <!-- Settings -->
                     <div class="card-header" style="margin-top: 5px;">
                         <i class="fas fa-cog"></i> Settings
                     </div>
                     
-                    <!-- Dark/Light Mode -->
                     <div class="settings-item" onclick="toggleTheme(this)">
                         <i class="fas fa-moon"></i> Dark / Light Mode
                         <div class="toggle-switch" id="themeToggle"></div>
                     </div>
                     
-                    <!-- About Us -->
                     <div class="settings-item" onclick="openAboutModal()">
                         <i class="fas fa-info-circle"></i> About Us
                     </div>
                     
-                    <!-- Logout -->
                     <div class="settings-item" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </div>
@@ -814,25 +931,43 @@
                         <span style="float: right; font-size: 12px; color: #1a3a5c;">Showing: <span id="activeFilterLabel">All</span></span>
                     </div>
 
-                    <!-- Announcements Container -->
                     <div id="announcementsContainer" class="announcement-board">
                         <!-- Announcement 1 - Exam -->
-                        <div class="announcement-card" data-category="Exam">
-                            <div class="badge-group">
-                                <span class="badge badge-exam">Exam</span>
-                                <span class="badge badge-pinned"><i class="fas fa-thumbtack"></i> PINNED</span>
+                        <div class="announcement-card" data-category="Exam" data-post-id="1">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Prof. Michael Reyes</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> December 10, 2024</span>
+                                            <span><i class="far fa-clock"></i> 9:00 AM</span>
+                                            <span class="post-category post-category-exam">Exam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
-                            <div class="announcement-title">Final Exam Schedule</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> December 15-20, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">Final Exam Schedule</div>
+                                <div class="post-text">
+                                    The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">24</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">2</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Unpin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (2)</button>
+                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -840,29 +975,62 @@
                                     <button onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
-                                    <div class="comment"><span class="comment-author">Juan Dela Cruz:</span> Thank you for the update!</div>
-                                    <div class="comment"><span class="comment-author">Maria Santos:</span> What time does the exam start?</div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">Juan Dela Cruz</span>
+                                            <div class="comment-text">Thank you for the update!</div>
+                                            <div class="comment-time">December 8, 2024</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">Maria Santos</span>
+                                            <div class="comment-text">What time does the exam start?</div>
+                                            <div class="comment-time">December 9, 2024</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Announcement 2 - Suspension -->
-                        <div class="announcement-card" data-category="Suspension">
-                            <div class="badge-group">
-                                <span class="badge badge-suspension">Suspension</span>
-                                <span class="badge badge-pinned"><i class="fas fa-thumbtack"></i> PINNED</span>
+                        <div class="announcement-card" data-category="Suspension" data-post-id="2">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Admin Office</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> November 24, 2024</span>
+                                            <span><i class="far fa-clock"></i> 6:00 AM</span>
+                                            <span class="post-category post-category-suspension">Suspension</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
-                            <div class="announcement-title">Class Suspension - Typhoon</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> November 25, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">Class Suspension - Typhoon Enteng</div>
+                                <div class="post-text">
+                                    Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">56</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">1</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Unpin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (1)</button>
+                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -870,27 +1038,54 @@
                                     <button onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
-                                    <div class="comment"><span class="comment-author">John Santos:</span> Stay safe everyone!</div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">John Santos</span>
+                                            <div class="comment-text">Stay safe everyone!</div>
+                                            <div class="comment-time">November 24, 2024</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Announcement 3 - Event -->
-                        <div class="announcement-card" data-category="Event">
-                            <div class="badge-group">
-                                <span class="badge badge-event">Event</span>
+                        <div class="announcement-card" data-category="Event" data-post-id="3">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Student Affairs Office</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> November 20, 2024</span>
+                                            <span><i class="far fa-clock"></i> 10:00 AM</span>
+                                            <span class="post-category post-category-event">Event</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
-                            <div class="announcement-title">University Foundation Week</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> December 1-5, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">University Foundation Week 2024</div>
+                                <div class="post-text">
+                                    Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert featuring local artists.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                Join us for the annual University Foundation Week celebration. Activities include parade, talent show, and sportsfest.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">89</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">0</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Pin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (0)</button>
+                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -921,10 +1116,6 @@
                 <div class="modal-text">
                     Campus Connect is a centralized web-based announcement system for Cebu Technological University. 
                     It allows students to access official announcements, exam schedules, class suspensions, and campus events in one place.
-                </div>
-                <div class="modal-text">
-                    <strong>Version:</strong> 1.0<br>
-                    <strong>Developed for:</strong> CTU Students & Faculty
                 </div>
                 <button class="modal-close" onclick="closeAboutModal()">Close</button>
             </div>
@@ -957,11 +1148,159 @@
             }
         });
 
-        // Toggle Comments
+        // ==================== POST INTERACTIONS ====================
+
+        // Toggle Comments Section
         function toggleComments(btn) {
             var card = btn.closest('.announcement-card');
             var commentsSection = card.querySelector('.comments-section');
             commentsSection.classList.toggle('show');
+        }
+
+        // Scroll to comments and open
+        function scrollToComments(element) {
+            var card = element.closest('.announcement-card');
+            var commentsSection = card.querySelector('.comments-section');
+            if (!commentsSection.classList.contains('show')) {
+                commentsSection.classList.add('show');
+            }
+            commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Toggle Like (from button)
+        function toggleLike(btn) {
+            var card = btn.closest('.announcement-card');
+            var likeIcon = btn.querySelector('i');
+            var likeCountSpan = card.querySelector('.like-count');
+            var currentCount = parseInt(likeCountSpan.innerText);
+
+            if (btn.classList.contains('liked')) {
+                btn.classList.remove('liked');
+                likeIcon.className = 'far fa-heart';
+                likeCountSpan.innerText = currentCount - 1;
+                btn.innerHTML = '<i class="far fa-heart"></i> Like';
+            } else {
+                btn.classList.add('liked');
+                likeIcon.className = 'fas fa-heart';
+                likeCountSpan.innerText = currentCount + 1;
+                btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
+            }
+        }
+
+        // Toggle Like (from stats bar)
+        function toggleLikeFromStats(span) {
+            var card = span.closest('.announcement-card');
+            var likeBtn = card.querySelector('.action-btn:first-child');
+            var likeIcon = likeBtn.querySelector('i');
+            var likeCountSpan = span.querySelector('.like-count');
+            var currentCount = parseInt(likeCountSpan.innerText);
+
+            if (likeBtn.classList.contains('liked')) {
+                likeBtn.classList.remove('liked');
+                likeIcon.className = 'far fa-heart';
+                likeCountSpan.innerText = currentCount - 1;
+                likeBtn.innerHTML = '<i class="far fa-heart"></i> Like';
+            } else {
+                likeBtn.classList.add('liked');
+                likeIcon.className = 'fas fa-heart';
+                likeCountSpan.innerText = currentCount + 1;
+                likeBtn.innerHTML = '<i class="fas fa-heart"></i> Liked';
+            }
+        }
+
+        // Share Post
+        function sharePost() {
+            alert('Share this announcement with others!');
+        }
+
+        // Toggle Pin (Top Right)
+        function togglePinTop(btn) {
+            if (btn.classList.contains('pinned')) {
+                btn.classList.remove('pinned');
+                alert('Announcement unpinned!');
+            } else {
+                btn.classList.add('pinned');
+                alert('Announcement pinned!');
+            }
+        }
+
+        // Add Comment with proper script
+        function addComment(btn) {
+            var input = btn.parentElement.querySelector('input');
+            var commentText = input.value.trim();
+
+            if (commentText !== '') {
+                var card = btn.closest('.announcement-card');
+                var commentsList = card.querySelector('.comments-list');
+                var noComments = commentsList.querySelector('.no-comments');
+                var commentCountSpan = card.querySelector('.comment-count');
+                var currentCommentCount = parseInt(commentCountSpan.innerText);
+
+                if (noComments) {
+                    noComments.remove();
+                }
+
+                var now = new Date();
+                var formattedDate = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                var newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                    '<div class="comment-content">' +
+                    '<span class="comment-author">You</span>' +
+                    '<div class="comment-text">' + escapeHtml(commentText) + '</div>' +
+                    '<div class="comment-time">Just now</div>' +
+                    '</div>';
+                commentsList.appendChild(newComment);
+
+                // Update comment count
+                commentCountSpan.innerText = currentCommentCount + 1;
+
+                // Update stats bar comment count
+                var statsCommentSpan = card.querySelector('.post-stats span:nth-child(2) .comment-count');
+                if (statsCommentSpan) {
+                    statsCommentSpan.innerText = currentCommentCount + 1;
+                }
+
+                input.value = '';
+
+                // Show success message
+                showToast('Comment posted successfully!');
+            } else {
+                showToast('Please enter a comment!');
+            }
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            var div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.backgroundColor = '#1a3a5c';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '30px';
+            toast.style.fontSize = '14px';
+            toast.style.zIndex = '9999';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+
+            setTimeout(function () {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(function () {
+                    toast.remove();
+                }, 300);
+            }, 2000);
         }
 
         // Filter Category
@@ -988,8 +1327,8 @@
             var found = false;
 
             announcements.forEach(function (ann) {
-                var title = ann.querySelector('.announcement-title').innerText.toLowerCase();
-                var content = ann.querySelector('.announcement-content').innerText.toLowerCase();
+                var title = ann.querySelector('.post-title').innerText.toLowerCase();
+                var content = ann.querySelector('.post-text').innerText.toLowerCase();
 
                 if (title.includes(searchTerm) || content.includes(searchTerm)) {
                     ann.style.display = 'block';
@@ -1000,7 +1339,7 @@
             });
 
             if (!found && searchTerm !== '') {
-                alert('No announcements found matching "' + searchTerm + '"');
+                showToast('No announcements found matching "' + searchTerm + '"');
             }
         }
 
@@ -1014,42 +1353,10 @@
             });
         }
 
-        // Toggle Pin
-        function togglePin(btn) {
-            if (btn.innerHTML.includes('Pin')) {
-                btn.innerHTML = '<i class="fas fa-thumbtack"></i> Unpin';
-                alert('Announcement pinned!');
-            } else {
-                btn.innerHTML = '<i class="fas fa-thumbtack"></i> Pin';
-                alert('Announcement unpinned!');
-            }
-        }
-
-        // Add Comment
-        function addComment(btn) {
-            var input = btn.parentElement.querySelector('input');
-            var commentText = input.value.trim();
-
-            if (commentText !== '') {
-                var commentsList = btn.parentElement.parentElement.querySelector('.comments-list');
-                var noComments = commentsList.querySelector('.no-comments');
-
-                if (noComments) {
-                    noComments.remove();
-                }
-
-                var newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = '<span class="comment-author">You:</span> ' + commentText;
-                commentsList.appendChild(newComment);
-                input.value = '';
-            }
-        }
-
-        // Remove Pin
+        // Remove Pin from sidebar
         function removePin(btn) {
             btn.parentElement.remove();
-            alert('Item removed from pinned!');
+            showToast('Item removed from pinned!');
         }
 
         // Mark Notification Read
@@ -1068,6 +1375,7 @@
                 if (dot) dot.remove();
             });
             updateBadgeCount();
+            showToast('All notifications marked as read');
         }
 
         function updateBadgeCount() {
@@ -1091,17 +1399,18 @@
 
             if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
                 body.style.background = '#1a1a2e';
-                // Change card backgrounds
                 document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function (el) {
                     el.style.background = '#242526';
                     el.style.color = '#e4e6eb';
                 });
+                showToast('Dark mode enabled');
             } else {
                 body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
                 document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function (el) {
                     el.style.background = 'white';
                     el.style.color = '#1a2a3a';
                 });
+                showToast('Light mode enabled');
             }
         }
 
