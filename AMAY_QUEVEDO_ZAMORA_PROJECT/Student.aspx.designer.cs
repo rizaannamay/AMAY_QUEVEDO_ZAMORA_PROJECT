@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AMAY_QUEVEDO_ZAMORA_PROJECT
+namespace YourProjectName
 {
 
 
@@ -24,102 +24,138 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// lblUser control.
+        /// txtSearch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUser;
+        protected global::System.Web.UI.WebControls.TextBox txtSearch;
 
         /// <summary>
-        /// btnHome control.
+        /// lnkCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnHome;
+        protected global::System.Web.UI.WebControls.LinkButton lnkCategory;
 
         /// <summary>
-        /// btnPin control.
+        /// lblArrow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnPin;
+        protected global::System.Web.UI.WebControls.Label lblArrow;
 
         /// <summary>
-        /// btnSet control.
+        /// pnlCategoryDropdown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSet;
+        protected global::System.Web.UI.WebControls.Panel pnlCategoryDropdown;
 
         /// <summary>
-        /// btnGroup control.
+        /// btnExamCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnGroup;
+        protected global::System.Web.UI.WebControls.LinkButton btnExamCat;
 
         /// <summary>
-        /// btnLogout control.
+        /// btnSuspensionCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnLogout;
+        protected global::System.Web.UI.WebControls.LinkButton btnSuspensionCat;
 
         /// <summary>
-        /// MainMultiView control.
+        /// btnEventCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.MultiView MainMultiView;
+        protected global::System.Web.UI.WebControls.LinkButton btnEventCat;
 
         /// <summary>
-        /// ViewHome control.
+        /// lnkSettings control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View ViewHome;
+        protected global::System.Web.UI.WebControls.LinkButton lnkSettings;
 
         /// <summary>
-        /// rptPosts control.
+        /// lblSettingsArrow control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPosts;
+        protected global::System.Web.UI.WebControls.Label lblSettingsArrow;
 
         /// <summary>
-        /// ViewSettings control.
+        /// pnlSettingsDropdown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View ViewSettings;
+        protected global::System.Web.UI.WebControls.Panel pnlSettingsDropdown;
 
         /// <summary>
-        /// ViewGroup control.
+        /// lnkDark control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View ViewGroup;
+        protected global::System.Web.UI.WebControls.LinkButton lnkDark;
+
+        /// <summary>
+        /// lnkAccount control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAccount;
+
+        /// <summary>
+        /// lnkPinnedSidebar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkPinnedSidebar;
+
+        /// <summary>
+        /// lblMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMain;
+
+        /// <summary>
+        /// lblSub control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSub;
     }
 }
