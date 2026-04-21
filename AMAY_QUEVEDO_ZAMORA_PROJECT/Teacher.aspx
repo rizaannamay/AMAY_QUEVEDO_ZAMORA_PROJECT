@@ -498,8 +498,7 @@
     <div class="left-sidebar">
         <div class="sidebar-card">
             <div class="sidebar-item active" id="navHome">
-                <i class="fas fa-newspaper"></i> Announcement Board
-            </div>
+                Category</div>
             <div class="sidebar-item" id="navPinned">
                 <i class="fas fa-thumbtack"></i> Pinned Announcements
             </div>
@@ -530,11 +529,7 @@
 
         <!-- Filter Chips -->
         <div class="filter-row">
-            <div class="filter-chip active" data-filter="all">All</div>
-            <div class="filter-chip" data-filter="events">Events</div>
-            <div class="filter-chip" data-filter="exams">Exams</div>
-            <div class="filter-chip" data-filter="suspensions">Suspensions</div>
-        </div>
+            Announcement Board</div>
 
         <!-- Posts Container -->
         <div id="postsContainer"></div>

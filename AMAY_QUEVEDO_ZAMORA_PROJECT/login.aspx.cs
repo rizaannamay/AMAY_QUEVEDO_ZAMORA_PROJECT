@@ -26,14 +26,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 Session["UserRole"] = "Student";
                 Session["Username"] = username;
 
-                Response.Redirect("Main.aspx");
+                Response.Redirect("Student.aspx");
             }
             else if (role == "Admin" && username == "teacher" && password == "admin")
             {
                 Session["UserRole"] = "Admin";
                 Session["Username"] = username;
 
-                Response.Redirect("Main.aspx");
+                Response.Redirect("Teacher.aspx");
             }
             else
             {

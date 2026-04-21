@@ -67,7 +67,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CTU LOGO.jpg" />
     <Content Include="login.aspx" />
     <Content Include="Student.aspx" />
     <Content Include="Teacher.aspx" />

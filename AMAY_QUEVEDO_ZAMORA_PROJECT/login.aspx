@@ -24,7 +24,7 @@
             height: 539px;
         }
         .ctu-logo {
-            width: 100%; /* Spans the width of the card */
+            width: 150px;
             height: auto;
             margin-bottom: 20px;
         }
@@ -62,12 +62,10 @@
 <body>
     <form id="form1" runat="server">
         <div class="login-card">
-            <asp:Image ID="imgLogo" runat="server" 
-                ImageUrl="~/CTU LOGO.jpg" 
-                CssClass="ctu-logo" 
-                AlternateText="CTU Argao Logo" />
 
-            <h2 style="color: #1a3a5c; margin-bottom: 25px;">Campus Announcement</h2>
+            <img src="" alt="CTU Logo" class="ctu-logo" />
+
+            <h2 style="color: #1a3a5c; margin-bottom: 25px;">LOG IN</h2>
 
             <div class="input-group">
                 <asp:Label ID="Label1" runat="server" Text="Role:"></asp:Label>
