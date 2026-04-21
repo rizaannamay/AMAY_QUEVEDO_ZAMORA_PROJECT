@@ -22,24 +22,28 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--bg); color: var(--text-main); }
+        body { background-color: lightblue; color: var(--text-main); }
 
         /* --- HEADER --- */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(10px);
-            height: 56px; display: flex; align-items: center;
-            justify-content: space-between; padding: 0 16px; position: fixed;
-            top: 0; left: 0; right: 0; z-index: 1000; border-bottom: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
-        }
-        .logo { font-size: 20px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .search-box { 
-            background: #f0f2f5; border-radius: 20px; padding: 8px 16px; display: flex; align-items: center; 
-            width: 300px; transition: var(--transition); border: 1px solid transparent;
-        }
-        .search-box:focus-within { white; border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary-light); width: 350px; }
-        .search-box input { border: none; background: transparent; outline: none; margin-left: 8px; width: 100%; font-size: 14px; }
+         .navbar {
+         background: white;
+         height: 56px;
+         display: flex;
+         align-items: center;
+         justify-content: space-between;
+         padding: 0 16px;
+         position: fixed;
+         top: 0; left: 0; right: 0;
+         z-index: 1000;
+         box-shadow: var(--shadow-sm);
+     }
+
+     .logo { 
+         font-size: 24px; 
+         font-weight: 800; 
+         color: var(--primary); 
+         letter-spacing: -1px;
+     }
 
         /* --- LAYOUT --- */
         .wrapper {
@@ -100,7 +104,7 @@
             </div>
             <div class="search-box">
                 <i class="fas fa-search" style="color:var(--text-muted)"></i>
-                <asp:TextBox ID="txtSearch" runat="server" placeholder="Search Announcements..."></asp:TextBox>
+                <asp:TextBox ID="txtSearch" runat="server" placeholder="Search Announcements..." BorderStyle="None"></asp:TextBox>
             </div>
             <div style="display:flex; gap:12px;">
                 <div class="avatar-circle" style="width:36px; height:36px; background:#e4e6eb; color:black;"><i class="fas fa-bell"></i></div>
