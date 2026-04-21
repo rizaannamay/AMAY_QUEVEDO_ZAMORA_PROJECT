@@ -534,7 +534,7 @@
                 <i class="fas fa-newspaper"></i>
             </div>
             <div class="empty-title">No announcements yet</div>
-            <div class="empty-subtitle">Be the first to post an announcement. Click "What's on your mind?" above to share campus news, events, or updates.</div>
+            
         </div>
     </div>
 

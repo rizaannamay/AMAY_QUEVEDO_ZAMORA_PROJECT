@@ -20,7 +20,8 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
-            width: 450px;
+            width: 564px;
+            height: 539px;
         }
         .ctu-logo {
             width: 100%; /* Spans the width of the card */
@@ -67,6 +68,15 @@
                 AlternateText="CTU Argao Logo" />
 
             <h2 style="color: #1a3a5c; margin-bottom: 25px;">Campus Announcement</h2>
+
+            <div class="input-group">
+                <asp:Label ID="Label1" runat="server" Text="Role:"></asp:Label>
+                <asp:DropDownList ID="txtRole" runat="server" CssClass="input-field">
+                    <asp:ListItem Text="Select Role" Value="" />
+                    <asp:ListItem Text="Admin" Value="Admin" />
+                    <asp:ListItem Text="Student" Value="Student" />
+                </asp:DropDownList>
+            </div>
 
             <div class="input-group">
                 <asp:Label ID="Label3" runat="server" Text="Username:"></asp:Label>
