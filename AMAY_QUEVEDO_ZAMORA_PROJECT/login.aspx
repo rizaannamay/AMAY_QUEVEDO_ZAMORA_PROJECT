@@ -3,93 +3,204 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>CTU Login</title>
+    <title>Campus Connect - Login</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
+            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        .login-container {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        /* Logo */
+        .neon-logo {
             text-align: center;
-            width: 564px;
-            height: 539px;
+            margin-bottom: 40px;
         }
-        .ctu-logo {
-            width: 150px;
+
+        .neon-logo img {
+            width: 90px;
             height: auto;
-            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 12px rgba(0,100,200,0.2));
         }
+
+        .neon-logo h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        .neon-logo p {
+            color: #5a6e7c;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        /* Card */
+        .neon-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 45px 40px;
+            border: 1px solid rgba(26,58,92,0.1);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .card-header h2 {
+            color: #1a3a5c;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .card-header span {
+            color: #7a8e9e;
+            font-size: 14px;
+        }
+
         .input-group {
-            margin-bottom: 15px;
-            text-align: left;
+            margin-bottom: 22px;
         }
+
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #1a3a5c;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
         }
+
         .input-field {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1a2a3a;
+            transition: all 0.2s;
             box-sizing: border-box;
+            font-family: inherit;
         }
+
+        .input-field option {
+            background: #ffffff;
+            color: #1a2a3a;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #2c5a7a;
+            box-shadow: 0 0 0 3px rgba(44,90,122,0.1);
+        }
+
+        .input-field::placeholder {
+            color: #b0c4de;
+        }
+
         .btn-login {
-            background-color: #1a3a5c;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
             color: white;
             border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 12px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        .btn-login:hover { background-color: #132a42; }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26,58,92,0.2);
+            background: linear-gradient(135deg, #0f2a40, #1a4a6a);
+        }
+
+        #lblError {
+            color: #dc2626;
+            font-size: 12px;
+            display: block;
+            margin: 12px 0;
+            padding: 10px;
+            background: #fef2f2;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 11px;
+            color: #8a9bb0;
+        }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div class="login-card">
-
-            <img src="" alt="CTU Logo" class="ctu-logo" />
-
-            <h2 style="color: #1a3a5c; margin-bottom: 25px;">LOG IN</h2>
-
-            <div class="input-group">
-                <asp:Label ID="Label1" runat="server" Text="Role:"></asp:Label>
-                <asp:DropDownList ID="txtRole" runat="server" CssClass="input-field">
-                    <asp:ListItem Text="Select Role" Value="" />
-                    <asp:ListItem Text="Admin" Value="Admin" />
-                    <asp:ListItem Text="Student" Value="Student" />
-                </asp:DropDownList>
-            </div>
-
-            <div class="input-group">
-                <asp:Label ID="Label3" runat="server" Text="Username:"></asp:Label>
-                <asp:TextBox ID="txtUsername" runat="server" CssClass="input-field"></asp:TextBox>
-            </div>
-
-            <div class="input-group">
-                <asp:Label ID="Label4" runat="server" Text="Password:"></asp:Label>
-                <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" TextMode="Password"></asp:TextBox>
-            </div>
-
-            <asp:Label ID="lblError" runat="server" style="color: #FF0000; font-style: italic; display: block; margin-bottom: 10px;"></asp:Label>
-
-            <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Log In" CssClass="btn-login" />
+    <div class="login-container">
+        <div class="neon-logo">
+            <img src="ctu-logo.png" alt="CTU Logo" />
+            <h1>CAMPUS CONNECT</h1>
+            <p>Cebu Technological University</p>
         </div>
-    </form>
+
+        <form id="form1" runat="server">
+            <div class="neon-card">
+                <div class="card-header">
+                    <h2>Log In</h2>
+                    <span>Access announcement portal</span>
+                </div>
+
+                <div class="input-group">
+                    <asp:Label ID="Label1" runat="server" Text="Role"></asp:Label>
+                    <asp:DropDownList ID="txtRole" runat="server" CssClass="input-field">
+                        <asp:ListItem Text="Select Role" Value="" />
+                        <asp:ListItem Text="Student" Value="Student" />
+                        <asp:ListItem Text="Admin" Value="Admin" />
+                    </asp:DropDownList>
+                </div>
+
+                <div class="input-group">
+                    <asp:Label ID="Label3" runat="server" Text="Username"></asp:Label>
+                    <asp:TextBox ID="txtUsername" runat="server" CssClass="input-field" placeholder="Enter username"></asp:TextBox>
+                </div>
+
+                <div class="input-group">
+                    <asp:Label ID="Label4" runat="server" Text="Password"></asp:Label>
+                    <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" TextMode="Password" placeholder="Enter password"></asp:TextBox>
+                </div>
+
+                <asp:Label ID="lblError" runat="server"></asp:Label>
+
+                <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Log In" CssClass="btn-login" />
+
+                <div class="footer">
+                    Students • Teachers • Admin
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
