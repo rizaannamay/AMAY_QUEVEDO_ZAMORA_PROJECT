@@ -516,6 +516,17 @@
     <!-- MAIN FEED -->
     <div class="main-feed">
         <!-- Create Post Card -->
+        <div class="create-card">
+            <div class="create-top">
+                <div class="avatar-md"></div>
+                <div class="dummy-post-input" id="postTrigger">What's on your mind, Admin?</div>
+            </div>
+            <div class="post-actions">
+                <div class="post-action-btn" id="photoVideoBtn"><i class="fas fa-image" style="color:#45bd62;"></i> Photos/Video</div>
+                <div class="post-action-btn" id="eventBtn"><i class="fas fa-calendar-alt" style="color:#1877f2;"></i> Event</div>
+                <div class="post-action-btn" id="pollBtn"><i class="fas fa-poll" style="color:#f3425f;"></i> Poll</div>
+            </div>
+        </div>
 
         <!-- Filter Chips -->
         <div class="filter-row">
@@ -534,7 +545,7 @@
                 <i class="fas fa-newspaper"></i>
             </div>
             <div class="empty-title">No announcements yet</div>
-            
+            <div class="empty-subtitle">Be the first to post an announcement. Click "What's on your mind?" above to share campus news, events, or updates.</div>
         </div>
     </div>
 

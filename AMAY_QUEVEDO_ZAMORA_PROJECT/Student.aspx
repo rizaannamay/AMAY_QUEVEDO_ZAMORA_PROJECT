@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Campus Announcement Portal - Dynamic Posts</title>
+    <titleCampus Announcement Portal - Dynamic Posts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -488,8 +488,6 @@
     </div>
     <div class="header-right">
         <div class="header-icon"><i class="fas fa-user-friends"></i></div>
-        <div class="header-icon"><i class="fas fa-bell"></i></div>
-        <div class="avatar-sm"></div>
     </div>
 </div>
 
@@ -498,7 +496,7 @@
     <div class="left-sidebar">
         <div class="sidebar-card">
             <div class="sidebar-item active" id="navHome">
-                <i class="fas fa-newspaper"></i> Announcement Board
+                Category&nbsp;
             </div>
             <div class="sidebar-item" id="navPinned">
                 <i class="fas fa-thumbtack"></i> Pinned Announcements
@@ -512,29 +510,22 @@
             </div>
         </div>
     </div>
-
-    <!-- MAIN FEED -->
     <div class="main-feed">
-        <!-- Create Post Card -->
-
-        <!-- Filter Chips -->
         <div class="filter-row">
-            <div class="filter-chip active" data-filter="all">All</div>
-            <div class="filter-chip" data-filter="events">Events</div>
-            <div class="filter-chip" data-filter="exams">Exams</div>
-            <div class="filter-chip" data-filter="suspensions">Suspensions</div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Announcement Board&nbsp;
         </div>
 
         <!-- Posts Container -->
-        <div id="postsContainer"></div>
+        <div id="postsContainer">
+        </div>
 
         <!-- Empty State (shown when no posts) -->
         <div id="emptyState" class="empty-state">
             <div class="empty-icon">
                 <i class="fas fa-newspaper"></i>
             </div>
-            <div class="empty-title">No announcements yet</div>
-            
+            <div class="empty-title">
+                No announcements yet</div>
         </div>
     </div>
 
