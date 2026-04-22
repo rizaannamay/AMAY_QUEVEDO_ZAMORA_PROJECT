@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Create Account | AMAY QUEVEDO ZAMORA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Connect - Create Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* RESET & BASE - only design/format changes, no alterations to control IDs or labels text */
         * {
             margin: 0;
             padding: 0;
@@ -11,462 +15,335 @@
         }
 
         body {
-            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #2e1065 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 24px;
-            margin: 0;
+            padding: 20px;
         }
 
-        /* modern card container - just format enhancement */
-        .modern-card {
-            background: rgba(255, 255, 255, 0.97);
-            backdrop-filter: blur(0px);
-            border-radius: 2rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 8px 18px rgba(0, 0, 0, 0.1);
+        .signup-container {
             width: 100%;
-            max-width: 560px;
-            transition: all 0.2s ease;
-            overflow: hidden;
+            max-width: 500px;
         }
 
-        /* header decoration - keeps original labels untouched but adds visual style */
-        .form-header-styling {
-            background: linear-gradient(98deg, #4f46e5, #7c3aed, #a855f7);
-            padding: 1.8rem 2rem;
+        .logo {
             text-align: center;
+            margin-bottom: 30px;
         }
 
-        .form-header-styling h1 {
-            color: white;
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-            margin: 0;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        .logo img {
+            width: 80px;
+            height: auto;
+            filter: drop-shadow(0 4px 12px rgba(0,100,200,0.2));
         }
 
-        .form-header-styling p {
-            color: rgba(255,255,240,0.9);
-            font-size: 0.9rem;
-            margin-top: 8px;
-        }
-
-        /* content area padding */
-        .form-content-padding {
-            padding: 2rem 2rem 2rem 2rem;
-        }
-
-        /* field groups - improved spacing & alignment, but keeping original labels and controls */
-        .field-group {
-            margin-bottom: 1.5rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* label row to preserve original label controls but make them look consistent */
-        .label-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-
-        /* original asp:Label elements get this style automatically via their parent context */
-        /* but we keep them exactly as they are, just enhance spacing */
-        
-        /* all textboxes, dropdowns receive modern design (without changing IDs) */
-        .modern-input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 18px;
-            background-color: #fefefe;
-            transition: all 0.2s;
-            font-family: inherit;
-            outline: none;
-        }
-
-        .modern-input:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-            background-color: #ffffff;
-        }
-
-        /* dropdown styling */
-        select.modern-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-            cursor: pointer;
-        }
-
-        /* original button remains, just redesign appearance */
-        .btn-modern {
-            background: linear-gradient(100deg, #4f46e5, #7c3aed);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 40px;
-            width: 100%;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin: 1rem 0 1.2rem 0;
-            letter-spacing: 0.3px;
-            font-family: inherit;
-            box-shadow: 0 8px 14px -6px rgba(79, 70, 229, 0.4);
-        }
-
-        .btn-modern:hover {
-            background: linear-gradient(100deg, #4338ca, #6d28d9);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -8px rgba(79, 70, 229, 0.5);
-        }
-
-        /* footer / login redirect */
-        .footer-redirect {
-            text-align: center;
-            padding-top: 1rem;
-            margin-top: 0.5rem;
-            border-top: 1px solid #edf2f7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .login-link-custom {
-            color: #6d28d9;
-            font-weight: 700;
-            text-decoration: none;
-            border-bottom: 1.5px dashed #a78bfa;
-            transition: all 0.2s;
-            cursor: pointer;
-            background: transparent;
-            font-size: 0.95rem;
-        }
-
-        .login-link-custom:hover {
-            color: #4c1d95;
-            border-bottom-color: #4c1d95;
-        }
-
-        /* preserve original labels but improve spacing & font weight */
-        asp\:Label, .original-label-style {
-            font-weight: 600;
-            color: #1f2937;
-            font-size: 0.9rem;
-            margin-right: 10px;
-        }
-
-        /* fix for original label alignment: make them look consistent */
-        .label-wrapper {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-
-        /* each control row - we want to wrap original controls but keep exact IDs */
-        .control-row {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-        /* special handling for the inline "role:" text that appears before dropdown (original plain text) */
-        .role-plain-text {
-            font-weight: 600;
-            color: #1f2937;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        /* ensure drop-down list gets modern style */
-        select#DropDownList1 {
-            width: 100%;
-        }
-
-        /* all textboxes and dropdown via class also IDs remain untouched */
-        input[type="text"], input[type="password"], input[type="email"], select {
-            width: 100%;
-        }
-
-        /* maintain responsive design */
-        @media (max-width: 550px) {
-            .form-content-padding {
-                padding: 1.5rem;
-            }
-            .form-header-styling h1 {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* small spacing adjustments for br tags? we keep them but design overrides natural flow */
-        .spacer-clean {
-            line-height: normal;
-        }
-        
-        /* ensure original button text unchanged */
-        #Button1 {
-            background: linear-gradient(100deg, #4f46e5, #7c3aed);
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 40px;
-            width: 100%;
-            cursor: pointer;
-            transition: all 0.2s;
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
             margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo p {
+            color: #5a6e7c;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .signup-card {
+            background: white;
+            border-radius: 24px;
+            padding: 40px 35px;
+            border: 1px solid rgba(26,58,92,0.1);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card-header h2 {
+            color: #1a3a5c;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .card-header span {
+            color: #7a8e9e;
+            font-size: 14px;
+        }
+
+        .input-group {
             margin-bottom: 20px;
-            font-family: inherit;
         }
-        
-        #Button1:hover {
-            background: linear-gradient(100deg, #4338ca, #6d28d9);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 18px -6px rgba(79, 70, 229, 0.5);
-        }
-        
-        /* all original labels get consistent styling */
-        #Label2, #Label3, #Label4, #Label5, #Label6, #Label7 {
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: #1e293b;
-            font-size: 0.9rem;
-            display: inline-block;
+            color: #2c3e50;
+            font-size: 13px;
         }
-        
-        /* wrap inputs nicely */
-        .input-wrapper {
-            margin-top: 4px;
-            width: 100%;
+
+        .input-group label i {
+            margin-right: 8px;
+            color: #1a3a5c;
+            width: 16px;
         }
-        
-        /* design for textboxes: txtEmail, txtUsername, txtPassword, txtConfirmPassword */
-        #txtEmail, #txtUsername, #txtPassword, #txtConfirmPassword {
+
+        .input-field {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 18px;
-            background: #fafcff;
-            transition: 0.2s;
-            font-family: inherit;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1a2a3a;
+            transition: all 0.2s;
             box-sizing: border-box;
+            font-family: inherit;
         }
-        
-        #txtEmail:focus, #txtUsername:focus, #txtPassword:focus, #txtConfirmPassword:focus, #DropDownList1:focus {
-            border-color: #8b5cf6;
+
+        .input-field:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+            border-color: #2c5a7a;
+            box-shadow: 0 0 0 3px rgba(44,90,122,0.1);
             background: white;
         }
-        
-        #DropDownList1 {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 18px;
-            background: #fafcff;
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
+
+        .input-field::placeholder {
+            color: #b0c4de;
         }
-        
-        /* organize sections: each field group with proper spacing */
-        .form-group {
-            margin-bottom: 1.4rem;
+
+        .role-group {
+            margin-bottom: 20px;
         }
-        
-        .inline-label-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        
-        /* keep original line breaks but modern spacing */
-        br {
-            display: none;  /* removing original <br> tags to avoid extra gaps, but we'll add spacing via CSS margin */
-        }
-        
-        /* we'll keep the exact original elements, just override layout by making form display block */
-        #form1 {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* original labels and text appear inline but we restructure via grid/flex but keep same hierarchy */
-        /* to avoid breaking original functionality we do not reorder server controls, just wrap them elegantly */
-        
-        /* redesign using css grid to wrap each field, but keep original order */
-        .design-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* each original block (label + control) will be wrapped with div for spacing but not removing IDs */
-        .field-card {
-            margin-bottom: 1.5rem;
-        }
-        
-        /* role plain text styling - "role:" appears as plain text before dropdown, we preserve exactly */
-        .role-static-text {
-            font-weight: 600;
-            color: #1f2937;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
+
+        .role-group label {
             display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
         }
-        
-        /* login redirect link: keep original label7 text but add clickable link after */
-        .redirect-action {
-            display: inline-flex;
+
+        .role-options {
+            display: flex;
+            gap: 25px;
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid #dce4ec;
+        }
+
+        .role-option {
+            display: flex;
             align-items: center;
-            gap: 5px;
-            margin-left: 4px;
+            gap: 8px;
+            cursor: pointer;
         }
-        
-        /* ensure the original Label7 is visible and not altered */
-        #Label7 {
-            margin-right: 4px;
+
+        .role-option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #1a3a5c;
         }
-        
-        /* additional modern micro-interactions */
-        .attribution-note {
-            font-size: 0.7rem;
+
+        .role-option span {
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26,58,92,0.2);
+            background: linear-gradient(135deg, #0f2a40, #1a4a6a);
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 13px;
+            display: block;
+            margin: 12px 0;
+            padding: 12px;
+            background: #fef2f2;
+            border-radius: 10px;
             text-align: center;
-            color: #94a3b8;
-            margin-top: 1rem;
-            padding-top: 0.5rem;
+            border-left: 3px solid #dc2626;
+        }
+
+        .success-message {
+            color: #16a34a;
+            font-size: 13px;
+            display: block;
+            margin: 12px 0;
+            padding: 12px;
+            background: #f0fdf4;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 3px solid #16a34a;
+        }
+
+        .password-requirements {
+            font-size: 11px;
+            color: #8a9bb0;
+            margin-top: 6px;
+            padding-left: 5px;
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .footer-links a {
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links p {
+            color: #8a9bb0;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 550px) {
+            .signup-card {
+                padding: 30px 25px;
+            }
+            .role-options {
+                flex-direction: column;
+                gap: 12px;
+            }
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        -->
-        <div class="modern-card">
-            <div class="form-header-styling">
-                <h1>✨ Welcome ✨</h1>
-                <p>Join our community today</p>
+        <div class="signup-container">
+            <div class="logo">
+                <img src="ctu-logo.png" alt="CTU Logo" />
+                <h1>CAMPUS CONNECT</h1>
+                <p>Cebu Technological University</p>
             </div>
-            <div class="form-content-padding">
-                <div class="field-card">
-                    <asp:Label ID="Label2" runat="server" Text="Create Account" style="font-size: 1.6rem; font-weight: 800; background: linear-gradient(135deg, #4f46e5, #c084fc); -webkit-background-clip: text; background-clip: text; color: transparent; display: block; text-align: center; margin-bottom: 0.75rem;"></asp:Label>
+
+            <div class="signup-card">
+                <div class="card-header">
+                    <h2>Create Account</h2>
+                    <span>Join the Campus Connect community</span>
                 </div>
-                
-                <!-- email field: Label3 + txtEmail -->
-                <div class="field-card">
-                    <div class="inline-label-row">
-                        <asp:Label ID="Label3" runat="server" Text="email"></asp:Label>
-                    </div>
-                    <div class="input-wrapper">
-                        <asp:TextBox ID="txtEmail" runat="server"></asp:TextBox>
-                    </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-user-circle"></i> Full Name</label>
+                    <asp:TextBox ID="txtFullName" runat="server" CssClass="input-field" placeholder="Enter your full name"></asp:TextBox>
                 </div>
-                
-                <!-- role: plain text "role:" and DropDownList1 (unchanged) -->
-                <div class="field-card">
-                    <div class="role-static-text">role:</div>
-                    <asp:DropDownList ID="DropDownList1" runat="server">
-                        <asp:ListItem>Student</asp:ListItem>
-                        <asp:ListItem>Admin</asp:ListItem>
-                    </asp:DropDownList>
+
+                <div class="input-group">
+                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                    <asp:TextBox ID="txtEmail" runat="server" CssClass="input-field" placeholder="Enter your email address" TextMode="Email"></asp:TextBox>
                 </div>
-                
-                <!-- Username field: Label4 + txtUsername -->
-                <div class="field-card">
-                    <div class="inline-label-row">
-                        <asp:Label ID="Label4" runat="server" Text="Username"></asp:Label>
-                    </div>
-                    <div class="input-wrapper">
-                        <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox>
+
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Username</label>
+                    <asp:TextBox ID="txtUsername" runat="server" CssClass="input-field" placeholder="Choose a username"></asp:TextBox>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" placeholder="Create a password" TextMode="Password"></asp:TextBox>
+                    <div class="password-requirements" id="passwordReq">
+                        <i class="fas fa-info-circle"></i> Password must be at least 6 characters
                     </div>
                 </div>
-                
-                <!-- password field: Label5 + txtPassword -->
-                <div class="field-card">
-                    <div class="inline-label-row">
-                        <asp:Label ID="Label5" runat="server" Text="password"></asp:Label>
-                    </div>
-                    <div class="input-wrapper">
-                        <asp:TextBox ID="txtPassword" runat="server"></asp:TextBox>
+
+                <div class="input-group">
+                    <label><i class="fas fa-check-circle"></i> Confirm Password</label>
+                    <asp:TextBox ID="txtConfirmPassword" runat="server" CssClass="input-field" placeholder="Confirm your password" TextMode="Password"></asp:TextBox>
+                </div>
+
+                <div class="role-group">
+                    <label><i class="fas fa-users"></i> I am a</label>
+                    <div class="role-options">
+                        <label class="role-option">
+                            <asp:RadioButton ID="rbStudent" runat="server" GroupName="Role" Checked="true" />
+                            <span>Student</span>
+                        </label>
+                        <label class="role-option">
+                            <asp:RadioButton ID="rbAdmin" runat="server" GroupName="Role" />
+                            <span>Admin</span>
+                        </label>
                     </div>
                 </div>
-                
-                <!-- confirm password field: Label6 + txtConfirmPassword (original label text "comfirm password" - typo preserved exactly) -->
-                <div class="field-card">
-                    <div class="inline-label-row">
-                        <asp:Label ID="Label6" runat="server" Text="comfirm password"></asp:Label>
-                    </div>
-                    <div class="input-wrapper">
-                        <asp:TextBox ID="txtConfirmPassword" runat="server"></asp:TextBox>
-                    </div>
+
+                <asp:Label ID="lblMessage" runat="server" Visible="false"></asp:Label>
+
+                <asp:Button ID="btnSignUp" runat="server" Text="Create Account" CssClass="btn-signup" OnClick="btnSignUp_Click" />
+
+                <div class="footer-links">
+                    <p>Already have an account?</p>
+                    <a href="login.aspx">Log In Here</a>
                 </div>
-                
-                <!-- Button1 with original text "Sign In" unchanged -->
-                <div class="field-card" style="margin-top: 0.5rem;">
-                    <asp:Button ID="Button1" runat="server" Text="Sign In" />
-                </div>
-                
-                <!-- footer area: Label7 text "Already have account? " plus a functional login link (doesn't alter Label7) -->
-                <div class="footer-redirect">
-                    <asp:Label ID="Label7" runat="server" Text="Already have account? "></asp:Label>
-                    <a id="loginRedirectBtn" class="login-link-custom">Log in →</a>
-                </div>
-                <!-- original comment from code: "// make the user go to log in form" is implemented below via JS, design preserved -->
             </div>
         </div>
-        
-        <!-- JavaScript to handle redirection to login form (preserves original requirement without modifying server controls) -->
-        <script type="text/javascript">
-            document.addEventListener("DOMContentLoaded", function () {
-                var loginLink = document.getElementById("loginRedirectBtn");
-                if (loginLink) {
-                    loginLink.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        // redirect to login page (adjust path to your login form, e.g., "login.aspx" or "signin.aspx?mode=login")
-                        // as per requirement "make the user go to log in form"
-                        window.location.href = "login.aspx";
-                    });
-                }
+    </form>
 
-                // Optional: add modern client-side hint for password matching but does not change any server behavior
-                var pwd = document.getElementById("<%= txtPassword.ClientID %>");
-                var confirmPwd = document.getElementById("<%= txtConfirmPassword.ClientID %>");
-                if (pwd && confirmPwd) {
-                    function checkMatch() {
-                        if (pwd.value !== confirmPwd.value && confirmPwd.value.length > 0) {
-                            confirmPwd.style.borderColor = "#f87171";
-                            confirmPwd.style.boxShadow = "0 0 0 2px rgba(248,113,113,0.2)";
-                        } else if (confirmPwd.value.length > 0) {
-                            confirmPwd.style.borderColor = "#4ade80";
-                            confirmPwd.style.boxShadow = "0 0 0 2px rgba(74,222,128,0.2)";
-                        } else {
-                            confirmPwd.style.borderColor = "#e2e8f0";
-                            confirmPwd.style.boxShadow = "none";
-                        }
-                    }
-                    pwd.addEventListener("keyup", checkMatch);
-                    confirmPwd.addEventListener("keyup", checkMatch);
+    <script>
+        var passwordField = document.getElementById('<%= txtPassword.ClientID %>');
+        var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+        var passwordReq = document.getElementById('passwordReq');
+
+        if (passwordField) {
+            passwordField.addEventListener('keyup', function () {
+                if (this.value.length >= 6) {
+                    passwordReq.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
+                    passwordReq.style.color = '#16a34a';
+                } else {
+                    passwordReq.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
+                    passwordReq.style.color = '#8a9bb0';
                 }
             });
-        </script>
-    </form>
+        }
+
+        if (confirmField) {
+            confirmField.addEventListener('keyup', function () {
+                if (this.value === passwordField.value && passwordField.value.length >= 6) {
+                    this.style.borderColor = '#16a34a';
+                } else {
+                    this.style.borderColor = '#dce4ec';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

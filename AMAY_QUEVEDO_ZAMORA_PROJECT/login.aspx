@@ -153,8 +153,24 @@
         .footer {
             text-align: center;
             margin-top: 25px;
-            font-size: 11px;
+            font-size: 12px;
             color: #8a9bb0;
+        }
+
+        .footer a {
+            color: #1a3a5c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            margin: 15px 0 10px;
+            font-size: 12px;
+            color: #b0c4de;
         }
     </style>
 </head>
@@ -196,7 +212,8 @@
                 <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Log In" CssClass="btn-login" />
 
                 <div class="footer">
-                    Students • Teachers • Admin
+                    <div class="divider">────────── OR ──────────</div>
+                    <p>Don't have an account? <a href="signin.aspx">Sign Up Here</a></p>
                 </div>
             </div>
         </form>
