@@ -71,6 +71,7 @@
     <Content Include="ctu-logo.png" />
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
+    <Content Include="signin.aspx" />
     <Content Include="Student.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
@@ -84,6 +85,13 @@
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="signin.aspx.cs">
+      <DependentUpon>signin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="signin.aspx.designer.cs">
+      <DependentUpon>signin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Student.aspx.cs">
       <DependentUpon>Student.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

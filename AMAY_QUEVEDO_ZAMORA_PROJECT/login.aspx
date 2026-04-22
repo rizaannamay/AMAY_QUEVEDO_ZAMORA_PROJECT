@@ -955,7 +955,7 @@
         }
 
         // Close notification dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             var bell = document.querySelector('.notification-bell');
             var dropdown = document.getElementById('notificationDropdown');
             if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
@@ -974,15 +974,15 @@
         function filterCategory(category) {
             var announcements = document.querySelectorAll('.announcement-card');
             var filterLabel = document.getElementById('activeFilterLabel');
-            
-            announcements.forEach(function(ann) {
+
+            announcements.forEach(function (ann) {
                 if (category === 'All' || ann.getAttribute('data-category') === category) {
                     ann.style.display = 'block';
                 } else {
                     ann.style.display = 'none';
                 }
             });
-            
+
             filterLabel.innerText = category;
             document.getElementById('categoryDropdown').style.display = 'none';
         }
@@ -992,11 +992,11 @@
             var searchTerm = document.getElementById('searchInput').value.toLowerCase();
             var announcements = document.querySelectorAll('.announcement-card');
             var found = false;
-            
-            announcements.forEach(function(ann) {
+
+            announcements.forEach(function (ann) {
                 var title = ann.querySelector('.announcement-title').innerText.toLowerCase();
                 var content = ann.querySelector('.announcement-content').innerText.toLowerCase();
-                
+
                 if (title.includes(searchTerm) || content.includes(searchTerm)) {
                     ann.style.display = 'block';
                     found = true;
@@ -1004,14 +1004,14 @@
                     ann.style.display = 'none';
                 }
             });
-            
+
             if (!found && searchTerm !== '') {
                 alert('No announcements found matching "' + searchTerm + '"');
             }
         }
 
         // Enter key search
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        document.getElementById('searchInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 searchAnnouncements();
             }
@@ -1032,15 +1032,15 @@
         function addComment(btn) {
             var input = btn.parentElement.querySelector('input');
             var commentText = input.value.trim();
-            
+
             if (commentText !== '') {
                 var commentsList = btn.parentElement.parentElement.querySelector('.comments-list');
                 var noComments = commentsList.querySelector('.no-comments');
-                
+
                 if (noComments) {
                     noComments.remove();
                 }
-                
+
                 var newComment = document.createElement('div');
                 newComment.className = 'comment';
                 newComment.innerHTML = '<span class="comment-author">You:</span> ' + commentText;
@@ -1065,7 +1065,7 @@
 
         function markAllRead() {
             var notifications = document.querySelectorAll('.notification-item.unread');
-            notifications.forEach(function(notif) {
+            notifications.forEach(function (notif) {
                 notif.classList.remove('unread');
                 var dot = notif.querySelector('.notification-dot');
                 if (dot) dot.remove();
