@@ -31,7 +31,7 @@
             align-items: center;
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: 1px solid rgba(26,58,92,0.1);
+            border: 1.5px solid rgba(26,58,92,0.25);
         }
 
         .logo {
@@ -64,7 +64,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            border: 1px solid #dce4ec;
+            border: 1.5px solid rgba(26,58,92,0.2);
         }
 
         .search-box input {
@@ -100,6 +100,35 @@
             box-shadow: 0 5px 15px rgba(26,58,92,0.2);
         }
 
+        /* Post Announcement Button - Same as search button */
+        .post-announcement-btn {
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            border: none;
+            border-radius: 30px;
+            padding: 14px 28px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .post-announcement-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26,58,92,0.3);
+            background: linear-gradient(135deg, #234f78, #3a6f94);
+        }
+
+        .post-announcement-btn:active {
+            transform: translateY(0);
+        }
+
         /* Notification Bell */
         .notification-bell {
             position: relative;
@@ -111,7 +140,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #dce4ec;
+            border: 1.5px solid rgba(26,58,92,0.2);
             transition: all 0.3s;
         }
 
@@ -139,13 +168,13 @@
         }
 
         .user-info {
-         display: flex;
-         align-items: center;
-         gap: 12px;
-         background: #f8fafc;
-         padding: 6px 18px;
-         border-radius: 40px;
-         border: 1.5px solid rgba(26,58,92,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1.5px solid rgba(26,58,92,0.2);
         }
 
         .avatar {
@@ -185,7 +214,7 @@
         .card {
             background: white;
             border-radius: 24px;
-            border: 1px solid rgba(26,58,92,0.1);
+            border: 1.5px solid rgba(26,58,92,0.25);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             overflow: hidden;
         }
@@ -378,7 +407,7 @@
             background: white;
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(26,58,92,0.08);
+            border: 1.5px solid rgba(26,58,92,0.25);
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             overflow: hidden;
@@ -386,7 +415,7 @@
 
         .announcement-card:hover {
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-color: rgba(26,58,92,0.2);
+            border-color: rgba(26,58,92,0.35);
         }
 
         /* Post Header */
@@ -803,13 +832,13 @@
             }
         }
 
-        /* Create Post Box Styles */
+        /* Create Post Box Styles (kept for compatibility) */
         .create-post-card {
             background: white;
             border-radius: 24px;
             padding: 18px 22px;
             margin-bottom: 25px;
-            border: 1px solid rgba(26,58,92,0.1);
+            border: 1.5px solid rgba(26,58,92,0.25);
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             transition: all 0.3s;
         }
@@ -874,15 +903,6 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.2s;
-        }
-
-        .create-post-action:hover {
-            background: #f0f2f5;
-            color: #1a3a5c;
-        }
-
-        .create-post-action i {
-            font-size: 16px;
         }
     </style>
 </head>
@@ -1007,22 +1027,10 @@
 
             <!-- MAIN CONTENT - Announcement Board -->
             <main>
-                <!-- CREATE POST DESIGN ADDED ABOVE ANNOUNCEMENT BOARD -->
-                <div class="create-post-card">
-                    <div class="create-post-header">
-                        <div class="create-post-avatar">
-                            <i class="fas fa-user-edit"></i>
-                        </div>
-                        <div class="create-post-input" onclick="openCreatePostModal()">
-                           Want to post an announcement?
-                        </div>
-                    </div>
-                    <div class="create-post-actions">
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-camera"></i> Photo</button>
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-video"></i> Video</button>
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-calendar-alt"></i> Event</button>
-                    </div>
-                </div>
+                <!-- CREATE POST BUTTON - Same blue gradient as search button -->
+                <button class="post-announcement-btn" onclick="openCreatePostModal()">
+                    <i class="fas fa-plus-circle"></i> Want to post an announcement?
+                </button>
 
                 <div class="card">
                     <div class="card-header">
@@ -1341,9 +1349,6 @@
                     noComments.remove();
                 }
 
-                var now = new Date();
-                var formattedDate = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-
                 var newComment = document.createElement('div');
                 newComment.className = 'comment';
                 newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
@@ -1501,15 +1506,19 @@
             if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
                 body.style.background = '#1a1a2e';
                 document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    el.style.background = '#242526';
-                    el.style.color = '#e4e6eb';
+                    if (el) {
+                        el.style.background = '#242526';
+                        el.style.color = '#e4e6eb';
+                    }
                 });
                 showToast('Dark mode enabled');
             } else {
                 body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
                 document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    el.style.background = 'white';
-                    el.style.color = '#1a2a3a';
+                    if (el) {
+                        el.style.background = 'white';
+                        el.style.color = '#1a2a3a';
+                    }
                 });
                 showToast('Light mode enabled');
             }
