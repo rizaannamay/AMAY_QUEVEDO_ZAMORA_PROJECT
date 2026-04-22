@@ -14,12 +14,24 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
-            min-height: 100vh;
-            padding: 20px;
+       body {
+            background-image: url('bg.jpg');
+            background-size: cover;
+            transition: background 0.5s ease-in-out;
+            background-repeat: no-repeat;
+            background-position: center;
         }
+
+        /* Ensure the main container doesn't have a solid color blocking the image */
+        .main-content, .announcement-board {
+            background: transparent !important;
+        }
+
+        /* Glassmorphism effect for your cards so the image peeks through */
+        .card, .announcement-card {
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
         /* Header */
         .header {
@@ -1077,21 +1089,30 @@
             var toggle = item.querySelector('.toggle-switch');
             toggle.classList.toggle('active');
             var body = document.body;
-            
-            if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
-                body.style.background = '#1a1a2e';
-                document.querySelector('.bubbles').style.opacity = '0.3';
-                // Change card backgrounds
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function(el) {
-                    el.style.background = '#242526';
-                    el.style.color = '#e4e6eb';
+
+            if (body.classList.contains('dark-mode')) {
+                // Switch to LIGHT MODE
+                body.classList.remove('dark-mode');
+                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent white
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(255, 255, 255, 0.7)';
+                    el.style.color = '#1a2a3a';
                 });
             } else {
-                body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
-                document.querySelector('.bubbles').style.opacity = '1';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function(el) {
-                    el.style.background = 'white';
-                    el.style.color = '#1a2a3a';
+                // Switch to DARK MODE
+                body.classList.add('dark-mode');
+                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent dark
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(42, 42, 42, 0.7)';
+                    el.style.color = '#e4e6eb';
                 });
             }
         }
