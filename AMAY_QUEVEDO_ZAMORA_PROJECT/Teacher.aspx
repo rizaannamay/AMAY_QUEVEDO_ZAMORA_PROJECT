@@ -15,11 +15,12 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+              background-image: url('wbg.jpg');
+              background-size: cover;
+              transition: background 0.5s ease-in-out;
+              background-repeat: no-repeat;
+              background-position: center;
+          }
 
         /* Header */
         .header {
@@ -918,6 +919,7 @@
         </div>
 
         <!-- Notification Dropdown -->
+
         <div id="notificationDropdown" class="notification-dropdown">
             <div class="notification-header">
                 <span><i class="fas fa-bell"></i> Notifications</span>
@@ -1498,22 +1500,33 @@
             toggle.classList.toggle('active');
             var body = document.body;
 
-            if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
-                body.style.background = '#1a1a2e';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    el.style.background = '#242526';
-                    el.style.color = '#e4e6eb';
-                });
-                showToast('Dark mode enabled');
-            } else {
-                body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    el.style.background = 'white';
+            if (body.classList.contains('dark-mode')) {
+                // Switch to LIGHT MODE
+                body.classList.remove('dark-mode');
+                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent white
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(255, 255, 255, 0.7)';
                     el.style.color = '#1a2a3a';
                 });
-                showToast('Light mode enabled');
+            } else {
+                // Switch to DARK MODE
+                body.classList.add('dark-mode');
+                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent dark
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(42, 42, 42, 0.7)';
+                    el.style.color = '#e4e6eb';
+                });
             }
         }
+
 
         // About Modal
         function openAboutModal() {

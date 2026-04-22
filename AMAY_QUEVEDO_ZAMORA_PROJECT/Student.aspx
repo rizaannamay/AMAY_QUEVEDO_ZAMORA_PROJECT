@@ -14,13 +14,13 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
+            body {
+          background-image: url('wbg.jpg');
+          background-size: cover;
+          transition: background 0.5s ease-in-out;
+          background-repeat: no-repeat;
+          background-position: center;
+      }
         /* Header */
         .header {
             background: white;
@@ -369,20 +369,21 @@
             left: 24px;
         }
 
-        /* Announcement Cards - Social Media Style */
-        .announcement-board {
-            padding: 5px;
-        }
+              /* Announcement Cards */
+          .announcement-board {
+              padding: 5px;
+          }
 
-        .announcement-card {
-            background: white;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(26,58,92,0.08);
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-            overflow: hidden;
-        }
+          .announcement-card {
+              background: white;
+              border-radius: 20px;
+              padding: 22px;
+              margin-bottom: 20px;
+              border: 1px solid rgba(26,58,92,0.08);
+              transition: all 0.3s;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+          }
+
 
         .announcement-card:hover {
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -838,8 +839,10 @@
         <!-- Notification Dropdown -->
         <div id="notificationDropdown" class="notification-dropdown">
             <div class="notification-header">
-                <span><i class="fas fa-bell"></i> Notifications</span>
+                <a href="Notifications.aspx">  
+                <span><i class="fas fa-bell"></i> Notifications</span> </a>
                 <button onclick="markAllRead()">Mark all read</button>
+                    
             </div>
             <div class="notification-list">
                 <div class="notification-item unread" onclick="markRead(this)">
@@ -856,6 +859,11 @@
                     <div class="notification-text">Foundation Week activities posted</div>
                     <div class="notification-time">3 days ago</div>
                 </div>
+                <div class="notification-icon">
+                <a href="Notifications.aspx" style="text-decoration: none; color: inherit;">
+                    
+                 </a>
+            </div>
             </div>
         </div>
 
@@ -1397,20 +1405,30 @@
             toggle.classList.toggle('active');
             var body = document.body;
 
-            if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
-                body.style.background = '#1a1a2e';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function (el) {
-                    el.style.background = '#242526';
-                    el.style.color = '#e4e6eb';
-                });
-                showToast('Dark mode enabled');
-            } else {
-                body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content').forEach(function (el) {
-                    el.style.background = 'white';
+            if (body.classList.contains('dark-mode')) {
+                // Switch to LIGHT MODE
+                body.classList.remove('dark-mode');
+                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent white
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(255, 255, 255, 0.7)';
                     el.style.color = '#1a2a3a';
                 });
-                showToast('Light mode enabled');
+            } else {
+                // Switch to DARK MODE
+                body.classList.add('dark-mode');
+                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent dark
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(42, 42, 42, 0.7)';
+                    el.style.color = '#e4e6eb';
+                });
             }
         }
 

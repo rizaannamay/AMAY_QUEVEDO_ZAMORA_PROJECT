@@ -69,6 +69,8 @@
   <ItemGroup>
     <Content Include="bg.jpg" />
     <Content Include="ctu-logo.png" />
+    <Content Include="Notifications.aspx" />
+    <Content Include="Pinned.aspx" />
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
     <Content Include="signin.aspx" />
@@ -83,6 +85,20 @@
     </Compile>
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications.aspx.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Notifications.aspx.designer.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pinned.aspx.cs">
+      <DependentUpon>Pinned.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pinned.aspx.designer.cs">
+      <DependentUpon>Pinned.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="signin.aspx.cs">
