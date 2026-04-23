@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="bg.jpg" />
     <Content Include="ctu-logo.png" />
+    <Content Include="SearchDashboard.aspx" />
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
     <Content Include="signin.aspx" />
@@ -85,6 +86,13 @@
       <DependentUpon>login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchDashboard.aspx.cs">
+      <DependentUpon>SearchDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchDashboard.aspx.designer.cs">
+      <DependentUpon>SearchDashboard.aspx</DependentUpon>
+    </Compile>
     <Compile Include="signin.aspx.cs">
       <DependentUpon>signin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -116,7 +124,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="photos\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

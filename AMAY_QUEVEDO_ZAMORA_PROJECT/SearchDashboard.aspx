@@ -1,0 +1,635 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CampusConnect | Modern Announcement Dashboard</title>
+    
+    <!-- Tailwind CSS + Font Awesome + Google Fonts + Flatpickr -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <style>
+        * {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        /* Deep blue background */
+        body {
+            background: #0F172A;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated gradient overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.15), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Floating abstract shapes */
+        .floating-shape {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(60px);
+            pointer-events: none;
+            z-index: 0;
+            animation: float 25s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -40px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.9); }
+        }
+        
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #4f46e5, #312e81);
+            top: -150px;
+            right: -150px;
+            opacity: 0.3;
+        }
+        
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #6366f1, #1e3a8a);
+            bottom: -100px;
+            left: -100px;
+            opacity: 0.25;
+            animation-delay: 5s;
+        }
+        
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #818cf8, #4f46e5);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            animation-delay: 10s;
+            filter: blur(80px);
+        }
+        
+        /* Glass morphism components */
+        .glass-nav {
+            background: rgba(15, 25, 55, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-sidebar {
+            background: rgba(15, 25, 55, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero section */
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(79, 70, 229, 0.85));
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E") repeat-x;
+            background-size: 1200px 60px;
+            opacity: 0.5;
+        }
+        
+        /* Announcement cards */
+        .announce-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .announce-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Card banners */
+        .card-banner {
+            background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+            border-radius: 16px;
+            min-width: 100px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .card-banner:hover {
+            transform: scale(1.02);
+        }
+        
+        .banner-exam { background: linear-gradient(135deg, #0f2b5c, #1e4a8a, #3b82f6); }
+        .banner-suspension { background: linear-gradient(135deg, #7c2d12, #b45309, #f59e0b); }
+        .banner-events { background: linear-gradient(135deg, #064e3b, #0d9488, #14b8a6); }
+        .banner-default { background: linear-gradient(135deg, #1e1b4b, #4f46e5, #818cf8); }
+        
+        /* History items */
+        .history-item {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .history-item:hover {
+            background: rgba(99, 102, 241, 0.5);
+            transform: translateX(4px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.6); border-radius: 10px; }
+        
+        /* Input styles */
+        .search-input {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            color: white;
+        }
+        
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+            outline: none;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Filter select */
+        .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .filter-select option {
+            background: #1e3a8a;
+        }
+        
+        /* Action buttons */
+        .action-btn {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .action-btn:hover {
+            color: #6366f1;
+            transform: translateY(-1px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar-hidden-mobile {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s;
+                z-index: 50;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased relative">
+    
+    <form id="form1" runat="server">
+        <!-- Floating abstract shapes -->
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        
+        <!-- Main content wrapper -->
+        <div class="relative z-10">
+            
+            <!-- ========== HEADER / NAVBAR ========== -->
+            <header class="glass-nav sticky top-0 z-40 shadow-2xl">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
+                        
+                        <!-- LEFT: Logo + System Name -->
+                        <div class="flex items-center gap-3 cursor-pointer group">
+                            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
+                                <i class="fas fa-university text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h1 class="font-extrabold text-white text-xl md:text-2xl tracking-tight drop-shadow-lg">CampusConnect</h1>
+                                <p class="text-xs text-indigo-200 font-medium hidden sm:block">Student Portal</p>
+                            </div>
+                        </div>
+                        
+                        <!-- CENTER: Search Bar -->
+                        <div class="flex-1 max-w-md mx-4">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-indigo-300 text-sm"></i>
+                                <asp:TextBox ID="searchInput" runat="server" CssClass="search-input w-full pl-10 pr-4 py-2 rounded-xl" placeholder="Search announcements..."></asp:TextBox>
+                            </div>
+                        </div>
+                        
+                        <!-- RIGHT: Home icon + Notification + User Profile -->
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx" CssClass="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-all">
+                                <i class="fas fa-home text-xl"></i>
+                            </asp:HyperLink>
+                            
+                            <div class="relative">
+                                <button type="button" id="notificationBtn" class="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition">
+                                    <i class="fas fa-bell text-xl"></i>
+                                </button>
+                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">3</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 pl-2 border-l border-white/20">
+                                <div class="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg">
+                                    <i class="fas fa-user-graduate text-sm md:text-base"></i>
+                                </div>
+                                <div class="hidden sm:block">
+                                    <p class="text-sm font-semibold text-white leading-tight drop-shadow">Maria Santos</p>
+                                    <p class="text-xs text-indigo-200 font-medium">Student · BSIT</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+                
+                <!-- HERO SECTION -->
+                <div class="hero-section rounded-2xl mb-8 p-8 md:p-10 text-center shadow-2xl border border-white/20 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <div class="inline-block p-4 bg-white/20 backdrop-blur-md rounded-full mb-5">
+                            <i class="fas fa-megaphone text-4xl md:text-5xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-2xl mb-3">
+                            Stay Updated with Campus Announcements
+                        </h2>
+                        <p class="text-indigo-100 text-base md:text-lg max-w-2xl mx-auto drop-shadow">
+                            Find events, schedules, and important updates from your university community
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- TWO COLUMN LAYOUT -->
+                <div class="flex flex-col lg:flex-row gap-6">
+                    
+                    <!-- LEFT SIDEBAR: Search History -->
+                    <div class="lg:w-72 flex-shrink-0">
+                        <div class="glass-sidebar rounded-2xl p-5 shadow-xl sticky top-24">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex items-center gap-2">
+                                    <i class="fas fa-history text-indigo-300 text-lg"></i>
+                                    <h3 class="font-bold text-white text-base">Search History</h3>
+                                </div>
+                                <button type="button" id="clearHistoryBtn" class="text-xs text-rose-300 hover:text-rose-200 transition px-2 py-1 rounded-lg hover:bg-white/10">
+                                    <i class="fas fa-trash-alt mr-1"></i>Clear
+                                </button>
+                            </div>
+                            <div id="historyList" class="space-y-2 max-h-[400px] overflow-y-auto">
+                                <div class="text-indigo-200/60 text-sm text-center py-4">No searches yet</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- RIGHT CONTENT: Filters + Results -->
+                    <div class="flex-1">
+                        
+                        <!-- Filters Row -->
+                        <div class="glass-card rounded-2xl p-4 mb-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <select id="categoryFilter" class="filter-select px-4 py-2 rounded-xl text-white text-sm cursor-pointer">
+                                    <option value="all">📢 All Announcements</option>
+                                    <option value="Exam Schedule">📅 Exam Schedule</option>
+                                    <option value="Class Suspension">⚠️ Class Suspension</option>
+                                    <option value="Campus Events">🎉 Campus Events</option>
+                                </select>
+                                <input type="text" id="dateFilter" placeholder="📅 Filter by date" class="filter-select px-4 py-2 rounded-xl text-white text-sm cursor-pointer" />
+                                <select id="sortFilter" class="filter-select px-4 py-2 rounded-xl text-white text-sm cursor-pointer">
+                                    <option value="latest">📅 Latest First</option>
+                                    <option value="oldest">📅 Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Results Header -->
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-newspaper text-indigo-300 text-xl"></i>
+                                <h3 class="font-bold text-white text-lg">Announcements</h3>
+                            </div>
+                            <span id="resultCount" class="glass-card px-3 py-1 rounded-full text-white text-xs">0 items</span>
+                        </div>
+                        
+                        <!-- Results Container -->
+                        <div id="resultsContainer" class="space-y-5">
+                            <div class="text-center py-12">
+                                <div class="animate-pulse flex flex-col items-center text-indigo-200">
+                                    <i class="fas fa-spinner fa-spin text-3xl"></i>
+                                    <span class="mt-2">Loading announcements...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Empty State -->
+                        <div id="emptyState" class="glass-card rounded-2xl p-12 text-center hidden">
+                            <i class="fas fa-inbox text-5xl text-indigo-300/50 mb-3"></i>
+                            <p class="text-white/70">No announcements match your criteria</p>
+                            <button type="button" id="resetFiltersBtn" class="mt-3 text-indigo-300 hover:text-white text-sm underline transition">Reset all filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="border-t border-white/10 bg-black/20 backdrop-blur-sm mt-12 py-5 text-center text-xs text-indigo-200/60">
+                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Students to Campus Life
+            </footer>
+        </div>
+    </form>
+
+    <script>
+        // ============================================================
+        // CAMPUSCONNECT DASHBOARD
+        // ============================================================
+
+        // Announcements Database
+        const announcementsDB = [
+            { id: 1, title: "Final Exam Schedule Spring 2026", category: "Exam Schedule", date: "2026-05-10", time: "09:00 AM", professor: "Dr. Reyes", professorAvatar: "👨‍🏫", description: "Final exams will be held from May 15-20, 2026. Please check your exam permits online. Bring school ID and test permit.", bannerText: "EXAM SCHEDULE", bannerType: "exam" },
+            { id: 2, title: "Class Suspension due to Typhoon", category: "Class Suspension", date: "2026-04-25", time: "08:00 PM", professor: "Admin Office", professorAvatar: "🏫", description: "Classes suspended on April 26-27 due to Typhoon. All activities will shift to online learning platforms.", bannerText: "CLASS SUSPENSION", bannerType: "suspension" },
+            { id: 3, title: "University Hackathon 2026", category: "Campus Events", date: "2026-05-20", time: "10:00 AM", professor: "IT Department", professorAvatar: "💻", description: "48-hour coding challenge with exciting prizes. Form teams of 3-4 members. Registration ends May 15.", bannerText: "HACKATHON", bannerType: "events" },
+            { id: 4, title: "Midterm Grade Release", category: "Exam Schedule", date: "2026-04-22", time: "02:00 PM", professor: "Registrar", professorAvatar: "📊", description: "Midterm grades are now available via the student portal. Check your assessment and email your instructors for concerns.", bannerText: "GRADES OUT", bannerType: "exam" },
+            { id: 5, title: "Transport Strike Advisory", category: "Class Suspension", date: "2026-04-28", time: "07:30 AM", professor: "Student Affairs", professorAvatar: "🚌", description: "No face-to-face classes on April 30 due to nationwide transport strike. Asynchronous activities will be provided.", bannerText: "STRIKE DAY", bannerType: "suspension" },
+            { id: 6, title: "Cultural Festival 2026", category: "Campus Events", date: "2026-05-05", time: "09:00 AM", professor: "OSA", professorAvatar: "🎭", description: "Celebration of arts, international food fair, and cultural performances. Free entrance for all students!", bannerText: "CULTURAL FEST", bannerType: "events" },
+            { id: 7, title: "Research Colloquium", category: "Campus Events", date: "2026-05-12", time: "11:00 AM", professor: "Graduate School", professorAvatar: "🔬", description: "Present your research papers and get feedback from panelists. Best paper receives recognition award.", bannerText: "CALL FOR PAPERS", bannerType: "events" }
+        ];
+
+        // DOM Elements
+        const searchInput = document.getElementById('<%= searchInput.ClientID %>');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultCount = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const historyListDiv = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
+
+        // State
+        let currentSearchTerm = '';
+        let currentCategory = 'all';
+        let currentDate = '';
+        let currentSort = 'latest';
+
+        // Search History (localStorage)
+        let searchHistory = JSON.parse(localStorage.getItem('campus_history') || '[]');
+
+        function saveHistory() {
+            localStorage.setItem('campus_history', JSON.stringify(searchHistory.slice(0, 15)));
+            renderHistory();
+        }
+
+        function addToHistory(term) {
+            if (!term.trim()) return;
+            term = term.trim();
+            searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0, 15);
+            saveHistory();
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all search history?')) {
+                searchHistory = [];
+                saveHistory();
+            }
+        }
+
+        function renderHistory() {
+            if (!historyListDiv) return;
+            if (searchHistory.length === 0) {
+                historyListDiv.innerHTML = '<div class="text-indigo-200/60 text-sm text-center py-4">No searches yet</div>';
+                return;
+            }
+            historyListDiv.innerHTML = searchHistory.map(term => `
+                <div class="history-item text-white/80 text-sm flex items-center justify-between group">
+                    <span><i class="fas fa-search text-xs mr-2 opacity-60"></i>${escapeHtml(term)}</span>
+                    <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const term = item.querySelector('span')?.textContent?.replace(/[^a-zA-Z0-9\s]/g, '').trim() || '';
+                    if (term && searchHistory.includes(term)) {
+                        searchInput.value = term;
+                        performSearch();
+                    }
+                });
+            });
+        }
+
+        function getFilteredAnnouncements() {
+            let results = [...announcementsDB];
+
+            if (currentSearchTerm.trim()) {
+                const kw = currentSearchTerm.toLowerCase().trim();
+                results = results.filter(a => a.title.toLowerCase().includes(kw) || a.description.toLowerCase().includes(kw) || a.professor.toLowerCase().includes(kw));
+            }
+            if (currentCategory !== 'all') {
+                results = results.filter(a => a.category === currentCategory);
+            }
+            if (currentDate) {
+                results = results.filter(a => a.date === currentDate);
+            }
+            if (currentSort === 'latest') {
+                results.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } else {
+                results.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+            return results;
+        }
+
+        function getBannerClass(type) {
+            switch (type) {
+                case 'exam': return 'banner-exam';
+                case 'suspension': return 'banner-suspension';
+                case 'events': return 'banner-events';
+                default: return 'banner-default';
+            }
+        }
+
+        function formatDateDisplay(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function (m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function renderResults() {
+            const filtered = getFilteredAnnouncements();
+            const count = filtered.length;
+            resultCount.innerText = `${count} item${count !== 1 ? 's' : ''}`;
+
+            if (count === 0) {
+                resultsContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            resultsContainer.innerHTML = filtered.map(ann => {
+                const bannerClass = getBannerClass(ann.bannerType);
+                const displayDate = formatDateDisplay(ann.date);
+
+                return `
+                    <div class="announce-card rounded-2xl overflow-hidden shadow-xl transition-all">
+                        <div class="p-5">
+                            <div class="flex items-start justify-between gap-4 mb-4">
+                                <div class="flex items-center gap-3 flex-1">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full flex items-center justify-center text-xl shadow-md">
+                                        ${ann.professorAvatar}
+                                    </div>
+                                    <div>
+                                        <p class="font-semibold text-gray-800">${escapeHtml(ann.professor)}</p>
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <i class="far fa-calendar-alt"></i> ${displayDate} at ${ann.time}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-banner ${bannerClass} px-4 py-2 shadow-md hidden sm:block">
+                                    <p class="text-white text-xs font-bold tracking-wide">${ann.bannerText}</p>
+                                </div>
+                            </div>
+                            <h4 class="text-xl font-bold text-gray-800 mb-2">${escapeHtml(ann.title)}</h4>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-4">${escapeHtml(ann.description)}</p>
+                            <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                <span class="text-xs px-2 py-1 rounded-full bg-indigo-100 text-indigo-700 font-medium">
+                                    ${ann.category === 'Exam Schedule' ? '📅' : ann.category === 'Class Suspension' ? '⚠️' : '🎉'} ${ann.category}
+                                </span>
+                                <div class="flex gap-4">
+                                    <button class="action-btn text-gray-500 hover:text-indigo-600 text-sm"><i class="far fa-thumbs-up"></i> Like</button>
+                                    <button class="action-btn text-gray-500 hover:text-indigo-600 text-sm"><i class="far fa-comment"></i> Comment</button>
+                                    <button class="action-btn text-gray-500 hover:text-indigo-600 text-sm"><i class="fas fa-share-alt"></i> Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function performSearch() {
+            const term = searchInput.value;
+            currentSearchTerm = term;
+            if (term.trim()) addToHistory(term);
+            renderResults();
+        }
+
+        function applyFilters() {
+            currentCategory = categoryFilter.value;
+            currentDate = dateFilter.value || '';
+            currentSort = sortFilter.value;
+            renderResults();
+        }
+
+        function resetEverything() {
+            searchInput.value = '';
+            categoryFilter.value = 'all';
+            dateFilter.value = '';
+            sortFilter.value = 'latest';
+            currentSearchTerm = '';
+            currentCategory = 'all';
+            currentDate = '';
+            currentSort = 'latest';
+            renderResults();
+        }
+
+        function initDatePicker() {
+            flatpickr(dateFilter, {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+                onChange: function (selectedDates, dateStr) {
+                    currentDate = dateStr || '';
+                    renderResults();
+                }
+            });
+        }
+
+        function bindEvents() {
+            searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') performSearch(); });
+            categoryFilter.addEventListener('change', applyFilters);
+            sortFilter.addEventListener('change', applyFilters);
+            if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
+            if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', clearHistory);
+            if (notificationBtn) notificationBtn.addEventListener('click', () => alert('🔔 You have 3 unread notifications'));
+        }
+
+        function init() {
+            renderHistory();
+            initDatePicker();
+            bindEvents();
+            renderResults();
+        }
+
+        init();
+    </script>
+</body>
+</html>
