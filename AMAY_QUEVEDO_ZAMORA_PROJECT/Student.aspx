@@ -1,4 +1,4 @@
-﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,14 +13,23 @@
             padding: 0;
             box-sizing: border-box;
         }
+        :root { --site-text-color: #000000; }
 
             body {
-          background-image: url('wbg.jpg');
-          background-size: cover;
-          transition: background 0.5s ease-in-out;
-          background-repeat: no-repeat;
-          background-position: center;
-      }
+              color: var(--site-text-color) !important;
+              background-image: url('wbg.jpg');
+              background-size: cover;
+              transition: background 0.5s ease-in-out;
+              background-repeat: no-repeat;
+              background-position: center;
+          }
+            /* Ensure common text elements and controls use the same color */
+            a, a:link, a:visited,
+            h1, h2, h3, h4, h5, h6,
+            p, span, label, li, div,
+            button, input, textarea {
+              color: var(--site-text-color) !important;
+            }
         /* Header */
         .header {
             background: white;
@@ -244,7 +253,7 @@
             background: none;
             text-align: left;
             font-size: 14px;
-            color: #2c3e50;
+            color:#5a6e7c ;
             transition: all 0.3s;
             border-left: 3px solid transparent;
         }
@@ -292,7 +301,7 @@
             padding: 10px 22px;
             color: #2c3e50;
             font-size: 13px;
-            border-bottom: 1px solid #eef2f6;
+            border-bottom: none;
         }
 
        
@@ -311,7 +320,8 @@
             font-size: 14px;
             color: #2c3e50;
             transition: all 0.3s;
-            border-top: 1px solid #eef2f6;
+            border-top: none;
+            border-bottom: none;
         }
 
         .settings-item:hover {
@@ -775,16 +785,76 @@
             font-size: 12px;
             margin-top: 20px;
         }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            .search-container {
-                display: none;
-            }
+        .main-layout {
+            display: block;
         }
+
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 280px;
+            height: calc(100vh - 80px);
+            background: white;
+            overflow-y: auto;
+            border-right: 1px solid rgba(26,58,92,0.1);
+        }
+
+        .sidebar .card {
+            border-radius: 0;
+            box-shadow: none;
+            border: none;
+        }
+
+        /* Push main content */
+        main {
+            margin-left: 300px;
+        }
+
+        /* Remove underline for the sidebar link (View Pinned Items) */
+.menu-item,
+.menu-item a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+/* Ensure hover doesn't re-add underline */
+.menu-item.active,
+.settings-item.active {
+    background: #e8f0fe;
+    color: #1a3a5c;
+    border-left: 4px solid #1a3a5c;
+    font-weight: 600;
+}
+
+/* ================= COLLAPSIBLE ================= */
+.sidebar.collapsed {
+    width: 80px;
+}
+
+.sidebar.collapsed .profile-name,
+.sidebar.collapsed .profile-email,
+.sidebar.collapsed .card-header,
+.sidebar.collapsed span {
+    display: none;
+}
+
+.sidebar.collapsed i {
+    margin: auto;
+}
+
+.sidebar.collapsed ~ main {
+    margin-left: 100px;
+}
+
+/* ================= SMOOTH DROPDOWN ================= */
+.dropdown-content {
+    margin-left: 45px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+       
     </style>
 </head>
 <body>
@@ -792,7 +862,7 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                <i class="fas fa-university"></i> CampusConnect
+                <i class="fas fa-university"></i> CampusAnnouncement
             </div>
             <div class="search-container">
                 <div class="search-box">
@@ -852,12 +922,12 @@
         <!-- Main Layout -->
         <div class="main-layout">
             <!-- LEFT SIDEBAR -->
-            <aside>
-                <div class="card">
+            <aside class="sidebar">
+                 <div class="card">
                     <div class="profile-section">
-                        <div class="profile-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
+                        <button onclick="toggleSidebar()" style="border:none; background:none; font-size:20px; cursor:pointer;">
+                        <i class="fas fa-bars"></i>
+                    </button>
                         <div class="profile-name">John Dela Cruz</div>
                         <div class="profile-email">john.delacruz@ctu.edu.ph</div>
                     </div>
@@ -877,9 +947,9 @@
                     </div>
 
                     
-                  <asp:LinkButton ID="btnViewPinned" runat="server" PostBackUrl="~/Pinned.aspx" CssClass="menu-item">
-    <i class="fas fa-thumbtack"></i> View Pinned Items
-</asp:LinkButton>
+                      <asp:LinkButton ID="btnViewPinned" runat="server" PostBackUrl="~/Pinned.aspx" CssClass="menu-item">
+                        <i class="fas fa-thumbtack"></i> View Pinned Items
+                    </asp:LinkButton>
 
                     <div class="card-header" style="margin-top: 5px;">
                         <i class="fas fa-cog"></i> Settings
@@ -1103,12 +1173,25 @@
         // Toggle Dropdown
         function toggleDropdown(id) {
             var dropdown = document.getElementById(id);
-            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-                dropdown.style.display = 'block';
+
+            if (dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px") {
+                dropdown.style.maxHeight = "0px";
             } else {
-                dropdown.style.display = 'none';
+                dropdown.style.maxHeight = dropdown.scrollHeight + "px";
             }
         }
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        }
+
+        // Active sidebar highlight
+        document.querySelectorAll('.menu-item, .settings-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.menu-item, .settings-item')
+                    .forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
 
         // Toggle Notification Dropdown
         function toggleNotificationDropdown() {
