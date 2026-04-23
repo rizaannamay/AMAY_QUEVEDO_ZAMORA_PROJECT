@@ -1,8 +1,12 @@
 ﻿CREATE TABLE Users (
-    UserID INT PRIMARY KEY IDENTITY(1,1),
-    FullName NVARCHAR(100) NOT NULL,
-    Email NVARCHAR(100) NOT NULL UNIQUE,
-    Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher')) NOT NULL,
-    Password NVARCHAR(255) NOT NULL,
-    DateRegistered DATETIME DEFAULT GETDATE()
-);
+        UserId INT PRIMARY KEY IDENTITY(1,1),
+        FullName NVARCHAR(100) NOT NULL,
+        Email NVARCHAR(100) NOT NULL UNIQUE,
+        Username NVARCHAR(50) NOT NULL UNIQUE,
+        Password NVARCHAR(255) NOT NULL,
+        Role NVARCHAR(20) NOT NULL CHECK (Role IN ('Student', 'Admin')),
+        IsActive BIT DEFAULT 1,
+        CreatedDate DATETIME DEFAULT GETDATE(),
+        LastLoginDate DATETIME NULL,
+        ProfileImage NVARCHAR(500) NULL
+    );
