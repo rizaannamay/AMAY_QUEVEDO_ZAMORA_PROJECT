@@ -7,12 +7,15 @@ using System.Web.UI.WebControls;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-    public partial class Teacher : System.Web.UI.Page
+    public partial class Notifications : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // You can add logic here to check if the user is logged in
+            if (!IsPostBack)
+            {
+                // Future: LoadNotificationsFromDatabase();
+            }
         }
-
     }
 }

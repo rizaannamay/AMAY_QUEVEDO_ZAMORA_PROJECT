@@ -44,6 +44,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.SqlClient, Version=4.6.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.9.1\lib\net462\System.Data.SqlClient.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -69,7 +72,12 @@
   <ItemGroup>
     <Content Include="bg.jpg" />
     <Content Include="ctu-logo.png" />
+<<<<<<< HEAD
     <Content Include="SearchDashboard.aspx" />
+=======
+    <Content Include="Notifications.aspx" />
+    <Content Include="Pinned.aspx" />
+>>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
     <Content Include="signin.aspx" />
@@ -84,6 +92,20 @@
     </Compile>
     <Compile Include="login.aspx.designer.cs">
       <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Notifications.aspx.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Notifications.aspx.designer.cs">
+      <DependentUpon>Notifications.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pinned.aspx.cs">
+      <DependentUpon>Pinned.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pinned.aspx.designer.cs">
+      <DependentUpon>Pinned.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SearchDashboard.aspx.cs">

@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Student Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -14,13 +14,32 @@
             box-sizing: border-box;
         }
 
+        /* Normal Mode (Light) */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background-image: url('wbg.jpg'); /* Your light background */
+            background-size: cover;
+            background-attachment: fixed;
+            transition: all 0.3s ease;
         }
 
+        /* Dark Mode State */
+        body.dark-mode {
+            background-image: url('bg.jpg') !important; /* Your dark background */
+            color: #ffffff;
+        }
+
+        /* Glassmorphism for Teacher Cards in Dark Mode */
+        body.dark-mode .card, 
+        body.dark-mode .announcement-input-container {
+            background: rgba(42, 42, 42, 0.85) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .header {
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+        }
         /* Header */
         .header {
             background: white;
@@ -39,8 +58,9 @@
             font-weight: 800;
             background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent;
+            color: #1a3a5c;
         }
 
         .logo i {
@@ -188,7 +208,7 @@
             color: white;
             font-weight: bold;
         }
-
+       
         .user-details {
             color: #1a2a3a;
         }
@@ -938,6 +958,7 @@
         </div>
 
         <!-- Notification Dropdown -->
+
         <div id="notificationDropdown" class="notification-dropdown">
             <div class="notification-header">
                 <span><i class="fas fa-bell"></i> Notifications</span>
@@ -1027,10 +1048,24 @@
 
             <!-- MAIN CONTENT - Announcement Board -->
             <main>
+<<<<<<< HEAD
                 <!-- CREATE POST BUTTON - Same blue gradient as search button -->
                 <button class="post-announcement-btn" onclick="openCreatePostModal()">
                     <i class="fas fa-plus-circle"></i> Want to post an announcement?
                 </button>
+=======
+                <!-- CREATE POST DESIGN ADDED ABOVE ANNOUNCEMENT BOARD -->
+                <div class="create-post-card">
+                    <div class="create-post-header">
+                        <div class="create-post-avatar">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div class="create-post-input" onclick="openCreatePostModal()">
+                           Want to post an announcement?
+                        </div>
+                    </div>
+                </div>
+>>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
 
                 <div class="card">
                     <div class="card-header">
@@ -1503,6 +1538,7 @@
             toggle.classList.toggle('active');
             var body = document.body;
 
+<<<<<<< HEAD
             if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
                 body.style.background = '#1a1a2e';
                 document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
@@ -1519,10 +1555,35 @@
                         el.style.background = 'white';
                         el.style.color = '#1a2a3a';
                     }
+=======
+            if (body.classList.contains('dark-mode')) {
+                // Switch to LIGHT MODE
+                body.classList.remove('dark-mode');
+                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent white
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(255, 255, 255, 0.7)';
+                    el.style.color = '#1a2a3a';
+>>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                 });
-                showToast('Light mode enabled');
+            } else {
+                // Switch to DARK MODE
+                body.classList.add('dark-mode');
+                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
+                body.style.backgroundSize = "cover";
+                body.style.backgroundAttachment = "fixed";
+
+                // Update card backgrounds to be semi-transparent dark
+                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                    el.style.background = 'rgba(42, 42, 42, 0.7)';
+                    el.style.color = '#e4e6eb';
+                });
             }
         }
+
 
         // About Modal
         function openAboutModal() {
