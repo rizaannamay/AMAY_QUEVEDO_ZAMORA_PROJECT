@@ -1,208 +1,297 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Notifications" %>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Campus Connect - Notifications</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notifications</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-       /* Light Mode (Normal) Styles */
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            /* Put your background image here */
-            background-image: url('wbg.jpg'); 
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
+        * {
             margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            transition: all 0.3s ease; /* Smooth transition when switching */
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Dark Mode Overrides */
-        body.dark-mode {
-            background-image: url('bg.jpg'); /* Your dark background image */
+        :root {
+            --bg-image: url('wbg.jpg');
+            --page-text: #000000;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-soft: rgba(255, 255, 255, 0.96);
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #000000;
+            --muted: #000000;
+            --shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
         }
 
-        body.dark-mode .container {
-            background: rgba(42, 42, 42, 0.9); /* Semi-transparent dark */
-            color: #e4e6eb;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--page-text);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.16)), var(--bg-image);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        body.dark-mode .notification-item {
-            border-bottom: 1px solid #444;
-        }
-
-        body.dark-mode .notification-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        body.dark-mode .title {
-            color: #ffffff;
-        }
-
-        body.dark-mode .message {
-            color: #b0b3b8;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            border: 1px solid rgba(26,58,92,0.1);
-        }
-
-        .header {
-            padding: 25px 30px;
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h2 { margin: 0; font-size: 20px; }
-        
-        .back-link {
-            color: white;
+        a {
+            color: inherit;
             text-decoration: none;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.9;
         }
 
-        .notification-list { padding: 10px 0; }
+        .page-shell {
+            min-height: 100vh;
+            padding: 48px 32px 32px;
+        }
+
+        .page-wrap {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 26px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 34px;
+            font-weight: 800;
+            color: #000000;
+        }
+
+        .page-title i {
+            color: #000000;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--primary);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            font-weight: 600;
+        }
+
+        .notifications-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
 
         .notification-item {
             display: flex;
-            padding: 20px 30px;
-            border-bottom: 1px solid #f0f2f5;
-            transition: background 0.3s;
-            cursor: pointer;
-            align-items: flex-start;
-            gap: 15px;
+            align-items: center;
+            gap: 20px;
+            padding: 30px 36px;
+            border-bottom: 1px solid rgba(26, 58, 92, 0.08);
+            background: var(--surface-soft);
         }
 
-        .notification-item:hover { background: #f8fafc; }
-        .notification-item.unread { background: #f0f7ff; }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
 
-        .icon-box {
-            width: 45px;
-            height: 45px;
+        .notification-icon {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 24px;
             flex-shrink: 0;
         }
 
-        .icon-blue { background: #e0e7ff; color: #4338ca; }
-        .icon-red { background: #fee2e2; color: #dc2626; }
-        .icon-green { background: #dcfce7; color: #15803d; }
+        .icon-exam {
+            background: #dbe7ff;
+            color: #3b5bcc;
+        }
 
-        .content { flex: 1; }
-        .title { font-weight: 600; color: #1a3a5c; font-size: 15px; margin-bottom: 4px; }
-        .message { color: #5a6e7c; font-size: 14px; line-height: 1.4; }
-        .time { font-size: 12px; color: #b0c4de; margin-top: 8px; }
+        .icon-suspension {
+            background: #ffe1e1;
+            color: #dc2626;
+        }
 
-        .unread-dot {
-            width: 10px;
-            height: 10px;
-            background: #dc2626;
+        .icon-event {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .notification-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .notification-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #000000;
+        }
+
+        .notification-time {
+            display: block;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #000000;
+        }
+
+        .notification-dot {
+            width: 15px;
+            height: 15px;
             border-radius: 50%;
-            align-self: center;
+            background: #dc2626;
+            flex-shrink: 0;
+        }
+
+        .dark-mode {
+            --bg-image: url('bg.jpg');
+            --page-text: #ffffff;
+            --surface: rgba(33, 38, 45, 0.9);
+            --surface-soft: rgba(39, 44, 52, 0.96);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #ffffff;
+            --muted: #c4cfdb;
+            --shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+        }
+
+        body.dark-mode {
+            background-image: linear-gradient(rgba(18, 22, 28, 0.42), rgba(18, 22, 28, 0.42)), var(--bg-image);
+        }
+
+        .dark-mode .page-title,
+        .dark-mode .page-title i,
+        .dark-mode .back-link,
+        .dark-mode .notification-title,
+        .dark-mode .notification-text,
+        .dark-mode .notification-time {
+            color: #ffffff;
+        }
+
+        @media (max-width: 768px) {
+            .page-shell {
+                padding: 24px 16px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+            .notification-item {
+                padding: 22px 18px;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="container">
-            <div class="header">
-                <h2><i class="fas fa-bell"></i> Notifications</h2>
-                <a href="Student.aspx" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
-            </div>
-
-            <div class="notification-list">
-                <div class="notification-item unread">
-                    <div class="icon-box icon-blue">
-                        <i class="fas fa-file-alt"></i>
+        <div class="page-shell">
+            <div class="page-wrap">
+                <div class="page-header">
+                    <div class="page-title">
+                        <i class="fas fa-bell"></i>
+                        <span>Notifications</span>
                     </div>
-                    <div class="content">
-                        <div class="title">New Exam Schedule Posted</div>
-                        <div class="message">The Midterm Examination schedule for 1st Semester is now available for viewing.</div>
-                        <div class="time">2 hours ago</div>
-                    </div>
-                    <div class="unread-dot"></div>
+                    <a class="back-link" href="Student.aspx">
+                        <i class="fas fa-arrow-left"></i>
+                        <span>Back to Student Portal</span>
+                    </a>
                 </div>
 
-                <div class="notification-item unread">
-                    <div class="icon-box icon-red">
-                        <i class="fas fa-cloud-showers-heavy"></i>
+                <div class="notifications-card">
+                    <div class="notification-item">
+                        <div class="notification-icon icon-exam">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">New Exam Schedule Posted</div>
+                            <div class="notification-text">The Midterm Examination schedule for 1st Semester is now available for viewing.</div>
+                            <span class="notification-time">2 hours ago</span>
+                        </div>
+                        <div class="notification-dot"></div>
                     </div>
-                    <div class="content">
-                        <div class="title">Emergency Suspension</div>
-                        <div class="message">Classes are suspended today starting 1:00 PM due to the incoming typhoon. Stay safe!</div>
-                        <div class="time">1 day ago</div>
-                    </div>
-                    <div class="unread-dot"></div>
-                </div>
 
-                <div class="notification-item">
-                    <div class="icon-box icon-green">
-                        <i class="fas fa-calendar-check"></i>
+                    <div class="notification-item">
+                        <div class="notification-icon icon-suspension">
+                            <i class="fas fa-cloud-showers-heavy"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">Emergency Suspension</div>
+                            <div class="notification-text">Classes are suspended today starting 1:00 PM due to the incoming typhoon. Stay safe!</div>
+                            <span class="notification-time">1 day ago</span>
+                        </div>
+                        <div class="notification-dot"></div>
                     </div>
-                    <div class="content">
-                        <div class="title">Foundation Week Kickoff</div>
-                        <div class="message">Join us at the Main Field for the opening ceremony of our 50th Foundation Anniversary.</div>
-                        <div class="time">3 days ago</div>
+
+                    <div class="notification-item">
+                        <div class="notification-icon icon-event">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">Foundation Week Kickoff</div>
+                            <div class="notification-text">Join us at the Main Field for the opening ceremony of our 50th Foundation Anniversary.</div>
+                            <span class="notification-time">3 days ago</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
+
     <script>
-    function applySavedTheme() {
-        // Check local storage for the theme set in Student.aspx
-        const currentTheme = localStorage.getItem('theme');
-        
-        if (body.classList.contains('dark-mode')) {
-            // Switch to LIGHT MODE
-            body.classList.remove('dark-mode');
-            body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
-            body.style.backgroundSize = "cover";
-            body.style.backgroundAttachment = "fixed";
-            localStorage.setItem('theme', 'light');
+        var THEME_STORAGE_KEY = 'campusTheme';
 
-            // Update card backgrounds to be semi-transparent white
-            document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                el.style.background = 'rgba(255, 255, 255, 0.7)';
-                el.style.color = '#1a2a3a';
-            });
-        } else {
-            // Switch to DARK MODE
-            body.classList.add('dark-mode');
-            body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
-            body.style.backgroundSize = "cover";
-            body.style.backgroundAttachment = "fixed";
-            localStorage.setItem('theme', 'dark');
+        function applyStoredTheme() {
+            var params = new URLSearchParams(window.location.search);
+            var queryTheme = params.get('theme');
+            var savedTheme = queryTheme || localStorage.getItem(THEME_STORAGE_KEY);
 
-            // Update card backgrounds to be semi-transparent dark
-            document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                el.style.background = 'rgba(42, 42, 42, 0.7)';
-                el.style.color = '#e4e6eb';
-            });
+            if (queryTheme === 'dark' || queryTheme === 'light') {
+                localStorage.setItem(THEME_STORAGE_KEY, queryTheme);
+            }
+
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
         }
-    }
 
-    // Run this immediately when the page loads
-    window.onload = applySavedTheme;
-</script>
+        window.addEventListener('storage', function (event) {
+            if (event.key === THEME_STORAGE_KEY) {
+                applyStoredTheme();
+            }
+        });
+
+        applyStoredTheme();
+    </script>
 </body>
 </html>

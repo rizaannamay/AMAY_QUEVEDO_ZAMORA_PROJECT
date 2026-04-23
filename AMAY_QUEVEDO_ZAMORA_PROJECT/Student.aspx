@@ -1549,7 +1549,7 @@
         function openAboutModal() {
             document.getElementById('aboutModal').style.display = 'flex';
         }
-
+        a
         function closeAboutModal() {
             document.getElementById('aboutModal').style.display = 'none';
         }
