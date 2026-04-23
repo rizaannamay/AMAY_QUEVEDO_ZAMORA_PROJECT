@@ -1,0 +1,8 @@
+﻿CREATE TABLE Users (
+    UserID INT PRIMARY KEY IDENTITY(1,1),
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    Role NVARCHAR(20) CHECK (Role IN ('Student', 'Teacher')) NOT NULL,
+    Password NVARCHAR(255) NOT NULL,
+    DateRegistered DATETIME DEFAULT GETDATE()
+);
