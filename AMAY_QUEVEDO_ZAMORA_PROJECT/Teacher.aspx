@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Student Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -14,14 +14,32 @@
             box-sizing: border-box;
         }
 
+        /* Normal Mode (Light) */
         body {
-              background-image: url('wbg.jpg');
-              background-size: cover;
-              transition: background 0.5s ease-in-out;
-              background-repeat: no-repeat;
-              background-position: center;
-          }
+            background-image: url('wbg.jpg'); /* Your light background */
+            background-size: cover;
+            background-attachment: fixed;
+            transition: all 0.3s ease;
+        }
 
+        /* Dark Mode State */
+        body.dark-mode {
+            background-image: url('bg.jpg') !important; /* Your dark background */
+            color: #ffffff;
+        }
+
+        /* Glassmorphism for Teacher Cards in Dark Mode */
+        body.dark-mode .card, 
+        body.dark-mode .announcement-input-container {
+            background: rgba(42, 42, 42, 0.85) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .header {
+            background: rgba(30, 30, 30, 0.9);
+            color: white;
+        }
         /* Header */
         .header {
             background: white;
@@ -40,8 +58,9 @@
             font-weight: 800;
             background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
             -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent;
+            color: #1a3a5c;
         }
 
         .logo i {
@@ -160,7 +179,7 @@
             color: white;
             font-weight: bold;
         }
-
+       
         .user-details {
             color: #1a2a3a;
         }
@@ -1018,11 +1037,6 @@
                         <div class="create-post-input" onclick="openCreatePostModal()">
                            Want to post an announcement?
                         </div>
-                    </div>
-                    <div class="create-post-actions">
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-camera"></i> Photo</button>
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-video"></i> Video</button>
-                        <button class="create-post-action" onclick="openCreatePostModal()"><i class="fas fa-calendar-alt"></i> Event</button>
                     </div>
                 </div>
 

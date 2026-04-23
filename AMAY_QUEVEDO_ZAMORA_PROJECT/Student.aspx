@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Student Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -37,15 +37,12 @@
         .logo {
             font-size: 22px;
             font-weight: 800;
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            /* Use a solid color to avoid VS CSS warnings about background-clip:text */
+            color: #1a3a5c;
         }
 
         .logo i {
             background: none;
-            -webkit-background-clip: unset;
             color: #1a3a5c;
             margin-right: 8px;
         }
@@ -298,22 +295,7 @@
             border-bottom: 1px solid #eef2f6;
         }
 
-        .pinned-item:last-child {
-            border-bottom: none;
-        }
-
-        .pinned-item i {
-            color: #fbbf24;
-            margin-right: 10px;
-        }
-
-        .remove-pin {
-            color: #dc2626;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-        }
+       
 
         /* Settings Items */
         .settings-item {
@@ -894,23 +876,10 @@
                         <button class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                     </div>
 
-                    <div class="card-header" style="margin-top: 5px;">
-                        <i class="fas fa-thumbtack"></i> Pinned Items
-                    </div>
-                    <div class="menu-item" onclick="toggleDropdown('pinnedDropdown')">
-                        <i class="fas fa-list"></i> View Pinned Items
-                        <i class="fas fa-chevron-down dropdown-icon"></i>
-                    </div>
-                    <div id="pinnedDropdown" class="dropdown-content">
-                        <div class="pinned-item">
-                            <div><i class="fas fa-thumbtack"></i> Final Exam Schedule</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
-                        </div>
-                        <div class="pinned-item">
-                            <div><i class="fas fa-thumbtack"></i> Class Suspension</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
-                        </div>
-                    </div>
+                    
+                  <asp:LinkButton ID="btnViewPinned" runat="server" PostBackUrl="~/Pinned.aspx" CssClass="menu-item">
+    <i class="fas fa-thumbtack"></i> View Pinned Items
+</asp:LinkButton>
 
                     <div class="card-header" style="margin-top: 5px;">
                         <i class="fas fa-cog"></i> Settings

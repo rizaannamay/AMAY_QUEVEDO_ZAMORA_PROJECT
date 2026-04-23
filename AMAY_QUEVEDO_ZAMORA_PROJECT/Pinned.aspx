@@ -1,5 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
-
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -37,7 +36,6 @@
             <div class="card">
                 <h3>Final Exam Schedule</h3>
                 <p>Status: Pinned</p>
-                <hr />
                 <p>All examinations will be held on December 15-20, 2024.</p>
             </div>
         </div>

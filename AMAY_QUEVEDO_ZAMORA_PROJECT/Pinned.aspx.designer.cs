@@ -11,7 +11,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
 
 
-    public partial class Student
+    public partial class Pinned
     {
 
         /// <summary>

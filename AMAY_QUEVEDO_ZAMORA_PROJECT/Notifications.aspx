@@ -5,13 +5,46 @@
     <title>Campus Connect - Notifications</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+       /* Light Mode (Normal) Styles */
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
+            /* Put your background image here */
+            background-image: url('wbg.jpg'); 
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
             margin: 0;
             padding: 40px;
             display: flex;
             justify-content: center;
+            transition: all 0.3s ease; /* Smooth transition when switching */
+        }
+
+        /* Dark Mode Overrides */
+        body.dark-mode {
+            background-image: url('bg.jpg'); /* Your dark background image */
+        }
+
+        body.dark-mode .container {
+            background: rgba(42, 42, 42, 0.9); /* Semi-transparent dark */
+            color: #e4e6eb;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode .notification-item {
+            border-bottom: 1px solid #444;
+        }
+
+        body.dark-mode .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        body.dark-mode .title {
+            color: #ffffff;
+        }
+
+        body.dark-mode .message {
+            color: #b0b3b8;
         }
 
         .container {
@@ -134,5 +167,42 @@
             </div>
         </div>
     </form>
+    <script>
+    function applySavedTheme() {
+        // Check local storage for the theme set in Student.aspx
+        const currentTheme = localStorage.getItem('theme');
+        
+        if (body.classList.contains('dark-mode')) {
+            // Switch to LIGHT MODE
+            body.classList.remove('dark-mode');
+            body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
+            body.style.backgroundSize = "cover";
+            body.style.backgroundAttachment = "fixed";
+            localStorage.setItem('theme', 'light');
+
+            // Update card backgrounds to be semi-transparent white
+            document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                el.style.background = 'rgba(255, 255, 255, 0.7)';
+                el.style.color = '#1a2a3a';
+            });
+        } else {
+            // Switch to DARK MODE
+            body.classList.add('dark-mode');
+            body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
+            body.style.backgroundSize = "cover";
+            body.style.backgroundAttachment = "fixed";
+            localStorage.setItem('theme', 'dark');
+
+            // Update card backgrounds to be semi-transparent dark
+            document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
+                el.style.background = 'rgba(42, 42, 42, 0.7)';
+                el.style.color = '#e4e6eb';
+            });
+        }
+    }
+
+    // Run this immediately when the page loads
+    window.onload = applySavedTheme;
+</script>
 </body>
 </html>
