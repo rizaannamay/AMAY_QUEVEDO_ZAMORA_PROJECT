@@ -32,6 +32,8 @@
             }
         /* Header */
         .header {
+            position: sticky;
+            top: 0;
             background: white;
             border-radius: 24px;
             padding: 12px 30px;
@@ -41,6 +43,7 @@
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border: 1px solid rgba(26,58,92,0.1);
+            z-index: 1000;
         }
 
         .logo {
