@@ -1,5 +1,4 @@
-﻿
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,16 +29,8 @@
             --active-bg: #e8f0fe;
         }
 
-        html,
-        body,
-        form {
-            height: 100%;
-        }
-
-        html,
-        body {
-            overflow: hidden;
-        }
+        html, body, form { height: 100%; }
+        html, body { overflow: hidden; }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -52,24 +43,14 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        button,
-        input,
-        textarea {
-            font: inherit;
-        }
+        a { color: inherit; text-decoration: none; }
+        button, input, textarea { font: inherit; }
 
         .app-shell {
-            height: 100%;
             height: 100vh;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding: 16px 20px 8px;
             padding: 16px 20px 0;
             overflow: hidden;
         }
@@ -89,33 +70,16 @@
         }
 
         .footer {
-            flex: 0 0 auto;
             flex: 0 0 34px;
             text-align: center;
-            padding: 0;
-            margin-top: -2px;
-            margin: 0;
             line-height: 34px;
             font-size: 12px;
         }
 
-        form {
-            height: auto;
-            min-height: 100%;
-            overflow: visible;
-        }
+        form { height: auto; min-height: 100%; overflow: visible; }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--primary);
-            white-space: nowrap;
-        }
-
-        .logo i {
-            color: var(--primary);
-            margin-right: 8px;
-        }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; }
+        .logo i { color: var(--primary); margin-right: 8px; }
 
         .search-container {
             display: flex;
@@ -146,18 +110,10 @@
             color: var(--page-text);
         }
 
-        .search-box input::placeholder {
-            color: var(--muted-light);
-        }
+        .search-box input::placeholder { color: var(--muted-light); }
+        .search-box i, .bell-icon { color: var(--primary); }
 
-        .search-box i,
-        .bell-icon {
-            color: var(--primary);
-        }
-
-        .search-btn,
-        .comment-input button,
-        .modal-close {
+        .search-btn, .comment-input button, .modal-close {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             border: none;
             border-radius: 30px;
@@ -168,9 +124,7 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .search-btn:hover,
-        .comment-input button:hover,
-        .modal-close:hover {
+        .search-btn:hover, .comment-input button:hover, .modal-close:hover {
             transform: translateY(-1px);
             box-shadow: 0 8px 16px rgba(26, 58, 92, 0.18);
         }
@@ -196,9 +150,7 @@
             transition: background 0.3s;
         }
 
-        .notification-bell:hover {
-            background: var(--active-bg);
-        }
+        .notification-bell:hover { background: var(--active-bg); }
 
         .badge-red {
             position: absolute;
@@ -224,9 +176,7 @@
             border: 1px solid #dce4ec;
         }
 
-        .avatar,
-        .profile-avatar,
-        .post-avatar {
+        .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             color: #ffffff;
         }
@@ -241,18 +191,8 @@
             font-weight: bold;
         }
 
-        .user-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .user-role,
-        .profile-email,
-        .post-meta,
-        .comment-time,
-        .footer {
-            color: var(--muted);
-        }
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
 
         .content-shell {
             flex: 1 1 0;
@@ -264,11 +204,7 @@
             align-items: stretch;
         }
 
-        .sidebar {
-            height: 100%;
-            min-height: 0;
-            overflow: hidden;
-        }
+        .sidebar { height: 100%; min-height: 0; overflow: hidden; }
 
         .card {
             background: var(--surface);
@@ -279,18 +215,14 @@
             overflow: hidden;
         }
 
-        .sidebar .card,
-        .main-panel.card {
+        .sidebar .card, .main-panel.card {
             height: 100%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        .sidebar-content {
-            min-height: 0;
-            overflow-y: auto;
-        }
+        .sidebar-content { min-height: 0; overflow-y: auto; }
 
         .card-header {
             padding: 18px 22px;
@@ -300,10 +232,7 @@
             font-size: 16px;
         }
 
-        .card-header i {
-            margin-right: 10px;
-            color: var(--primary);
-        }
+        .card-header i { margin-right: 10px; color: var(--primary); }
 
         .profile-section {
             text-align: center;
@@ -331,26 +260,11 @@
             margin-bottom: 12px;
         }
 
-        .profile-name,
-        .post-author,
-        .post-title,
-        .modal-title {
-            color: var(--primary);
-        }
+        .profile-name, .post-author, .post-title, .modal-title { color: var(--primary); }
+        .profile-name { font-size: 18px; font-weight: 700; }
+        .menu-item, .settings-item, .dropdown-item { color: var(--page-text); }
 
-        .profile-name {
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .menu-item,
-        .settings-item,
-        .dropdown-item {
-            color: var(--page-text);
-        }
-
-        .menu-item,
-        .settings-item {
+        .menu-item, .settings-item {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -365,16 +279,12 @@
             border-left: 3px solid transparent;
         }
 
-        .menu-item:hover,
-        .settings-item:hover,
-        .dropdown-item:hover,
-        .action-btn:hover {
+        .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
 
-        .menu-item.active,
-        .settings-item.active {
+        .menu-item.active, .settings-item.active {
             background: var(--active-bg);
             color: var(--primary);
             border-left: 4px solid var(--primary);
@@ -388,9 +298,7 @@
             transition: transform 0.3s ease;
         }
 
-        .menu-item.open .dropdown-icon {
-            transform: rotate(180deg);
-        }
+        .menu-item.open .dropdown-icon { transform: rotate(180deg); }
 
         .dropdown-content {
             margin-left: 45px;
@@ -423,9 +331,7 @@
             flex-shrink: 0;
         }
 
-        .toggle-switch.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-        }
+        .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
 
         .toggle-switch::after {
             content: '';
@@ -439,25 +345,11 @@
             transition: all 0.3s;
         }
 
-        .toggle-switch.active::after {
-            left: 24px;
-        }
+        .toggle-switch.active::after { left: 24px; }
 
-        .main-panel {
-            height: 100%;
-            min-width: 0;
-            min-height: 0;
-        }
-
-        .main-panel .card-header {
-            flex: 0 0 auto;
-        }
-
-        .header-filter {
-            float: right;
-            font-size: 12px;
-            color: var(--primary);
-        }
+        .main-panel { height: 100%; min-width: 0; min-height: 0; }
+        .main-panel .card-header { flex: 0 0 auto; }
+        .header-filter { float: right; font-size: 12px; color: var(--primary); }
 
         .announcement-board {
             flex: 1 1 auto;
@@ -489,11 +381,7 @@
             padding: 18px 22px 12px;
         }
 
-        .post-header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .post-header-left { display: flex; align-items: center; gap: 15px; }
 
         .post-avatar {
             width: 50px;
@@ -507,10 +395,7 @@
             flex-shrink: 0;
         }
 
-        .post-author {
-            font-weight: 700;
-            font-size: 16px;
-        }
+        .post-author { font-weight: 700; font-size: 16px; }
 
         .post-meta {
             display: flex;
@@ -545,31 +430,12 @@
             height: 36px;
         }
 
-        .pin-btn-top:hover {
-            background: #f0f2f5;
-        }
+        .pin-btn-top:hover { background: #f0f2f5; }
+        .pin-btn-top.pinned { color: #e65100; }
 
-        .pin-btn-top.pinned {
-            color: #e65100;
-        }
-
-        .post-content {
-            padding: 0 22px 16px;
-        }
-
-        .post-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .post-text,
-        .comment-text,
-        .notification-text,
-        .modal-text {
-            color: var(--page-text);
-            line-height: 1.5;
-        }
+        .post-content { padding: 0 22px 16px; }
+        .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .post-text, .comment-text, .notification-text, .modal-text { color: var(--page-text); line-height: 1.5; }
 
         .post-image {
             margin-top: 12px;
@@ -596,16 +462,8 @@
             font-size: 13px;
         }
 
-        .post-stats span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .post-stats span:hover {
-            color: var(--primary);
-        }
+        .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .post-stats span:hover { color: var(--primary); }
 
         .action-buttons {
             display: flex;
@@ -629,13 +487,8 @@
             transition: all 0.3s;
         }
 
-        .action-btn.liked {
-            color: #dc2626;
-        }
-
-        .action-btn.liked i {
-            font-weight: 900;
-        }
+        .action-btn.liked { color: #dc2626; }
+        .action-btn.liked i { font-weight: 900; }
 
         .comments-section {
             padding: 0 22px 18px;
@@ -643,9 +496,7 @@
             display: none;
         }
 
-        .comments-section.show {
-            display: block;
-        }
+        .comments-section.show { display: block; }
 
         .comment-input {
             display: flex;
@@ -672,9 +523,7 @@
             gap: 10px;
         }
 
-        .comment:last-child {
-            border-bottom: none;
-        }
+        .comment:last-child { border-bottom: none; }
 
         .comment-avatar {
             width: 32px;
@@ -690,10 +539,7 @@
             flex-shrink: 0;
         }
 
-        .comment-author {
-            font-weight: bold;
-            color: var(--primary);
-        }
+        .comment-author { font-weight: bold; color: var(--primary); }
 
         .no-comments {
             padding: 15px;
@@ -715,9 +561,7 @@
             display: none;
         }
 
-        .notification-dropdown.show {
-            display: block;
-        }
+        .notification-dropdown.show { display: block; }
 
         .notification-header {
             padding: 15px 18px;
@@ -751,13 +595,8 @@
             cursor: pointer;
         }
 
-        .notification-item:hover {
-            background: var(--surface-soft);
-        }
-
-        .notification-item.unread {
-            background: var(--active-bg);
-        }
+        .notification-item:hover { background: var(--surface-soft); }
+        .notification-item.unread { background: var(--active-bg); }
 
         .notification-dot {
             width: 8px;
@@ -766,10 +605,7 @@
             border-radius: 50%;
         }
 
-        .notification-time {
-            font-size: 10px;
-            color: var(--muted-light);
-        }
+        .notification-time { font-size: 10px; color: var(--muted-light); }
 
         .modal {
             display: none;
@@ -793,22 +629,9 @@
             text-align: center;
         }
 
-        .modal-icon {
-            font-size: 50px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .modal-text {
-            margin: 15px 0;
-            font-size: 13px;
-        }
+        .modal-icon { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
+        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .modal-text { margin: 15px 0; font-size: 13px; }
 
         .footer {
             position: fixed;
@@ -824,33 +647,12 @@
             z-index: 50;
         }
 
-        .sidebar.collapsed {
-            width: 88px;
-        }
-
-        .sidebar.collapsed + .main-panel {
-            margin-left: 0;
-        }
-
-        .sidebar.collapsed .profile-name,
-        .sidebar.collapsed .profile-email,
-        .sidebar.collapsed .card-header,
-        .sidebar.collapsed .menu-text,
-        .sidebar.collapsed .settings-text,
-        .sidebar.collapsed .dropdown-content {
-            display: none;
-        }
-
-        .sidebar.collapsed .menu-item,
-        .sidebar.collapsed .settings-item,
-        .sidebar.collapsed .profile-section {
-            justify-content: center;
-        }
-
-        .sidebar.collapsed .dropdown-icon,
-        .sidebar.collapsed .toggle-switch {
-            display: none;
-        }
+        .sidebar.collapsed { width: 88px; }
+        .sidebar.collapsed + .main-panel { margin-left: 0; }
+        .sidebar.collapsed .profile-name, .sidebar.collapsed .profile-email, .sidebar.collapsed .card-header,
+        .sidebar.collapsed .menu-text, .sidebar.collapsed .settings-text, .sidebar.collapsed .dropdown-content { display: none; }
+        .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
+        .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
 
         .dark-mode {
             --bg-image: url('bg.jpg');
@@ -865,115 +667,32 @@
             --active-bg: rgba(64, 96, 128, 0.36);
         }
 
-        .dark-mode .announcement-board {
-            background: rgba(18, 22, 28, 0.28);
-        }
+        .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
+        .dark-mode .notification-item.unread, .dark-mode .menu-item.active, .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
+        .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
+        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title, .dark-mode .modal-title,
+        .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
+        .dark-mode .settings-item, .dark-mode .dropdown-item, .dark-mode .menu-item.active, .dark-mode .settings-item.active,
+        .dark-mode .header-filter, .dark-mode .post-stats, .dark-mode .post-stats span, .dark-mode .action-btn,
+        .dark-mode .comment-author, .dark-mode .comment-avatar, .dark-mode .bell-icon, .dark-mode .notification-header,
+        .dark-mode .notification-header button, .dark-mode .notification-header a, .dark-mode .sidebar-toggle,
+        .dark-mode .dropdown-icon, .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
 
-        .dark-mode .notification-item.unread,
-        .dark-mode .menu-item.active,
-        .dark-mode .settings-item.active {
-            background: rgba(64, 96, 128, 0.36);
-        }
+        .dark-mode .menu-item:hover, .dark-mode .settings-item:hover, .dark-mode .dropdown-item:hover,
+        .dark-mode .post-stats span:hover, .dark-mode .action-btn:hover { color: #ffffff; }
 
-        .dark-mode .logo,
-        .dark-mode .logo i,
-        .dark-mode .card-header,
-        .dark-mode .card-header i,
-        .dark-mode .profile-name,
-        .dark-mode .post-author,
-        .dark-mode .post-title,
-        .dark-mode .modal-title,
-        .dark-mode .user-name,
-        .dark-mode .user-role,
-        .dark-mode .profile-email,
-        .dark-mode .menu-item,
-        .dark-mode .settings-item,
-        .dark-mode .dropdown-item,
-        .dark-mode .menu-item.active,
-        .dark-mode .settings-item.active,
-        .dark-mode .header-filter,
-        .dark-mode .post-stats,
-        .dark-mode .post-stats span,
-        .dark-mode .action-btn,
-        .dark-mode .comment-author,
-        .dark-mode .comment-avatar,
-        .dark-mode .bell-icon,
-        .dark-mode .notification-header,
-        .dark-mode .notification-header button,
-        .dark-mode .notification-header a,
-        .dark-mode .sidebar-toggle,
-        .dark-mode .dropdown-icon,
-        .dark-mode .no-comments,
-        .dark-mode .footer {
-            color: #ffffff;
-        }
-
-        .dark-mode .menu-item:hover,
-        .dark-mode .settings-item:hover,
-        .dark-mode .dropdown-item:hover,
-        .dark-mode .post-stats span:hover,
-        .dark-mode .action-btn:hover {
-            color: #ffffff;
-        }
-
-        .dark-mode .pin-btn-top:hover,
-        .dark-mode .action-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
+        .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
 
         @media (max-width: 980px) {
-            html,
-            body {
-                overflow: auto;
-            }
-
-            .app-shell,
-            form {
-                height: auto;
-                min-height: 100%;
-                overflow: visible;
-            }
-
-            .footer {
-                position: static;
-                height: auto;
-                line-height: normal;
-                padding: 6px 0 0;
-            }
-
-            .header {
-                flex-wrap: wrap;
-            }
-
-            .search-container {
-                order: 3;
-                width: 100%;
-                justify-content: stretch;
-            }
-
-            .content-shell {
-                grid-template-columns: 1fr;
-                overflow: visible;
-            }
-
-            .sidebar,
-            .main-panel,
-            .sidebar .card,
-            .main-panel.card {
-                height: auto;
-            }
-
-            .announcement-board,
-            .sidebar-content {
-                overflow: visible;
-                max-height: none;
-            }
-
-            .notification-dropdown {
-                right: 12px;
-                left: 12px;
-                width: auto;
-            }
+            html, body { overflow: auto; }
+            .app-shell, form { height: auto; min-height: 100%; overflow: visible; }
+            .footer { position: static; height: auto; line-height: normal; padding: 6px 0 0; }
+            .header { flex-wrap: wrap; }
+            .search-container { order: 3; width: 100%; justify-content: stretch; }
+            .content-shell { grid-template-columns: 1fr; overflow: visible; }
+            .sidebar, .main-panel, .sidebar .card, .main-panel.card { height: auto; }
+            .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
+            .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
     </style>
 </head>
@@ -1012,11 +731,13 @@
 
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
-                    <span><i class="fas fa-bell"></i> Notifications</span>
+                    <a href="Notifications.aspx" style="text-decoration: none; color: inherit;">
+                        <span><i class="fas fa-bell"></i> Notifications</span>
+                    </a>
                     <button type="button" onclick="markAllRead()">Mark all read</button>
                 </div>
                 <div class="notification-list" id="notificationList">
-                    <div class="no-notifications">No new notifications</div>
+                    <div style="padding:20px;text-align:center;">Loading notifications...</div>
                 </div>
             </div>
 
@@ -1046,6 +767,11 @@
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
+
+                            <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
+                                <i class="fas fa-thumbtack"></i>
+                                <span class="menu-text">Pinned Announcements</span>
+                            </button>
 
                             <div class="card-header" style="margin-top: 5px;">
                                 <i class="fas fa-cog"></i> Settings
@@ -1099,10 +825,7 @@
     </form>
 
     <script>
-        let currentUserId = '<%= Session["UserId"] %>';
-let allAnnouncements = [];
-
-function toggleDropdown(id, trigger) {
+        function toggleDropdown(id, trigger) {
     var dropdown = document.getElementById(id);
     if (!dropdown) return;
     var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
@@ -1117,15 +840,6 @@ function toggleSidebar() {
     if (sidebar) sidebar.classList.toggle('collapsed');
 }
 
-document.querySelectorAll('.menu-item, .settings-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-        document.querySelectorAll('.menu-item, .settings-item').forEach(function(i) {
-            i.classList.remove('active');
-        });
-        this.classList.add('active');
-    });
-});
-
 function toggleNotificationDropdown() {
     var dropdown = document.getElementById('notificationDropdown');
     if (dropdown) dropdown.classList.toggle('show');
@@ -1139,46 +853,76 @@ document.addEventListener('click', function(e) {
     }
 });
 
-function toggleComments(btn) {
+function toggleComments(btn, postId) {
     var card = btn.closest('.announcement-card');
     if (card) {
-        var commentsSection = card.querySelector('.comments-section');
-        if (commentsSection) commentsSection.classList.toggle('show');
-    }
-}
-
-function scrollToComments(element) {
-    var card = element.closest('.announcement-card');
-    if (card) {
-        var commentsSection = card.querySelector('.comments-section');
+        var commentsSection = document.getElementById('commentsSection_' + postId);
         if (commentsSection) {
-            if (!commentsSection.classList.contains('show')) commentsSection.classList.add('show');
-            commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+                commentsSection.style.display = 'block';
+                loadComments(postId);
+            } else {
+                commentsSection.style.display = 'none';
+            }
         }
     }
 }
 
-function toggleLike(btn, postId) {
-    var card = btn.closest('.announcement-card');
-    if (!card) return;
-    var likeCountSpan = card.querySelector('.like-count');
-    if (!likeCountSpan) return;
-    var currentCount = parseInt(likeCountSpan.innerText, 10);
+function scrollToComments(element, postId) {
+    var commentsSection = document.getElementById('commentsSection_' + postId);
+    if (commentsSection) {
+        commentsSection.style.display = 'block';
+        loadComments(postId);
+        commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
 
+function loadComments(postId) {
+    fetch(`GetComments.aspx?postId=${postId}`)
+        .then(response => response.json())
+        .then(data => {
+            var commentsList = document.getElementById(`commentsList_${postId}`);
+            if (!commentsList) return;
+                    
+            if (data.length === 0) {
+                commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
+            } else {
+                var html = '';
+                data.forEach(comment => {
+                    html += `
+                                <div class="comment">
+                                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                    <div class="comment-content">
+                                        <span class="comment-author">${escapeHtml(comment.author)}</span>
+                                        <div class="comment-text">${escapeHtml(comment.text)}</div>
+                                        <div class="comment-time">${comment.date}</div>
+                                    </div>
+                                </div>`;
+                });
+                commentsList.innerHTML = html;
+            }
+        })
+        .catch(error => console.error('Error loading comments:', error));
+}
+
+function toggleLike(btn, postId) {
     fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
         .then(response => response.json())
         .then(data => {
             if (data.liked) {
                 btn.classList.add('liked');
                 btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                likeCountSpan.innerText = data.likeCount;
             } else {
                 btn.classList.remove('liked');
                 btn.innerHTML = '<i class="far fa-heart"></i> Like';
-                likeCountSpan.innerText = data.likeCount;
+            }
+            var card = btn.closest('.announcement-card');
+            if (card) {
+                var likeCountSpan = card.querySelector('.like-count');
+                if (likeCountSpan) likeCountSpan.innerText = data.likeCount;
             }
         })
-        .catch(() => showToast('Error liking post'));
+        .catch(error => console.error('Error toggling like:', error));
 }
 
 function toggleLikeFromStats(span, postId) {
@@ -1207,11 +951,12 @@ function togglePinTop(btn, postId) {
                 showToast('Announcement unpinned!');
             }
             setTimeout(() => location.reload(), 500);
-        });
+        })
+        .catch(() => showToast('Error toggling pin'));
 }
 
 function addComment(btn, postId) {
-    var input = btn.parentElement.querySelector('input');
+    var input = document.getElementById(`commentInput_${postId}`);
     if (!input) return;
     var commentText = input.value.trim();
     if (commentText === '') { showToast('Please enter a comment!'); return; }
@@ -1224,26 +969,13 @@ function addComment(btn, postId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                var card = btn.closest('.announcement-card');
+                loadComments(postId);
+                var card = document.querySelector(`.announcement-card[data-post-id='${postId}']`);
                 if (card) {
-                    var commentsList = card.querySelector('.comments-list');
                     var commentCountSpan = card.querySelector('.comment-count');
-                    var currentCount = parseInt(commentCountSpan.innerText, 10);
-                        
-                    if (commentsList) {
-                        var noComments = commentsList.querySelector('.no-comments');
-                        if (noComments) commentsList.innerHTML = '';
-                            
-                        var newComment = document.createElement('div');
-                        newComment.className = 'comment';
-                        newComment.innerHTML = `<div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                <div class="comment-content">
-                                    <span class="comment-author">You</span>
-                                    <div class="comment-text">${escapeHtml(commentText)}</div>
-                                    <div class="comment-time">Just now</div>
-                                </div>`;
-                        commentsList.appendChild(newComment);
-                        if (commentCountSpan) commentCountSpan.innerText = currentCount + 1;
+                    if (commentCountSpan) {
+                        var currentCount = parseInt(commentCountSpan.innerText);
+                        commentCountSpan.innerText = currentCount + 1;
                     }
                 }
                 input.value = '';
@@ -1251,6 +983,10 @@ function addComment(btn, postId) {
             } else {
                 showToast('Error posting comment');
             }
+        })
+        .catch(error => {
+            console.error('Error posting comment:', error);
+            showToast('Error posting comment');
         });
 }
 
@@ -1289,9 +1025,13 @@ function searchAnnouncements() {
     var searchTerm = document.getElementById('searchInput').value.toLowerCase();
     var announcements = document.querySelectorAll('.announcement-card');
     var found = false;
+
     announcements.forEach(function(ann) {
-        var title = ann.querySelector('.post-title')?.innerText.toLowerCase() || '';
-        var content = ann.querySelector('.post-text')?.innerText.toLowerCase() || '';
+        var titleElem = ann.querySelector('.post-title');
+        var contentElem = ann.querySelector('.post-text');
+        var title = titleElem ? titleElem.innerText.toLowerCase() : '';
+        var content = contentElem ? contentElem.innerText.toLowerCase() : '';
+
         if (title.includes(searchTerm) || content.includes(searchTerm)) {
             ann.style.display = 'block';
             found = true;
@@ -1299,7 +1039,10 @@ function searchAnnouncements() {
             ann.style.display = 'none';
         }
     });
-    if (!found && searchTerm !== '') showToast('No announcements found matching "' + searchTerm + '"');
+
+    if (!found && searchTerm !== '') {
+        showToast('No announcements found matching "' + searchTerm + '"');
+    }
 }
 
 var searchInput = document.getElementById('searchInput');
@@ -1312,22 +1055,28 @@ if (searchInput) {
     });
 }
 
-function markRead(item) {
-    item.classList.remove('unread');
-    var dot = item.querySelector('.notification-dot');
-    if (dot) dot.remove();
-    updateBadgeCount();
+function markNotificationRead(element, notificationId) {
+    fetch(`MarkNotificationRead.aspx?id=${notificationId}`, { method: 'POST' })
+        .then(() => {
+            element.classList.remove('unread');
+            var dot = element.querySelector('.notification-dot');
+            if (dot) dot.remove();
+            updateBadgeCount();
+        });
 }
 
 function markAllRead() {
-    var notifications = document.querySelectorAll('.notification-item.unread');
-    notifications.forEach(function(notif) {
-        notif.classList.remove('unread');
-        var dot = notif.querySelector('.notification-dot');
-        if (dot) dot.remove();
-    });
-    updateBadgeCount();
-    showToast('All notifications marked as read');
+    fetch('MarkNotificationsRead.aspx', { method: 'POST' })
+        .then(() => {
+            var notifications = document.querySelectorAll('.notification-item.unread');
+            notifications.forEach(function(notif) {
+                notif.classList.remove('unread');
+                var dot = notif.querySelector('.notification-dot');
+                if (dot) dot.remove();
+            });
+            updateBadgeCount();
+            showToast('All notifications marked as read');
+        });
 }
 
 function updateBadgeCount() {
@@ -1347,6 +1096,8 @@ function toggleTheme(item) {
     var toggle = item.querySelector('.toggle-switch');
     if (toggle) toggle.classList.toggle('active');
     document.body.classList.toggle('dark-mode');
+    var theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('campusTheme', theme);
 }
 
 function openAboutModal() {
@@ -1365,19 +1116,16 @@ function logout() {
     }
 }
 
-// Load user info and announcements from code-behind
-function loadUserData(fullName, email, role) {
-    var userName = document.getElementById('userName');
-    var userRole = document.getElementById('userRole');
-    var profileName = document.getElementById('profileName');
-    var profileEmail = document.getElementById('profileEmail');
-            
-    if (userName) userName.innerText = fullName;
-    if (userRole) userRole.innerText = role;
-    if (profileName) profileName.innerText = fullName;
-    if (profileEmail) profileEmail.innerText = email;
+// Load stored theme
+function applyStoredTheme() {
+    var savedTheme = localStorage.getItem('campusTheme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        var themeToggle = document.querySelector('.toggle-switch');
+        if (themeToggle) themeToggle.classList.add('active');
+    }
 }
+applyStoredTheme();
     </script>
 </body>
 </html>
-

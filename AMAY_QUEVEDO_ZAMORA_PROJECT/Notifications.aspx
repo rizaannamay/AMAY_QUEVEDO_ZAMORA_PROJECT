@@ -226,41 +226,9 @@
                     </a>
                 </div>
 
+                <!-- EMPTY CONTAINER - NO SAMPLE DATA -->
                 <div class="notifications-card">
-                    <div class="notification-item">
-                        <div class="notification-icon icon-exam">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-title">New Exam Schedule Posted</div>
-                            <div class="notification-text">The Midterm Examination schedule for 1st Semester is now available for viewing.</div>
-                            <span class="notification-time">2 hours ago</span>
-                        </div>
-                        <div class="notification-dot"></div>
-                    </div>
-
-                    <div class="notification-item">
-                        <div class="notification-icon icon-suspension">
-                            <i class="fas fa-cloud-showers-heavy"></i>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-title">Emergency Suspension</div>
-                            <div class="notification-text">Classes are suspended today starting 1:00 PM due to the incoming typhoon. Stay safe!</div>
-                            <span class="notification-time">1 day ago</span>
-                        </div>
-                        <div class="notification-dot"></div>
-                    </div>
-
-                    <div class="notification-item">
-                        <div class="notification-icon icon-event">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-title">Foundation Week Kickoff</div>
-                            <div class="notification-text">Join us at the Main Field for the opening ceremony of our 50th Foundation Anniversary.</div>
-                            <span class="notification-time">3 days ago</span>
-                        </div>
-                    </div>
+                    <div style="text-align:center;padding:40px;">Loading notifications...</div>
                 </div>
             </div>
         </div>
@@ -269,29 +237,29 @@
     <script>
         var THEME_STORAGE_KEY = 'campusTheme';
 
-        function applyStoredTheme() {
-            var params = new URLSearchParams(window.location.search);
-            var queryTheme = params.get('theme');
-            var savedTheme = queryTheme || localStorage.getItem(THEME_STORAGE_KEY);
+function applyStoredTheme() {
+    var params = new URLSearchParams(window.location.search);
+    var queryTheme = params.get('theme');
+    var savedTheme = queryTheme || localStorage.getItem(THEME_STORAGE_KEY);
 
-            if (queryTheme === 'dark' || queryTheme === 'light') {
-                localStorage.setItem(THEME_STORAGE_KEY, queryTheme);
-            }
+    if (queryTheme === 'dark' || queryTheme === 'light') {
+        localStorage.setItem(THEME_STORAGE_KEY, queryTheme);
+    }
 
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-        }
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+}
 
-        window.addEventListener('storage', function (event) {
-            if (event.key === THEME_STORAGE_KEY) {
-                applyStoredTheme();
-            }
-        });
-
+window.addEventListener('storage', function(event) {
+    if (event.key === THEME_STORAGE_KEY) {
         applyStoredTheme();
+    }
+});
+
+applyStoredTheme();
     </script>
 </body>
 </html>

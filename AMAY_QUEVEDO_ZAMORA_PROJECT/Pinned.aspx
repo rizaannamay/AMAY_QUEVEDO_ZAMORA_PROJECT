@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
@@ -66,11 +68,11 @@
             gap: 16px;
             font-size: 34px;
             font-weight: 800;
-             color: #000000;
+            color: #000000;
         }
 
         .page-title i {
-             color: #000000;
+            color: #000000;
         }
 
         .back-link {
@@ -112,7 +114,6 @@
             display: flex;
             align-items: center;
             gap: 16px;
-            
         }
 
         .avatar {
@@ -202,30 +203,34 @@
             --shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
         }
 
-          .dark-mode body,
         body.dark-mode {
             background-image: linear-gradient(rgba(18, 22, 28, 0.42), rgba(18, 22, 28, 0.42)), var(--bg-image);
         }
+
         .dark-mode .back-link,
         .dark-mode .pinned-card,
         .dark-mode .empty-state {
             color: #ffffff;
         }
+
         .dark-mode .status-pill {
             background: rgba(234, 88, 12, 0.18);
             color: #ffd3b0;
         }
+
         .dark-mode .pin-icon {
             color: #ff8a3d;
         }
+
         @media (max-width: 768px) {
             .page-shell {
                 padding: 24px 16px;
+            }
 
             .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-}
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
             .page-title {
                 font-size: 28px;
@@ -238,7 +243,7 @@
             .card-top {
                 flex-direction: column;
             }
-        
+        }
     </style>
 </head>
 <body>
@@ -257,59 +262,7 @@
                 </div>
 
                 <div class="pinned-list">
-                    <div class="pinned-card">
-                        <div class="card-top">
-                            <div class="card-author">
-                                <div class="avatar">
-                                    <i class="fas fa-user-tie"></i>
-                                </div>
-                                <div>
-                                    <div class="author-name">Prof. Michael Reyes</div>
-                                    <div class="meta">
-                                        <span><i class="far fa-calendar-alt"></i> December 10, 2024</span>
-                                        <span><i class="far fa-clock"></i> 9:00 AM</span>
-                                        <span class="status-pill">Pinned</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <i class="fas fa-thumbtack pin-icon"></i>
-                        </div>
-
-                        <div class="card-title">Final Exam Schedule</div>
-                        <div class="card-text">
-                            The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
-                        </div>
-                        <div class="card-image">
-                            <img src="https://placehold.co/1200x420/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
-                        </div>
-                    </div>
-
-                    <div class="pinned-card">
-                        <div class="card-top">
-                            <div class="card-author">
-                                <div class="avatar">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                                <div>
-                                    <div class="author-name">Admin Office</div>
-                                    <div class="meta">
-                                        <span><i class="far fa-calendar-alt"></i> November 24, 2024</span>
-                                        <span><i class="far fa-clock"></i> 6:00 AM</span>
-                                        <span class="status-pill">Pinned</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <i class="fas fa-thumbtack pin-icon"></i>
-                        </div>
-
-                        <div class="card-title">Class Suspension - Typhoon Enteng</div>
-                        <div class="card-text">
-                            Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.
-                        </div>
-                        <div class="card-image">
-                            <img src="https://placehold.co/1200x420/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
-                        </div>
-                    </div>
+                    <div style="text-align:center;padding:40px;">Loading pinned announcements...</div>
                 </div>
             </div>
         </div>
@@ -318,22 +271,22 @@
     <script>
         var THEME_STORAGE_KEY = 'campusTheme';
 
-        function applyStoredTheme() {
-            var savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-            } else {
-                document.body.classList.remove('dark-mode');
-            }
-        }
+function applyStoredTheme() {
+    var savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+}
 
-        window.addEventListener('storage', function (event) {
-            if (event.key === THEME_STORAGE_KEY) {
-                applyStoredTheme();
-            }
-        });
-
+window.addEventListener('storage', function(event) {
+    if (event.key === THEME_STORAGE_KEY) {
         applyStoredTheme();
+    }
+});
+
+applyStoredTheme();
     </script>
 </body>
 </html>
