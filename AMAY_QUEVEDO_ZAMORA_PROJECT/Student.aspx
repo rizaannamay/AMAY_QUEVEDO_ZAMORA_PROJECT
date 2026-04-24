@@ -1,4 +1,24 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+
+<script runat="server">
+    protected void SearchButton_Click(object sender, EventArgs e)
+    {
+        // Get the search text from the textbox
+        string searchText = searchInput.Text.Trim();
+        
+        if (!string.IsNullOrEmpty(searchText))
+        {
+            // Redirect to SearchStudent.aspx with the query
+            Response.Redirect("SearchStudent.aspx?query=" + Server.UrlEncode(searchText));
+        }
+        else
+        {
+            // If empty, just reload the page
+            Response.Redirect("SearchStudent.aspx");
+        }
+    }
+</script>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -707,9 +727,9 @@
                 <div class="search-container">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search announcements..." />
+                       <asp:TextBox ID="searchInput" runat="server" placeholder="Search announcements..."></asp:TextBox>
                     </div>
-                    <button type="button" class="search-btn" onclick="searchAnnouncements()">Search</button>
+                   <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="Search" OnClick="SearchButton_Click" />
                 </div>
 
                 <div class="header-actions">
