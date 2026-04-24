@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -7,9 +8,20 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : System.Web.UI.Page
     {
+        // FIXED: Using your actual server name from SSMS
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
+
         protected void Page_Load(object sender, EventArgs e)
         {
             lblError.Text = "";
+
+            if (!IsPostBack && Session["Username"] != null)
+            {
+                if (Session["UserRole"] != null && Session["UserRole"].ToString() == "Student")
+                    Response.Redirect("Student.aspx");
+                else if (Session["UserRole"] != null && Session["UserRole"].ToString() == "Admin")
+                    Response.Redirect("Teacher.aspx");
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -19,12 +31,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string password = txtPassword.Text.Trim();
 
             // Validation
-            if (string.IsNullOrEmpty(role))
-            {
-                lblError.Text = "Please select a role.";
-                return;
-            }
-
             if (string.IsNullOrEmpty(username))
             {
                 lblError.Text = "Please enter username.";
@@ -37,60 +43,99 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            bool isValidUser = false;
-            string userRole = "";
-
-            // Check if user exists in Session (from Sign Up page)
-            if (Session["Users"] != null)
+            try
             {
-                DataTable users = (DataTable)Session["Users"];
-                foreach (DataRow row in users.Rows)
+                con.Open();
+
+                string query = "SELECT UserId, FullName, Username, Password, Role, IsActive FROM Users WHERE Username = @Username AND Password = @Password AND Role = @Role";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@Password", password);
+                cmd.Parameters.AddWithValue("@Role", role);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
                 {
-                    if (row["Username"].ToString().Equals(username, StringComparison.OrdinalIgnoreCase) &&
-                        row["Password"].ToString() == password &&
-                        row["Role"].ToString() == role)
+                    // Read all data BEFORE closing connection
+                    int userId = Convert.ToInt32(reader["UserId"]);
+                    string fullName = reader["FullName"].ToString();
+                    string dbUsername = reader["Username"].ToString();
+                    string dbRole = reader["Role"].ToString();
+                    bool isActive = Convert.ToBoolean(reader["IsActive"]);
+
+                    reader.Close();
+                    con.Close();
+
+                    if (!isActive)
                     {
-                        isValidUser = true;
-                        userRole = row["Role"].ToString();
-                        break;
+                        lblError.Text = "Your account is deactivated. Please contact administrator.";
+                        return;
+                    }
+
+                    Session["UserId"] = userId;
+                    Session["Username"] = dbUsername;
+                    Session["FullName"] = fullName;
+                    Session["UserRole"] = dbRole;
+
+                    UpdateLastLogin(userId);
+
+                    if (role == "Student")
+                    {
+                        Response.Redirect("Student.aspx");
+                    }
+                    else if (role == "Admin")
+                    {
+                        Response.Redirect("Teacher.aspx");
+                    }
+                }
+                else
+                {
+                    reader.Close();
+                    con.Close();
+
+                    // Check if username exists
+                    con.Open();
+                    SqlCommand checkUserCmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", con);
+                    checkUserCmd.Parameters.AddWithValue("@Username", username);
+                    int userExists = Convert.ToInt32(checkUserCmd.ExecuteScalar());
+                    con.Close();
+
+                    if (userExists > 0)
+                    {
+                        lblError.Text = "Invalid password. Please try again.";
+                    }
+                    else
+                    {
+                        lblError.Text = "Invalid role, username, or password. Please try again or <a href='signin.aspx'>Sign Up</a>.";
                     }
                 }
             }
-
-            // Default demo accounts for testing
-            if (!isValidUser)
+            catch (Exception ex)
             {
-                // Demo Student Account
-                if (role == "Student" && username == "student" && password == "1234")
-                {
-                    isValidUser = true;
-                    userRole = "Student";
-                }
-                // Demo Admin Account
-                else if (role == "Admin" && username == "admin" && password == "admin123")
-                {
-                    isValidUser = true;
-                    userRole = "Admin";
-                }
+                if (con.State == ConnectionState.Open)
+                    con.Close();
+
+                lblError.Text = "Database error: " + ex.Message;
+                System.Diagnostics.Debug.WriteLine("Login Error: " + ex.Message);
             }
+        }
 
-            if (isValidUser)
+        private void UpdateLastLogin(int userId)
+        {
+            try
             {
-                Session["UserRole"] = userRole;
-                Session["Username"] = username;
-
-                if (userRole == "Student")
-                {
-                    Response.Redirect("Student.aspx");
-                }
-                else if (userRole == "Admin")
-                {
-                    Response.Redirect("Teacher.aspx");
-                }
+                con.Open();
+                string query = "UPDATE Users SET LastLoginDate = @LastLoginDate WHERE UserId = @UserId";
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@LastLoginDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.ExecuteNonQuery();
+                con.Close();
             }
-            else
+            catch
             {
-                lblError.Text = "Invalid role, username, or password. Please try again or <a href='signin.aspx'>Sign Up</a>.";
+                // Don't show error for last login update failure
             }
         }
     }

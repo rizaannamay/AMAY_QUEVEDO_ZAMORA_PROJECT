@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Create Account</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -44,8 +44,6 @@
             font-size: 32px;
             font-weight: 800;
             background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            -webkit-background-clip: text;
-            background-clip: text;
             color: transparent;
             margin-top: 12px;
             letter-spacing: 1px;
@@ -308,7 +306,7 @@
 
                 <asp:Label ID="lblMessage" runat="server" Visible="false"></asp:Label>
 
-                <asp:Button ID="btnSignUp" runat="server" Text="Create Account" CssClass="btn-signup" OnClick="btnSignUp_Click" />
+                <asp:Button ID="btnSignUp" runat="server" Text="Create Account" CssClass="btn-signup" OnClick="BtnSignUp_Click" />
 
                 <div class="footer-links">
                     <p>Already have an account?</p>
@@ -319,31 +317,37 @@
     </form>
 
     <script>
-        var passwordField = document.getElementById('<%= txtPassword.ClientID %>');
-        var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>');
-        var passwordReq = document.getElementById('passwordReq');
+document.addEventListener('DOMContentLoaded', function() {
+    var passwordField = document.getElementById('<%= txtPassword.ClientID %>') as HTMLInputElement | null;
+            var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>') as HTMLInputElement | null;
+            var passwordReq = document.getElementById('passwordReq') as HTMLElement | null;
 
-        if (passwordField) {
-            passwordField.addEventListener('keyup', function () {
-                if (this.value.length >= 6) {
-                    passwordReq.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
-                    passwordReq.style.color = '#16a34a';
-                } else {
-                    passwordReq.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
-                    passwordReq.style.color = '#8a9bb0';
-                }
-            });
-        }
+            if (passwordField && passwordReq) {
+                const pass = passwordField;
+                const req = passwordReq;
+                pass.addEventListener('keyup', function(this: HTMLInputElement) {
+                    if (this.value && this.value.length >= 6) {
+                        req.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
+                        req.style.color = '#16a34a';
+                    } else {
+                        req.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
+                        req.style.color = '#8a9bb0';
+                    }
+                });
+            }
 
-        if (confirmField) {
-            confirmField.addEventListener('keyup', function () {
-                if (this.value === passwordField.value && passwordField.value.length >= 6) {
-                    this.style.borderColor = '#16a34a';
-                } else {
-                    this.style.borderColor = '#dce4ec';
-                }
-            });
-        }
+            if (confirmField && passwordField) {
+                const pass = passwordField;
+                const conf = confirmField;
+                conf.addEventListener('keyup', function(this: HTMLInputElement) {
+                    if (pass && this.value === pass.value && pass.value.length >= 6) {
+                        this.style.borderColor = '#16a34a';
+                    } else {
+                        this.style.borderColor = '#dce4ec';
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
