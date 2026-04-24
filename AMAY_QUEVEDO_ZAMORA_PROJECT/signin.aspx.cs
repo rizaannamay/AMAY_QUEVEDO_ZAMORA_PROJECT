@@ -7,8 +7,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-        // MAKE SURE THIS CONNECTION STRING IS CORRECT FOR YOUR SERVER
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
+        SqlConnection con = new SqlConnection(@"Data Source=.;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;");
 
         protected void Page_Load(object sender, EventArgs e)
         {

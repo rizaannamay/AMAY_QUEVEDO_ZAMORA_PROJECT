@@ -8,8 +8,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : System.Web.UI.Page
     {
-        // FIXED: Using your actual server name from SSMS
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
+        SqlConnection con = new SqlConnection(@"Data Source=.;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;");
 
         protected void Page_Load(object sender, EventArgs e)
         {
