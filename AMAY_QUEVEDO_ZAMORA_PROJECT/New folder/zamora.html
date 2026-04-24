@@ -1,11 +1,22 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+
 
 
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
     {
-            Response.Redirect("SearchStudent.aspx");
+        // Get the search text from the textbox
+        string searchText = searchInput.Text.Trim();
         
+        if (!string.IsNullOrEmpty(searchText))
+        {
+            // Redirect to SearchStudent.aspx with the query
+            Response.Redirect("SearchStudent.aspx?query=" + Server.UrlEncode(searchText));
+        }
+        else
+        {
+            // If empty, just reload the page
+            Response.Redirect("SearchStudent.aspx");
+        }
     }
 </script>
 
@@ -107,9 +118,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-
-            border: 2px solid #0F172A; 
+            border: 1px solid #dce4ec;
         }
+
         .search-box input {
             background: none;
             border: none;
@@ -123,16 +134,15 @@
         .search-box i, .bell-icon { color: var(--primary); }
 
         .search-btn, .comment-input button, .modal-close {
-            background: none;
-            border: 2px solid #0F172A; 
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            border: none;
             border-radius: 30px;
             padding: 10px 22px;
-            color: #0F172A;
+            color: #ffffff;
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
             transform: translateY(-1px);
@@ -715,13 +725,17 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="430px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Large" Height="61px" />
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                      <asp:TextBox ID="searchInput" runat="server" placeholder="Search announcements..."></asp:TextBox>
+                    </div><asp:Button ID="Button1" runat="server" CssClass="search-btn" Text="Search" OnClick="SearchButton_Click" /><asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="Search" OnClick="SearchButton_Click" />
                 </div>
 
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">0       </div>
+                        <span id="notificationBadge" class="badge-red">0</span>
+                    </div>
                     <div class="user-info">
                         <div class="avatar">
                             <i class="fas fa-user"></i>
@@ -831,70 +845,70 @@
 
     <script>
         function toggleDropdown(id, trigger) {
-            var dropdown = document.getElementById(id);
-            if (!dropdown) return;
-            var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
-            dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
-            if (trigger) {
-                trigger.classList.toggle('open', !isOpen);
-            }
-        }
+    var dropdown = document.getElementById(id);
+    if (!dropdown) return;
+    var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
+    dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
+    if (trigger) {
+        trigger.classList.toggle('open', !isOpen);
+    }
+}
 
-        function toggleSidebar() {
-            var sidebar = document.querySelector('.sidebar');
-            if (sidebar) sidebar.classList.toggle('collapsed');
-        }
+function toggleSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.toggle('collapsed');
+}
 
-        function toggleNotificationDropdown() {
-            var dropdown = document.getElementById('notificationDropdown');
-            if (dropdown) dropdown.classList.toggle('show');
-        }
+function toggleNotificationDropdown() {
+    var dropdown = document.getElementById('notificationDropdown');
+    if (dropdown) dropdown.classList.toggle('show');
+}
 
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
+document.addEventListener('click', function(e) {
+    var bell = document.querySelector('.notification-bell');
+    var dropdown = document.getElementById('notificationDropdown');
+    if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+    }
+});
 
-        function toggleComments(btn, postId) {
-            var card = btn.closest('.announcement-card');
-            if (card) {
-                var commentsSection = document.getElementById('commentsSection_' + postId);
-                if (commentsSection) {
-                    if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
-                        commentsSection.style.display = 'block';
-                        loadComments(postId);
-                    } else {
-                        commentsSection.style.display = 'none';
-                    }
-                }
-            }
-        }
-
-        function scrollToComments(element, postId) {
-            var commentsSection = document.getElementById('commentsSection_' + postId);
-            if (commentsSection) {
+function toggleComments(btn, postId) {
+    var card = btn.closest('.announcement-card');
+    if (card) {
+        var commentsSection = document.getElementById('commentsSection_' + postId);
+        if (commentsSection) {
+            if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
                 commentsSection.style.display = 'block';
                 loadComments(postId);
-                commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                commentsSection.style.display = 'none';
             }
         }
+    }
+}
 
-        function loadComments(postId) {
-            fetch(`GetComments.aspx?postId=${postId}`)
-                .then(response => response.json())
-                .then(data => {
-                    var commentsList = document.getElementById(`commentsList_${postId}`);
-                    if (!commentsList) return;
+function scrollToComments(element, postId) {
+    var commentsSection = document.getElementById('commentsSection_' + postId);
+    if (commentsSection) {
+        commentsSection.style.display = 'block';
+        loadComments(postId);
+        commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+}
 
-                    if (data.length === 0) {
-                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
-                    } else {
-                        var html = '';
-                        data.forEach(comment => {
-                            html += `
+function loadComments(postId) {
+    fetch(`GetComments.aspx?postId=${postId}`)
+        .then(response => response.json())
+        .then(data => {
+            var commentsList = document.getElementById(`commentsList_${postId}`);
+            if (!commentsList) return;
+                    
+            if (data.length === 0) {
+                commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
+            } else {
+                var html = '';
+                data.forEach(comment => {
+                    html += `
                                 <div class="comment">
                                     <div class="comment-avatar"><i class="fas fa-user"></i></div>
                                     <div class="comment-content">
@@ -903,70 +917,234 @@
                                         <div class="comment-time">${comment.date}</div>
                                     </div>
                                 </div>`;
-                        });
-                        commentsList.innerHTML = html;
-                    }
-                })
-                .catch(error => console.error('Error loading comments:', error));
-        }
-
-        function toggleLike(btn, postId) {
-            fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.liked) {
-                        btn.classList.add('liked');
-                        btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                    } else {
-                        btn.classList.remove('liked');
-                        btn.innerHTML = '<i class="far fa-heart"></i> Like';
-                    }
-                    var card = btn.closest('.announcement-card');
-                    if (card) {
-                        var likeCountSpan = card.querySelector('.like-count');
-                        if (likeCountSpan) likeCountSpan.innerText = data.likeCount;
-                    }
-                })
-                .catch(error => console.error('Error toggling like:', error));
-        }
-
-        function toggleLikeFromStats(span, postId) {
-            var card = span.closest('.announcement-card');
-            if (card) {
-                var likeBtn = card.querySelector('.action-btn:first-child');
-                if (likeBtn) toggleLike(likeBtn, postId);
+                });
+                commentsList.innerHTML = html;
             }
-        }
+        })
+        .catch(error => console.error('Error loading comments:', error));
+}
 
-        function sharePost(postId) {
-            fetch(`ShareAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(() => showToast('Shared successfully!'))
-                .catch(() => showToast('Error sharing'));
-        }
+function toggleLike(btn, postId) {
+    fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.liked) {
+                btn.classList.add('liked');
+                btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
+            } else {
+                btn.classList.remove('liked');
+                btn.innerHTML = '<i class="far fa-heart"></i> Like';
+            }
+            var card = btn.closest('.announcement-card');
+            if (card) {
+                var likeCountSpan = card.querySelector('.like-count');
+                if (likeCountSpan) likeCountSpan.innerText = data.likeCount;
+            }
+        })
+        .catch(error => console.error('Error toggling like:', error));
+}
 
-        function togglePinTop(btn, postId) {
-            fetch(`PinAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.pinned) {
-                        btn.classList.add('pinned');
-                        showToast('Announcement pinned!');
-                    } else {
-                        btn.classList.remove('pinned');
-                        showToast('Announcement unpinned!');
+function toggleLikeFromStats(span, postId) {
+    var card = span.closest('.announcement-card');
+    if (card) {
+        var likeBtn = card.querySelector('.action-btn:first-child');
+        if (likeBtn) toggleLike(likeBtn, postId);
+    }
+}
+
+function sharePost(postId) {
+    fetch(`ShareAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(() => showToast('Shared successfully!'))
+        .catch(() => showToast('Error sharing'));
+}
+
+function togglePinTop(btn, postId) {
+    fetch(`PinAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.pinned) {
+                btn.classList.add('pinned');
+                showToast('Announcement pinned!');
+            } else {
+                btn.classList.remove('pinned');
+                showToast('Announcement unpinned!');
+            }
+            setTimeout(() => location.reload(), 500);
+        })
+        .catch(() => showToast('Error toggling pin'));
+}
+
+function addComment(btn, postId) {
+    var input = document.getElementById(`commentInput_${postId}`);
+    if (!input) return;
+    var commentText = input.value.trim();
+    if (commentText === '') { showToast('Please enter a comment!'); return; }
+
+    fetch('Comments.aspx?action=add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: postId, comment: commentText })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadComments(postId);
+                var card = document.querySelector(`.announcement-card[data-post-id='${postId}']`);
+                if (card) {
+                    var commentCountSpan = card.querySelector('.comment-count');
+                    if (commentCountSpan) {
+                        var currentCount = parseInt(commentCountSpan.innerText);
+                        commentCountSpan.innerText = currentCount + 1;
                     }
-                    setTimeout(() => location.reload(), 500);
-                })
-                .catch(() => showToast('Error toggling pin'));
+                }
+                input.value = '';
+                showToast('Comment posted!');
+            } else {
+                showToast('Error posting comment: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error posting comment:', error);
+            showToast('Error posting comment');
+        });
+}
+
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showToast(message) {
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a3a5c;color:white;padding:12px 24px;border-radius:30px;z-index:9999;';
+    toast.innerHTML = message;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+}
+
+function filterCategory(category) {
+    var announcements = document.querySelectorAll('.announcement-card');
+    var filterLabel = document.getElementById('activeFilterLabel');
+    announcements.forEach(function(ann) {
+        if (category === 'All' || ann.getAttribute('data-category') === category) {
+            ann.style.display = 'block';
+        } else {
+            ann.style.display = 'none';
         }
+    });
+    if (filterLabel) filterLabel.innerText = category;
+    var dropdown = document.getElementById('categoryDropdown');
+    if (dropdown) dropdown.style.maxHeight = '0px';
+    var trigger = document.querySelector('[onclick*="toggleDropdown(\'categoryDropdown\'"]');
+    if (trigger) trigger.classList.remove('open');
+}
 
-        function addComment(btn, postId) {
-            var input = document.getElementById(`commentInput_${postId}`);
-            if (!input) return;
-            var commentText = input.value.trim();
-            if (commentText === '') { showToast('Please enter a comment!'); return; }
+function searchAnnouncements() {
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    var announcements = document.querySelectorAll('.announcement-card');
+    var found = false;
 
-            fetch('Comments.aspx?action=add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body
+    announcements.forEach(function(ann) {
+        var titleElem = ann.querySelector('.post-title');
+        var contentElem = ann.querySelector('.post-text');
+        var title = titleElem ? titleElem.innerText.toLowerCase() : '';
+        var content = contentElem ? contentElem.innerText.toLowerCase() : '';
+
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            ann.style.display = 'block';
+            found = true;
+        } else {
+            ann.style.display = 'none';
+        }
+    });
+
+    if (!found && searchTerm !== '') {
+        showToast('No announcements found matching "' + searchTerm + '"');
+    }
+}
+
+var searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchAnnouncements();
+        }
+    });
+}
+
+function markNotificationRead(element, notificationId) {
+    fetch(`MarkNotificationRead.aspx?id=${notificationId}`, { method: 'POST' })
+        .then(() => {
+            element.classList.remove('unread');
+            var dot = element.querySelector('.notification-dot');
+            if (dot) dot.remove();
+            updateBadgeCount();
+        });
+}
+
+function markAllRead() {
+    fetch('MarkNotificationsRead.aspx', { method: 'POST' })
+        .then(() => {
+            var notifications = document.querySelectorAll('.notification-item.unread');
+            notifications.forEach(function(notif) {
+                notif.classList.remove('unread');
+                var dot = notif.querySelector('.notification-dot');
+                if (dot) dot.remove();
+            });
+            updateBadgeCount();
+            showToast('All notifications marked as read');
+        });
+}
+
+function updateBadgeCount() {
+    var unreadCount = document.querySelectorAll('.notification-item.unread').length;
+    var badge = document.getElementById('notificationBadge');
+    if (badge) {
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+}
+
+function toggleTheme(item) {
+    var toggle = item.querySelector('.toggle-switch');
+    if (toggle) toggle.classList.toggle('active');
+    document.body.classList.toggle('dark-mode');
+    var theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+    localStorage.setItem('campusTheme', theme);
+}
+
+function openAboutModal() {
+    var modal = document.getElementById('aboutModal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAboutModal() {
+    var modal = document.getElementById('aboutModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        window.location.href = 'login.aspx';
+    }
+}
+
+// Load stored theme
+function applyStoredTheme() {
+    var savedTheme = localStorage.getItem('campusTheme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        var themeToggle = document.querySelector('.toggle-switch');
+        if (themeToggle) themeToggle.classList.add('active');
+    }
+}
+applyStoredTheme();
+    </script>
+</body>
+</html>

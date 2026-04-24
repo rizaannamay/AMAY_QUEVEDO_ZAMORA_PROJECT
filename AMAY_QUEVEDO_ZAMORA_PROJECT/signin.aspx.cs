@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
+<<<<<<< HEAD
         private readonly SqlConnection con = new SqlConnection(
         @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
 
+=======
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -23,94 +24,21 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             if (!ValidateInputs())
                 return;
 
+            // Gather inputs (simulating what would go to the DB)
             string fullName = txtFullName.Text.Trim();
             string email = txtEmail.Text.Trim();
             string username = txtUsername.Text.Trim();
             string password = txtPassword.Text.Trim();
             string role = rbStudent.Checked ? "Student" : "Admin";
 
-            try
-            {
-                // Open connection
-                con.Open();
+            // --- SIMULATED SUCCESS ---
+            // Since SQL is detached, we skip the Database Insert command.
+            // We just show a success message and perhaps clear the form.
 
-                // Create Users table if it doesn't exist
-                string createTable = @"
-                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Users')
-                    BEGIN
-                        CREATE TABLE Users (
-                            UserId INT PRIMARY KEY IDENTITY(1,1),
-                            FullName NVARCHAR(100) NOT NULL,
-                            Email NVARCHAR(100) NOT NULL UNIQUE,
-                            Username NVARCHAR(50) NOT NULL UNIQUE,
-                            Password NVARCHAR(255) NOT NULL,
-                            Role NVARCHAR(20) NOT NULL,
-                            IsActive BIT DEFAULT 1,
-                            CreatedDate DATETIME DEFAULT GETDATE()
-                        )
-                    END";
-                SqlCommand createCmd = new SqlCommand(createTable, con);
-                createCmd.ExecuteNonQuery();
+            ShowMessage($"Success! Account for {username} created (Simulated).", true);
 
-                // Check if user already exists
-                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username OR Email = @Email";
-                SqlCommand checkCmd = new SqlCommand(checkQuery, con);
-                checkCmd.Parameters.AddWithValue("@Username", username);
-                checkCmd.Parameters.AddWithValue("@Email", email);
-                int existingCount = Convert.ToInt32(checkCmd.ExecuteScalar());
-
-                if (existingCount > 0)
-                {
-                    con.Close();
-                    ShowMessage("Username or email already exists. Please try another.", false);
-                    return;
-                }
-
-                // Insert new user
-                string insertQuery = @"INSERT INTO Users (FullName, Email, Username, Password, Role, IsActive, CreatedDate)
-                                       VALUES (@FullName, @Email, @Username, @Password, @Role, 1, @CreatedDate)";
-                SqlCommand insertCmd = new SqlCommand(insertQuery, con);
-                insertCmd.Parameters.AddWithValue("@FullName", fullName);
-                insertCmd.Parameters.AddWithValue("@Email", email);
-                insertCmd.Parameters.AddWithValue("@Username", username);
-                insertCmd.Parameters.AddWithValue("@Password", password);
-                insertCmd.Parameters.AddWithValue("@Role", role);
-                insertCmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                insertCmd.ExecuteNonQuery();
-
-                con.Close();
-
-                // Success!
-                ShowMessage("Account created successfully! Redirecting to login...", true);
-                ClearForm();
-
-                // Redirect to login page after 2 seconds
-                ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
-                    "setTimeout(function(){ window.location.href='login.aspx'; }, 2000);", true);
-            }
-            catch (SqlException sqlEx)
-            {
-                if (con.State == ConnectionState.Open) con.Close();
-
-                // Specific SQL error messages
-                if (sqlEx.Message.Contains("Login failed"))
-                {
-                    ShowMessage("Database login failed. Please check your database connection.", false);
-                }
-                else if (sqlEx.Message.Contains("Cannot open database"))
-                {
-                    ShowMessage("Database not found. Please check your database name.", false);
-                }
-                else
-                {
-                    ShowMessage("Database error: " + sqlEx.Message, false);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (con.State == ConnectionState.Open) con.Close();
-                ShowMessage("Error: " + ex.Message, false);
-            }
+            // Optional: Automatically redirect to login after a short delay or via a link
+            // Response.Redirect("login.aspx"); 
         }
 
         private bool ValidateInputs()
@@ -182,7 +110,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void ShowMessage(string message, bool isSuccess)
         {
             lblMessage.Text = message;
-            lblMessage.CssClass = isSuccess ? "success-message" : "error-message";
+            // Ensure these CSS classes exist in your stylesheet for the red/green colors
+            lblMessage.CssClass = isSuccess ? "text-success" : "text-danger";
             lblMessage.Visible = true;
         }
 
