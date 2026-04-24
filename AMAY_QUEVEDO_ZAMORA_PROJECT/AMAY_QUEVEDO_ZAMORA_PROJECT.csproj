@@ -72,16 +72,13 @@
   <ItemGroup>
     <Content Include="bg.jpg" />
     <Content Include="ctu-logo.png" />
-<<<<<<< HEAD
     <Content Include="SearchDashboard.aspx" />
-=======
     <Content Include="Notifications.aspx" />
     <Content Include="Pinned.aspx" />
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
+    <Content Include="Student.aspx" />
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
     <Content Include="signin.aspx" />
-    <Content Include="Student.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>

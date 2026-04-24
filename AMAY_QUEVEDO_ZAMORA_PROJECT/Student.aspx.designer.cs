@@ -24,29 +24,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-<<<<<<< HEAD
-        /// searchInput control.
-=======
         /// btnViewPinned control.
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
-        protected global::System.Web.UI.WebControls.TextBox searchInput;
-
-        /// <summary>
-        /// homeLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink homeLink;
-=======
         protected global::System.Web.UI.WebControls.LinkButton btnViewPinned;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
     }
 }

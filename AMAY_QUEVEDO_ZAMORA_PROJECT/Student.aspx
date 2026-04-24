@@ -1,19 +1,13 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+﻿
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<<<<<<< HEAD
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Announcement - Student Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-=======
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Student Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
     <style>
         * {
             margin: 0;
@@ -21,32 +15,6 @@
             box-sizing: border-box;
         }
 
-<<<<<<< HEAD
-       body {
-            background-image: url('bg.jpg');
-            background-size: cover;
-            transition: background 0.5s ease-in-out;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        /* Ensure the main container doesn't have a solid color blocking the image */
-        .main-content, .announcement-board {
-            background: transparent !important;
-        }
-
-        /* Glassmorphism effect for your cards so the image peeks through */
-        .card, .announcement-card {
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-        /* Header */
-        .header {
-            background: white;
-            border-radius: 24px;
-            padding: 12px 30px;
-=======
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -98,7 +66,6 @@
          .app-shell {
             height: 100%;
             height: 100vh;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -372,56 +339,6 @@
         .profile-name {
             font-size: 18px;
             font-weight: 700;
-<<<<<<< HEAD
-            color: #1a3a5c;
-        }
-
-        .profile-email {
-            font-size: 12px;
-            color: #7a8e9e;
-            margin-top: 5px;
-        }
-
-        /* Menu Items */
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 22px;
-            cursor: pointer;
-            width: 100%;
-            border: none;
-            background: none;
-            text-align: left;
-            font-size: 14px;
-            color: #2c3e50;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-
-        .menu-item:hover {
-            background: #f8fafc;
-            color: #1a3a5c;
-        }
-
-        .menu-item.active {
-            background: #e8f0fe;
-            color: #1a3a5c;
-            border-left-color: #1a3a5c;
-        }
-
-        .dropdown-icon {
-            margin-left: auto;
-            font-size: 12px;
-            color: #b0c4de;
-        }
-
-        /* Dropdown Content */
-        .dropdown-content {
-            margin-left: 45px;
-            display: none;
-=======
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
         .menu-item,
@@ -430,40 +347,7 @@
             color: var(--page-text);
         }
 
-<<<<<<< HEAD
-        .dropdown-item:hover {
-            background: #f8fafc;
-            color: #1a3a5c;
-        }
-
-        /* Pinned Items */
-        .pinned-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 22px;
-            color: #2c3e50;
-            font-size: 13px;
-            border-bottom: 1px solid #eef2f6;
-        }
-
-        .pinned-item i {
-            color: #fbbf24;
-            margin-right: 10px;
-        }
-
-        .remove-pin {
-            color: #dc2626;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        /* Settings Items */
-=======
         .menu-item,
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         .settings-item {
             display: flex;
             align-items: center;
@@ -557,9 +441,6 @@
             left: 24px;
         }
 
-<<<<<<< HEAD
-        /* Announcement Cards */
-=======
         .main-panel {
             height: 100%;
             min-width: 0;
@@ -576,7 +457,6 @@
             color: var(--primary);
         }
 
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         .announcement-board {
             flex: 1 1 auto;
             min-height: 0;
@@ -588,23 +468,9 @@
         .announcement-card {
             background: var(--surface-strong);
             border-radius: 20px;
-            padding: 22px;
             margin-bottom: 20px;
             border: 1px solid rgba(26, 58, 92, 0.08);
             transition: all 0.3s;
-<<<<<<< HEAD
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-
-        .announcement-card:hover {
-            transform: translateX(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-color: rgba(26,58,92,0.2);
-        }
-
-        .badge-group {
-            margin-bottom: 12px;
-=======
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             overflow: hidden;
         }
@@ -701,38 +567,15 @@
         .modal-text {
             color: var(--page-text);
             line-height: 1.5;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 8px;
+        .post-image {
+            margin-top: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 100%;
         }
 
-<<<<<<< HEAD
-        .badge-exam { background: #e3f2fd; color: #1976d2; }
-        .badge-suspension { background: #ffebee; color: #c62828; }
-        .badge-event { background: #e8f5e9; color: #2e7d32; }
-        .badge-pinned { background: #fff3e0; color: #e65100; }
-
-        .announcement-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1a3a5c;
-            margin-bottom: 8px;
-        }
-
-        .announcement-meta {
-            display: flex;
-            gap: 20px;
-            font-size: 12px;
-            color: #7a8e9e;
-            margin-bottom: 12px;
-=======
         .post-image img {
             width: 100%;
             max-height: 300px;
@@ -749,59 +592,41 @@
             border-bottom: 1px solid #eef2f6;
             color: var(--muted);
             font-size: 13px;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
-        .announcement-content {
-            color: #2c3e50;
-            line-height: 1.5;
-            margin-bottom: 16px;
+        .post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
-<<<<<<< HEAD
-=======
         .post-stats span:hover {
             color: var(--primary);
         }
 
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         .action-buttons {
             display: flex;
-            gap: 15px;
-            padding-top: 12px;
-            border-top: 1px solid #eef2f6;
+            gap: 5px;
+            padding: 8px 22px;
         }
 
         .action-btn {
-            background: #f8fafc;
+            flex: 1;
+            background: none;
             border: none;
-            padding: 6px 16px;
-            border-radius: 30px;
+            padding: 10px;
+            border-radius: 10px;
             cursor: pointer;
-<<<<<<< HEAD
-            font-size: 13px;
-            color: #5a6e7c;
-=======
             font-size: 14px;
             color: var(--muted);
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
         }
 
-<<<<<<< HEAD
-        .action-btn:hover {
-            background: #e8f0fe;
-            color: #1a3a5c;
-        }
-
-        /* Comments Section */
-        .comments-section {
-            margin-top: 16px;
-            padding-top: 16px;
-=======
         .action-btn.liked {
             color: #dc2626;
         }
@@ -812,7 +637,6 @@
 
         .comments-section {
             padding: 0 22px 18px;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
             border-top: 1px solid #eef2f6;
             display: none;
         }
@@ -824,7 +648,7 @@
         .comment-input {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
+            margin: 15px 0;
         }
 
         .comment-input input {
@@ -835,29 +659,13 @@
             border-radius: 30px;
             outline: none;
             font-size: 13px;
-<<<<<<< HEAD
-        }
-
-        .comment-input button {
-            padding: 10px 22px;
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            color: white;
-=======
             color: var(--page-text);
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
         .comment {
-            padding: 8px 0;
+            padding: 10px 0;
             font-size: 13px;
             border-bottom: 1px solid #eef2f6;
-<<<<<<< HEAD
-            color: #2c3e50;
-=======
             display: flex;
             gap: 10px;
         }
@@ -878,16 +686,11 @@
             color: var(--primary);
             font-weight: bold;
             flex-shrink: 0;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
         .comment-author {
             font-weight: bold;
-<<<<<<< HEAD
-            color: #1a3a5c;
-=======
             color: var(--primary);
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
         .no-comments {
@@ -1019,24 +822,6 @@
             z-index: 50;
         }
 
-<<<<<<< HEAD
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 50px;
-            color: #b0c4de;
-        }
-
-        .empty-state i {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-=======
         .sidebar.collapsed {
             width: 88px;
         }
@@ -1138,7 +923,6 @@
             html,
             body {
                 overflow: auto;
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
             }
 
             .app-shell,
@@ -1192,106 +976,7 @@
     </style>
 </head>
 <body>
-    <div class="bubbles"></div>
-
     <form id="form1" runat="server">
-<<<<<<< HEAD
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <i class="fas fa-university"></i> Campus Announcement
-            </div>
-            <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search announcements..." />
-                </div>
-                <button class="search-btn" onclick="searchAnnouncements()"><i class="fas fa-search"></i> Search</button>
-            </div>
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <!-- Notification Bell -->
-                <div class="notification-bell" onclick="toggleNotificationDropdown()">
-                    <i class="fas fa-bell bell-icon"></i>
-                    <span id="notificationBadge" class="badge-red">3</span>
-                </div>
-                <div class="user-info">
-                    <div class="avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="user-details">
-                        <div class="user-name">John Dela Cruz</div>
-                        <div class="user-role">Student</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Notification Dropdown -->
-        <div id="notificationDropdown" class="notification-dropdown">
-            <div class="notification-header">
-                <span><i class="fas fa-bell"></i> Notifications</span>
-                <button onclick="markAllRead()">Mark all read</button>
-            </div>
-            <div class="notification-list">
-                <div class="notification-item unread" onclick="markRead(this)">
-                    <div class="notification-dot"></div>
-                    <div class="notification-text">📝 New exam schedule announced</div>
-                    <div class="notification-time">2 hours ago</div>
-                </div>
-                <div class="notification-item unread" onclick="markRead(this)">
-                    <div class="notification-dot"></div>
-                    <div class="notification-text">⚠️ Class suspension due to typhoon</div>
-                    <div class="notification-time">1 day ago</div>
-                </div>
-                <div class="notification-item" onclick="markRead(this)">
-                    <div class="notification-text">🎉 Foundation Week activities posted</div>
-                    <div class="notification-time">3 days ago</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Main Layout -->
-        <div class="main-layout">
-            <!-- LEFT SIDEBAR -->
-            <aside>
-                <div class="card">
-                    <!-- Profile -->
-                    <div class="profile-section">
-                        <div class="profile-avatar">
-                            <i class="fas fa-user-graduate"></i>
-                        </div>
-                        <div class="profile-name">John Dela Cruz</div>
-                        <div class="profile-email">john.delacruz@ctu.edu.ph</div>
-                    </div>
-
-                    <!-- Category Dropdown -->
-                    <div class="card-header">
-                        <i class="fas fa-filter"></i> Filters
-                    </div>
-                    <div class="menu-item" onclick="toggleDropdown('categoryDropdown')">
-                        <i class="fas fa-layer-group"></i> Filter by Category
-                        <i class="fas fa-chevron-down dropdown-icon"></i>
-                    </div>
-                    <div id="categoryDropdown" class="dropdown-content">
-                        <button class="dropdown-item" onclick="filterCategory('All')">📋 All Announcements</button>
-                        <button class="dropdown-item" onclick="filterCategory('Exam')">📝 Exam Schedule</button>
-                        <button class="dropdown-item" onclick="filterCategory('Suspension')">⚠️ Class Suspension</button>
-                        <button class="dropdown-item" onclick="filterCategory('Event')">🎉 Campus Events</button>
-                    </div>
-
-                    <!-- Pinned Items -->
-                    <div class="card-header" style="margin-top: 5px;">
-                        <i class="fas fa-thumbtack"></i> Pinned Items
-                    </div>
-                    <div id="pinnedContainer">
-                        <div class="pinned-item">
-                            <div><i class="fas fa-thumbtack"></i> Final Exam Schedule</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
-                        </div>
-                        <div class="pinned-item">
-                            <div><i class="fas fa-thumbtack"></i> Class Suspension</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
-=======
         <div class="app-shell">
             <div class="header">
                 <div class="logo">
@@ -1318,33 +1003,11 @@
                         <div class="user-details">
                             <div class="user-name">John Dela Cruz</div>
                             <div class="user-role">Student</div>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                         </div>
                     </div>
                 </div>
             </div>
 
-<<<<<<< HEAD
-                    <!-- Settings -->
-                    <div class="card-header" style="margin-top: 5px;">
-                        <i class="fas fa-cog"></i> Settings
-                    </div>
-                    
-                    <!-- Dark/Light Mode -->
-                    <div class="settings-item" onclick="toggleTheme(this)">
-                        <i class="fas fa-moon"></i> Dark / Light Mode
-                        <div class="toggle-switch" id="themeToggle"></div>
-                    </div>
-                    
-                    <!-- About Us -->
-                    <div class="settings-item" onclick="openAboutModal()">
-                        <i class="fas fa-info-circle"></i> About Us
-                    </div>
-                    
-                    <!-- Logout -->
-                    <div class="settings-item" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-=======
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
                     <a href="Notifications.aspx">
@@ -1366,7 +1029,6 @@
                     <div class="notification-item" onclick="markRead(this)">
                         <div class="notification-text">Foundation Week activities posted</div>
                         <div class="notification-time">3 days ago</div>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                     </div>
                 </div>
             </div>
@@ -1432,15 +1094,7 @@
                         <span class="header-filter">Showing: <span id="activeFilterLabel">All</span></span>
                     </div>
 
-                    <!-- Announcements Container -->
                     <div id="announcementsContainer" class="announcement-board">
-<<<<<<< HEAD
-                        <!-- Announcement 1 - Exam -->
-                        <div class="announcement-card" data-category="Exam">
-                            <div class="badge-group">
-                                <span class="badge badge-exam">Exam</span>
-                                <span class="badge badge-pinned"><i class="fas fa-thumbtack"></i> PINNED</span>
-=======
                         <div class="announcement-card" data-category="Exam" data-post-id="1">
                             <div class="post-header">
                                 <div class="post-header-left">
@@ -1457,25 +1111,25 @@
                                     </div>
                                 </div>
                                 <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
-                            <div class="announcement-title">Final Exam Schedule</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> December 15-20, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">Final Exam Schedule</div>
+                                <div class="post-text">
+                                    The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">24</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">2</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-<<<<<<< HEAD
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Unpin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (2)</button>
-=======
                                 <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
                                 <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                 <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -1483,19 +1137,26 @@
                                     <button type="button" onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
-                                    <div class="comment"><span class="comment-author">Juan Dela Cruz:</span> Thank you for the update!</div>
-                                    <div class="comment"><span class="comment-author">Maria Santos:</span> What time does the exam start?</div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">Juan Dela Cruz</span>
+                                            <div class="comment-text">Thank you for the update!</div>
+                                            <div class="comment-time">December 8, 2024</div>
+                                        </div>
+                                    </div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">Maria Santos</span>
+                                            <div class="comment-text">What time does the exam start?</div>
+                                            <div class="comment-time">December 9, 2024</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <!-- Announcement 2 - Suspension -->
-                        <div class="announcement-card" data-category="Suspension">
-                            <div class="badge-group">
-                                <span class="badge badge-suspension">Suspension</span>
-                                <span class="badge badge-pinned"><i class="fas fa-thumbtack"></i> PINNED</span>
-=======
                         <div class="announcement-card" data-category="Suspension" data-post-id="2">
                             <div class="post-header">
                                 <div class="post-header-left">
@@ -1512,25 +1173,25 @@
                                     </div>
                                 </div>
                                 <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
-                            <div class="announcement-title">Class Suspension - Typhoon</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> November 25, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">Class Suspension - Typhoon Enteng</div>
+                                <div class="post-text">
+                                    Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">56</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">1</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-<<<<<<< HEAD
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Unpin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (1)</button>
-=======
                                 <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
                                 <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                 <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -1538,17 +1199,18 @@
                                     <button type="button" onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
-                                    <div class="comment"><span class="comment-author">John Santos:</span> Stay safe everyone!</div>
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">John Santos</span>
+                                            <div class="comment-text">Stay safe everyone!</div>
+                                            <div class="comment-time">November 24, 2024</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-<<<<<<< HEAD
-                        <!-- Announcement 3 - Event -->
-                        <div class="announcement-card" data-category="Event">
-                            <div class="badge-group">
-                                <span class="badge badge-event">Event</span>
-=======
                         <div class="announcement-card" data-category="Event" data-post-id="3">
                             <div class="post-header">
                                 <div class="post-header-left">
@@ -1565,25 +1227,25 @@
                                     </div>
                                 </div>
                                 <button type="button" class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
-                            <div class="announcement-title">University Foundation Week</div>
-                            <div class="announcement-meta">
-                                <span><i class="far fa-calendar-alt"></i> December 1-5, 2024</span>
-                                <span><i class="fas fa-user"></i> Admin</span>
+                            <div class="post-content">
+                                <div class="post-title">University Foundation Week 2024</div>
+                                <div class="post-text">
+                                    Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert featuring local artists.
+                                </div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
+                                </div>
                             </div>
-                            <div class="announcement-content">
-                                Join us for the annual University Foundation Week celebration. Activities include parade, talent show, and sportsfest.
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">89</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">0</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-<<<<<<< HEAD
-                                <button class="action-btn" onclick="togglePin(this)"><i class="fas fa-thumbtack"></i> Pin</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="fas fa-comment"></i> Comment (0)</button>
-=======
                                 <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
                                 <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                 <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
@@ -1611,15 +1273,7 @@
                     Campus Connect is a centralized web-based announcement system for Cebu Technological University.
                     It allows students to access official announcements, exam schedules, class suspensions, and campus events in one place.
                 </div>
-<<<<<<< HEAD
-                <div class="modal-text">
-                    <strong>Version:</strong> 1.0<br>
-                    <strong>Developed for:</strong> CTU Students & Faculty
-                </div>
-                <button class="modal-close" onclick="closeAboutModal()">Close</button>
-=======
                 <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
             </div>
         </div>
     </form>
@@ -1657,24 +1311,17 @@
         document.addEventListener('click', function (e) {
             var bell = document.querySelector('.notification-bell');
             var dropdown = document.getElementById('notificationDropdown');
-            if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
+            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
                 dropdown.classList.remove('show');
             }
         });
 
-<<<<<<< HEAD
-        // Toggle Comments
-=======
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         function toggleComments(btn) {
             var card = btn.closest('.announcement-card');
             var commentsSection = card.querySelector('.comments-section');
             commentsSection.classList.toggle('show');
         }
 
-<<<<<<< HEAD
-        // Filter Category
-=======
         function scrollToComments(element) {
             var card = element.closest('.announcement-card');
             var commentsSection = card.querySelector('.comments-section');
@@ -1806,7 +1453,6 @@
             }, 2000);
         }
 
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         function filterCategory(category) {
             var announcements = document.querySelectorAll('.announcement-card');
             var filterLabel = document.getElementById('activeFilterLabel');
@@ -1834,8 +1480,8 @@
             var found = false;
 
             announcements.forEach(function (ann) {
-                var title = ann.querySelector('.announcement-title').innerText.toLowerCase();
-                var content = ann.querySelector('.announcement-content').innerText.toLowerCase();
+                var title = ann.querySelector('.post-title').innerText.toLowerCase();
+                var content = ann.querySelector('.post-text').innerText.toLowerCase();
 
                 if (title.includes(searchTerm) || content.includes(searchTerm)) {
                     ann.style.display = 'block';
@@ -1846,58 +1492,10 @@
             });
 
             if (!found && searchTerm !== '') {
-                alert('No announcements found matching "' + searchTerm + '"');
+                showToast('No announcements found matching "' + searchTerm + '"');
             }
         }
 
-<<<<<<< HEAD
-        // Enter key search
-        document.getElementById('searchInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                searchAnnouncements();
-            }
-        });
-
-        // Toggle Pin
-        function togglePin(btn) {
-            if (btn.innerHTML.includes('Pin')) {
-                btn.innerHTML = '<i class="fas fa-thumbtack"></i> Unpin';
-                alert('Announcement pinned!');
-            } else {
-                btn.innerHTML = '<i class="fas fa-thumbtack"></i> Pin';
-                alert('Announcement unpinned!');
-            }
-        }
-
-        // Add Comment
-        function addComment(btn) {
-            var input = btn.parentElement.querySelector('input');
-            var commentText = input.value.trim();
-
-            if (commentText !== '') {
-                var commentsList = btn.parentElement.parentElement.querySelector('.comments-list');
-                var noComments = commentsList.querySelector('.no-comments');
-
-                if (noComments) {
-                    noComments.remove();
-                }
-
-                var newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = '<span class="comment-author">You:</span> ' + commentText;
-                commentsList.appendChild(newComment);
-                input.value = '';
-            }
-        }
-
-        // Remove Pin
-        function removePin(btn) {
-            btn.parentElement.remove();
-            alert('Item removed from pinned!');
-        }
-
-        // Mark Notification Read
-=======
         var searchInput = document.getElementById('searchInput');
         if (searchInput) {
             searchInput.addEventListener('keypress', function (e) {
@@ -1908,7 +1506,6 @@
             });
         }
 
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         function markRead(item) {
             item.classList.remove('unread');
             var dot = item.querySelector('.notification-dot');
@@ -1928,53 +1525,26 @@
                 }
             });
             updateBadgeCount();
+            showToast('All notifications marked as read');
         }
 
         function updateBadgeCount() {
             var unreadCount = document.querySelectorAll('.notification-item.unread').length;
             var badge = document.getElementById('notificationBadge');
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount;
-                badge.style.display = 'inline-block';
-            } else {
-                badge.style.display = 'none';
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
             }
         }
 
         function toggleTheme(item) {
             var toggle = item.querySelector('.toggle-switch');
             toggle.classList.toggle('active');
-<<<<<<< HEAD
-            var body = document.body;
-
-            if (body.classList.contains('dark-mode')) {
-                // Switch to LIGHT MODE
-                body.classList.remove('dark-mode');
-                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
-                body.style.backgroundSize = "cover";
-                body.style.backgroundAttachment = "fixed";
-
-                // Update card backgrounds to be semi-transparent white
-                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                    el.style.background = 'rgba(255, 255, 255, 0.7)';
-                    el.style.color = '#1a2a3a';
-                });
-            } else {
-                // Switch to DARK MODE
-                body.classList.add('dark-mode');
-                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
-                body.style.backgroundSize = "cover";
-                body.style.backgroundAttachment = "fixed";
-
-                // Update card backgrounds to be semi-transparent dark
-                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                    el.style.background = 'rgba(42, 42, 42, 0.7)';
-                    el.style.color = '#e4e6eb';
-                });
-            }
-=======
             document.body.classList.toggle('dark-mode');
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
         }
 
         function openAboutModal() {
@@ -1993,3 +1563,4 @@
     </script>
 </body>
 </html>
+

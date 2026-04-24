@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect - Student Portal</title>
+    <title>Campus Connect - Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
@@ -16,7 +16,7 @@
 
         /* Normal Mode (Light) */
         body {
-            background-image: url('wbg.jpg'); /* Your light background */
+            background-image: url('wbg.jpg');
             background-size: cover;
             background-attachment: fixed;
             transition: all 0.3s ease;
@@ -24,13 +24,14 @@
 
         /* Dark Mode State */
         body.dark-mode {
-            background-image: url('bg.jpg') !important; /* Your dark background */
+            background-image: url('bg.jpg') !important;
             color: #ffffff;
         }
 
-        /* Glassmorphism for Teacher Cards in Dark Mode */
+        /* Glassmorphism for Cards in Dark Mode */
         body.dark-mode .card, 
-        body.dark-mode .announcement-input-container {
+        body.dark-mode .announcement-input-container,
+        body.dark-mode .create-post-card {
             background: rgba(42, 42, 42, 0.85) !important;
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #e4e6eb;
@@ -40,6 +41,7 @@
             background: rgba(30, 30, 30, 0.9);
             color: white;
         }
+
         /* Header */
         .header {
             background: white;
@@ -51,6 +53,8 @@
             margin-bottom: 30px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             border: 1.5px solid rgba(26,58,92,0.25);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo {
@@ -70,57 +74,133 @@
             margin-right: 8px;
         }
 
+        /* Modern Search Bar Styles */
         .search-container {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
         }
 
-        .search-box {
-            background: #f8fafc;
-            border-radius: 30px;
-            padding: 10px 18px;
-            width: 280px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1.5px solid rgba(26,58,92,0.2);
-        }
-
-        .search-box input {
-            background: none;
-            border: none;
-            outline: none;
+        .modern-search-wrapper {
             width: 100%;
-            font-size: 14px;
-            color: #1a2a3a;
         }
 
-        .search-box input::placeholder {
-            color: #b0c4de;
+        .modern-search-bar {
+            background: #1A3A5C;
+            border-radius: 56px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1.5px solid rgba(99, 102, 241, 0.4);
+            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            backdrop-filter: blur(10px);
         }
 
-        .search-box i {
-            color: #1a3a5c;
+        .modern-search-bar:hover {
+            border-color: rgba(99, 102, 241, 0.7);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
         }
 
-        .search-btn {
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+        .modern-search-bar:focus-within {
+            border-color: #6366f1;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), 0 0 0 3px rgba(99, 102, 241, 0.1);
+            transform: scale(1.02);
+        }
+
+        .search-icon-wrapper {
+            padding: 12px 0 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(165, 180, 252, 0.8);
+            transition: color 0.3s ease;
+        }
+
+        .modern-search-bar:focus-within .search-icon-wrapper i {
+            color: #818cf8;
+        }
+
+        .search-icon-wrapper i {
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .modern-search-input {
+            flex: 1;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            padding: 14px 0;
+            font-size: 15px;
+            color: #ffffff !important;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            width: 100%;
+        }
+
+        .modern-search-input::placeholder {
+            color: rgba(165, 180, 252, 0.5);
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .modern-search-input:focus {
+            box-shadow: none !important;
+            outline: none !important;
+            background: transparent !important;
+        }
+
+        .modern-search-btn {
+            background: linear-gradient(135deg, #4f46e5, #6366f1);
             border: none;
-            border-radius: 30px;
-            padding: 10px 22px;
+            border-radius: 48px;
+            padding: 10px 28px;
+            margin: 4px;
             color: white;
             font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
         }
 
-        .search-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(26,58,92,0.2);
+        .modern-search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6366f1, #818cf8);
+            transition: left 0.3s ease;
+            z-index: -1;
         }
 
-        /* Post Announcement Button - Same as search button */
+        .modern-search-btn:hover::before {
+            left: 0;
+        }
+
+        .modern-search-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .modern-search-btn:active {
+            transform: translateY(1px);
+        }
+
+        body.dark-mode .modern-search-bar {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95));
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        /* Post Announcement Button */
         .post-announcement-btn {
             background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
             border: none;
@@ -143,10 +223,6 @@
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26,58,92,0.3);
             background: linear-gradient(135deg, #234f78, #3a6f94);
-        }
-
-        .post-announcement-btn:active {
-            transform: translateY(0);
         }
 
         /* Notification Bell */
@@ -208,7 +284,7 @@
             color: white;
             font-weight: bold;
         }
-       
+
         .user-details {
             color: #1a2a3a;
         }
@@ -284,7 +360,6 @@
             margin-top: 5px;
         }
 
-        /* Menu Items */
         .menu-item {
             display: flex;
             align-items: center;
@@ -312,7 +387,6 @@
             color: #b0c4de;
         }
 
-        /* Dropdown Content */
         .dropdown-content {
             margin-left: 45px;
             display: none;
@@ -336,7 +410,6 @@
             color: #1a3a5c;
         }
 
-        /* Pinned Dropdown Items */
         .pinned-item {
             display: flex;
             align-items: center;
@@ -347,15 +420,6 @@
             border-bottom: 1px solid #eef2f6;
         }
 
-        .pinned-item:last-child {
-            border-bottom: none;
-        }
-
-        .pinned-item i {
-            color: #fbbf24;
-            margin-right: 10px;
-        }
-
         .remove-pin {
             color: #dc2626;
             background: none;
@@ -364,7 +428,6 @@
             font-size: 12px;
         }
 
-        /* Settings Items */
         .settings-item {
             display: flex;
             align-items: center;
@@ -386,7 +449,6 @@
             color: #1a3a5c;
         }
 
-        /* Toggle Switch */
         .toggle-switch {
             width: 44px;
             height: 22px;
@@ -418,7 +480,7 @@
             left: 24px;
         }
 
-        /* Announcement Cards - Social Media Style */
+        /* Announcement Cards */
         .announcement-board {
             padding: 5px;
         }
@@ -438,7 +500,6 @@
             border-color: rgba(26,58,92,0.35);
         }
 
-        /* Post Header */
         .post-header {
             display: flex;
             align-items: center;
@@ -497,7 +558,6 @@
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
 
-        /* Pin Button Top Right */
         .pin-btn-top {
             background: none;
             border: none;
@@ -511,15 +571,10 @@
             height: 36px;
         }
 
-        .pin-btn-top:hover {
-            background: #f0f2f5;
-        }
-
         .pin-btn-top.pinned {
             color: #e65100;
         }
 
-        /* Post Content */
         .post-content {
             padding: 0 22px 16px 22px;
         }
@@ -537,21 +592,14 @@
             margin-bottom: 12px;
         }
 
-        .post-image {
-            margin-top: 12px;
-            border-radius: 16px;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
         .post-image img {
             width: 100%;
             max-height: 300px;
             object-fit: cover;
             border-radius: 16px;
+            margin-top: 12px;
         }
 
-        /* Post Stats */
         .post-stats {
             display: flex;
             gap: 20px;
@@ -569,11 +617,6 @@
             cursor: pointer;
         }
 
-        .post-stats span:hover {
-            color: #1a3a5c;
-        }
-
-        /* Action Buttons - Like, Comment, Share at Bottom */
         .action-buttons {
             display: flex;
             gap: 5px;
@@ -601,15 +644,6 @@
             color: #1a3a5c;
         }
 
-        .action-btn.liked {
-            color: #dc2626;
-        }
-
-        .action-btn.liked i {
-            font-weight: 900;
-        }
-
-        /* Comments Section */
         .comments-section {
             padding: 0 22px 18px 22px;
             border-top: 1px solid #eef2f6;
@@ -644,11 +678,6 @@
             cursor: pointer;
             font-weight: 600;
             color: white;
-            transition: all 0.3s;
-        }
-
-        .comment-input button:hover {
-            transform: scale(1.02);
         }
 
         .comment {
@@ -657,10 +686,6 @@
             border-bottom: 1px solid #eef2f6;
             display: flex;
             gap: 10px;
-        }
-
-        .comment:last-child {
-            border-bottom: none;
         }
 
         .comment-avatar {
@@ -674,34 +699,6 @@
             font-size: 12px;
             color: #1a3a5c;
             font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .comment-content {
-            flex: 1;
-        }
-
-        .comment-author {
-            font-weight: bold;
-            color: #1a3a5c;
-        }
-
-        .comment-text {
-            color: #2c3e50;
-            margin-top: 2px;
-        }
-
-        .comment-time {
-            font-size: 10px;
-            color: #b0c4de;
-            margin-top: 4px;
-        }
-
-        .no-comments {
-            padding: 15px;
-            text-align: center;
-            color: #b0c4de;
-            font-size: 12px;
         }
 
         /* Notification Dropdown */
@@ -732,14 +729,6 @@
             align-items: center;
         }
 
-        .notification-header button {
-            background: none;
-            border: none;
-            color: #1a3a5c;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
         .notification-list {
             max-height: 350px;
             overflow-y: auto;
@@ -754,10 +743,6 @@
             cursor: pointer;
         }
 
-        .notification-item:hover {
-            background: #f8fafc;
-        }
-
         .notification-item.unread {
             background: #e8f0fe;
         }
@@ -767,17 +752,6 @@
             height: 8px;
             background: #dc2626;
             border-radius: 50%;
-        }
-
-        .notification-text {
-            flex: 1;
-            font-size: 13px;
-            color: #2c3e50;
-        }
-
-        .notification-time {
-            font-size: 10px;
-            color: #b0c4de;
         }
 
         /* Modal */
@@ -820,7 +794,6 @@
             color: #5a6e7c;
             line-height: 1.6;
             margin: 15px 0;
-            font-size: 13px;
         }
 
         .modal-close {
@@ -833,41 +806,19 @@
             cursor: pointer;
         }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: #8a9bb0;
-            font-size: 12px;
-            margin-top: 20px;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            .search-container {
-                display: none;
-            }
-        }
-
-        /* Create Post Box Styles (kept for compatibility) */
+        /* Create Post Box */
         .create-post-card {
             background: white;
             border-radius: 24px;
             padding: 18px 22px;
             margin-bottom: 25px;
             border: 1.5px solid rgba(26,58,92,0.25);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: all 0.3s;
         }
 
         .create-post-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
         }
 
         .create-post-avatar {
@@ -880,7 +831,6 @@
             justify-content: center;
             color: white;
             font-size: 20px;
-            flex-shrink: 0;
         }
 
         .create-post-input {
@@ -892,37 +842,48 @@
             font-size: 14px;
             color: #1a2a3a;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .create-post-input:hover {
-            background: #f0f4f8;
-            border-color: #b0c4de;
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #8a9bb0;
+            font-size: 12px;
+            margin-top: 20px;
         }
 
-        .create-post-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-            border-top: 1px solid #eef2f6;
-            padding-top: 12px;
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
         }
 
-        .create-post-action {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 8px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            color: #5a6e7c;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
+        @media (max-width: 768px) {
+            .search-container {
+                max-width: 100%;
+                margin: 10px 0;
+                order: 3;
+                width: 100%;
+            }
+            
+            .modern-search-bar {
+                padding: 2px;
+            }
+            
+            .search-icon-wrapper {
+                padding: 10px 0 10px 14px;
+            }
+            
+            .modern-search-input {
+                padding: 10px 0;
+                font-size: 13px;
+            }
+            
+            .modern-search-btn {
+                padding: 8px 20px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -931,15 +892,29 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">
-                <i class="fas fa-university"></i> CampusConnect
+                <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
             </div>
+            
+            <!-- Modern Search Bar -->
             <div class="search-container">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search announcements..." />
+                <div class="modern-search-wrapper">
+                    <div class="modern-search-bar">
+                        <div class="search-icon-wrapper">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <asp:TextBox ID="searchInput" runat="server" 
+                            CssClass="modern-search-input" 
+                            placeholder="Search announcements..." 
+                            AutoPostBack="false">
+                        </asp:TextBox>
+                        <asp:Button ID="searchBtn" runat="server" 
+                            CssClass="modern-search-btn" 
+                            Text="Search" 
+                            OnClientClick="performSearchAndRedirect(); return false;" />
+                    </div>
                 </div>
-                <button class="search-btn" onclick="searchAnnouncements()">Search</button>
             </div>
+            
             <div style="display: flex; gap: 15px; align-items: center;">
                 <div class="notification-bell" onclick="toggleNotificationDropdown()">
                     <i class="fas fa-bell bell-icon"></i>
@@ -951,14 +926,13 @@
                     </div>
                     <div class="user-details">
                         <div class="user-name">John Dela Cruz</div>
-                        <div class="user-role">Student</div>
+                        <div class="user-role">Teacher</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Notification Dropdown -->
-
         <div id="notificationDropdown" class="notification-dropdown">
             <div class="notification-header">
                 <span><i class="fas fa-bell"></i> Notifications</span>
@@ -1009,7 +983,7 @@
                         <button class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                     </div>
 
-                    <div class="card-header" style="margin-top: 5px;">
+                    <div class="card-header">
                         <i class="fas fa-thumbtack"></i> Pinned Items
                     </div>
                     <div class="menu-item" onclick="toggleDropdown('pinnedDropdown')">
@@ -1027,11 +1001,11 @@
                         </div>
                     </div>
 
-                    <div class="card-header" style="margin-top: 5px;">
+                    <div class="card-header">
                         <i class="fas fa-cog"></i> Settings
                     </div>
                     
-                    <div class="settings-item" onclick="toggleTheme(this)">
+                    <div class="settings-item" onclick="toggleTheme()">
                         <i class="fas fa-moon"></i> Dark / Light Mode
                         <div class="toggle-switch" id="themeToggle"></div>
                     </div>
@@ -1046,31 +1020,26 @@
                 </div>
             </aside>
 
-            <!-- MAIN CONTENT - Announcement Board -->
             <main>
-<<<<<<< HEAD
-                <!-- CREATE POST BUTTON - Same blue gradient as search button -->
                 <button class="post-announcement-btn" onclick="openCreatePostModal()">
                     <i class="fas fa-plus-circle"></i> Want to post an announcement?
                 </button>
-=======
-                <!-- CREATE POST DESIGN ADDED ABOVE ANNOUNCEMENT BOARD -->
+
                 <div class="create-post-card">
                     <div class="create-post-header">
                         <div class="create-post-avatar">
                             <i class="fas fa-user-edit"></i>
                         </div>
                         <div class="create-post-input" onclick="openCreatePostModal()">
-                           Want to post an announcement?
+                            Want to post an announcement?
                         </div>
                     </div>
                 </div>
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
 
                 <div class="card">
                     <div class="card-header">
                         <i class="fas fa-bullhorn"></i> Announcement Board
-                        <span style="float: right; font-size: 12px; color: #1a3a5c;">Showing: <span id="activeFilterLabel">All</span></span>
+                        <span style="float: right; font-size: 12px;">Showing: <span id="activeFilterLabel">All</span></span>
                     </div>
 
                     <div id="announcementsContainer" class="announcement-board">
@@ -1094,9 +1063,7 @@
                             </div>
                             <div class="post-content">
                                 <div class="post-title">Final Exam Schedule</div>
-                                <div class="post-text">
-                                    The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
-                                </div>
+                                <div class="post-text">The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.</div>
                                 <div class="post-image">
                                     <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
                                 </div>
@@ -1125,14 +1092,6 @@
                                             <div class="comment-time">December 8, 2024</div>
                                         </div>
                                     </div>
-                                    <div class="comment">
-                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                        <div class="comment-content">
-                                            <span class="comment-author">Maria Santos</span>
-                                            <div class="comment-text">What time does the exam start?</div>
-                                            <div class="comment-time">December 9, 2024</div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1157,9 +1116,7 @@
                             </div>
                             <div class="post-content">
                                 <div class="post-title">Class Suspension - Typhoon Enteng</div>
-                                <div class="post-text">
-                                    Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.
-                                </div>
+                                <div class="post-text">Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.</div>
                                 <div class="post-image">
                                     <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
                                 </div>
@@ -1212,9 +1169,7 @@
                             </div>
                             <div class="post-content">
                                 <div class="post-title">University Foundation Week 2024</div>
-                                <div class="post-text">
-                                    Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert featuring local artists.
-                                </div>
+                                <div class="post-text">Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert.</div>
                                 <div class="post-image">
                                     <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
                                 </div>
@@ -1256,8 +1211,7 @@
                 </div>
                 <div class="modal-title">Campus Connect</div>
                 <div class="modal-text">
-                    Campus Connect is a centralized web-based announcement system for Cebu Technological University. 
-                    It allows students to access official announcements, exam schedules, class suspensions, and campus events in one place.
+                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
                 </div>
                 <button class="modal-close" onclick="closeAboutModal()">Close</button>
             </div>
@@ -1265,327 +1219,167 @@
     </form>
 
     <script>
-        function openCreatePostModal() {
-            showToast("Create post feature coming soon!");
-        }
-
-        // Toggle Dropdown
-        function toggleDropdown(id) {
-            var dropdown = document.getElementById(id);
-            if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-                dropdown.style.display = 'block';
+        // Search and Redirect Function
+        function performSearchAndRedirect() {
+            var searchTerm = document.getElementById('<%= searchInput.ClientID %>').value;
+            
+            if (searchTerm.trim() !== '') {
+                window.location.href = 'SearchDashboard.aspx?query=' + encodeURIComponent(searchTerm);
             } else {
-                dropdown.style.display = 'none';
+                showToast('Please enter a search term');
             }
         }
 
-        // Toggle Notification Dropdown
-        function toggleNotificationDropdown() {
-            var dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // Close notification dropdown when clicking outside
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
+        // Enter key handler
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchInput = document.getElementById('<%= searchInput.ClientID %>');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        performSearchAndRedirect();
+                    }
+                });
             }
         });
 
-        // Toggle Comments Section
-        function toggleComments(btn) {
-            var card = btn.closest('.announcement-card');
-            var commentsSection = card.querySelector('.comments-section');
-            commentsSection.classList.toggle('show');
-        }
-
-        // Scroll to comments and open
-        function scrollToComments(element) {
-            var card = element.closest('.announcement-card');
-            var commentsSection = card.querySelector('.comments-section');
-            if (!commentsSection.classList.contains('show')) {
-                commentsSection.classList.add('show');
-            }
-            commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        // Toggle Like (from button)
-        function toggleLike(btn) {
-            var card = btn.closest('.announcement-card');
-            var likeIcon = btn.querySelector('i');
-            var likeCountSpan = card.querySelector('.like-count');
-            var currentCount = parseInt(likeCountSpan.innerText);
-
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                likeIcon.className = 'far fa-heart';
-                likeCountSpan.innerText = currentCount - 1;
-                btn.innerHTML = '<i class="far fa-heart"></i> Like';
-            } else {
-                btn.classList.add('liked');
-                likeIcon.className = 'fas fa-heart';
-                likeCountSpan.innerText = currentCount + 1;
-                btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-            }
-        }
-
-        // Toggle Like (from stats bar)
-        function toggleLikeFromStats(span) {
-            var card = span.closest('.announcement-card');
-            var likeBtn = card.querySelector('.action-btn:first-child');
-            var likeIcon = likeBtn.querySelector('i');
-            var likeCountSpan = span.querySelector('.like-count');
-            var currentCount = parseInt(likeCountSpan.innerText);
-
-            if (likeBtn.classList.contains('liked')) {
-                likeBtn.classList.remove('liked');
-                likeIcon.className = 'far fa-heart';
-                likeCountSpan.innerText = currentCount - 1;
-                likeBtn.innerHTML = '<i class="far fa-heart"></i> Like';
-            } else {
-                likeBtn.classList.add('liked');
-                likeIcon.className = 'fas fa-heart';
-                likeCountSpan.innerText = currentCount + 1;
-                likeBtn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-            }
-        }
-
-        // Share Post
-        function sharePost() {
-            alert('Share this announcement with others!');
-        }
-
-        // Toggle Pin (Top Right)
-        function togglePinTop(btn) {
-            if (btn.classList.contains('pinned')) {
-                btn.classList.remove('pinned');
-                alert('Announcement unpinned!');
-            } else {
-                btn.classList.add('pinned');
-                alert('Announcement pinned!');
-            }
-        }
-
-        // Add Comment with proper script
-        function addComment(btn) {
-            var input = btn.parentElement.querySelector('input');
-            var commentText = input.value.trim();
-
-            if (commentText !== '') {
-                var card = btn.closest('.announcement-card');
-                var commentsList = card.querySelector('.comments-list');
-                var noComments = commentsList.querySelector('.no-comments');
-                var commentCountSpan = card.querySelector('.comment-count');
-                var currentCommentCount = parseInt(commentCountSpan.innerText);
-
-                if (noComments) {
-                    noComments.remove();
-                }
-
-                var newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
-                    '<div class="comment-content">' +
-                    '<span class="comment-author">You</span>' +
-                    '<div class="comment-text">' + escapeHtml(commentText) + '</div>' +
-                    '<div class="comment-time">Just now</div>' +
-                    '</div>';
-                commentsList.appendChild(newComment);
-
-                // Update comment count
-                commentCountSpan.innerText = currentCommentCount + 1;
-
-                // Update stats bar comment count
-                var statsCommentSpan = card.querySelector('.post-stats span:nth-child(2) .comment-count');
-                if (statsCommentSpan) {
-                    statsCommentSpan.innerText = currentCommentCount + 1;
-                }
-
-                input.value = '';
-
-                // Show success message
-                showToast('Comment posted successfully!');
-            } else {
-                showToast('Please enter a comment!');
-            }
-        }
-
-        // Escape HTML to prevent XSS
-        function escapeHtml(text) {
-            var div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        // Show toast notification
         function showToast(message) {
             var toast = document.createElement('div');
             toast.style.position = 'fixed';
             toast.style.bottom = '20px';
             toast.style.right = '20px';
-            toast.style.backgroundColor = '#1a3a5c';
+            toast.style.backgroundColor = '#4f46e5';
             toast.style.color = 'white';
             toast.style.padding = '12px 24px';
             toast.style.borderRadius = '30px';
             toast.style.fontSize = '14px';
             toast.style.zIndex = '9999';
-            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
             toast.innerHTML = message;
             document.body.appendChild(toast);
 
             setTimeout(function () {
                 toast.style.opacity = '0';
                 toast.style.transition = 'opacity 0.3s';
-                setTimeout(function () {
-                    toast.remove();
-                }, 300);
+                setTimeout(function () { toast.remove(); }, 300);
             }, 2000);
         }
 
-        // Filter Category
+        function toggleDropdown(id) {
+            var dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleNotificationDropdown() {
+            document.getElementById('notificationDropdown').classList.toggle('show');
+        }
+
         function filterCategory(category) {
-            var announcements = document.querySelectorAll('.announcement-card');
-            var filterLabel = document.getElementById('activeFilterLabel');
-
-            announcements.forEach(function (ann) {
-                if (category === 'All' || ann.getAttribute('data-category') === category) {
-                    ann.style.display = 'block';
-                } else {
-                    ann.style.display = 'none';
-                }
+            var cards = document.querySelectorAll('.announcement-card');
+            document.getElementById('activeFilterLabel').innerText = category;
+            cards.forEach(function (card) {
+                card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
             });
-
-            filterLabel.innerText = category;
             document.getElementById('categoryDropdown').style.display = 'none';
         }
 
-        // Search Announcements
-        function searchAnnouncements() {
-            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            var announcements = document.querySelectorAll('.announcement-card');
-            var found = false;
+        function toggleLike(btn) {
+            btn.classList.toggle('liked');
+            var icon = btn.querySelector('i');
+            icon.className = btn.classList.contains('liked') ? 'fas fa-heart' : 'far fa-heart';
+            btn.innerHTML = btn.classList.contains('liked') ? '<i class="fas fa-heart"></i> Liked' : '<i class="far fa-heart"></i> Like';
 
-            announcements.forEach(function (ann) {
-                var title = ann.querySelector('.post-title').innerText.toLowerCase();
-                var content = ann.querySelector('.post-text').innerText.toLowerCase();
+            var card = btn.closest('.announcement-card');
+            var likeCount = card.querySelector('.like-count');
+            var current = parseInt(likeCount.innerText);
+            likeCount.innerText = btn.classList.contains('liked') ? current + 1 : current - 1;
+        }
 
-                if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                    ann.style.display = 'block';
-                    found = true;
-                } else {
-                    ann.style.display = 'none';
-                }
-            });
+        function toggleLikeFromStats(span) {
+            var card = span.closest('.announcement-card');
+            var likeBtn = card.querySelector('.action-btn:first-child');
+            toggleLike(likeBtn);
+        }
 
-            if (!found && searchTerm !== '') {
-                showToast('No announcements found matching "' + searchTerm + '"');
+        function toggleComments(btn) {
+            btn.closest('.announcement-card').querySelector('.comments-section').classList.toggle('show');
+        }
+
+        function scrollToComments(element) {
+            var card = element.closest('.announcement-card');
+            var comments = card.querySelector('.comments-section');
+            comments.classList.add('show');
+            comments.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addComment(btn) {
+            var input = btn.parentElement.querySelector('input');
+            var comment = input.value.trim();
+            if (comment) {
+                var card = btn.closest('.announcement-card');
+                var list = card.querySelector('.comments-list');
+                var noComments = list.querySelector('.no-comments');
+                if (noComments) noComments.remove();
+
+                var newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                    '<div class="comment-content">' +
+                    '<span class="comment-author">You</span>' +
+                    '<div class="comment-text">' + comment + '</div>' +
+                    '<div class="comment-time">Just now</div>' +
+                    '</div>';
+                list.appendChild(newComment);
+
+                var count = card.querySelector('.comment-count');
+                count.innerText = parseInt(count.innerText) + 1;
+                input.value = '';
+                showToast('Comment posted!');
             }
         }
 
-        // Enter key search
-        var searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    searchAnnouncements();
-                }
-            });
+        function sharePost() {
+            showToast('Share feature coming soon!');
         }
 
-        // Remove Pin from sidebar
+        function togglePinTop(btn) {
+            btn.classList.toggle('pinned');
+            showToast(btn.classList.contains('pinned') ? 'Announcement pinned!' : 'Announcement unpinned!');
+        }
+
         function removePin(btn) {
             btn.parentElement.remove();
-            showToast('Item removed from pinned!');
+            showToast('Removed from pinned items');
         }
 
-        // Mark Notification Read
         function markRead(item) {
             item.classList.remove('unread');
             var dot = item.querySelector('.notification-dot');
             if (dot) dot.remove();
-            updateBadgeCount();
+            updateBadge();
         }
 
         function markAllRead() {
-            var notifications = document.querySelectorAll('.notification-item.unread');
-            notifications.forEach(function (notif) {
-                notif.classList.remove('unread');
-                var dot = notif.querySelector('.notification-dot');
-                if (dot) dot.remove();
-            });
-            updateBadgeCount();
-            showToast('All notifications marked as read');
+            document.querySelectorAll('.notification-item.unread').forEach(markRead);
         }
 
-        function updateBadgeCount() {
-            var unreadCount = document.querySelectorAll('.notification-item.unread').length;
+        function updateBadge() {
+            var count = document.querySelectorAll('.notification-item.unread').length;
             var badge = document.getElementById('notificationBadge');
-            if (badge) {
-                if (unreadCount > 0) {
-                    badge.textContent = unreadCount;
-                    badge.style.display = 'inline-block';
-                } else {
-                    badge.style.display = 'none';
-                }
+            if (count > 0) {
+                badge.innerText = count;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
             }
         }
 
-        // Theme Toggle
-        function toggleTheme(item) {
-            var toggle = item.querySelector('.toggle-switch');
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            var toggle = document.querySelector('.toggle-switch');
             toggle.classList.toggle('active');
-            var body = document.body;
-
-<<<<<<< HEAD
-            if (body.style.background === '' || body.style.background === 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)') {
-                body.style.background = '#1a1a2e';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    if (el) {
-                        el.style.background = '#242526';
-                        el.style.color = '#e4e6eb';
-                    }
-                });
-                showToast('Dark mode enabled');
-            } else {
-                body.style.background = 'linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%)';
-                document.querySelectorAll('.card, .announcement-card, .header, .notification-dropdown, .modal-content, .create-post-card').forEach(function (el) {
-                    if (el) {
-                        el.style.background = 'white';
-                        el.style.color = '#1a2a3a';
-                    }
-=======
-            if (body.classList.contains('dark-mode')) {
-                // Switch to LIGHT MODE
-                body.classList.remove('dark-mode');
-                body.style.backgroundImage = "url('wbg.jpg')"; // Your light image
-                body.style.backgroundSize = "cover";
-                body.style.backgroundAttachment = "fixed";
-
-                // Update card backgrounds to be semi-transparent white
-                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                    el.style.background = 'rgba(255, 255, 255, 0.7)';
-                    el.style.color = '#1a2a3a';
->>>>>>> 4382a28f3047eb8f814cd69c4849256ab51172b0
-                });
-            } else {
-                // Switch to DARK MODE
-                body.classList.add('dark-mode');
-                body.style.backgroundImage = "url('bg.jpg')"; // Your dark image
-                body.style.backgroundSize = "cover";
-                body.style.backgroundAttachment = "fixed";
-
-                // Update card backgrounds to be semi-transparent dark
-                document.querySelectorAll('.card, .announcement-card, .header').forEach(function (el) {
-                    el.style.background = 'rgba(42, 42, 42, 0.7)';
-                    el.style.color = '#e4e6eb';
-                });
-            }
         }
 
-
-        // About Modal
         function openAboutModal() {
             document.getElementById('aboutModal').style.display = 'flex';
         }
@@ -1594,12 +1388,23 @@
             document.getElementById('aboutModal').style.display = 'none';
         }
 
-        // Logout
+        function openCreatePostModal() {
+            showToast('Create post feature coming soon!');
+        }
+
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = 'login.aspx';
             }
         }
+
+        document.addEventListener('click', function (e) {
+            var dropdown = document.getElementById('notificationDropdown');
+            var bell = document.querySelector('.notification-bell');
+            if (dropdown && bell && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
