@@ -83,7 +83,7 @@
             border-radius: 48px;
             padding: 12px 24px;
             min-width: 280px;
-            color: #5a6e7c;
+            color: #0F172A;
             font-weight: 500;
             font-size: 15px;
             cursor: pointer;
@@ -816,7 +816,7 @@
                 CssClass="single-search-btn" 
                 Text="🔎 Search........" 
                 OnClientClick="performSearchAndRedirect(); return false;" 
-                UseSubmitBehavior="false" Width="446px" />
+                UseSubmitBehavior="false" Width="471px" />
             
             <div style="display: flex; gap: 15px; align-items: center;">
                 <div class="notification-bell" onclick="toggleNotificationDropdown()">

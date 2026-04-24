@@ -135,8 +135,10 @@
         
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 16px rgba(26, 58, 92, 0.18);
+             background: #e8f0fe;
+             border-color: rgba(26,58,92,0.4);
+             transform: translateY(-1px);
+             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .header-actions {
@@ -715,7 +717,7 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="430px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Large" Height="61px" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
                 </div>
 
                 <div class="header-actions">
