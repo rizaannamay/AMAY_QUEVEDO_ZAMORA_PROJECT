@@ -981,7 +981,7 @@ function addComment(btn, postId) {
     var commentText = input.value.trim();
     if (commentText === '') { showToast('Please enter a comment!'); return; }
 
-    fetch('AddComment.aspx', {
+    fetch('Comments.aspx?action=add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ postId: postId, comment: commentText })
@@ -1001,7 +1001,7 @@ function addComment(btn, postId) {
                 input.value = '';
                 showToast('Comment posted!');
             } else {
-                showToast('Error posting comment');
+                showToast('Error posting comment: ' + (data.error || 'Unknown error'));
             }
         })
         .catch(error => {

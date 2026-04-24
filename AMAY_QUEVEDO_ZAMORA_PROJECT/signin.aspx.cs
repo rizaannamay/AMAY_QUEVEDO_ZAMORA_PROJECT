@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
 
@@ -6,7 +7,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-        // SAME connection string as login
+        // MAKE SURE THIS CONNECTION STRING IS CORRECT FOR YOUR SERVER
         SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
 
         protected void Page_Load(object sender, EventArgs e)
@@ -28,68 +29,87 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string password = txtPassword.Text.Trim();
             string role = rbStudent.Checked ? "Student" : "Admin";
 
-            if (UserExists(username, email))
+            try
             {
-                ShowMessage("Username or email already exists.", false);
-                return;
-            }
+                // Open connection
+                con.Open();
 
-            if (CreateUser(fullName, email, username, password, role))
-            {
+                // Create Users table if it doesn't exist
+                string createTable = @"
+                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Users')
+                    BEGIN
+                        CREATE TABLE Users (
+                            UserId INT PRIMARY KEY IDENTITY(1,1),
+                            FullName NVARCHAR(100) NOT NULL,
+                            Email NVARCHAR(100) NOT NULL UNIQUE,
+                            Username NVARCHAR(50) NOT NULL UNIQUE,
+                            Password NVARCHAR(255) NOT NULL,
+                            Role NVARCHAR(20) NOT NULL,
+                            IsActive BIT DEFAULT 1,
+                            CreatedDate DATETIME DEFAULT GETDATE()
+                        )
+                    END";
+                SqlCommand createCmd = new SqlCommand(createTable, con);
+                createCmd.ExecuteNonQuery();
+
+                // Check if user already exists
+                string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username OR Email = @Email";
+                SqlCommand checkCmd = new SqlCommand(checkQuery, con);
+                checkCmd.Parameters.AddWithValue("@Username", username);
+                checkCmd.Parameters.AddWithValue("@Email", email);
+                int existingCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                if (existingCount > 0)
+                {
+                    con.Close();
+                    ShowMessage("Username or email already exists. Please try another.", false);
+                    return;
+                }
+
+                // Insert new user
+                string insertQuery = @"INSERT INTO Users (FullName, Email, Username, Password, Role, IsActive, CreatedDate)
+                                       VALUES (@FullName, @Email, @Username, @Password, @Role, 1, @CreatedDate)";
+                SqlCommand insertCmd = new SqlCommand(insertQuery, con);
+                insertCmd.Parameters.AddWithValue("@FullName", fullName);
+                insertCmd.Parameters.AddWithValue("@Email", email);
+                insertCmd.Parameters.AddWithValue("@Username", username);
+                insertCmd.Parameters.AddWithValue("@Password", password);
+                insertCmd.Parameters.AddWithValue("@Role", role);
+                insertCmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                insertCmd.ExecuteNonQuery();
+
+                con.Close();
+
+                // Success!
                 ShowMessage("Account created successfully! Redirecting to login...", true);
                 ClearForm();
+
+                // Redirect to login page after 2 seconds
                 ScriptManager.RegisterStartupScript(this, GetType(), "redirect",
                     "setTimeout(function(){ window.location.href='login.aspx'; }, 2000);", true);
             }
-            else
+            catch (SqlException sqlEx)
             {
-                ShowMessage("Error creating account. Please try again.", false);
-            }
-        }
+                if (con.State == ConnectionState.Open) con.Close();
 
-        private bool UserExists(string username, string email)
-        {
-            try
-            {
-                con.Open();
-                string query = "SELECT COUNT(*) FROM Users WHERE Username = @Username OR Email = @Email";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@Username", username);
-                cmd.Parameters.AddWithValue("@Email", email);
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                con.Close();
-                return count > 0;
-            }
-            catch
-            {
-                con.Close();
-                return false;
-            }
-        }
-
-        private bool CreateUser(string fullName, string email, string username, string password, string role)
-        {
-            try
-            {
-                con.Open();
-                string query = @"INSERT INTO Users (FullName, Email, Username, Password, Role, IsActive, CreatedDate) 
-                                VALUES (@FullName, @Email, @Username, @Password, @Role, 1, @CreatedDate)";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@FullName", fullName);
-                cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Username", username);
-                cmd.Parameters.AddWithValue("@Password", password);
-                cmd.Parameters.AddWithValue("@Role", role);
-                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
-                cmd.ExecuteNonQuery();
-                con.Close();
-                return true;
+                // Specific SQL error messages
+                if (sqlEx.Message.Contains("Login failed"))
+                {
+                    ShowMessage("Database login failed. Please check your database connection.", false);
+                }
+                else if (sqlEx.Message.Contains("Cannot open database"))
+                {
+                    ShowMessage("Database not found. Please check your database name.", false);
+                }
+                else
+                {
+                    ShowMessage("Database error: " + sqlEx.Message, false);
+                }
             }
             catch (Exception ex)
             {
-                con.Close();
-                System.Diagnostics.Debug.WriteLine("CreateUser Error: " + ex.Message);
-                return false;
+                if (con.State == ConnectionState.Open) con.Close();
+                ShowMessage("Error: " + ex.Message, false);
             }
         }
 
