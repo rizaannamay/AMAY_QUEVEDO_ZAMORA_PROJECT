@@ -205,14 +205,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
-                // Redirect with the new search query
-                Response.Redirect($"SearchDashboard.aspx?query={Server.UrlEncode(searchBox.Text.Trim())}");
+                // Just perform the search directly without refreshing the whole page
+                PerformSearch(searchBox.Text.Trim());
             }
         }
-    }
 
-    // Announcement Model
-    public class Announcement
+        // Announcement Model
+        public class Announcement
     {
         public int Id { get; set; }
         public string Title { get; set; }
