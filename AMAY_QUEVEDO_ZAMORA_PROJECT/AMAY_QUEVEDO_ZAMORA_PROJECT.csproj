@@ -75,6 +75,7 @@
     <Content Include="SearchDashboard.aspx" />
     <Content Include="Notifications.aspx" />
     <Content Include="Pinned.aspx" />
+    <Content Include="SearchStudent.aspx" />
     <Content Include="Student.aspx" />
     <Content Include="wbg.jpg" />
     <Content Include="login.aspx" />
@@ -111,6 +112,13 @@
     </Compile>
     <Compile Include="SearchDashboard.aspx.designer.cs">
       <DependentUpon>SearchDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchStudent.aspx.cs">
+      <DependentUpon>SearchStudent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SearchStudent.aspx.designer.cs">
+      <DependentUpon>SearchStudent.aspx</DependentUpon>
     </Compile>
     <Compile Include="signin.aspx.cs">
       <DependentUpon>signin.aspx</DependentUpon>
