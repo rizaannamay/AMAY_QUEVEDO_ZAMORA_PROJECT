@@ -1,6 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
@@ -65,6 +63,10 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             color: #1a3a5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .logo i {
@@ -74,130 +76,50 @@
             margin-right: 8px;
         }
 
-        /* Modern Search Bar Styles */
-        .search-container {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
-        }
-
-        .modern-search-wrapper {
-            width: 100%;
-        }
-
-        .modern-search-bar {
-            background: #1A3A5C;
-            border-radius: 56px;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1.5px solid rgba(99, 102, 241, 0.4);
-            box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            backdrop-filter: blur(10px);
-        }
-
-        .modern-search-bar:hover {
-            border-color: rgba(99, 102, 241, 0.7);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-        }
-
-        .modern-search-bar:focus-within {
-            border-color: #6366f1;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), 0 0 0 3px rgba(99, 102, 241, 0.1);
-            transform: scale(1.02);
-        }
-
-        .search-icon-wrapper {
-            padding: 12px 0 12px 20px;
+        /* Modern Single Search Button - Rounded, centered, with icon and placeholder text */
+        .single-search-btn {
+            background: #f0f2f5;
+            border: 1px solid rgba(26,58,92,0.2);
+            border-radius: 48px;
+            padding: 12px 24px;
+            min-width: 280px;
+            color: #5a6e7c;
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(165, 180, 252, 0.8);
-            transition: color 0.3s ease;
+            gap: 12px;
+            background-color: #f8fafc;
+            font-family: inherit;
         }
 
-        .modern-search-bar:focus-within .search-icon-wrapper i {
-            color: #818cf8;
+        .single-search-btn i {
+            font-size: 16px;
+            color: #1a3a5c;
         }
 
-        .search-icon-wrapper i {
-            font-size: 18px;
-            transition: color 0.3s ease;
-        }
-
-        .modern-search-input {
-            flex: 1;
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            padding: 14px 0;
-            font-size: 15px;
-            color: #ffffff !important;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            width: 100%;
-        }
-
-        .modern-search-input::placeholder {
-            color: rgba(165, 180, 252, 0.5);
-            font-weight: 400;
-            letter-spacing: 0.2px;
-        }
-
-        .modern-search-input:focus {
-            box-shadow: none !important;
-            outline: none !important;
-            background: transparent !important;
-        }
-
-        .modern-search-btn {
-            background: linear-gradient(135deg, #4f46e5, #6366f1);
-            border: none;
-            border-radius: 48px;
-            padding: 10px 28px;
-            margin: 4px;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .modern-search-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #6366f1, #818cf8);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .modern-search-btn:hover::before {
-            left: 0;
-        }
-
-        .modern-search-btn:hover {
+        .single-search-btn:hover {
+            background: #e8f0fe;
+            border-color: rgba(26,58,92,0.4);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .modern-search-btn:active {
-            transform: translateY(1px);
+        body.dark-mode .single-search-btn {
+            background: rgba(30, 30, 40, 0.9);
+            border-color: rgba(255,255,255,0.15);
+            color: #e4e6eb;
         }
 
-        body.dark-mode .modern-search-bar {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.95));
-            border-color: rgba(99, 102, 241, 0.5);
+        body.dark-mode .single-search-btn i {
+            color: #a0a0ff;
+        }
+
+        body.dark-mode .single-search-btn:hover {
+            background: rgba(50, 50, 70, 0.9);
         }
 
         /* Post Announcement Button */
@@ -297,6 +219,10 @@
         .user-role {
             font-size: 11px;
             color: #7a8e9e;
+        }
+
+        body.dark-mode .user-details {
+            color: #e4e6eb;
         }
 
         /* Main Layout */
@@ -860,29 +786,19 @@
         }
 
         @media (max-width: 768px) {
-            .search-container {
-                max-width: 100%;
-                margin: 10px 0;
-                order: 3;
-                width: 100%;
-            }
-            
-            .modern-search-bar {
-                padding: 2px;
-            }
-            
-            .search-icon-wrapper {
-                padding: 10px 0 10px 14px;
-            }
-            
-            .modern-search-input {
-                padding: 10px 0;
+            .single-search-btn {
+                min-width: 200px;
+                padding: 10px 18px;
                 font-size: 13px;
             }
             
-            .modern-search-btn {
-                padding: 8px 20px;
-                font-size: 12px;
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .logo {
+                justify-content: center;
             }
         }
     </style>
@@ -895,25 +811,12 @@
                 <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
             </div>
             
-            <!-- Modern Search Bar -->
-            <div class="search-container">
-                <div class="modern-search-wrapper">
-                    <div class="modern-search-bar">
-                        <div class="search-icon-wrapper">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <asp:TextBox ID="searchInput" runat="server" 
-                            CssClass="modern-search-input" 
-                            placeholder="Search announcements..." 
-                            AutoPostBack="false">
-                        </asp:TextBox>
-                        <asp:Button ID="searchBtn" runat="server" 
-                            CssClass="modern-search-btn" 
-                            Text="Search" 
-                            OnClientClick="performSearchAndRedirect(); return false;" />
-                    </div>
-                </div>
-            </div>
+            <!-- Single Rounded Search Button - No input field, just button -->
+            <asp:Button ID="searchBtn" runat="server" 
+                CssClass="single-search-btn" 
+                Text="🔎 Search........" 
+                OnClientClick="performSearchAndRedirect(); return false;" 
+                UseSubmitBehavior="false" Width="446px" />
             
             <div style="display: flex; gap: 15px; align-items: center;">
                 <div class="notification-bell" onclick="toggleNotificationDropdown()">
@@ -936,7 +839,7 @@
         <div id="notificationDropdown" class="notification-dropdown">
             <div class="notification-header">
                 <span><i class="fas fa-bell"></i> Notifications</span>
-                <button onclick="markAllRead()">Mark all read</button>
+                <button type="button" onclick="markAllRead()">Mark all read</button>
             </div>
             <div class="notification-list">
                 <div class="notification-item unread" onclick="markRead(this)">
@@ -977,10 +880,10 @@
                         <i class="fas fa-chevron-down dropdown-icon"></i>
                     </div>
                     <div id="categoryDropdown" class="dropdown-content">
-                        <button class="dropdown-item" onclick="filterCategory('All')">All Announcements</button>
-                        <button class="dropdown-item" onclick="filterCategory('Exam')">Exam Schedule</button>
-                        <button class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
-                        <button class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('All')">All Announcements</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Exam')">Exam Schedule</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                     </div>
 
                     <div class="card-header">
@@ -993,11 +896,11 @@
                     <div id="pinnedDropdown" class="dropdown-content">
                         <div class="pinned-item">
                             <div><i class="fas fa-thumbtack"></i> Final Exam Schedule</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
+                            <button type="button" class="remove-pin" onclick="removePin(this)">✕</button>
                         </div>
                         <div class="pinned-item">
                             <div><i class="fas fa-thumbtack"></i> Class Suspension</div>
-                            <button class="remove-pin" onclick="removePin(this)">✕</button>
+                            <button type="button" class="remove-pin" onclick="removePin(this)">✕</button>
                         </div>
                     </div>
 
@@ -1021,7 +924,7 @@
             </aside>
 
             <main>
-                <button class="post-announcement-btn" onclick="openCreatePostModal()">
+                <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
                     <i class="fas fa-plus-circle"></i> Want to post an announcement?
                 </button>
 
@@ -1059,7 +962,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
                             <div class="post-content">
                                 <div class="post-title">Final Exam Schedule</div>
@@ -1074,14 +977,14 @@
                                 <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
                                     <input type="text" placeholder="Write a comment..." />
-                                    <button onclick="addComment(this)">Post</button>
+                                    <button type="button" onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
                                     <div class="comment">
@@ -1112,7 +1015,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
                             <div class="post-content">
                                 <div class="post-title">Class Suspension - Typhoon Enteng</div>
@@ -1127,14 +1030,14 @@
                                 <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
                                     <input type="text" placeholder="Write a comment..." />
-                                    <button onclick="addComment(this)">Post</button>
+                                    <button type="button" onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
                                     <div class="comment">
@@ -1165,7 +1068,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                <button type="button" class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
                             </div>
                             <div class="post-content">
                                 <div class="post-title">University Foundation Week 2024</div>
@@ -1180,14 +1083,14 @@
                                 <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
                             </div>
                             <div class="action-buttons">
-                                <button class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                             </div>
                             <div class="comments-section">
                                 <div class="comment-input">
                                     <input type="text" placeholder="Write a comment..." />
-                                    <button onclick="addComment(this)">Post</button>
+                                    <button type="button" onclick="addComment(this)">Post</button>
                                 </div>
                                 <div class="comments-list">
                                     <div class="no-comments">No comments yet. Be the first!</div>
@@ -1213,35 +1116,19 @@
                 <div class="modal-text">
                     Campus Connect is a centralized web-based announcement system for Cebu Technological University.
                 </div>
-                <button class="modal-close" onclick="closeAboutModal()">Close</button>
+                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
             </div>
         </div>
     </form>
 
     <script>
-        // Search and Redirect Function
+        // Search function for the single search button - redirects to search dashboard with empty query or fixed value
+        // This maintains existing functionality while removing the input field dependency
         function performSearchAndRedirect() {
-            var searchTerm = document.getElementById('<%= searchInput.ClientID %>').value;
-            
-            if (searchTerm.trim() !== '') {
-                window.location.href = 'SearchDashboard.aspx?query=' + encodeURIComponent(searchTerm);
-            } else {
-                showToast('Please enter a search term');
-            }
+            // Redirect to search dashboard - the search dashboard will handle the query parameter
+            // Can pass empty string to show all or a default search
+            window.location.href = 'SearchDashboard.aspx?query=' + encodeURIComponent('');
         }
-
-        // Enter key handler
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchInput = document.getElementById('<%= searchInput.ClientID %>');
-            if (searchInput) {
-                searchInput.addEventListener('keypress', function (e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        performSearchAndRedirect();
-                    }
-                });
-            }
-        });
 
         function showToast(message) {
             var toast = document.createElement('div');
@@ -1326,7 +1213,7 @@
                 newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
                     '<div class="comment-content">' +
                     '<span class="comment-author">You</span>' +
-                    '<div class="comment-text">' + comment + '</div>' +
+                    '<div class="comment-text">' + comment.replace(/</g, '&lt;') + '</div>' +
                     '<div class="comment-time">Just now</div>' +
                     '</div>';
                 list.appendChild(newComment);

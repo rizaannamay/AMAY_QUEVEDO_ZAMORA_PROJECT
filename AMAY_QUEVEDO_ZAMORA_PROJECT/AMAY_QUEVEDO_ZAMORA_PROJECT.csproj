@@ -73,13 +73,13 @@
     <Content Include="bg.jpg" />
     <Content Include="Comments.aspx" />
     <Content Include="ctu-logo.png" />
+    <Content Include="login.aspx" />
     <Content Include="SearchDashboard.aspx" />
     <Content Include="Notifications.aspx" />
     <Content Include="Pinned.aspx" />
     <Content Include="SearchStudent.aspx" />
     <Content Include="Student.aspx" />
     <Content Include="wbg.jpg" />
-    <Content Include="login.aspx" />
     <Content Include="signin.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
