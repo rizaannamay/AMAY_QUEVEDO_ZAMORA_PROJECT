@@ -1,6 +1,11 @@
 ﻿<!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 <head>
+=======
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Campus Announcement - Teacher Portal | Like, Share & Comment</title>
@@ -81,11 +86,24 @@
         .logo {
             font-size: 22px;
             font-weight: 800;
+<<<<<<< HEAD
             color: var(--primary);
             white-space: nowrap;
+=======
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #1a3a5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         }
         .logo i { margin-right: 8px; }
 
+<<<<<<< HEAD
         .search-container {
             display: flex;
             gap: 10px;
@@ -119,6 +137,74 @@
             transition: 0.2s;
         }
         .header-actions {
+=======
+        .logo i {
+            background: none;
+            -webkit-background-clip: unset;
+            color: #1a3a5c;
+            margin-right: 8px;
+        }
+
+        /* Modern Single Search Button - Rounded, centered, with icon and placeholder text */
+        .single-search-btn {
+            background: #f0f2f5;
+            border: 1px solid rgba(26,58,92,0.2);
+            border-radius: 48px;
+            padding: 12px 24px;
+            min-width: 280px;
+            color: #5a6e7c;
+            font-weight: 500;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background-color: #f8fafc;
+            font-family: inherit;
+        }
+
+        .single-search-btn i {
+            font-size: 16px;
+            color: #1a3a5c;
+        }
+
+        .single-search-btn:hover {
+            background: #e8f0fe;
+            border-color: rgba(26,58,92,0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        body.dark-mode .single-search-btn {
+            background: rgba(30, 30, 40, 0.9);
+            border-color: rgba(255,255,255,0.15);
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .single-search-btn i {
+            color: #a0a0ff;
+        }
+
+        body.dark-mode .single-search-btn:hover {
+            background: rgba(50, 50, 70, 0.9);
+        }
+
+        /* Post Announcement Button */
+        .post-announcement-btn {
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            border: none;
+            border-radius: 30px;
+            padding: 14px 28px;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-bottom: 25px;
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
             display: flex;
             gap: 16px;
             align-items: center;
@@ -169,10 +255,33 @@
         .user-name { font-weight: 700; font-size: 14px; }
         .user-role { font-size: 11px; color: var(--muted); }
 
+<<<<<<< HEAD
         /* main layout */
         .content-shell {
             flex: 1;
             min-height: 0;
+=======
+        .user-details {
+            color: #1a2a3a;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 11px;
+            color: #7a8e9e;
+        }
+
+        body.dark-mode .user-details {
+            color: #e4e6eb;
+        }
+
+        /* Main Layout */
+        .main-layout {
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 25px;
@@ -475,15 +584,116 @@
         }
         /* footer removed - no footer element */
 
+<<<<<<< HEAD
         @media (max-width: 860px) {
             .content-shell { grid-template-columns: 1fr; overflow: auto; }
             .app-shell, body { overflow: auto; height: auto; }
+=======
+        .modal-icon {
+            font-size: 50px;
+            color: #1a3a5c;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a3a5c;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            color: #5a6e7c;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .modal-close {
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            border: none;
+            padding: 10px 28px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Create Post Box */
+        .create-post-card {
+            background: white;
+            border-radius: 24px;
+            padding: 18px 22px;
+            margin-bottom: 25px;
+            border: 1.5px solid rgba(26,58,92,0.25);
+        }
+
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .create-post-avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .create-post-input {
+            flex: 1;
+            background: #f8fafc;
+            border: 1px solid #dce4ec;
+            border-radius: 40px;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #1a2a3a;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #8a9bb0;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .single-search-btn {
+                min-width: 200px;
+                padding: 10px 18px;
+                font-size: 13px;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .logo {
+                justify-content: center;
+            }
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         }
         .toast { position: fixed; bottom: 20px; right: 20px; background: #1a3a5c; color: white; padding: 12px 24px; border-radius: 40px; z-index: 9999; animation: fade 2s; }
         @keyframes fade { 0% { opacity: 0; transform: translateY(20px); } 10% { opacity: 1; } 90% { opacity: 1; } 100% { opacity: 0; } }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 <div class="app-shell">
     <div class="header">
         <div class="logo"><i class="fas fa-chalkboard-user"></i> Campus Announcement</div>
@@ -494,11 +704,68 @@
 
     <div class="content-shell">
         <aside class="sidebar"><div class="card"><div class="sidebar-content"><div class="profile-section"><div class="profile-avatar"><i class="fas fa-chalkboard-user"></i></div><div class="profile-name" id="sidebarProfileName">Prof. Emily Davis</div><div class="profile-email">faculty@ctu.edu.ph</div></div><div class="card-header"><i class="fas fa-filter"></i> Filters</div><div class="menu-item" onclick="toggleCategoryMenu()"><i class="fas fa-layer-group"></i> Filter by Category <i class="fas fa-chevron-down dropdown-icon"></i></div><div id="categoryMenu" class="dropdown-content"><button class="dropdown-item" onclick="setFilter('All')">📢 All</button><button class="dropdown-item" onclick="setFilter('Exam')">📚 Exam</button><button class="dropdown-item" onclick="setFilter('Suspension')">🌧️ Suspension</button><button class="dropdown-item" onclick="setFilter('Event')">🎉 Event</button><button class="dropdown-item" onclick="setFilter('General')">📌 General</button></div><div class="menu-item" onclick="setFilter('Pinned')"><i class="fas fa-thumbtack"></i> Pinned Announcements</div><div class="card-header" style="margin-top:8px;"><i class="fas fa-cog"></i> Settings</div><div class="settings-item" onclick="toggleDarkMode()"><i class="fas fa-moon"></i> Dark / Light Mode <div id="themeToggleSide" class="toggle-switch"></div></div><div class="settings-item" onclick="openAboutModal()"><i class="fas fa-info-circle"></i> About Us</div><div class="settings-item" onclick="logoutAction()"><i class="fas fa-sign-out-alt"></i> Logout</div></div></div></aside>
+=======
+    <form id="form1" runat="server">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
+            </div>
+            
+            <!-- Single Rounded Search Button - No input field, just button -->
+            <asp:Button ID="searchBtn" runat="server" 
+                CssClass="single-search-btn" 
+                Text="🔎 Search........" 
+                OnClientClick="performSearchAndRedirect(); return false;" 
+                UseSubmitBehavior="false" Width="446px" />
+            
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div class="notification-bell" onclick="toggleNotificationDropdown()">
+                    <i class="fas fa-bell bell-icon"></i>
+                    <span id="notificationBadge" class="badge-red">3</span>
+                </div>
+                <div class="user-info">
+                    <div class="avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <div class="user-name">John Dela Cruz</div>
+                        <div class="user-role">Teacher</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Dropdown -->
+        <div id="notificationDropdown" class="notification-dropdown">
+            <div class="notification-header">
+                <span><i class="fas fa-bell"></i> Notifications</span>
+                <button type="button" onclick="markAllRead()">Mark all read</button>
+            </div>
+            <div class="notification-list">
+                <div class="notification-item unread" onclick="markRead(this)">
+                    <div class="notification-dot"></div>
+                    <div class="notification-text">New exam schedule announced</div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+                <div class="notification-item unread" onclick="markRead(this)">
+                    <div class="notification-dot"></div>
+                    <div class="notification-text">Class suspension due to typhoon</div>
+                    <div class="notification-time">1 day ago</div>
+                </div>
+                <div class="notification-item" onclick="markRead(this)">
+                    <div class="notification-text">Foundation Week activities posted</div>
+                    <div class="notification-time">3 days ago</div>
+                </div>
+            </div>
+        </div>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 
         <main class="main-panel"><div class="create-post-card" onclick="openCreateModal()"><div class="create-post-header"><div class="create-post-avatar"><i class="fas fa-plus-circle"></i></div><div class="create-post-input"><i class="fas fa-edit"></i> Create new announcement ...</div></div></div><div class="card" style="flex:1;"><div class="card-header"><i class="fas fa-bullhorn"></i> Announcement Board <span style="float:right;font-size:12px;">Filter: <span id="activeFilterLabel">All</span></span></div><div id="announcementsContainer" class="announcement-board"><div style="text-align:center;padding:40px;">Loading posts...</div></div></div></main>
     </div>
 </div>
 
+<<<<<<< HEAD
 <!-- modals -->
 <div id="createPostModal" class="modal"><div class="modal-content"><div class="card-header" style="border:none; padding:0 0 12px;">📝 New Announcement</div><div class="form-group"><label>Title</label><input id="newTitle" placeholder="Title"></div><div class="form-group"><label>Category</label><select id="newCategory"><option>General</option><option>Exam</option><option>Suspension</option><option>Event</option></select></div><div class="form-group"><label>Content</label><textarea id="newContent" rows="4" placeholder="Announcement details..."></textarea></div><div class="form-group"><label>Image URL (optional)</label><input id="newImageUrl" placeholder="https://..."></div><div class="modal-buttons" style="display:flex; justify-content:flex-end; gap:10px;"><button class="btn-secondary" onclick="closeCreateModal()">Cancel</button><button class="btn-primary" onclick="publishAnnouncement()" style="background:var(--primary); color:white; border:none; padding:10px 24px; border-radius:40px;">Publish</button></div></div></div>
 <div id="aboutModal" class="modal"><div class="modal-content"><div style="font-size:48px; text-align:center;"><i class="fas fa-university"></i></div><div style="font-size:22px; font-weight:800; text-align:center;">Campus Announcement</div><p style="margin:16px 0; text-align:center;">Teacher portal with full interaction: Like, Share, and Comment. Also manage pinned posts.</p><button class="btn-primary" onclick="closeAboutModal()" style="background:var(--primary); width:100%; padding:10px;">Close</button></div></div>
@@ -510,6 +777,39 @@ let globalSearch = "";
 let teacher = { id: 1, name: "Prof. Emily Davis", email: "emily@ctu.edu.ph" };
 let posts = [];
 let notifications = [];
+=======
+                    <div class="card-header">
+                        <i class="fas fa-filter"></i> Filters
+                    </div>
+                    <div class="menu-item" onclick="toggleDropdown('categoryDropdown')">
+                        <i class="fas fa-layer-group"></i> Filter by Category
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
+                    <div id="categoryDropdown" class="dropdown-content">
+                        <button type="button" class="dropdown-item" onclick="filterCategory('All')">All Announcements</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Exam')">Exam Schedule</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
+                        <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
+                    </div>
+
+                    <div class="card-header">
+                        <i class="fas fa-thumbtack"></i> Pinned Items
+                    </div>
+                    <div class="menu-item" onclick="toggleDropdown('pinnedDropdown')">
+                        <i class="fas fa-list"></i> View Pinned Items
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
+                    <div id="pinnedDropdown" class="dropdown-content">
+                        <div class="pinned-item">
+                            <div><i class="fas fa-thumbtack"></i> Final Exam Schedule</div>
+                            <button type="button" class="remove-pin" onclick="removePin(this)">✕</button>
+                        </div>
+                        <div class="pinned-item">
+                            <div><i class="fas fa-thumbtack"></i> Class Suspension</div>
+                            <button type="button" class="remove-pin" onclick="removePin(this)">✕</button>
+                        </div>
+                    </div>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 
 function initMockData() {
     posts = [
@@ -523,6 +823,7 @@ function initMockData() {
 }
 initMockData();
 
+<<<<<<< HEAD
 function renderPosts() {
     let filtered = [...posts];
     if (currentFilter === "Pinned") filtered = filtered.filter(p => p.isPinned === true);
@@ -550,12 +851,19 @@ function renderPosts() {
     container.innerHTML = html;
     document.getElementById("activeFilterLabel").innerText = currentFilter === "Pinned" ? "Pinned" : currentFilter;
 }
+=======
+            <main>
+                <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
+                    <i class="fas fa-plus-circle"></i> Want to post an announcement?
+                </button>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 
 function renderComments(comments) { if (!comments.length) return '<div class="no-comments" style="padding:12px 0; color:var(--muted-light);">No comments yet. Be first!</div>'; return comments.map(c => `<div class="comment"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><div class="comment-author">${escapeHtml(c.author)}</div><div class="comment-text">${escapeHtml(c.text)}</div><div class="comment-time">${c.date || "just now"}</div></div></div>`).join(""); }
 
 function formatDate(d) { return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
 function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
 
+<<<<<<< HEAD
 // Interactions: LIKE, SHARE, COMMENT
 function likePost(postId) {
     let post = posts.find(p => p.id === postId);
@@ -577,10 +885,169 @@ function addComment(postId) {
     if (post) { let newComment = { id: Date.now(), author: teacher.name, text: text, date: "Just now" }; post.comments = post.comments || []; post.comments.push(newComment); post.commentCount = post.comments.length; addNotification(`New comment on "${post.title}"`); renderPosts(); showToast("💬 Comment added"); }
     input.value = "";
 }
+=======
+                    <div id="announcementsContainer" class="announcement-board">
+                        <!-- Announcement 1 - Exam -->
+                        <div class="announcement-card" data-category="Exam" data-post-id="1">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Prof. Michael Reyes</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> December 10, 2024</span>
+                                            <span><i class="far fa-clock"></i> 9:00 AM</span>
+                                            <span class="post-category post-category-exam">Exam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-title">Final Exam Schedule</div>
+                                <div class="post-text">The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.</div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
+                                </div>
+                            </div>
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">24</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">2</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                            </div>
+                            <div class="comments-section">
+                                <div class="comment-input">
+                                    <input type="text" placeholder="Write a comment..." />
+                                    <button type="button" onclick="addComment(this)">Post</button>
+                                </div>
+                                <div class="comments-list">
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">Juan Dela Cruz</span>
+                                            <div class="comment-text">Thank you for the update!</div>
+                                            <div class="comment-time">December 8, 2024</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Announcement 2 - Suspension -->
+                        <div class="announcement-card" data-category="Suspension" data-post-id="2">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Admin Office</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> November 24, 2024</span>
+                                            <span><i class="far fa-clock"></i> 6:00 AM</span>
+                                            <span class="post-category post-category-suspension">Suspension</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-title">Class Suspension - Typhoon Enteng</div>
+                                <div class="post-text">Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.</div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
+                                </div>
+                            </div>
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">56</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">1</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                            </div>
+                            <div class="comments-section">
+                                <div class="comment-input">
+                                    <input type="text" placeholder="Write a comment..." />
+                                    <button type="button" onclick="addComment(this)">Post</button>
+                                </div>
+                                <div class="comments-list">
+                                    <div class="comment">
+                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                        <div class="comment-content">
+                                            <span class="comment-author">John Santos</span>
+                                            <div class="comment-text">Stay safe everyone!</div>
+                                            <div class="comment-time">November 24, 2024</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Announcement 3 - Event -->
+                        <div class="announcement-card" data-category="Event" data-post-id="3">
+                            <div class="post-header">
+                                <div class="post-header-left">
+                                    <div class="post-avatar">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="post-user-info">
+                                        <div class="post-author">Student Affairs Office</div>
+                                        <div class="post-meta">
+                                            <span><i class="far fa-calendar-alt"></i> November 20, 2024</span>
+                                            <span><i class="far fa-clock"></i> 10:00 AM</span>
+                                            <span class="post-category post-category-event">Event</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                            </div>
+                            <div class="post-content">
+                                <div class="post-title">University Foundation Week 2024</div>
+                                <div class="post-text">Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert.</div>
+                                <div class="post-image">
+                                    <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
+                                </div>
+                            </div>
+                            <div class="post-stats">
+                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">89</span> Likes</span>
+                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">0</span> Comments</span>
+                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                            </div>
+                            <div class="comments-section">
+                                <div class="comment-input">
+                                    <input type="text" placeholder="Write a comment..." />
+                                    <button type="button" onclick="addComment(this)">Post</button>
+                                </div>
+                                <div class="comments-list">
+                                    <div class="no-comments">No comments yet. Be the first!</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 
 function toggleCommentsPanel(postId) { let sec = document.getElementById(`commentsSection_${postId}`); if (sec) sec.classList.toggle("show"); }
 function scrollToCommentSection(postId) { let sec = document.getElementById(`commentsSection_${postId}`); if (sec) { sec.classList.add("show"); sec.scrollIntoView({ behavior: "smooth", block: "nearest" }); } }
 
+<<<<<<< HEAD
 // Post creation
 function openCreateModal() { document.getElementById("createPostModal").style.display = "flex"; }
 function closeCreateModal() { document.getElementById("createPostModal").style.display = "none"; }
@@ -628,5 +1095,194 @@ loadThemePref();
 renderPosts();
 updateNotificationUI();
 </script>
+=======
+        <!-- About Us Modal -->
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="modal-title">Campus Connect</div>
+                <div class="modal-text">
+                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
+                </div>
+                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        // Search function for the single search button - redirects to search dashboard with empty query or fixed value
+        // This maintains existing functionality while removing the input field dependency
+        function performSearchAndRedirect() {
+            // Redirect to search dashboard - the search dashboard will handle the query parameter
+            // Can pass empty string to show all or a default search
+            window.location.href = 'SearchDashboard.aspx?query=' + encodeURIComponent('');
+        }
+
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.backgroundColor = '#4f46e5';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '30px';
+            toast.style.fontSize = '14px';
+            toast.style.zIndex = '9999';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+
+            setTimeout(function () {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(function () { toast.remove(); }, 300);
+            }, 2000);
+        }
+
+        function toggleDropdown(id) {
+            var dropdown = document.getElementById(id);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleNotificationDropdown() {
+            document.getElementById('notificationDropdown').classList.toggle('show');
+        }
+
+        function filterCategory(category) {
+            var cards = document.querySelectorAll('.announcement-card');
+            document.getElementById('activeFilterLabel').innerText = category;
+            cards.forEach(function (card) {
+                card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
+            });
+            document.getElementById('categoryDropdown').style.display = 'none';
+        }
+
+        function toggleLike(btn) {
+            btn.classList.toggle('liked');
+            var icon = btn.querySelector('i');
+            icon.className = btn.classList.contains('liked') ? 'fas fa-heart' : 'far fa-heart';
+            btn.innerHTML = btn.classList.contains('liked') ? '<i class="fas fa-heart"></i> Liked' : '<i class="far fa-heart"></i> Like';
+
+            var card = btn.closest('.announcement-card');
+            var likeCount = card.querySelector('.like-count');
+            var current = parseInt(likeCount.innerText);
+            likeCount.innerText = btn.classList.contains('liked') ? current + 1 : current - 1;
+        }
+
+        function toggleLikeFromStats(span) {
+            var card = span.closest('.announcement-card');
+            var likeBtn = card.querySelector('.action-btn:first-child');
+            toggleLike(likeBtn);
+        }
+
+        function toggleComments(btn) {
+            btn.closest('.announcement-card').querySelector('.comments-section').classList.toggle('show');
+        }
+
+        function scrollToComments(element) {
+            var card = element.closest('.announcement-card');
+            var comments = card.querySelector('.comments-section');
+            comments.classList.add('show');
+            comments.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addComment(btn) {
+            var input = btn.parentElement.querySelector('input');
+            var comment = input.value.trim();
+            if (comment) {
+                var card = btn.closest('.announcement-card');
+                var list = card.querySelector('.comments-list');
+                var noComments = list.querySelector('.no-comments');
+                if (noComments) noComments.remove();
+
+                var newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                    '<div class="comment-content">' +
+                    '<span class="comment-author">You</span>' +
+                    '<div class="comment-text">' + comment.replace(/</g, '&lt;') + '</div>' +
+                    '<div class="comment-time">Just now</div>' +
+                    '</div>';
+                list.appendChild(newComment);
+
+                var count = card.querySelector('.comment-count');
+                count.innerText = parseInt(count.innerText) + 1;
+                input.value = '';
+                showToast('Comment posted!');
+            }
+        }
+
+        function sharePost() {
+            showToast('Share feature coming soon!');
+        }
+
+        function togglePinTop(btn) {
+            btn.classList.toggle('pinned');
+            showToast(btn.classList.contains('pinned') ? 'Announcement pinned!' : 'Announcement unpinned!');
+        }
+
+        function removePin(btn) {
+            btn.parentElement.remove();
+            showToast('Removed from pinned items');
+        }
+
+        function markRead(item) {
+            item.classList.remove('unread');
+            var dot = item.querySelector('.notification-dot');
+            if (dot) dot.remove();
+            updateBadge();
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.notification-item.unread').forEach(markRead);
+        }
+
+        function updateBadge() {
+            var count = document.querySelectorAll('.notification-item.unread').length;
+            var badge = document.getElementById('notificationBadge');
+            if (count > 0) {
+                badge.innerText = count;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            var toggle = document.querySelector('.toggle-switch');
+            toggle.classList.toggle('active');
+        }
+
+        function openAboutModal() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        }
+
+        function closeAboutModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+
+        function openCreatePostModal() {
+            showToast('Create post feature coming soon!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.aspx';
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            var dropdown = document.getElementById('notificationDropdown');
+            var bell = document.querySelector('.notification-bell');
+            if (dropdown && bell && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+    </script>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 </body>
 </html>

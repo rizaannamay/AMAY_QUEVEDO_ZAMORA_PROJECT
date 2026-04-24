@@ -24,6 +24,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+<<<<<<< HEAD
         /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
@@ -34,6 +35,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         /// <summary>
         /// lblTeacherName control.
+=======
+        /// searchBtn control.
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
