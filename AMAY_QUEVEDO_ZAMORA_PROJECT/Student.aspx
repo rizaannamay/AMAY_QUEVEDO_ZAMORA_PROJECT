@@ -135,8 +135,10 @@
         
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 16px rgba(26, 58, 92, 0.18);
+             background: #e8f0fe;
+             border-color: rgba(26,58,92,0.4);
+             transform: translateY(-1px);
+             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
         .header-actions {
@@ -664,6 +666,7 @@
         .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
         .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
 
+        /* Dark mode variables and tweaks */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -676,6 +679,28 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
             --active-bg: rgba(64, 96, 128, 0.36);
         }
+
+        /* Additional element level dark-mode rules so borders / buttons look correct */
+        .dark-mode .search-btn, .dark-mode .comment-input button, .dark-mode .modal-close {
+            border-color: rgba(255,255,255,0.08);
+            color: #ffffff;
+            background: transparent;
+        }
+
+        .dark-mode .search-btn:hover, .dark-mode .comment-input button:hover, .dark-mode .modal-close:hover {
+            background: rgba(255,255,255,0.04);
+            box-shadow: none;
+            transform: translateY(0);
+        }
+
+        .dark-mode .notification-bell { border-color: var(--border); }
+        .dark-mode .user-info { border-color: var(--border); }
+        .dark-mode .search-box { border-color: rgba(255,255,255,0.06); }
+        .dark-mode .comment-input input { border-color: rgba(255,255,255,0.06); background: var(--surface-soft); color: var(--page-text); }
+        .dark-mode .card-header { border-bottom-color: rgba(255,255,255,0.04); }
+        .dark-mode .post-stats { border-top-color: rgba(255,255,255,0.04); border-bottom-color: rgba(255,255,255,0.04); }
+        .dark-mode .comment { border-bottom-color: rgba(255,255,255,0.03); }
+        .dark-mode .notification-header { border-bottom-color: rgba(255,255,255,0.04); }
 
         .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
         .dark-mode .notification-item.unread, .dark-mode .menu-item.active, .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
@@ -715,13 +740,14 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="430px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Large" Height="61px" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
                 </div>
 
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">0       </div>
+                        <span id="notificationBadge" class="badge-red">0       </span>
+                    </div>
                     <div class="user-info">
                         <div class="avatar">
                             <i class="fas fa-user"></i>
@@ -782,10 +808,10 @@
                                 <i class="fas fa-cog"></i> Settings
                             </div>
 
-                            <button type="button" class="settings-item" onclick="toggleTheme(this)">
+                            <button type="button" class="settings-item" onclick="toggleTheme(this)" aria-pressed="false" title="Toggle dark / light theme">
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
-                                <div class="toggle-switch" id="themeToggle"></div>
+                                <div class="toggle-switch" id="themeToggle" role="switch" aria-checked="false"></div>
                             </button>
 
                             <button type="button" class="settings-item" onclick="openAboutModal()">
@@ -835,9 +861,7 @@
             if (!dropdown) return;
             var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
             dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
-            if (trigger) {
-                trigger.classList.toggle('open', !isOpen);
-            }
+            if (trigger) trigger.classList.toggle('open', !isOpen);
         }
 
         function toggleSidebar() {
@@ -858,115 +882,97 @@
             }
         });
 
-        function toggleComments(btn, postId) {
-            var card = btn.closest('.announcement-card');
-            if (card) {
-                var commentsSection = document.getElementById('commentsSection_' + postId);
-                if (commentsSection) {
-                    if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
-                        commentsSection.style.display = 'block';
-                        loadComments(postId);
-                    } else {
-                        commentsSection.style.display = 'none';
-                    }
-                }
-            }
-        }
-
-        function scrollToComments(element, postId) {
-            var commentsSection = document.getElementById('commentsSection_' + postId);
-            if (commentsSection) {
-                commentsSection.style.display = 'block';
-                loadComments(postId);
-                commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
         function loadComments(postId) {
-            fetch(`GetComments.aspx?postId=${postId}`)
-                .then(response => response.json())
-                .then(data => {
-                    var commentsList = document.getElementById(`commentsList_${postId}`);
+            fetch('Comments.aspx?action=get&postId=' + encodeURIComponent(postId))
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    var commentsList = document.getElementById('commentsList_' + postId);
                     if (!commentsList) return;
-
-                    if (data.length === 0) {
+                    if (!Array.isArray(data) || data.length === 0) {
                         commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
-                    } else {
-                        var html = '';
-                        data.forEach(comment => {
-                            html += `
-                                <div class="comment">
-                                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                    <div class="comment-content">
-                                        <span class="comment-author">${escapeHtml(comment.author)}</span>
-                                        <div class="comment-text">${escapeHtml(comment.text)}</div>
-                                        <div class="comment-time">${comment.date}</div>
-                                    </div>
-                                </div>`;
-                        });
-                        commentsList.innerHTML = html;
+                        return;
                     }
+                    var html = '';
+                    data.forEach(function (comment) {
+                        html += '\
+<div class="comment">\
+  <div class="comment-avatar"><i class="fas fa-user"></i></div>\
+  <div class="comment-content">\
+    <span class="comment-author">' + escapeHtml(comment.author) + '</span>\
+    <div class="comment-text">' + escapeHtml(comment.text) + '</div>\
+    <div class="comment-time">' + (comment.date || '') + '</div>\
+  </div>\
+</div>';
+                    });
+                    commentsList.innerHTML = html;
                 })
-                .catch(error => console.error('Error loading comments:', error));
+                .catch(function (err) { console.error('Error loading comments:', err); });
         }
 
-        function toggleLike(btn, postId) {
-            fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.liked) {
-                        btn.classList.add('liked');
-                        btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                    } else {
-                        btn.classList.remove('liked');
-                        btn.innerHTML = '<i class="far fa-heart"></i> Like';
-                    }
-                    var card = btn.closest('.announcement-card');
-                    if (card) {
-                        var likeCountSpan = card.querySelector('.like-count');
-                        if (likeCountSpan) likeCountSpan.innerText = data.likeCount;
-                    }
-                })
-                .catch(error => console.error('Error toggling like:', error));
-        }
-
-        function toggleLikeFromStats(span, postId) {
-            var card = span.closest('.announcement-card');
-            if (card) {
-                var likeBtn = card.querySelector('.action-btn:first-child');
-                if (likeBtn) toggleLike(likeBtn, postId);
-            }
-        }
-
-        function sharePost(postId) {
-            fetch(`ShareAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(() => showToast('Shared successfully!'))
-                .catch(() => showToast('Error sharing'));
-        }
-
-        function togglePinTop(btn, postId) {
-            fetch(`PinAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.pinned) {
-                        btn.classList.add('pinned');
-                        showToast('Announcement pinned!');
-                    } else {
-                        btn.classList.remove('pinned');
-                        showToast('Announcement unpinned!');
-                    }
-                    setTimeout(() => location.reload(), 500);
-                })
-                .catch(() => showToast('Error toggling pin'));
-        }
-
+        // body must be valid JSON string
         function addComment(btn, postId) {
-            var input = document.getElementById(`commentInput_${postId}`);
+            var input = document.getElementById('commentInput_' + postId);
             if (!input) return;
             var commentText = input.value.trim();
             if (commentText === '') { showToast('Please enter a comment!'); return; }
 
+            var payload = JSON.stringify({ postId: postId, comment: commentText });
+
             fetch('Comments.aspx?action=add', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body
+                body: payload
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data && data.success) {
+                        input.value = '';
+                        loadComments(postId);
+                        showToast('Comment posted');
+                    } else {
+                        showToast('Error posting comment');
+                    }
+                })
+                .catch(function (err) {
+                    console.error('Error posting comment:', err);
+                    showToast('Error posting comment');
+                });
+        }
+
+        // small helpers
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/[&<>"'\/]/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;' }[c];
+            });
+        }
+
+        function showToast(message) {
+            // simple placeholder - implement a nicer toast if needed
+            alert(message);
+        }
+
+        // THEME HANDLING
+        function toggleTheme(item) {
+            var toggle = item.querySelector('.toggle-switch');
+            toggle.classList.toggle('active');
+            document.body.classList.toggle('dark-mode');
+        }
+
+        function openAboutModal() {
+            document.getElementById('aboutModal').style.display = 'flex';
+        }
+        a
+        function closeAboutModal() {
+            document.getElementById('aboutModal').style.display = 'none';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.aspx';
+            }
+        }
+
+    </script>
+</body>
+</html>

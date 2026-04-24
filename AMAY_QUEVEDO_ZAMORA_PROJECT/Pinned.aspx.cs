@@ -1,19 +1,17 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Text;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Pinned : Page
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
             {
                 Response.Redirect("login.aspx");
+                return;
             }
 
             if (!IsPostBack)
@@ -26,86 +24,57 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             try
             {
-                con.Open();
-                string query = @"SELECT AnnouncementId, Title, Content, Category, AuthorName, 
-                                        ImageUrl, CreatedDate, LikeCount, ShareCount
-                                 FROM Announcements 
-                                 WHERE IsActive = 1 AND IsPinned = 1 
-                                 ORDER BY CreatedDate DESC";
-                SqlCommand cmd = new SqlCommand(query, con);
-                SqlDataReader reader = cmd.ExecuteReader();
+                var html = new StringBuilder();
 
-                string html = "";
-                bool hasPinned = false;
+                // Pinned item: Final Exam Schedule (May 11-14)
+                html.Append(@"
+<div class='pinned-card'>
+  <div class='card-top'>
+    <div class='card-author'>
+      <div class='avatar'><i class='fas fa-user-tie'></i></div>
+      <div>
+        <div class='author-name'>Office of the Registrar</div>
+        <div class='meta'><span><i class='far fa-calendar-alt'></i> May 11-14, 2026</span><span class='status-pill'>Pinned</span></div>
+      </div>
+    </div>
+    <i class='fas fa-thumbtack pin-icon'></i>
+  </div>
+  <div class='card-title'>Final Exam Schedule</div>
+  <div class='card-text'>All final examinations will be conducted on May 11-14. Please check your department for room/time assignments.</div>
+  <div class='card-image'><img src='https://placehold.co/1200x400/1a3a5c/ffffff?text=Exam+Schedule+May+11-14' alt='Exam Schedule' /></div>
+</div>");
 
-                while (reader.Read())
-                {
-                    hasPinned = true;
-                    int id = Convert.ToInt32(reader["AnnouncementId"]);
-                    string title = reader["Title"].ToString();
-                    string content = reader["Content"].ToString();
-                    string category = reader["Category"].ToString();
-                    string author = reader["AuthorName"].ToString();
-                    string imageUrl = reader["ImageUrl"] != DBNull.Value ? reader["ImageUrl"].ToString() : "";
-                    DateTime date = Convert.ToDateTime(reader["CreatedDate"]);
+                // Add another pinned sample if desired
+                html.Append(@"
+<div class='pinned-card'>
+  <div class='card-top'>
+    <div class='card-author'>
+      <div class='avatar'><i class='fas fa-bullhorn'></i></div>
+      <div>
+        <div class='author-name'>Student Affairs</div>
+        <div class='meta'><span><i class='far fa-calendar-alt'></i> Apr 20, 2026</span><span class='status-pill'>Pinned</span></div>
+      </div>
+    </div>
+    <i class='fas fa-thumbtack pin-icon'></i>
+  </div>
+  <div class='card-title'>Library Hours Extended</div>
+  <div class='card-text'>Library extended hours during exam week: 7:00 AM - Midnight.</div>
+</div>");
 
-                    string iconClass = "";
-                    string iconHtml = "<i class='fas fa-user-tie'></i>";
-
-                    if (category == "Exam") { iconClass = "avatar"; }
-                    else if (category == "Suspension") { iconClass = "avatar"; }
-                    else { iconClass = "avatar"; }
-
-                    string imageHtml = string.IsNullOrEmpty(imageUrl) ? "" : $@"
-                        <div class='card-image'>
-                            <img src='{imageUrl}' alt='{EscapeHtml(title)}' />
-                        </div>";
-
-                    html += $@"
-                        <div class='pinned-card'>
-                            <div class='card-top'>
-                                <div class='card-author'>
-                                    <div class='avatar'>
-                                        {iconHtml}
-                                    </div>
-                                    <div>
-                                        <div class='author-name'>{EscapeHtml(author)}</div>
-                                        <div class='meta'>
-                                            <span><i class='far fa-calendar-alt'></i> {date:MMMM dd, yyyy}</span>
-                                            <span class='status-pill'>Pinned</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <i class='fas fa-thumbtack pin-icon'></i>
-                            </div>
-                            <div class='card-title'>{EscapeHtml(title)}</div>
-                            <div class='card-text'>{EscapeHtml(content)}</div>
-                            {imageHtml}
-                        </div>";
-                }
-                reader.Close();
-                con.Close();
-
-                if (!hasPinned)
-                {
-                    html = "<div class='empty-state'><i class='fas fa-thumbtack'></i> No pinned announcements available.</div>";
-                }
-
-                string script = $"<script>document.querySelector('.pinned-list').innerHTML = `{html}`;</script>";
+                var script = $"<script>document.querySelector('.pinned-list').innerHTML = `{EscapeJs(html.ToString())}`;</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "LoadPinned", script);
             }
             catch (Exception ex)
             {
-                con.Close();
-                string errorScript = $"<script>document.querySelector('.pinned-list').innerHTML = '<div class=\"empty-state\">Error loading pinned announcements: {ex.Message}</div>';</script>";
+                var errorScript = $"<script>document.querySelector('.pinned-list').innerHTML = '<div class=\"empty-state\">Error loading pinned announcements: {EscapeJs(ex.Message)}</div>';</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "LoadError", errorScript);
             }
         }
 
-        private string EscapeHtml(string text)
+        private string EscapeJs(string s)
         {
-            if (string.IsNullOrEmpty(text)) return "";
-            return System.Security.SecurityElement.Escape(text);
+            if (string.IsNullOrEmpty(s)) return "";
+            return s.Replace("`", "\\`").Replace("\\", "\\\\").Replace("</script>", "<\\/script>");
         }
     }
 }

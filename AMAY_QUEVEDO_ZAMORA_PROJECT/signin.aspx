@@ -1,5 +1,4 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -316,37 +315,33 @@
     </form>
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var passwordField = document.getElementById('<%= txtPassword.ClientID %>') as HTMLInputElement | null;
-            var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>') as HTMLInputElement | null;
-            var passwordReq = document.getElementById('passwordReq') as HTMLElement | null;
+        document.addEventListener('DOMContentLoaded', function () {
+            var passwordField = document.getElementById('<%= txtPassword.ClientID %>');
+    var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+    var passwordReq = document.getElementById('passwordReq');
 
-            if (passwordField && passwordReq) {
-                const pass = passwordField;
-                const req = passwordReq;
-                pass.addEventListener('keyup', function(this: HTMLInputElement) {
-                    if (this.value && this.value.length >= 6) {
-                        req.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
-                        req.style.color = '#16a34a';
-                    } else {
-                        req.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
-                        req.style.color = '#8a9bb0';
-                    }
-                });
-            }
-
-            if (confirmField && passwordField) {
-                const pass = passwordField;
-                const conf = confirmField;
-                conf.addEventListener('keyup', function(this: HTMLInputElement) {
-                    if (pass && this.value === pass.value && pass.value.length >= 6) {
-                        this.style.borderColor = '#16a34a';
-                    } else {
-                        this.style.borderColor = '#dce4ec';
-                    }
-                });
+    if (passwordField && passwordReq) {
+        passwordField.addEventListener('keyup', function () {
+            if (this.value && this.value.length >= 6) {
+                passwordReq.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
+                passwordReq.style.color = '#16a34a';
+            } else {
+                passwordReq.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
+                passwordReq.style.color = '#8a9bb0';
             }
         });
+    }
+
+    if (confirmField && passwordField) {
+        confirmField.addEventListener('keyup', function () {
+            if (passwordField.value && this.value === passwordField.value && passwordField.value.length >= 6) {
+                this.style.borderColor = '#16a34a';
+            } else {
+                this.style.borderColor = '#dce4ec';
+            }
+        });
+    }
+});     
     </script>
 </body>
 </html>

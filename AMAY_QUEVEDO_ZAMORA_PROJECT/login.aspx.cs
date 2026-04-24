@@ -25,7 +25,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 Session["UserRole"] = "Admin";
                 Response.Redirect("Teacher.aspx");
             }
-        }
+        } 
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
