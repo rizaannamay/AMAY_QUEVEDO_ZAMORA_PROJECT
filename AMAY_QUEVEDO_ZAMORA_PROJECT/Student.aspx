@@ -63,7 +63,7 @@
             font: inherit;
         }
 
-         .app-shell {
+        .app-shell {
             height: 100%;
             height: 100vh;
             display: flex;
@@ -73,19 +73,21 @@
             padding: 16px 20px 0;
             overflow: hidden;
         }
+
         .header {
-             flex: 0 0 auto;
- background: var(--surface);
- backdrop-filter: blur(10px);
- border-radius: 24px;
- padding: 12px 24px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- gap: 16px;
- box-shadow: var(--shadow);
- border: 1px solid var(--border);
+            flex: 0 0 auto;
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
+
         .footer {
             flex: 0 0 auto;
             flex: 0 0 34px;
@@ -96,13 +98,13 @@
             line-height: 34px;
             font-size: 12px;
         }
-            form {
-                height: auto;
-                min-height: 100%;
-                overflow: visible;
-            }
 
-       
+        form {
+            height: auto;
+            min-height: 100%;
+            overflow: visible;
+        }
+
         .logo {
             font-size: 22px;
             font-weight: 800;
@@ -994,15 +996,15 @@
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">3</span>
+                        <span id="notificationBadge" class="badge-red">0</span>
                     </div>
                     <div class="user-info">
                         <div class="avatar">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="user-details">
-                            <div class="user-name">John Dela Cruz</div>
-                            <div class="user-role">Student</div>
+                            <div class="user-name" id="userName">Loading...</div>
+                            <div class="user-role" id="userRole">Student</div>
                         </div>
                     </div>
                 </div>
@@ -1010,26 +1012,11 @@
 
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
-                    <a href="Notifications.aspx">
-                        <span><i class="fas fa-bell"></i> Notifications</span>
-                    </a>
+                    <span><i class="fas fa-bell"></i> Notifications</span>
                     <button type="button" onclick="markAllRead()">Mark all read</button>
                 </div>
-                <div class="notification-list">
-                    <div class="notification-item unread" onclick="markRead(this)">
-                        <div class="notification-dot"></div>
-                        <div class="notification-text">New exam schedule announced</div>
-                        <div class="notification-time">2 hours ago</div>
-                    </div>
-                    <div class="notification-item unread" onclick="markRead(this)">
-                        <div class="notification-dot"></div>
-                        <div class="notification-text">Class suspension due to typhoon</div>
-                        <div class="notification-time">1 day ago</div>
-                    </div>
-                    <div class="notification-item" onclick="markRead(this)">
-                        <div class="notification-text">Foundation Week activities posted</div>
-                        <div class="notification-time">3 days ago</div>
-                    </div>
+                <div class="notification-list" id="notificationList">
+                    <div class="no-notifications">No new notifications</div>
                 </div>
             </div>
 
@@ -1041,8 +1028,8 @@
                                 <button type="button" class="sidebar-toggle" onclick="toggleSidebar()">
                                     <i class="fas fa-bars"></i>
                                 </button>
-                                <div class="profile-name">John Dela Cruz</div>
-                                <div class="profile-email">john.delacruz@ctu.edu.ph</div>
+                                <div class="profile-name" id="profileName">Loading...</div>
+                                <div class="profile-email" id="profileEmail">Loading...</div>
                             </div>
 
                             <div class="card-header">
@@ -1059,11 +1046,6 @@
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
-
-                            <asp:LinkButton ID="btnViewPinned" runat="server" PostBackUrl="~/Pinned.aspx" CssClass="menu-item">
-                                <i class="fas fa-thumbtack"></i>
-                                <span class="menu-text">View Pinned Items</span>
-                            </asp:LinkButton>
 
                             <div class="card-header" style="margin-top: 5px;">
                                 <i class="fas fa-cog"></i> Settings
@@ -1095,172 +1077,10 @@
                     </div>
 
                     <div id="announcementsContainer" class="announcement-board">
-                        <div class="announcement-card" data-category="Exam" data-post-id="1">
-                            <div class="post-header">
-                                <div class="post-header-left">
-                                    <div class="post-avatar">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                    <div class="post-user-info">
-                                        <div class="post-author">Prof. Michael Reyes</div>
-                                        <div class="post-meta">
-                                            <span><i class="far fa-calendar-alt"></i> December 10, 2024</span>
-                                            <span><i class="far fa-clock"></i> 9:00 AM</span>
-                                            <span class="post-category post-category-exam">Exam</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-title">Final Exam Schedule</div>
-                                <div class="post-text">
-                                    The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.
-                                </div>
-                                <div class="post-image">
-                                    <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
-                                </div>
-                            </div>
-                            <div class="post-stats">
-                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">24</span> Likes</span>
-                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">2</span> Comments</span>
-                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
-                            </div>
-                            <div class="action-buttons">
-                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
-                            </div>
-                            <div class="comments-section">
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Write a comment..." />
-                                    <button type="button" onclick="addComment(this)">Post</button>
-                                </div>
-                                <div class="comments-list">
-                                    <div class="comment">
-                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                        <div class="comment-content">
-                                            <span class="comment-author">Juan Dela Cruz</span>
-                                            <div class="comment-text">Thank you for the update!</div>
-                                            <div class="comment-time">December 8, 2024</div>
-                                        </div>
-                                    </div>
-                                    <div class="comment">
-                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                        <div class="comment-content">
-                                            <span class="comment-author">Maria Santos</span>
-                                            <div class="comment-text">What time does the exam start?</div>
-                                            <div class="comment-time">December 9, 2024</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="announcement-card" data-category="Suspension" data-post-id="2">
-                            <div class="post-header">
-                                <div class="post-header-left">
-                                    <div class="post-avatar">
-                                        <i class="fas fa-building"></i>
-                                    </div>
-                                    <div class="post-user-info">
-                                        <div class="post-author">Admin Office</div>
-                                        <div class="post-meta">
-                                            <span><i class="far fa-calendar-alt"></i> November 24, 2024</span>
-                                            <span><i class="far fa-clock"></i> 6:00 AM</span>
-                                            <span class="post-category post-category-suspension">Suspension</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-title">Class Suspension - Typhoon Enteng</div>
-                                <div class="post-text">
-                                    Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.
-                                </div>
-                                <div class="post-image">
-                                    <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
-                                </div>
-                            </div>
-                            <div class="post-stats">
-                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">56</span> Likes</span>
-                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">1</span> Comments</span>
-                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
-                            </div>
-                            <div class="action-buttons">
-                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
-                            </div>
-                            <div class="comments-section">
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Write a comment..." />
-                                    <button type="button" onclick="addComment(this)">Post</button>
-                                </div>
-                                <div class="comments-list">
-                                    <div class="comment">
-                                        <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                        <div class="comment-content">
-                                            <span class="comment-author">John Santos</span>
-                                            <div class="comment-text">Stay safe everyone!</div>
-                                            <div class="comment-time">November 24, 2024</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="announcement-card" data-category="Event" data-post-id="3">
-                            <div class="post-header">
-                                <div class="post-header-left">
-                                    <div class="post-avatar">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </div>
-                                    <div class="post-user-info">
-                                        <div class="post-author">Student Affairs Office</div>
-                                        <div class="post-meta">
-                                            <span><i class="far fa-calendar-alt"></i> November 20, 2024</span>
-                                            <span><i class="far fa-clock"></i> 10:00 AM</span>
-                                            <span class="post-category post-category-event">Event</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type="button" class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
-                            </div>
-                            <div class="post-content">
-                                <div class="post-title">University Foundation Week 2024</div>
-                                <div class="post-text">
-                                    Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert featuring local artists.
-                                </div>
-                                <div class="post-image">
-                                    <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
-                                </div>
-                            </div>
-                            <div class="post-stats">
-                                <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">89</span> Likes</span>
-                                <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">0</span> Comments</span>
-                                <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
-                            </div>
-                            <div class="action-buttons">
-                                <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
-                                <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
-                                <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
-                            </div>
-                            <div class="comments-section">
-                                <div class="comment-input">
-                                    <input type="text" placeholder="Write a comment..." />
-                                    <button type="button" onclick="addComment(this)">Post</button>
-                                </div>
-                                <div class="comments-list">
-                                    <div class="no-comments">No comments yet. Be the first!</div>
-                                </div>
-                            </div>
-                        </div>
+                        <div style="text-align:center;padding:40px;">Loading announcements...</div>
                     </div>
                 </main>
             </div>
-
         </div>
 
         <div id="aboutModal" class="modal">
@@ -1279,287 +1099,284 @@
     </form>
 
     <script>
-        function toggleDropdown(id, trigger) {
-            var dropdown = document.getElementById(id);
-            var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
+        let currentUserId = '<%= Session["UserId"] %>';
+let allAnnouncements = [];
 
-            dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
+function toggleDropdown(id, trigger) {
+    var dropdown = document.getElementById(id);
+    if (!dropdown) return;
+    var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
+    dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
+    if (trigger) {
+        trigger.classList.toggle('open', !isOpen);
+    }
+}
 
-            if (trigger) {
-                trigger.classList.toggle('open', !isOpen);
-            }
-        }
+function toggleSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.toggle('collapsed');
+}
 
-        function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('collapsed');
-        }
-
-        document.querySelectorAll('.menu-item, .settings-item').forEach(function (item) {
-            item.addEventListener('click', function () {
-                document.querySelectorAll('.menu-item, .settings-item').forEach(function (i) {
-                    i.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
+document.querySelectorAll('.menu-item, .settings-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+        document.querySelectorAll('.menu-item, .settings-item').forEach(function(i) {
+            i.classList.remove('active');
         });
+        this.classList.add('active');
+    });
+});
 
-        function toggleNotificationDropdown() {
-            var dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-        }
+function toggleNotificationDropdown() {
+    var dropdown = document.getElementById('notificationDropdown');
+    if (dropdown) dropdown.classList.toggle('show');
+}
 
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
+document.addEventListener('click', function(e) {
+    var bell = document.querySelector('.notification-bell');
+    var dropdown = document.getElementById('notificationDropdown');
+    if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+    }
+});
 
-        function toggleComments(btn) {
-            var card = btn.closest('.announcement-card');
-            var commentsSection = card.querySelector('.comments-section');
-            commentsSection.classList.toggle('show');
-        }
+function toggleComments(btn) {
+    var card = btn.closest('.announcement-card');
+    if (card) {
+        var commentsSection = card.querySelector('.comments-section');
+        if (commentsSection) commentsSection.classList.toggle('show');
+    }
+}
 
-        function scrollToComments(element) {
-            var card = element.closest('.announcement-card');
-            var commentsSection = card.querySelector('.comments-section');
-            if (!commentsSection.classList.contains('show')) {
-                commentsSection.classList.add('show');
-            }
+function scrollToComments(element) {
+    var card = element.closest('.announcement-card');
+    if (card) {
+        var commentsSection = card.querySelector('.comments-section');
+        if (commentsSection) {
+            if (!commentsSection.classList.contains('show')) commentsSection.classList.add('show');
             commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
+    }
+}
 
-        function toggleLike(btn) {
-            var card = btn.closest('.announcement-card');
-            var likeIcon = btn.querySelector('i');
-            var likeCountSpan = card.querySelector('.like-count');
-            var currentCount = parseInt(likeCountSpan.innerText, 10);
+function toggleLike(btn, postId) {
+    var card = btn.closest('.announcement-card');
+    if (!card) return;
+    var likeCountSpan = card.querySelector('.like-count');
+    if (!likeCountSpan) return;
+    var currentCount = parseInt(likeCountSpan.innerText, 10);
 
-            if (btn.classList.contains('liked')) {
-                btn.classList.remove('liked');
-                likeIcon.className = 'far fa-heart';
-                likeCountSpan.innerText = currentCount - 1;
-                btn.innerHTML = '<i class="far fa-heart"></i> Like';
-            } else {
+    fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.liked) {
                 btn.classList.add('liked');
-                likeIcon.className = 'fas fa-heart';
-                likeCountSpan.innerText = currentCount + 1;
                 btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-            }
-        }
-
-        function toggleLikeFromStats(span) {
-            var card = span.closest('.announcement-card');
-            var likeBtn = card.querySelector('.action-btn:first-child');
-            var likeIcon = likeBtn.querySelector('i');
-            var likeCountSpan = span.querySelector('.like-count');
-            var currentCount = parseInt(likeCountSpan.innerText, 10);
-
-            if (likeBtn.classList.contains('liked')) {
-                likeBtn.classList.remove('liked');
-                likeIcon.className = 'far fa-heart';
-                likeCountSpan.innerText = currentCount - 1;
-                likeBtn.innerHTML = '<i class="far fa-heart"></i> Like';
+                likeCountSpan.innerText = data.likeCount;
             } else {
-                likeBtn.classList.add('liked');
-                likeIcon.className = 'fas fa-heart';
-                likeCountSpan.innerText = currentCount + 1;
-                likeBtn.innerHTML = '<i class="fas fa-heart"></i> Liked';
+                btn.classList.remove('liked');
+                btn.innerHTML = '<i class="far fa-heart"></i> Like';
+                likeCountSpan.innerText = data.likeCount;
             }
-        }
+        })
+        .catch(() => showToast('Error liking post'));
+}
 
-        function sharePost() {
-            alert('Share this announcement with others!');
-        }
+function toggleLikeFromStats(span, postId) {
+    var card = span.closest('.announcement-card');
+    if (card) {
+        var likeBtn = card.querySelector('.action-btn:first-child');
+        if (likeBtn) toggleLike(likeBtn, postId);
+    }
+}
 
-        function togglePinTop(btn) {
-            if (btn.classList.contains('pinned')) {
-                btn.classList.remove('pinned');
-                alert('Announcement unpinned!');
-            } else {
+function sharePost(postId) {
+    fetch(`ShareAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(() => showToast('Shared successfully!'))
+        .catch(() => showToast('Error sharing'));
+}
+
+function togglePinTop(btn, postId) {
+    fetch(`PinAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            if (data.pinned) {
                 btn.classList.add('pinned');
-                alert('Announcement pinned!');
-            }
-        }
-
-        function addComment(btn) {
-            var input = btn.parentElement.querySelector('input');
-            var commentText = input.value.trim();
-
-            if (commentText !== '') {
-                var card = btn.closest('.announcement-card');
-                var commentsList = card.querySelector('.comments-list');
-                var noComments = commentsList.querySelector('.no-comments');
-                var commentCountSpan = card.querySelector('.comment-count');
-                var currentCommentCount = parseInt(commentCountSpan.innerText, 10);
-
-                if (noComments) {
-                    noComments.remove();
-                }
-
-                var newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
-                    '<div class="comment-content">' +
-                    '<span class="comment-author">You</span>' +
-                    '<div class="comment-text">' + escapeHtml(commentText) + '</div>' +
-                    '<div class="comment-time">Just now</div>' +
-                    '</div>';
-                commentsList.appendChild(newComment);
-
-                commentCountSpan.innerText = currentCommentCount + 1;
-
-                var statsCommentSpan = card.querySelector('.post-stats span:nth-child(2) .comment-count');
-                if (statsCommentSpan) {
-                    statsCommentSpan.innerText = currentCommentCount + 1;
-                }
-
-                input.value = '';
-                showToast('Comment posted successfully!');
+                showToast('Announcement pinned!');
             } else {
-                showToast('Please enter a comment!');
+                btn.classList.remove('pinned');
+                showToast('Announcement unpinned!');
             }
-        }
+            setTimeout(() => location.reload(), 500);
+        });
+}
 
-        function escapeHtml(text) {
-            var div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+function addComment(btn, postId) {
+    var input = btn.parentElement.querySelector('input');
+    if (!input) return;
+    var commentText = input.value.trim();
+    if (commentText === '') { showToast('Please enter a comment!'); return; }
 
-        function showToast(message) {
-            var toast = document.createElement('div');
-            toast.style.position = 'fixed';
-            toast.style.bottom = '20px';
-            toast.style.right = '20px';
-            toast.style.backgroundColor = '#1a3a5c';
-            toast.style.color = 'white';
-            toast.style.padding = '12px 24px';
-            toast.style.borderRadius = '30px';
-            toast.style.fontSize = '14px';
-            toast.style.zIndex = '9999';
-            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-            toast.innerHTML = message;
-            document.body.appendChild(toast);
-
-            setTimeout(function () {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s';
-                setTimeout(function () {
-                    toast.remove();
-                }, 300);
-            }, 2000);
-        }
-
-        function filterCategory(category) {
-            var announcements = document.querySelectorAll('.announcement-card');
-            var filterLabel = document.getElementById('activeFilterLabel');
-            var dropdown = document.getElementById('categoryDropdown');
-            var trigger = document.querySelector('[onclick*="toggleDropdown(\'categoryDropdown\'"]');
-
-            announcements.forEach(function (ann) {
-                if (category === 'All' || ann.getAttribute('data-category') === category) {
-                    ann.style.display = 'block';
-                } else {
-                    ann.style.display = 'none';
+    fetch('AddComment.aspx', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ postId: postId, comment: commentText })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                var card = btn.closest('.announcement-card');
+                if (card) {
+                    var commentsList = card.querySelector('.comments-list');
+                    var commentCountSpan = card.querySelector('.comment-count');
+                    var currentCount = parseInt(commentCountSpan.innerText, 10);
+                        
+                    if (commentsList) {
+                        var noComments = commentsList.querySelector('.no-comments');
+                        if (noComments) commentsList.innerHTML = '';
+                            
+                        var newComment = document.createElement('div');
+                        newComment.className = 'comment';
+                        newComment.innerHTML = `<div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                <div class="comment-content">
+                                    <span class="comment-author">You</span>
+                                    <div class="comment-text">${escapeHtml(commentText)}</div>
+                                    <div class="comment-time">Just now</div>
+                                </div>`;
+                        commentsList.appendChild(newComment);
+                        if (commentCountSpan) commentCountSpan.innerText = currentCount + 1;
+                    }
                 }
-            });
-
-            filterLabel.innerText = category;
-            dropdown.style.maxHeight = '0px';
-            if (trigger) {
-                trigger.classList.remove('open');
+                input.value = '';
+                showToast('Comment posted!');
+            } else {
+                showToast('Error posting comment');
             }
+        });
+}
+
+function escapeHtml(text) {
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showToast(message) {
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a3a5c;color:white;padding:12px 24px;border-radius:30px;z-index:9999;';
+    toast.innerHTML = message;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2000);
+}
+
+function filterCategory(category) {
+    var announcements = document.querySelectorAll('.announcement-card');
+    var filterLabel = document.getElementById('activeFilterLabel');
+    announcements.forEach(function(ann) {
+        if (category === 'All' || ann.getAttribute('data-category') === category) {
+            ann.style.display = 'block';
+        } else {
+            ann.style.display = 'none';
         }
+    });
+    if (filterLabel) filterLabel.innerText = category;
+    var dropdown = document.getElementById('categoryDropdown');
+    if (dropdown) dropdown.style.maxHeight = '0px';
+    var trigger = document.querySelector('[onclick*="toggleDropdown(\'categoryDropdown\'"]');
+    if (trigger) trigger.classList.remove('open');
+}
 
-        function searchAnnouncements() {
-            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            var announcements = document.querySelectorAll('.announcement-card');
-            var found = false;
-
-            announcements.forEach(function (ann) {
-                var title = ann.querySelector('.post-title').innerText.toLowerCase();
-                var content = ann.querySelector('.post-text').innerText.toLowerCase();
-
-                if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                    ann.style.display = 'block';
-                    found = true;
-                } else {
-                    ann.style.display = 'none';
-                }
-            });
-
-            if (!found && searchTerm !== '') {
-                showToast('No announcements found matching "' + searchTerm + '"');
-            }
+function searchAnnouncements() {
+    var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    var announcements = document.querySelectorAll('.announcement-card');
+    var found = false;
+    announcements.forEach(function(ann) {
+        var title = ann.querySelector('.post-title')?.innerText.toLowerCase() || '';
+        var content = ann.querySelector('.post-text')?.innerText.toLowerCase() || '';
+        if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            ann.style.display = 'block';
+            found = true;
+        } else {
+            ann.style.display = 'none';
         }
+    });
+    if (!found && searchTerm !== '') showToast('No announcements found matching "' + searchTerm + '"');
+}
 
-        var searchInput = document.getElementById('searchInput');
-        if (searchInput) {
-            searchInput.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    searchAnnouncements();
-                }
-            });
+var searchInput = document.getElementById('searchInput');
+if (searchInput) {
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchAnnouncements();
         }
+    });
+}
 
-        function markRead(item) {
-            item.classList.remove('unread');
-            var dot = item.querySelector('.notification-dot');
-            if (dot) {
-                dot.remove();
-            }
-            updateBadgeCount();
-        }
+function markRead(item) {
+    item.classList.remove('unread');
+    var dot = item.querySelector('.notification-dot');
+    if (dot) dot.remove();
+    updateBadgeCount();
+}
 
-        function markAllRead() {
-            var notifications = document.querySelectorAll('.notification-item.unread');
-            notifications.forEach(function (notif) {
-                notif.classList.remove('unread');
-                var dot = notif.querySelector('.notification-dot');
-                if (dot) {
-                    dot.remove();
-                }
-            });
-            updateBadgeCount();
-            showToast('All notifications marked as read');
-        }
+function markAllRead() {
+    var notifications = document.querySelectorAll('.notification-item.unread');
+    notifications.forEach(function(notif) {
+        notif.classList.remove('unread');
+        var dot = notif.querySelector('.notification-dot');
+        if (dot) dot.remove();
+    });
+    updateBadgeCount();
+    showToast('All notifications marked as read');
+}
 
-        function updateBadgeCount() {
-            var unreadCount = document.querySelectorAll('.notification-item.unread').length;
-            var badge = document.getElementById('notificationBadge');
-            if (badge) {
-                if (unreadCount > 0) {
-                    badge.textContent = unreadCount;
-                    badge.style.display = 'inline-block';
-                } else {
-                    badge.style.display = 'none';
-                }
-            }
+function updateBadgeCount() {
+    var unreadCount = document.querySelectorAll('.notification-item.unread').length;
+    var badge = document.getElementById('notificationBadge');
+    if (badge) {
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.style.display = 'none';
         }
+    }
+}
 
-        function toggleTheme(item) {
-            var toggle = item.querySelector('.toggle-switch');
-            toggle.classList.toggle('active');
-            document.body.classList.toggle('dark-mode');
-        }
+function toggleTheme(item) {
+    var toggle = item.querySelector('.toggle-switch');
+    if (toggle) toggle.classList.toggle('active');
+    document.body.classList.toggle('dark-mode');
+}
 
-        function openAboutModal() {
-            document.getElementById('aboutModal').style.display = 'flex';
-        }
-        a
-        function closeAboutModal() {
-            document.getElementById('aboutModal').style.display = 'none';
-        }
+function openAboutModal() {
+    var modal = document.getElementById('aboutModal');
+    if (modal) modal.style.display = 'flex';
+}
 
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
-            }
-        }
+function closeAboutModal() {
+    var modal = document.getElementById('aboutModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        window.location.href = 'login.aspx';
+    }
+}
+
+// Load user info and announcements from code-behind
+function loadUserData(fullName, email, role) {
+    var userName = document.getElementById('userName');
+    var userRole = document.getElementById('userRole');
+    var profileName = document.getElementById('profileName');
+    var profileEmail = document.getElementById('profileEmail');
+            
+    if (userName) userName.innerText = fullName;
+    if (userRole) userRole.innerText = role;
+    if (profileName) profileName.innerText = fullName;
+    if (profileEmail) profileEmail.innerText = email;
+}
     </script>
 </body>
 </html>
