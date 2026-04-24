@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-    public partial class SearchDashboard : System.Web.UI.Page
+    public partial class TeacherDashboard : System.Web.UI.Page
     {
         // Control declarations
         protected TextBox searchBox;
@@ -15,6 +15,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected Literal resultCountLiteral;
         protected Repeater resultsRepeater;
         protected Panel noResultsPanel;
+        protected HyperLink homeLink;
 
         // Sample data source
         private List<Announcement> announcementsDB;
@@ -23,22 +24,46 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             InitializeAnnouncements();
 
+            // Check if there's a stored search keyword in Session
             if (!IsPostBack)
             {
-                // Get search keyword from query string
+                // Get search keyword from query string OR Session
                 string query = Request.QueryString["query"];
-
+                
                 if (!string.IsNullOrWhiteSpace(query))
                 {
-                    // Trim spaces
+                    // Trim spaces and store in Session
                     query = query.Trim();
                     searchBox.Text = query;
+                    Session["LastSearchKeyword"] = query;
                     PerformSearch(query);
+                }
+                else if (Session["LastSearchKeyword"] != null)
+                {
+                    // Retrieve stored keyword and perform search automatically
+                    string storedKeyword = Session["LastSearchKeyword"].ToString();
+                    searchBox.Text = storedKeyword;
+                    PerformSearch(storedKeyword);
                 }
                 else
                 {
-                    // If no query, redirect back
-                    Response.Redirect("TeacherDashboard.aspx");
+                    // No search query - show all announcements by default
+                    ShowAllAnnouncements();
+                }
+            }
+            else
+            {
+                // For postbacks, restore search results from Session if available
+                if (Session["LastSearchKeyword"] != null && !string.IsNullOrWhiteSpace(Session["LastSearchKeyword"].ToString()))
+                {
+                    string storedKeyword = Session["LastSearchKeyword"].ToString();
+                    searchBox.Text = storedKeyword;
+                    PerformSearch(storedKeyword);
+                }
+                else if (Session["LastSearchKeyword"] != null && string.IsNullOrWhiteSpace(Session["LastSearchKeyword"].ToString()))
+                {
+                    // Empty search means show all
+                    ShowAllAnnouncements();
                 }
             }
         }
@@ -99,38 +124,70 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             };
         }
 
-        private void PerformSearch(string keyword)
+        private void ShowAllAnnouncements()
         {
-            // Trim and convert to lowercase for case-insensitive search
-            string searchTerm = keyword.ToLower().Trim();
-
-            // Store the search query for display
-            searchQueryLiteral.Text = Server.HtmlEncode(keyword);
-
-            // Filter data using LINQ - Case-insensitive search
-            var results = announcementsDB.Where(a =>
-                a.Title.ToLower().Contains(searchTerm) ||
-                a.Description.ToLower().Contains(searchTerm) ||
-                a.Professor.ToLower().Contains(searchTerm) ||
-                a.Category.ToLower().Contains(searchTerm)
-            ).ToList();
-
+            // Clear any stored search
+            Session["LastSearchKeyword"] = "";
+            searchQueryLiteral.Text = "All Announcements";
+            
+            // Show all announcements
+            var allResults = announcementsDB.ToList();
+            
             // Display result count
-            resultCountLiteral.Text = $"{results.Count} announcement{(results.Count != 1 ? "s" : "")}";
-
-            // Check if no results found
-            if (results.Count == 0)
-            {
-                noResultsPanel.Visible = true;
-                resultsRepeater.Visible = false;
-                return;
-            }
-
+            resultCountLiteral.Text = $"{allResults.Count} announcement{(allResults.Count != 1 ? "s" : "")}";
+            
             // Show results
             noResultsPanel.Visible = false;
             resultsRepeater.Visible = true;
-            resultsRepeater.DataSource = results;
+            resultsRepeater.DataSource = allResults;
             resultsRepeater.DataBind();
+        }
+
+        private void PerformSearch(string keyword)
+        {
+            try
+            {
+                // Trim and convert to lowercase for case-insensitive search
+                string searchTerm = keyword.ToLower().Trim();
+
+                // Store the search query in Session for persistence
+                Session["LastSearchKeyword"] = keyword;
+
+                // Store the search query for display
+                searchQueryLiteral.Text = Server.HtmlEncode(keyword);
+
+                // Filter data using LINQ - Case-insensitive search
+                var results = announcementsDB.Where(a =>
+                    a.Title.ToLower().Contains(searchTerm) ||
+                    a.Description.ToLower().Contains(searchTerm) ||
+                    a.Professor.ToLower().Contains(searchTerm) ||
+                    a.Category.ToLower().Contains(searchTerm)
+                ).ToList();
+
+                // Display result count
+                resultCountLiteral.Text = $"{results.Count} announcement{(results.Count != 1 ? "s" : "")}";
+
+                // Check if no results found
+                if (results.Count == 0)
+                {
+                    noResultsPanel.Visible = true;
+                    resultsRepeater.Visible = false;
+                    return;
+                }
+
+                // Show results
+                noResultsPanel.Visible = false;
+                resultsRepeater.Visible = true;
+                resultsRepeater.DataSource = results;
+                resultsRepeater.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Simple error handling - show friendly message
+                searchQueryLiteral.Text = "Error performing search";
+                noResultsPanel.Visible = true;
+                resultsRepeater.Visible = false;
+            }
         }
 
         // Helper method to highlight keywords in search results
@@ -139,7 +196,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             if (string.IsNullOrEmpty(text))
                 return "";
 
-            string searchTerm = Request.QueryString["query"];
+            string searchTerm = Session["LastSearchKeyword"]?.ToString();
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return Server.HtmlEncode(text);
 
@@ -205,23 +262,29 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             if (!string.IsNullOrWhiteSpace(searchBox.Text))
             {
-                // Just perform the search directly without refreshing the whole page
+                // Perform the search and store in Session
                 PerformSearch(searchBox.Text.Trim());
+            }
+            else
+            {
+                // Empty search - show all announcements
+                ShowAllAnnouncements();
             }
         }
 
         // Announcement Model
         public class Announcement
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Category { get; set; }
-        public string Date { get; set; }
-        public string Time { get; set; }
-        public string Professor { get; set; }
-        public string ProfessorAvatar { get; set; }
-        public string Description { get; set; }
-        public string BannerText { get; set; }
-        public string BannerType { get; set; }
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Category { get; set; }
+            public string Date { get; set; }
+            public string Time { get; set; }
+            public string Professor { get; set; }
+            public string ProfessorAvatar { get; set; }
+            public string Description { get; set; }
+            public string BannerText { get; set; }
+            public string BannerType { get; set; }
+        }
     }
 }

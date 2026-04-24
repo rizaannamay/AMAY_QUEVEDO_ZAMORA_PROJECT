@@ -243,6 +243,9 @@
 <body class="antialiased relative">
     
     <form id="form1" runat="server">
+        <!-- Hidden field to store the last search term in ViewState -->
+        <asp:HiddenField ID="lastSearchTerm" runat="server" />
+
         <!-- Floating abstract shapes -->
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
@@ -263,7 +266,7 @@
                             </div>
                             <div>
                                 <h1 class="font-extrabold text-white text-xl md:text-2xl tracking-tight drop-shadow-lg">CampusConnect</h1>
-                                <p class="text-xs text-indigo-200 font-medium hidden sm:block">Student Portal</p>
+                                <p class="text-xs text-indigo-200 font-medium hidden sm:block">Teacher Portal</p>
                             </div>
                         </div>
                         
@@ -277,7 +280,8 @@
                         
                         <!-- RIGHT: Home icon + Notification + User Profile -->
                         <div class="flex items-center gap-3 md:gap-4">
-                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx" CssClass="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-all">
+                            <%-- UPDATED: Home button now links to Teacher.aspx --%>
+                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Teacher.aspx" CssClass="p-2 text-white/80 hover:text-white hover:bg-white/20 rounded-full transition-all">
                                 <i class="fas fa-home text-xl"></i>
                             </asp:HyperLink>
                             
@@ -290,11 +294,11 @@
                             
                             <div class="flex items-center gap-3 pl-2 border-l border-white/20">
                                 <div class="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                                    <i class="fas fa-user-graduate text-sm md:text-base"></i>
+                                    <i class="fas fa-chalkboard-teacher text-sm md:text-base"></i>
                                 </div>
                                 <div class="hidden sm:block">
                                     <p class="text-sm font-semibold text-white leading-tight drop-shadow">Maria Santos</p>
-                                    <p class="text-xs text-indigo-200 font-medium">Student · BSIT</p>
+                                    <p class="text-xs text-indigo-200 font-medium">Teacher Portal</p>
                                 </div>
                             </div>
                         </div>
@@ -391,7 +395,7 @@
             
             <!-- Footer -->
             <footer class="border-t border-white/10 bg-black/20 backdrop-blur-sm mt-12 py-5 text-center text-xs text-indigo-200/60">
-                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Students to Campus Life
+                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Teachers to Campus Life
             </footer>
         </div>
     </form>
@@ -414,6 +418,7 @@
 
         // DOM Elements
         const searchInput = document.getElementById('<%= searchInput.ClientID %>');
+        const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
         const categoryFilter = document.getElementById('categoryFilter');
         const dateFilter = document.getElementById('dateFilter');
         const sortFilter = document.getElementById('sortFilter');
@@ -578,6 +583,12 @@
         function performSearch() {
             const term = searchInput.value;
             currentSearchTerm = term;
+
+            // Store the search term in ViewState (via the hidden field)
+            if (lastSearchHidden) {
+                lastSearchHidden.value = term;
+            }
+
             if (term.trim()) addToHistory(term);
             renderResults();
         }
@@ -598,6 +609,12 @@
             currentCategory = 'all';
             currentDate = '';
             currentSort = 'latest';
+
+            // Clear the stored search term
+            if (lastSearchHidden) {
+                lastSearchHidden.value = '';
+            }
+
             renderResults();
         }
 
@@ -626,7 +643,22 @@
             renderHistory();
             initDatePicker();
             bindEvents();
-            renderResults();
+
+            // SIMPLE & BEGINNER-FRIENDLY LOGIC:
+            // Check if there's a stored keyword and use it
+            try {
+                if (lastSearchHidden && lastSearchHidden.value) {
+                    // If a keyword exists, put it in the search box and trigger search
+                    searchInput.value = lastSearchHidden.value;
+                    performSearch();
+                } else {
+                    // No keyword? Show all announcements (default behavior)
+                    renderResults();
+                }
+            } catch (e) {
+                // If anything goes wrong, just show all announcements
+                renderResults();
+            }
         }
 
         init();
