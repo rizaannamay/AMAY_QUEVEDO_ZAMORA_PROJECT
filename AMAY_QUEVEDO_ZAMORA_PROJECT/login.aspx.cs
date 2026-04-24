@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -8,8 +9,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : System.Web.UI.Page
     {
-        SqlConnection con = new SqlConnection(@"Data Source=.;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;");
-
+        SqlConnection con = new SqlConnection(
+        @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
         protected void Page_Load(object sender, EventArgs e)
         {
             lblError.Text = "";
