@@ -682,12 +682,10 @@
             --active-bg: rgba(99, 102, 241, 0.18);
         }
 
-<<<<<<< HEAD
         body.dark-mode {
             background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url('bg.jpg');
             background-color: #0F172A;
         }
-=======
         /* Additional element level dark-mode rules so borders / buttons look correct */
         .dark-mode .search-btn, .dark-mode .comment-input button, .dark-mode .modal-close {
             border-color: rgba(255,255,255,0.08);
@@ -953,11 +951,8 @@
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-<<<<<<< HEAD
                         <span id="notificationBadge" class="badge-red">0</span>
-=======
                         <span id="notificationBadge" class="badge-red">0       </span>
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
                     </div>
                     <div class="user-info">
                         <div class="avatar">
@@ -1287,7 +1282,6 @@
             }
         }
 
-=======
         function loadComments(postId) {
             fetch('Comments.aspx?action=get&postId=' + encodeURIComponent(postId))
                 .then(function (res) { return res.json(); })
@@ -1315,15 +1309,12 @@
                 .catch(function (err) { console.error('Error loading comments:', err); });
         }
 
-        // body must be valid JSON string
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
         function addComment(btn, postId) {
             var input = document.getElementById('commentInput_' + postId);
             if (!input) return;
             var text = input.value.trim();
             if (!text) { showToast('Please enter a comment!'); return; }
 
-<<<<<<< HEAD
             if (!st_comments[postId]) st_comments[postId] = [];
             st_comments[postId].push({
                 author: 'You',
@@ -1427,7 +1418,7 @@
         function closeAboutModal() {
             var modal = document.getElementById('aboutModal');
             if (modal) modal.style.display = 'none';
-=======
+
             var payload = JSON.stringify({ postId: postId, comment: commentText });
 
             fetch('Comments.aspx?action=add', {
@@ -1477,7 +1468,7 @@
         a
         function closeAboutModal() {
             document.getElementById('aboutModal').style.display = 'none';
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
+
         }
 
         function logout() {
@@ -1486,7 +1477,7 @@
             }
         }
 
-<<<<<<< HEAD
+
         // Restore theme on load
         if (localStorage.getItem('campus_theme') === 'dark') {
             document.body.classList.add('dark-mode');
@@ -1548,8 +1539,6 @@
                 document.head.appendChild(link);
             });
         })();
-=======
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
     </script>
 </body>
 </html>
