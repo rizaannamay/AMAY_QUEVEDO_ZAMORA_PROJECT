@@ -182,10 +182,11 @@
             transition: all 0.2s;
             font-family: inherit;
         }
-        .action-btn:hover { background: var(--surface-soft); color: var(--primary); }
+        .action-btn:hover { background: #DBEAFE; color: #1E3A8A; }
         .action-btn.liked { color: #dc2626; }
         .action-btn.pinned-active { color: #e65100; }
-        .action-btn.notif-active { color: #6366f1; }
+        .action-btn.notif-active { color: #3B82F6; }
+        body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
 
         /* ── COMMENTS SECTION ── */
         .comments-section {
@@ -256,15 +257,15 @@
             font-size: 10px;
             font-weight: 700;
         }
-        .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        .cat-exam       { background: #DBEAFE; color: #1E3A8A; }
         .cat-suspension { background: #ffebee; color: #c62828; }
-        .cat-event      { background: #e8f5e9; color: #2e7d32; }
-        .cat-default    { background: #f3e5f5; color: #7b1fa2; }
+        .cat-event      { background: #dcfce7; color: #166534; }
+        .cat-default    { background: #EDE9FE; color: #5B21B6; }
 
-        body.dark-mode .cat-exam       { background: rgba(25,118,210,0.2); color: #90caf9; }
+        body.dark-mode .cat-exam       { background: rgba(30,58,138,0.3);  color: #93C5FD; }
         body.dark-mode .cat-suspension { background: rgba(198,40,40,0.2);  color: #ef9a9a; }
-        body.dark-mode .cat-event      { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
-        body.dark-mode .cat-default    { background: rgba(123,31,162,0.2); color: #ce93d8; }
+        body.dark-mode .cat-event      { background: rgba(22,101,52,0.25); color: #86efac; }
+        body.dark-mode .cat-default    { background: rgba(91,33,182,0.2);  color: #c4b5fd; }
 
         /* ── HISTORY ITEMS ── */
         .history-item {
@@ -517,9 +518,9 @@
 
                         <!-- Results -->
                         <div id="resultsContainer" class="space-y-5">
-                            <div class="text-center py-12" style="color:var(--muted)">
+                            <div class="text-center py-12" style="color:#3B82F6">
                                 <i class="fas fa-spinner fa-spin text-3xl"></i>
-                                <p class="mt-2">Loading announcements...</p>
+                                <p class="mt-2" style="color:#1E3A8A">Loading announcements...</p>
                             </div>
                         </div>
 
