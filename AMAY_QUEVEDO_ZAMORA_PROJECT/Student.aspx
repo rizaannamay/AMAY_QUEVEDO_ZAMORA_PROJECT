@@ -1209,6 +1209,14 @@
             ST.set('sd_comments',   st_comments);
         }
 
+        function pushNotification(msg, icon) {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            notifs.unshift({ msg: msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+            if (notifs.length > 50) notifs = notifs.slice(0, 50);
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_notifications', newValue: JSON.stringify(notifs) }));
+        }
+
         function showToast(message) {
             var toast = document.createElement('div');
             toast.innerText = message;
@@ -1332,6 +1340,9 @@
             st_likes[postId] = !st_likes[postId];
             st_likeCounts[postId] = (st_likeCounts[postId] || 0) + (st_likes[postId] ? 1 : -1);
             if (st_likeCounts[postId] < 0) st_likeCounts[postId] = 0;
+            var anns = ST.get('teacher_announcements') || [];
+            var ann = anns.find(function(a) { return a.id === postId; });
+            if (st_likes[postId] && ann) pushNotification('❤️ Student liked "' + ann.title + '"', 'fa-heart');
             saveSharedState();
             var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
             if (card) applyCardState(card);
@@ -1341,11 +1352,13 @@
         function togglePin(postId) {
             st_pins[postId] = !st_pins[postId];
             saveSharedState();
-            // Notify other tabs (Teacher.aspx, SearchDashboard.aspx)
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(st_pins) }));
+            var anns = ST.get('teacher_announcements') || [];
+            var ann = anns.find(function(a) { return a.id === postId; });
+            if (ann) pushNotification((st_pins[postId] ? '📌 Student pinned: ' : '📌 Student unpinned: ') + ann.title, 'fa-thumbtack');
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(st_pins) }));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(st_pins) }));
             var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
             if (card) applyCardState(card);
-            // Float pinned cards to top
             sortCardsByPin();
             showToast(st_pins[postId] ? '📌 Pinned!' : 'Unpinned');
         }
@@ -1387,6 +1400,9 @@
                 text: text,
                 time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
             });
+            var anns = ST.get('teacher_announcements') || [];
+            var ann = anns.find(function(a) { return a.id === postId; });
+            if (ann) pushNotification('💬 Student commented on "' + ann.title + '": ' + text, 'fa-comment');
             saveSharedState();
             input.value = '';
 
@@ -1401,6 +1417,9 @@
 
         function sharePost(postId, btn) {
             var url = window.location.href.split('?')[0] + '?post=' + postId;
+            var anns = ST.get('teacher_announcements') || [];
+            var ann = anns.find(function(a) { return a.id === postId; });
+            if (ann) pushNotification('🔗 Student shared "' + ann.title + '"', 'fa-share-alt');
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
             } else {
@@ -1421,7 +1440,8 @@
         }
 
         function updateNotifBadge() {
-            var count = Object.values(st_notifs).filter(Boolean).length;
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            var count = notifs.filter(function(n) { return !n.read; }).length;
             var badge = document.getElementById('notificationBadge');
             if (badge) {
                 badge.textContent = count;
@@ -1441,6 +1461,12 @@
                 sortCardsByPin();
             }
             if (e.key === 'teacher_announcements') {
+                var newAnns = JSON.parse(e.newValue || '[]');
+                var oldAnns = ST.get('teacher_announcements') || [];
+                if (newAnns.length > oldAnns.length) {
+                    var newest = newAnns[0];
+                    pushNotification('📢 New announcement: "' + newest.title + '"', 'fa-bullhorn');
+                }
                 renderAnnouncementsFromStorage();
             }
         });
