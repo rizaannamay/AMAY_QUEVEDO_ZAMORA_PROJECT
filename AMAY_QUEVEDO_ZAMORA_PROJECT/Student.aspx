@@ -669,31 +669,202 @@
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
-            --surface: rgba(33, 38, 45, 0.9);
-            --surface-strong: rgba(39, 44, 52, 0.96);
-            --surface-soft: rgba(56, 62, 72, 0.75);
-            --border: rgba(255, 255, 255, 0.08);
-            --muted: #b0bac7;
-            --muted-light: #8ea0b5;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-            --active-bg: rgba(64, 96, 128, 0.36);
+            --surface: rgba(15, 25, 55, 0.75);
+            --surface-strong: rgba(15, 25, 55, 0.92);
+            --surface-soft: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #818cf8;
+            --primary-2: #6366f1;
+            --muted: #94a3b8;
+            --muted-light: #64748b;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --active-bg: rgba(99, 102, 241, 0.18);
         }
 
-        .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
-        .dark-mode .notification-item.unread, .dark-mode .menu-item.active, .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
-        .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
-        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title, .dark-mode .modal-title,
-        .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
-        .dark-mode .settings-item, .dark-mode .dropdown-item, .dark-mode .menu-item.active, .dark-mode .settings-item.active,
-        .dark-mode .header-filter, .dark-mode .post-stats, .dark-mode .post-stats span, .dark-mode .action-btn,
-        .dark-mode .comment-author, .dark-mode .comment-avatar, .dark-mode .bell-icon, .dark-mode .notification-header,
-        .dark-mode .notification-header button, .dark-mode .notification-header a, .dark-mode .sidebar-toggle,
-        .dark-mode .dropdown-icon, .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
+        body.dark-mode {
+            background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url('bg.jpg');
+            background-color: #0F172A;
+        }
 
-        .dark-mode .menu-item:hover, .dark-mode .settings-item:hover, .dark-mode .dropdown-item:hover,
-        .dark-mode .post-stats span:hover, .dark-mode .action-btn:hover { color: #ffffff; }
+        body.dark-mode::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(79,70,229,0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
+        .dark-mode .header {
+            background: rgba(15, 25, 55, 0.75);
+            backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+        }
+
+        .dark-mode .card {
+            background: rgba(15, 25, 55, 0.7);
+            backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .announcement-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .dark-mode .announcement-card:hover {
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        .dark-mode .announcement-board { background: rgba(0, 0, 0, 0.15); }
+
+        .dark-mode .logo,
+        .dark-mode .logo i,
+        .dark-mode .card-header,
+        .dark-mode .card-header i,
+        .dark-mode .profile-name,
+        .dark-mode .post-author,
+        .dark-mode .post-title,
+        .dark-mode .post-text,
+        .dark-mode .modal-title,
+        .dark-mode .modal-text,
+        .dark-mode .user-name,
+        .dark-mode .user-role,
+        .dark-mode .profile-email,
+        .dark-mode .menu-item,
+        .dark-mode .settings-item,
+        .dark-mode .dropdown-item,
+        .dark-mode .menu-item.active,
+        .dark-mode .settings-item.active,
+        .dark-mode .header-filter,
+        .dark-mode .post-stats,
+        .dark-mode .post-stats span,
+        .dark-mode .action-btn,
+        .dark-mode .comment-author,
+        .dark-mode .comment-text,
+        .dark-mode .bell-icon,
+        .dark-mode .notification-header,
+        .dark-mode .notification-header button,
+        .dark-mode .notification-header a,
+        .dark-mode .sidebar-toggle,
+        .dark-mode .dropdown-icon,
+        .dark-mode .no-comments,
+        .dark-mode .footer,
+        .dark-mode .notification-text,
+        .dark-mode .notification-time { color: #e4e6eb; }
+
+        .dark-mode .comment-avatar { color: #818cf8; }
+
+        .dark-mode .menu-item:hover,
+        .dark-mode .settings-item:hover,
+        .dark-mode .dropdown-item:hover { background: rgba(99,102,241,0.15); color: #ffffff; }
+
+        .dark-mode .post-stats span:hover,
+        .dark-mode .action-btn:hover { color: #818cf8; }
+
+        .dark-mode .pin-btn-top:hover,
+        .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
+
+        .dark-mode .notification-item.unread { background: rgba(99, 102, 241, 0.15); }
+        .dark-mode .menu-item.active,
+        .dark-mode .settings-item.active {
+            background: rgba(99, 102, 241, 0.18);
+            border-left-color: #818cf8;
+        }
+
+        .dark-mode .user-info {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .notification-bell {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .notification-bell:hover { background: rgba(99,102,241,0.2); }
+
+        .dark-mode .notification-dropdown {
+            background: rgba(15, 25, 55, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+        }
+
+        .dark-mode .notification-item { border-bottom-color: rgba(255, 255, 255, 0.06); }
+        .dark-mode .notification-item:hover { background: rgba(99,102,241,0.12); }
+        .dark-mode .notification-header { border-bottom-color: rgba(255, 255, 255, 0.08); }
+        .dark-mode .card-header { border-bottom-color: rgba(255, 255, 255, 0.08); }
+        .dark-mode .profile-section { border-bottom-color: rgba(255, 255, 255, 0.08); }
+
+        .dark-mode .post-stats {
+            border-top-color: rgba(255, 255, 255, 0.08);
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .dark-mode .comments-section { border-top-color: rgba(255, 255, 255, 0.08); }
+        .dark-mode .comment { border-bottom-color: rgba(255, 255, 255, 0.06); }
+
+        .dark-mode .comment-input input {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: #e4e6eb;
+        }
+
+        .dark-mode .comment-input input::placeholder { color: #64748b; }
+
+        .dark-mode .comment-input button {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: #ffffff;
+        }
+
+        .dark-mode .comment-input button:hover { background: #818cf8; }
+
+        .dark-mode .comment-avatar { background: rgba(99, 102, 241, 0.2); }
+
+        .dark-mode .search-btn {
+            background: rgba(255, 255, 255, 0.07) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            color: #e4e6eb !important;
+        }
+
+        .dark-mode .search-btn:hover {
+            background: rgba(99, 102, 241, 0.25) !important;
+            border-color: #6366f1 !important;
+            color: #ffffff !important;
+        }
+
+        .dark-mode .modal-content {
+            background: rgba(15, 25, 55, 0.97);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        }
+
+        .dark-mode .modal-icon { color: #818cf8; }
+        .dark-mode .modal-title { color: #e4e6eb; }
+
+        .dark-mode .modal-close {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.15);
+            color: #e4e6eb;
+        }
+
+        .dark-mode .modal-close:hover {
+            background: rgba(99,102,241,0.25);
+            border-color: #6366f1;
+            color: #ffffff;
+        }
+
+        .dark-mode .post-category-exam { background: rgba(25,118,210,0.2); color: #90caf9; }
+        .dark-mode .post-category-suspension { background: rgba(198,40,40,0.2); color: #ef9a9a; }
+        .dark-mode .post-category-event { background: rgba(46,125,50,0.2); color: #a5d6a7; }
+
+        .dark-mode .pin-btn-top { color: #64748b; }
+        .dark-mode .pin-btn-top.pinned { color: #fb923c; }
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
@@ -706,6 +877,30 @@
             .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
             .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
+
+        /* ── PAGE FLIP TRANSITION ── */
+        @keyframes flipOut {
+            0%   { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
+            100% { transform: perspective(1200px) rotateY(-90deg); opacity: 0; }
+        }
+        @keyframes flipIn {
+            0%   { transform: perspective(1200px) rotateY(90deg); opacity: 0; }
+            100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
+        }
+
+        .page-flip-out {
+            animation: flipOut 0.18s ease-in forwards;
+            transform-origin: center center;
+        }
+        .page-flip-in {
+            animation: flipIn 0.18s ease-out forwards;
+            transform-origin: center center;
+        }
+
+        *, *::before, *::after {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .page-flip-out, .page-flip-in { transition: none !important; }
     </style>
 </head>
 <body>
@@ -717,13 +912,14 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
                 </div>
 
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">0       </div>
+                        <span id="notificationBadge" class="badge-red">0</span>
+                    </div>
                     <div class="user-info">
                         <div class="avatar">
                             <i class="fas fa-user"></i>
@@ -860,115 +1056,377 @@
             }
         });
 
-        function toggleComments(btn, postId) {
-            var card = btn.closest('.announcement-card');
-            if (card) {
-                var commentsSection = document.getElementById('commentsSection_' + postId);
-                if (commentsSection) {
-                    if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
-                        commentsSection.style.display = 'block';
-                        loadComments(postId);
-                    } else {
-                        commentsSection.style.display = 'none';
-                    }
+        // ════════════════════════════════════════════════════════
+        // SHARED LOCALSTORAGE STATE  (same keys as Teacher + Search)
+        // ════════════════════════════════════════════════════════
+        var ST = {
+            get: function(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e) { return null; } },
+            set: function(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+        };
+
+        var st_likes      = ST.get('sd_likes')      || {};
+        var st_likeCounts = ST.get('sd_likeCounts')  || {};
+        var st_pins       = ST.get('campus_pins')    || {};
+        var st_notifs     = ST.get('sd_notifs')      || {};
+        var st_comments   = ST.get('sd_comments')    || {};
+
+        function saveSharedState() {
+            ST.set('sd_likes',      st_likes);
+            ST.set('sd_likeCounts', st_likeCounts);
+            ST.set('campus_pins',   st_pins);
+            ST.set('sd_notifs',     st_notifs);
+            ST.set('sd_comments',   st_comments);
+        }
+
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.innerText = message;
+            toast.style.cssText = 'position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);pointer-events:none;';
+            document.body.appendChild(toast);
+            setTimeout(function() { toast.remove(); }, 2500);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, function(m) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+            });
+        }
+
+        // ── Render comments list HTML ─────────────────────────
+        function renderCommentsList(postId) {
+            var list = st_comments[postId] || [];
+            if (!list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
+            return list.map(function(c) {
+                return '<div class="comment">' +
+                    '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                    '<div class="comment-content">' +
+                        '<span class="comment-author">' + escapeHtml(c.author) + '</span>' +
+                        '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
+                        '<div class="comment-time">' + escapeHtml(c.time) + '</div>' +
+                    '</div></div>';
+            }).join('');
+        }
+
+        // ── Apply shared state to a single card ───────────────
+        function applyCardState(card) {
+            var postId = parseInt(card.getAttribute('data-post-id'));
+            if (!postId) return;
+
+            var liked   = !!st_likes[postId];
+            var pinned  = !!st_pins[postId];
+            var notifOn = !!st_notifs[postId];
+            var lc      = st_likeCounts[postId] !== undefined ? st_likeCounts[postId] : null;
+            var cc      = (st_comments[postId] || []).length;
+
+            // ── Pin button ──
+            var pinBtn = card.querySelector('.pin-btn-top');
+            if (pinBtn) {
+                pinBtn.style.color = pinned ? '#e65100' : 'var(--muted-light)';
+                pinBtn.innerHTML   = '<i class="' + (pinned ? 'fas' : 'far') + ' fa-thumbtack"></i>';
+                pinBtn.title       = pinned ? 'Unpin' : 'Pin this announcement';
+                pinBtn.onclick     = function() { togglePin(postId); };
+            }
+
+            // ── Like count ──
+            if (lc !== null) {
+                var lcSpan = card.querySelector('.like-count');
+                if (lcSpan) lcSpan.textContent = lc;
+            }
+
+            // ── Comment count ──
+            if (cc > 0) {
+                var ccSpan = card.querySelector('.comment-count');
+                if (ccSpan) ccSpan.textContent = cc;
+            }
+
+            // ── Like button ──
+            var likeBtn = card.querySelector('.action-btn.like-btn');
+            if (likeBtn) {
+                likeBtn.className = 'action-btn like-btn' + (liked ? ' liked' : '');
+                likeBtn.innerHTML = '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like');
+            }
+
+            // ── Notify button ──
+            var notifBtn = card.querySelector('.action-btn.notif-btn');
+            if (notifBtn) {
+                notifBtn.className = 'action-btn notif-btn' + (notifOn ? ' notif-active' : '');
+                notifBtn.innerHTML = '<i class="' + (notifOn ? 'fas' : 'far') + ' fa-bell"></i> ' + (notifOn ? 'Notif On' : 'Notify');
+            }
+
+            // ── Comments list ──
+            var cl = document.getElementById('commentsList_' + postId);
+            if (cl && (st_comments[postId] || []).length > 0) {
+                cl.innerHTML = renderCommentsList(postId);
+            }
+        }
+
+        // ── Inject action buttons into server-rendered cards ──
+        function upgradeCards() {
+            var cards = document.querySelectorAll('.announcement-card');
+            cards.forEach(function(card) {
+                var postId = parseInt(card.getAttribute('data-post-id'));
+                if (!postId) return;
+
+                // Initialize like count if not set
+                if (st_likeCounts[postId] === undefined) {
+                    var lcSpan = card.querySelector('.like-count');
+                    st_likeCounts[postId] = lcSpan ? parseInt(lcSpan.textContent) || 0 : 0;
                 }
+
+                // Replace action-buttons with full set (Like, Comment, Share, Notify)
+                var actionDiv = card.querySelector('.action-buttons');
+                if (actionDiv) {
+                    actionDiv.innerHTML =
+                        '<button type="button" class="action-btn like-btn" onclick="toggleLike(' + postId + ')">' +
+                            '<i class="far fa-heart"></i> Like' +
+                        '</button>' +
+                        '<button type="button" class="action-btn" onclick="toggleCommentSection(' + postId + ')">' +
+                            '<i class="far fa-comment"></i> Comment' +
+                        '</button>' +
+                        '<button type="button" class="action-btn" onclick="sharePost(' + postId + ', this)">' +
+                            '<i class="fas fa-share-alt"></i> Share' +
+                        '</button>' +
+                        '<button type="button" class="action-btn notif-btn" onclick="toggleNotif(' + postId + ')">' +
+                            '<i class="far fa-bell"></i> Notify' +
+                        '</button>';
+                }
+
+                // Wire up stats bar clicks
+                var statsSpans = card.querySelectorAll('.post-stats span');
+                if (statsSpans[0]) statsSpans[0].onclick = function() { toggleLike(postId); };
+                if (statsSpans[1]) statsSpans[1].onclick = function() { toggleCommentSection(postId); };
+                if (statsSpans[2]) statsSpans[2].onclick = function() { sharePost(postId, null); };
+
+                // Apply current state
+                applyCardState(card);
+            });
+
+            saveSharedState();
+            updateNotifBadge();
+        }
+
+        // ── Interactions ──────────────────────────────────────
+        function toggleLike(postId) {
+            st_likes[postId] = !st_likes[postId];
+            st_likeCounts[postId] = (st_likeCounts[postId] || 0) + (st_likes[postId] ? 1 : -1);
+            if (st_likeCounts[postId] < 0) st_likeCounts[postId] = 0;
+            saveSharedState();
+            var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+            if (card) applyCardState(card);
+            showToast(st_likes[postId] ? '❤️ Liked!' : 'Like removed');
+        }
+
+        function togglePin(postId) {
+            st_pins[postId] = !st_pins[postId];
+            saveSharedState();
+            // Notify other tabs (Teacher.aspx, SearchDashboard.aspx)
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(st_pins) }));
+            var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+            if (card) applyCardState(card);
+            // Float pinned cards to top
+            sortCardsByPin();
+            showToast(st_pins[postId] ? '📌 Pinned!' : 'Unpinned');
+        }
+
+        function toggleNotif(postId) {
+            st_notifs[postId] = !st_notifs[postId];
+            saveSharedState();
+            var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+            if (card) applyCardState(card);
+            updateNotifBadge();
+            showToast(st_notifs[postId] ? '🔔 Notifications on!' : '🔕 Notifications off');
+        }
+
+        function toggleCommentSection(postId) {
+            var sec = document.getElementById('commentsSection_' + postId);
+            if (!sec) return;
+            var isHidden = sec.style.display === 'none' || sec.style.display === '';
+            sec.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) {
+                var input = document.getElementById('commentInput_' + postId);
+                if (input) setTimeout(function() { input.focus(); }, 50);
             }
-        }
-
-        function scrollToComments(element, postId) {
-            var commentsSection = document.getElementById('commentsSection_' + postId);
-            if (commentsSection) {
-                commentsSection.style.display = 'block';
-                loadComments(postId);
-                commentsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-
-        function loadComments(postId) {
-            fetch(`GetComments.aspx?postId=${postId}`)
-                .then(response => response.json())
-                .then(data => {
-                    var commentsList = document.getElementById(`commentsList_${postId}`);
-                    if (!commentsList) return;
-
-                    if (data.length === 0) {
-                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
-                    } else {
-                        var html = '';
-                        data.forEach(comment => {
-                            html += `
-                                <div class="comment">
-                                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                    <div class="comment-content">
-                                        <span class="comment-author">${escapeHtml(comment.author)}</span>
-                                        <div class="comment-text">${escapeHtml(comment.text)}</div>
-                                        <div class="comment-time">${comment.date}</div>
-                                    </div>
-                                </div>`;
-                        });
-                        commentsList.innerHTML = html;
-                    }
-                })
-                .catch(error => console.error('Error loading comments:', error));
-        }
-
-        function toggleLike(btn, postId) {
-            fetch(`LikeAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.liked) {
-                        btn.classList.add('liked');
-                        btn.innerHTML = '<i class="fas fa-heart"></i> Liked';
-                    } else {
-                        btn.classList.remove('liked');
-                        btn.innerHTML = '<i class="far fa-heart"></i> Like';
-                    }
-                    var card = btn.closest('.announcement-card');
-                    if (card) {
-                        var likeCountSpan = card.querySelector('.like-count');
-                        if (likeCountSpan) likeCountSpan.innerText = data.likeCount;
-                    }
-                })
-                .catch(error => console.error('Error toggling like:', error));
-        }
-
-        function toggleLikeFromStats(span, postId) {
-            var card = span.closest('.announcement-card');
-            if (card) {
-                var likeBtn = card.querySelector('.action-btn:first-child');
-                if (likeBtn) toggleLike(likeBtn, postId);
-            }
-        }
-
-        function sharePost(postId) {
-            fetch(`ShareAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(() => showToast('Shared successfully!'))
-                .catch(() => showToast('Error sharing'));
-        }
-
-        function togglePinTop(btn, postId) {
-            fetch(`PinAnnouncement.aspx?postId=${postId}`, { method: 'POST' })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.pinned) {
-                        btn.classList.add('pinned');
-                        showToast('Announcement pinned!');
-                    } else {
-                        btn.classList.remove('pinned');
-                        showToast('Announcement unpinned!');
-                    }
-                    setTimeout(() => location.reload(), 500);
-                })
-                .catch(() => showToast('Error toggling pin'));
         }
 
         function addComment(btn, postId) {
-            var input = document.getElementById(`commentInput_${postId}`);
+            var input = document.getElementById('commentInput_' + postId);
             if (!input) return;
-            var commentText = input.value.trim();
-            if (commentText === '') { showToast('Please enter a comment!'); return; }
+            var text = input.value.trim();
+            if (!text) { showToast('Please enter a comment!'); return; }
 
-            fetch('Comments.aspx?action=add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body
+            if (!st_comments[postId]) st_comments[postId] = [];
+            st_comments[postId].push({
+                author: 'You',
+                text: text,
+                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+            });
+            saveSharedState();
+            input.value = '';
+
+            var cl = document.getElementById('commentsList_' + postId);
+            if (cl) cl.innerHTML = renderCommentsList(postId);
+
+            var ccSpan = document.querySelector('.announcement-card[data-post-id="' + postId + '"] .comment-count');
+            if (ccSpan) ccSpan.textContent = st_comments[postId].length;
+
+            showToast('💬 Comment posted!');
+        }
+
+        function sharePost(postId, btn) {
+            var url = window.location.href.split('?')[0] + '?post=' + postId;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
+            } else {
+                showToast('📤 Shared!');
+            }
+        }
+
+        function sortCardsByPin() {
+            var container = document.getElementById('announcementsContainer');
+            if (!container) return;
+            var cards = Array.from(container.querySelectorAll('.announcement-card'));
+            cards.sort(function(a, b) {
+                var aId = parseInt(a.getAttribute('data-post-id'));
+                var bId = parseInt(b.getAttribute('data-post-id'));
+                return (st_pins[bId] ? 1 : 0) - (st_pins[aId] ? 1 : 0);
+            });
+            cards.forEach(function(c) { container.appendChild(c); });
+        }
+
+        function updateNotifBadge() {
+            var count = Object.values(st_notifs).filter(Boolean).length;
+            var badge = document.getElementById('notificationBadge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        }
+
+        // ── Sync pins from other tabs ─────────────────────────
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'campus_pins') {
+                st_pins = JSON.parse(e.newValue || '{}');
+                document.querySelectorAll('.announcement-card').forEach(function(card) {
+                    applyCardState(card);
+                });
+                sortCardsByPin();
+            }
+        });
+
+        // ── Category filter ───────────────────────────────────
+        function filterCategory(category) {
+            var cards = document.querySelectorAll('.announcement-card');
+            cards.forEach(function(card) {
+                var cat = card.getAttribute('data-category') || '';
+                card.style.display = (category === 'All' || cat.toLowerCase() === category.toLowerCase()) ? '' : 'none';
+            });
+            var label = document.getElementById('activeFilterLabel');
+            if (label) label.innerText = category;
+        }
+
+        // ── Notification read ─────────────────────────────────
+        function markNotificationRead(item, notificationId) {
+            item.classList.remove('unread');
+            var dot = item.querySelector('.notification-dot');
+            if (dot) dot.remove();
+        }
+
+        function markAllRead() {
+            document.querySelectorAll('.notification-item.unread').forEach(function(item) {
+                item.classList.remove('unread');
+                var dot = item.querySelector('.notification-dot');
+                if (dot) dot.remove();
+            });
+            var badge = document.getElementById('notificationBadge');
+            if (badge) badge.style.display = 'none';
+        }
+
+        // ── Theme ─────────────────────────────────────────────
+        function toggleTheme(btn) {
+            var toggle = document.getElementById('themeToggle');
+            document.body.classList.toggle('dark-mode');
+            if (toggle) toggle.classList.toggle('active');
+            localStorage.setItem('campus_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+
+        function openAboutModal() {
+            var modal = document.getElementById('aboutModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeAboutModal() {
+            var modal = document.getElementById('aboutModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.aspx';
+            }
+        }
+
+        // Restore theme on load
+        if (localStorage.getItem('campus_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            var toggle = document.getElementById('themeToggle');
+            if (toggle) toggle.classList.add('active');
+        }
+
+        // ── Run upgradeCards once server HTML is injected ─────
+        // The server calls ClientScript.RegisterStartupScript which runs after DOM ready.
+        // We hook into MutationObserver to detect when announcementsContainer gets content.
+        (function() {
+            var container = document.getElementById('announcementsContainer');
+            if (!container) return;
+
+            // If already populated (e.g. inline script ran before this)
+            if (container.querySelector('.announcement-card')) {
+                upgradeCards();
+                return;
+            }
+
+            // Otherwise observe for changes
+            var obs = new MutationObserver(function(mutations, observer) {
+                if (container.querySelector('.announcement-card')) {
+                    observer.disconnect();
+                    upgradeCards();
+                }
+            });
+            obs.observe(container, { childList: true, subtree: true });
+
+            // Fallback: run after 800ms regardless
+            setTimeout(function() {
+                if (container.querySelector('.announcement-card')) upgradeCards();
+            }, 800);
+        })();
+
+        // ── Page Flip Transition ───────────────────────────────────────────────
+        function navigateWithFlip(url) {
+            var shell = document.querySelector('.app-shell') || document.body;
+            shell.classList.add('page-flip-out');
+            setTimeout(function() { window.location.href = url; }, 180);
+        }
+
+        // Flip-in on page load
+        (function() {
+            var shell = document.querySelector('.app-shell') || document.body;
+            shell.classList.add('page-flip-in');
+            shell.addEventListener('animationend', function() {
+                shell.classList.remove('page-flip-in');
+            }, { once: true });
+        })();
+
+        // ── Performance: prefetch linked pages ────────────────────────────────
+        (function() {
+            var pages = ['SearchStudent.aspx', 'Teacher.aspx', 'Pinned.aspx', 'Notifications.aspx'];
+            pages.forEach(function(page) {
+                var link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = page;
+                document.head.appendChild(link);
+            });
+        })();
+    </script>
+</body>
+</html>

@@ -244,6 +244,37 @@
             gap: 12px;
         }
     }
+
+    /* Dark mode */
+    body.dark-mode {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+
+    body.dark-mode .signup-card {
+        background: rgba(33, 38, 45, 0.95);
+        border-color: rgba(255,255,255,0.08);
+    }
+
+    body.dark-mode .logo h1,
+    body.dark-mode .card-header h2 { color: #e4e6eb; }
+
+    body.dark-mode .logo p,
+    body.dark-mode .card-header span,
+    body.dark-mode .input-group label,
+    body.dark-mode .role-group label,
+    body.dark-mode .role-option span,
+    body.dark-mode .footer-links p,
+    body.dark-mode .password-requirements { color: #9db0c4; }
+
+    body.dark-mode .input-field,
+    body.dark-mode .role-options {
+        background: rgba(56,62,72,0.75);
+        border-color: rgba(255,255,255,0.1);
+        color: #e4e6eb;
+    }
+
+    body.dark-mode .footer-links a { color: #7fa6d1; }
+    body.dark-mode .footer-links { border-top-color: rgba(255,255,255,0.08); }
 </style>
 </head>
 <body>
@@ -317,6 +348,10 @@
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Apply global theme
+    if (localStorage.getItem('campus_theme') === 'dark') {
+        document.body.classList.add('dark-mode');
+    }
     var passwordField = document.getElementById('<%= txtPassword.ClientID %>') as HTMLInputElement | null;
             var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>') as HTMLInputElement | null;
             var passwordReq = document.getElementById('passwordReq') as HTMLElement | null;

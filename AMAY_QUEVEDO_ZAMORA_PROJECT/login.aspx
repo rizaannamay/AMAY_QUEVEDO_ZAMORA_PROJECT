@@ -170,6 +170,33 @@
             font-size: 12px;
             color: #b0c4de;
         }
+
+        /* Dark mode */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        body.dark-mode .neon-card {
+            background: rgba(33, 38, 45, 0.95);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        body.dark-mode .neon-logo h1,
+        body.dark-mode .card-header h2 { color: #e4e6eb; }
+
+        body.dark-mode .neon-logo p,
+        body.dark-mode .card-header span,
+        body.dark-mode .input-group label,
+        body.dark-mode .footer,
+        body.dark-mode .divider { color: #9db0c4; }
+
+        body.dark-mode .input-field {
+            background: rgba(56,62,72,0.75);
+            border-color: rgba(255,255,255,0.1);
+            color: #e4e6eb;
+        }
+
+        body.dark-mode .footer a { color: #7fa6d1; }
     </style>
 </head>
 <body>
@@ -216,5 +243,11 @@
             </div>
         </form>
     </div>
+    <script>
+        // Apply global theme
+        if (localStorage.getItem('campus_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
 </body>
 </html>

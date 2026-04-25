@@ -269,7 +269,7 @@
     </form>
 
     <script>
-        var THEME_STORAGE_KEY = 'campusTheme';
+        var THEME_STORAGE_KEY = 'campus_theme';
 
 function applyStoredTheme() {
     var savedTheme = localStorage.getItem(THEME_STORAGE_KEY);

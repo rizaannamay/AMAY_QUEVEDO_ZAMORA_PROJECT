@@ -235,23 +235,21 @@
     </form>
 
     <script>
-        var THEME_STORAGE_KEY = 'campusTheme';
+        var THEME_STORAGE_KEY = 'campus_theme';
 
-function applyStoredTheme() {
-    var params = new URLSearchParams(window.location.search);
-    var queryTheme = params.get('theme');
-    var savedTheme = queryTheme || localStorage.getItem(THEME_STORAGE_KEY);
+        function applyStoredTheme() {
+            if (localStorage.getItem(THEME_STORAGE_KEY) === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        }
 
-    if (queryTheme === 'dark' || queryTheme === 'light') {
-        localStorage.setItem(THEME_STORAGE_KEY, queryTheme);
-    }
+        window.addEventListener('storage', function(event) {
+            if (event.key === THEME_STORAGE_KEY) { applyStoredTheme(); }
+        });
 
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-}
+        applyStoredTheme();
 
 window.addEventListener('storage', function(event) {
     if (event.key === THEME_STORAGE_KEY) {

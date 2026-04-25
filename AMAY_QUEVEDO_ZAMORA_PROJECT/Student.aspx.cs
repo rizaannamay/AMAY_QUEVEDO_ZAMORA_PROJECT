@@ -7,6 +7,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Student : Page
     {
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
 
 
         protected void Page_Load(object sender, EventArgs e)
@@ -131,23 +132,26 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                         </div>
                                     </div>
                                 </div>
-                                <button type='button' class='pin-btn-top {pinnedClass}' onclick='togglePinTop(this, {id})'><i class='fas fa-thumbtack'></i></button>
+                                <button type='button' class='pin-btn-top {pinnedClass}' onclick='togglePin({id})' title='{(pinned ? "Unpin" : "Pin this announcement")}' style='color:{(pinned ? "#e65100" : "var(--muted-light)")}'>
+                                    <i class='{(pinned ? "fas" : "far")} fa-thumbtack'></i>
+                                </button>
                             </div>
                             <div class='post-content'>
                                 <div class='post-title'>{EscapeHtml(title)}</div>
                                 <div class='post-text'>{EscapeHtml(content)}</div>
                             </div>
                             <div class='post-stats'>
-                                <span onclick='toggleLikeFromStats(this, {id})'><i class='far fa-heart'></i> <span class='like-count'>{likes}</span> Likes</span>
-                                <span onclick='scrollToComments(this, {id})'><i class='far fa-comment'></i> <span class='comment-count'>{comments}</span> Comments</span>
-                                <span onclick='sharePost({id})'><i class='far fa-share-square'></i> <span class='share-count'>{shares}</span> Shares</span>
+                                <span onclick='toggleLike({id})'><i class='far fa-heart'></i> <span class='like-count'>{likes}</span> Likes</span>
+                                <span onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> <span class='comment-count'>{comments}</span> Comments</span>
+                                <span onclick='sharePost({id}, null)'><i class='far fa-share-square'></i> <span class='share-count'>{shares}</span> Shares</span>
                             </div>
                             <div class='action-buttons'>
-                                <button type='button' class='action-btn' onclick='toggleLike(this, {id})'><i class='far fa-heart'></i> Like</button>
-                                <button type='button' class='action-btn' onclick='toggleComments(this, {id})'><i class='far fa-comment'></i> Comment</button>
-                                <button type='button' class='action-btn' onclick='sharePost({id})'><i class='fas fa-share'></i> Share</button>
+                                <button type='button' class='action-btn like-btn' onclick='toggleLike({id})'><i class='far fa-heart'></i> Like</button>
+                                <button type='button' class='action-btn' onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> Comment</button>
+                                <button type='button' class='action-btn' onclick='sharePost({id}, null)'><i class='fas fa-share-alt'></i> Share</button>
+                                <button type='button' class='action-btn notif-btn' onclick='toggleNotif({id})'><i class='far fa-bell'></i> Notify</button>
                             </div>
-                            <div class='comments-section' id='commentsSection_{id}'>
+                            <div class='comments-section' id='commentsSection_{id}' style='display:none;'>
                                 <div class='comment-input'>
                                     <input type='text' placeholder='Write a comment...' id='commentInput_{id}' />
                                     <button type='button' onclick='addComment(this, {id})'>Post</button>
