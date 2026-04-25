@@ -17,7 +17,6 @@
             return source == "teacher" ? "Back to Teacher" : "Back to Student";
         }
     }
-
 </script>
 
 <!DOCTYPE html>
@@ -285,6 +284,14 @@
             border-radius: 22px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+            border-color: rgba(127, 200, 255, 0.2);
         }
 
         .gallery-card img {
@@ -390,6 +397,75 @@
             line-height: 1.7;
             font-size: 0.97rem;
             font-style: italic;
+        }
+
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(2, 6, 12, 0.84);
+            backdrop-filter: blur(10px);
+            z-index: 1500;
+        }
+
+        .image-modal.show {
+            display: flex;
+        }
+
+        .image-modal-content {
+            position: relative;
+            width: min(960px, 100%);
+            max-height: 90vh;
+            background: rgba(14, 19, 26, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 28px;
+            padding: 22px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 68vh;
+            object-fit: contain;
+            display: block;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .image-caption {
+            padding-top: 16px;
+        }
+
+        .image-caption h4 {
+            color: #ffffff;
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+
+        .image-caption p {
+            color: var(--muted);
+            line-height: 1.7;
         }
 
         @media (max-width: 980px) {
@@ -500,7 +576,7 @@
                     </div>
 
                     <div class="gallery-grid">
-                        <article class="gallery-card">
+                        <article class="gallery-card" onclick="openImageModal('campus-event-1.jpg', 'Student Activities', 'Use this slot for announcement posters, student week photos, or campus program highlights.')">
                             <img src="campus-event-1.jpg" alt="Campus event announcement" />
                             <div class="gallery-copy">
                                 <h4>Student Activities</h4>
@@ -508,7 +584,7 @@
                             </div>
                         </article>
 
-                        <article class="gallery-card">
+                        <article class="gallery-card" onclick="openImageModal('campus-event-2.jpg', 'Academic Updates', 'Perfect for exam schedules, departmental notices, and registrar announcement images.')">
                             <img src="campus-event-2.jpg" alt="Academic announcement board" />
                             <div class="gallery-copy">
                                 <h4>Academic Updates</h4>
@@ -516,7 +592,7 @@
                             </div>
                         </article>
 
-                        <article class="gallery-card">
+                        <article class="gallery-card" onclick="openImageModal('campus-event-3.jpg', 'Campus Highlights', 'Add a photo of your university grounds, buildings, or student facilities to build identity.')">
                             <img src="campus-event-3.jpg" alt="School campus view" />
                             <div class="gallery-copy">
                                 <h4>Campus Highlights</h4>
@@ -524,7 +600,7 @@
                             </div>
                         </article>
 
-                        <article class="gallery-card">
+                        <article class="gallery-card" onclick="openImageModal('campus-event-4.jpg', 'Official Campaigns', 'Use this area for orientation drives, reminders, safety announcements, or event promotions.')">
                             <img src="campus-event-4.jpg" alt="School announcement campaign" />
                             <div class="gallery-copy">
                                 <h4>Official Campaigns</h4>
@@ -589,5 +665,52 @@
             </section>
         </div>
     </form>
+
+    <div id="imageModal" class="image-modal" onclick="closeImageModal(event)">
+        <div class="image-modal-content">
+            <button type="button" class="image-modal-close" onclick="closeImageModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="imageModalPreview" class="image-preview" src="" alt="Gallery preview" />
+            <div class="image-caption">
+                <h4 id="imageModalTitle"></h4>
+                <p id="imageModalText"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openImageModal(src, title, text) {
+            var modal = document.getElementById('imageModal');
+            var preview = document.getElementById('imageModalPreview');
+            var modalTitle = document.getElementById('imageModalTitle');
+            var modalText = document.getElementById('imageModalText');
+
+            if (!modal || !preview || !modalTitle || !modalText) return;
+
+            preview.src = src;
+            preview.alt = title;
+            modalTitle.textContent = title;
+            modalText.textContent = text;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal(event) {
+            var modal = document.getElementById('imageModal');
+            if (!modal) return;
+
+            if (event && event.target !== modal) return;
+
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+    </script>
 </body>
 </html>
