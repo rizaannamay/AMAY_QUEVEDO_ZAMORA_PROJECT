@@ -72,9 +72,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1.5px solid rgba(26,58,92,0.25);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; }
@@ -88,6 +90,7 @@
             justify-content: center;
             min-width: 0;
         }
+        .logo i { margin-right: 8px; }
 
         .search-btn {
             background: none;
@@ -111,64 +114,74 @@
             display: flex;
             gap: 15px;
             align-items: center;
-            white-space: nowrap;
+            justify-content: center;
+            gap: 12px;
+            gap: 12px;
+
+        .post-announcement-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26,58,92,0.3);
+            background: linear-gradient(135deg, #234f78, #3a6f94);
         }
 
-        .notification-bell {
-            position: relative;
+        /* Notification Bell */
+
+        .post-announcement-btn:hover {
             cursor: pointer;
             background: var(--surface-soft);
             width: 42px;
             height: 42px;
-            border-radius: 50%;
-            display: flex;
+
+        /* Notification Bell */
+        .notification-bell {
+            position: relative;
+            border: 1px solid #dce4ec;
+            transition: background 0.3s;
+            width: 42px;
+
+        .notification-bell:hover {
+            background: #e8f0fe;
+        }
+
+        .bell-icon {
+            font-size: 20px;
+            color: #1a3a5c;
+        }
+
             align-items: center;
             justify-content: center;
             border: 1px solid #dce4ec;
             transition: background 0.3s;
         }
 
-        .notification-bell:hover { background: var(--active-bg); }
-
-        .badge-red {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #dc2626;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 50%;
-            min-width: 18px;
-            text-align: center;
+        .notification-bell:hover {
+            background: #e8f0fe;
         }
 
+        .bell-icon {
+            font-size: 20px;
+            color: #1a3a5c;
+        }
+
+        .badge-red {
+            background: var(--surface-soft);
+            padding: 6px 18px;
+            right: -5px;
+            border: 1px solid #dce4ec;
+            color: #ffffff;
+
+            font-weight: bold;
+            width: 36px;
+            height: 36px;
+            min-width: 18px;
+        }
         .user-info {
             display: flex;
-            align-items: center;
+            font-weight: bold;
             gap: 12px;
             background: var(--surface-soft);
             padding: 6px 18px;
             border-radius: 40px;
-            border: 1px solid #dce4ec;
-        }
-
-        .avatar, .profile-avatar, .post-avatar {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            color: #ffffff;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
         .user-name { font-size: 14px; font-weight: 600; }
         .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
 
@@ -176,23 +189,23 @@
         .content-shell {
             flex: 1 1 0;
             min-height: 0;
-            display: grid;
-            grid-template-columns: 300px minmax(0, 1fr);
-            gap: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
             align-items: stretch;
-        }
-
+        .user-name { font-weight: 700; font-size: 14px; }
+        .user-role { font-size: 11px; color: var(--muted); }
         .sidebar { height: 100%; min-height: 0; overflow: hidden; }
 
-        .card {
+        .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
             background: var(--surface);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
             overflow: hidden;
-        }
+            grid-template-columns: 300px minmax(0, 1fr);
 
         .sidebar .card, .main-panel.card {
             height: 100%;
@@ -203,18 +216,21 @@
 
         .sidebar-content { min-height: 0; overflow-y: auto; }
 
-        .card-header {
-            padding: 18px 22px;
-            border-bottom: 1px solid #eef2f6;
-            font-weight: 700;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
             color: var(--primary);
             font-size: 16px;
+        .sidebar .card, .main-panel.card {
+
+        .card-header i {
+            margin-right: 10px;
+            color: #1a3a5c;
         }
 
-        .card-header i { margin-right: 10px; color: var(--primary); }
-
-        /* ── SIDEBAR PROFILE ── */
-        .profile-section {
+        /* Profile Section */
+        }
     text-align: center;
     padding: 20px;
     border-bottom: 1px solid #eef2f6;
@@ -245,19 +261,19 @@
         .menu-item, .settings-item, .dropdown-item { color: var(--page-text); }
 
         .menu-item, .settings-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 22px;
-            cursor: pointer;
-            width: 100%;
+    margin: 0 auto 12px;
+    font-size: 28px;
+}
+
+        .sidebar-toggle {
             border: none;
             background: none;
-            text-align: left;
-            font-size: 14px;
+            color: var(--primary);
+            font-size: 22px;
+            cursor: pointer;
             transition: all 0.3s;
-            border-left: 3px solid transparent;
         }
+
 
         .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
             background: var(--surface-soft);
@@ -273,20 +289,36 @@
 
         .menu-item.open .dropdown-icon { transform: rotate(180deg); }
 
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
+            background: var(--surface-soft);
+            color: var(--primary);
+        }
+
+        .dropdown-icon {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--muted-light);
+            transition: transform 0.3s ease;
+            transition: all 0.3s;
+        }
+
+
         .dropdown-content {
             margin-left: 45px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
-
-        .dropdown-item {
+            flex-shrink: 0;
             display: block;
-            padding: 10px 22px;
-            font-size: 13px;
-            cursor: pointer;
+
+        .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+
             background: none;
-            border: none;
             width: 100%;
             text-align: left;
             transition: all 0.3s;
@@ -298,26 +330,7 @@
             background: #dce4ec;
             border-radius: 30px;
             position: relative;
-            cursor: pointer;
-            transition: all 0.3s;
             margin-left: auto;
-            flex-shrink: 0;
-        }
-
-        .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-
-        .toggle-switch::after {
-            content: '';
-            width: 18px;
-            height: 18px;
-            background: #ffffff;
-            border-radius: 50%;
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            transition: all 0.3s;
-        }
-
         .toggle-switch.active::after { left: 24px; }
 
         /* ── MAIN PANEL ── */
@@ -329,90 +342,17 @@
     flex-direction: column;
     gap: 12px;
 }
-
-        /* ── POST ANNOUNCEMENT BUTTON ── */
-        .post-announcement-btn {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            border: none;
-            border-radius: 16px;
-            padding: 14px 22px;
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-
-        .post-announcement-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(26,58,92,0.3);
-        }
-
-        /* ── CREATE POST BOX ── */
-        .create-post-card {
-            background: var(--surface-strong);
-            border-radius: 16px;
-            padding: 14px 18px;
-            border: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
-        .create-post-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .create-post-avatar {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .create-post-input {
-            flex: 1;
-            background: var(--surface-soft);
-            border: 1px solid #dce4ec;
-            border-radius: 40px;
-            padding: 10px 18px;
-            font-size: 14px;
-            color: var(--muted);
-            cursor: pointer;
-        }
-
-        /* ── ANNOUNCEMENT BOARD ── */
-        .announcement-board {
+            position: absolute;
+        /* Announcement Cards */
+            left: 2px;
             flex: 1 1 auto;
             min-height: 0;
             overflow-y: auto;
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
-        }
 
-        .main-panel-inner {
-            height: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 18px;
-            overflow: hidden;
-        }
 
-        .announcement-card {
+       .main-panel {
             background: var(--surface-strong);
             border-radius: 20px;
             margin-bottom: 20px;
@@ -420,52 +360,43 @@
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             overflow: hidden;
-        }
+
 
         .announcement-card:hover {
-            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-            border-color: rgba(26,58,92,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-color: rgba(26,58,92,0.35);
         }
-        .filter-option {
-    display: block;
-    width: 100%;
-    padding: 11px 18px;
-    background: none;
-    border: none;
-    text-align: left;
-    font-size: 13px;
-    color: var(--page-text);
-    cursor: pointer;
-    transition: background 0.2s;
-    border-bottom: 1px solid var(--border);
-}
 
-.filter-option:last-child { border-bottom: none; }
+            background: rgba(248, 250, 252, 0.35);
+        }
 
-.filter-option:hover {
-    background: var(--active-bg);
-    color: var(--primary);
-}
-
-.filter-option.active-filter {
-    background: var(--active-bg);
-    color: var(--primary);
-    font-weight: 600;
-}
-
-        .post-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             padding: 18px 22px 12px;
-        }
+            background: var(--surface-strong);
 
         .post-header-left { display: flex; align-items: center; gap: 15px; }
 
-        .post-avatar {
+            transition: all 0.3s;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
+        }
+
+        .announcement-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        .post-header {
+
+        .post-author { font-weight: 700; font-size: 16px; }
+
+        .post-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            margin-top: 4px;
+            flex-wrap: wrap;
+        }
+
             display: flex;
             align-items: center;
             justify-content: center;
@@ -481,25 +412,6 @@
             gap: 12px;
             font-size: 12px;
             margin-top: 4px;
-            flex-wrap: wrap;
-        }
-
-        .post-category {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .post-category-exam { background: #e3f2fd; color: #1976d2; }
-        .post-category-suspension { background: #ffebee; color: #c62828; }
-        .post-category-event { background: #e8f5e9; color: #2e7d32; }
-
-        .pin-btn-top {
-            background: none;
-            border: none;
-            cursor: pointer;
             font-size: 18px;
             color: var(--muted-light);
             padding: 8px;
@@ -519,44 +431,62 @@
         .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
         .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; display: block; }
 
-        .post-stats {
-            display: flex;
+            color: var(--muted-light);
+            padding: 8px;
             gap: 20px;
             padding: 10px 22px;
             border-top: 1px solid #eef2f6;
             border-bottom: 1px solid #eef2f6;
             color: var(--muted);
-            font-size: 13px;
-        }
+
+        .pin-btn-top:hover { background: #f0f2f5; }
 
         .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .post-stats span:hover { color: var(--primary); }
 
         .action-buttons { display: flex; gap: 5px; padding: 8px 22px; }
 
-        .action-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--muted);
+        .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
+        .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; display: block; }
+
+        .post-stats {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            gap: 20px;
+            padding: 10px 22px;
+            font-size: 14px;
+            color: #5a6e7c;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
             transition: all 0.3s;
         }
 
         .action-btn.liked { color: #dc2626; }
         .action-btn.liked i { font-weight: 900; }
-
-        .comments-section {
+        .action-btn {
+            flex: 1;
             padding: 0 22px 18px;
             border-top: 1px solid #eef2f6;
-            display: none;
+            padding: 10px;
+            border-radius: 40px;
+
+        .comments-section.show { display: block; }
+
+        .comment-input { display: flex; gap: 10px; margin: 15px 0; }
+
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--surface-soft);
+            border: 1px solid #dce4ec;
+            border-radius: 30px;
+        .action-btn.liked i { font-weight: 900; }
+            font-size: 13px;
+        .comments-section {
+            padding: 0 22px 18px;
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
         }
 
         .comments-section.show { display: block; }
@@ -570,38 +500,14 @@
             border: 1px solid #dce4ec;
             border-radius: 30px;
             outline: none;
-            font-size: 13px;
-            color: var(--page-text);
-        }
 
+        }
         .comment-input button {
             padding: 10px 22px;
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            color: white;
-        }
-
-        .comment {
-            padding: 10px 0;
-            font-size: 13px;
-            border-bottom: 1px solid #eef2f6;
-            display: flex;
-            gap: 10px;
-        }
-
-        .comment:last-child { border-bottom: none; }
-
-        .comment-avatar {
-            width: 32px;
-            height: 32px;
-            background: #e8f0fe;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 0 24px;
+            border-radius: 40px;
             font-size: 12px;
             color: var(--primary);
             font-weight: bold;
@@ -615,19 +521,21 @@
             text-align: center;
             color: var(--muted-light);
             font-size: 12px;
-        }
-
-        /* ── NOTIFICATION DROPDOWN ── */
-        .notification-dropdown {
-            position: absolute;
+            background: #e8f0fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+        /* Notification Dropdown */
+            font-size: 12px;
+            color: var(--primary);
             top: 84px;
             right: 20px;
-            width: 320px;
+        }
             background: var(--surface-strong);
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 1px solid var(--border);
-            z-index: 200;
+            padding: 15px;
             display: none;
         }
 
@@ -669,19 +577,35 @@
         .notification-time { font-size: 10px; color: var(--muted-light); }
 
         /* ── MODAL ── */
-        .modal {
-            display: none;
-            position: fixed;
+        .notification-list { max-height: 350px; overflow-y: auto; }
+
+        .notification-item {
             inset: 0;
             width: 100%;
             height: 100%;
+            padding: 12px 18px;
+            border-bottom: 1px solid #eef2f6;
+            cursor: pointer;
+            padding: 20px;
+
+        .notification-item:hover { background: var(--surface-soft); }
+            background: var(--surface-strong);
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+        .modal {
+            display: none;
+            position: fixed;
+        .modal-icon { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
+        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .modal-text { margin: 15px 0; font-size: 13px; }
             background: rgba(0,0,0,0.5);
-            z-index: 1000;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-
         .modal-content {
             background: var(--surface-strong);
             border-radius: 24px;
@@ -690,6 +614,7 @@
             padding: 30px;
             text-align: center;
         }
+        /* footer removed - no footer element */
 
         .modal-icon { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
         .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
@@ -739,24 +664,6 @@
         .sidebar.collapsed .dropdown-content { display: none; }
         .sidebar.collapsed .menu-item,
         .sidebar.collapsed .settings-item,
-        .sidebar.collapsed .profile-section { justify-content: center; }
-        .sidebar.collapsed .dropdown-icon,
-        .sidebar.collapsed .toggle-switch { display: none; }
-
-        /* ── DARK MODE ── */
-        .dark-mode {
-            --bg-image: url('bg.jpg');
-            --page-text: #e4e6eb;
-            --surface: rgba(33, 38, 45, 0.9);
-            --surface-strong: rgba(39, 44, 52, 0.96);
-            --surface-soft: rgba(56, 62, 72, 0.75);
-            --border: rgba(255, 255, 255, 0.08);
-            --muted: #b0bac7;
-            --muted-light: #8ea0b5;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-            --active-bg: rgba(64, 96, 128, 0.36);
-        }
-
         .dark-mode .search-btn, .dark-mode .modal-close {
             border-color: rgba(255,255,255,0.08);
             color: #ffffff;
@@ -810,11 +717,25 @@
             .sidebar, .main-panel, .sidebar .card, .main-panel.card { height: auto; }
             .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
             .notification-dropdown { right: 12px; left: 12px; width: auto; }
+
+        .dark-mode .menu-item:hover, .dark-mode .settings-item:hover,
+        .dark-mode .dropdown-item:hover, .dark-mode .post-stats span:hover,
+        .dark-mode .action-btn:hover { color: #ffffff; }
+
+        .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 980px) {
+            html, body { overflow: auto; }
+            .app-shell, form { height: auto; min-height: 100%; overflow: visible; }
+            .footer { position: static; height: auto; line-height: normal; padding: 6px 0 0; }
+            .header { flex-wrap: wrap; }
+            .search-container { order: 3; width: 100%; justify-content: stretch; }
+            .content-shell { grid-template-columns: 1fr; overflow: visible; }
+            .sidebar, .main-panel, .sidebar .card, .main-panel.card { height: auto; }
+            .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
+            .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
-    </style>
-</head>
-<body>
-    <form id="form1" runat="server">
         <div class="app-shell">
 
             <!-- ── HEADER ── -->
@@ -846,7 +767,7 @@
                     </div>
                 </div>
             </div>
-
+                </div>
             <!-- ── NOTIFICATION DROPDOWN ── -->
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
@@ -872,7 +793,7 @@
                     </div>
                 </div>
             </div>
-
+                </div>
             <!-- ── CONTENT SHELL ── -->
             <div class="content-shell">
 
@@ -887,7 +808,7 @@
                                 <div class="profile-name" id="profileName">Maria Santos</div>
                                 <div class="profile-email" id="profileEmail">maria.santos@ctu.edu.ph</div>
                             </div>
-
+                    </div>
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
                             </div>
@@ -902,7 +823,7 @@
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
-
+                                <div class="profile-name" id="profileName">Maria Santos</div>
                             <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
@@ -930,14 +851,14 @@
                         </div>
                     </div>
                 </aside>
-
+                            <button type="button" class="settings-item" onclick="toggleTheme(this)">
                 <!-- ── MAIN PANEL ── -->
                 <main class="main-panel">
     <!-- Post Announcement Button -->
     <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
         <i class="fas fa-plus-circle"></i> Want to post an announcement?
     </button>
-
+                                <i class="fas fa-info-circle"></i>
     <!-- Create Post Box -->
     <div class="create-post-card">
         <div class="create-post-header">
@@ -949,7 +870,7 @@
             </div>
         </div>
     </div>
-
+                <!-- ── MAIN PANEL ── -->
     <!-- Announcement Board Card (scrolls independently) -->
     <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
        <div class="card-header" style="flex-shrink:0; position:relative;">
@@ -978,7 +899,7 @@
 </div>
         <!-- Scrollable Announcements -->
         <div id="announcementsContainer" class="announcement-board">
-
+        top:52px;
                             <!-- Announcement 1 - Exam -->
                             <div class="announcement-card" data-category="Exam" data-post-id="1">
                                 <div class="post-header">
@@ -1011,6 +932,24 @@
                                     <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
                                     <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                     <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                </div>
+                                <div class="comments-section">
+                                    <div class="comment-input">
+                                        <input type="text" placeholder="Write a comment..." />
+                                        <button type="button" onclick="addComment(this)">Post</button>
+                                    </div>
+                                    <div class="comments-list">
+                                        <div class="comment">
+                                            <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                            <div class="comment-content">
+                                                <span class="comment-author">Juan Dela Cruz</span>
+                                                <div class="comment-text">Thank you for the update!</div>
+                                                <div class="comment-time">December 8, 2024</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                 </div>
                                 <div class="comments-section">
                                     <div class="comment-input">
@@ -1063,24 +1002,6 @@
                                     <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                     <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                                 </div>
-                                <div class="comments-section">
-                                    <div class="comment-input">
-                                        <input type="text" placeholder="Write a comment..." />
-                                        <button type="button" onclick="addComment(this)">Post</button>
-                                    </div>
-                                    <div class="comments-list">
-                                        <div class="comment">
-                                            <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                                            <div class="comment-content">
-                                                <span class="comment-author">John Santos</span>
-                                                <div class="comment-text">Stay safe everyone!</div>
-                                                <div class="comment-time">November 24, 2024</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Announcement 3 - Event -->
                             <div class="announcement-card" data-category="Event" data-post-id="3">
                                 <div class="post-header">
@@ -1114,6 +1035,24 @@
                                     <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
                                     <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
                                 </div>
+                                <div class="comments-section">
+                                    <div class="comment-input">
+                                        <input type="text" placeholder="Write a comment..." />
+                                        <button type="button" onclick="addComment(this)">Post</button>
+                                    </div>
+                                    <div class="comments-list">
+                                        <div class="no-comments">No comments yet. Be the first!</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+                                    <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+        <!-- About Modal -->
                                 <div class="comments-section">
                                     <div class="comment-input">
                                         <input type="text" placeholder="Write a comment..." />
@@ -1336,5 +1275,6 @@
         }
 
     </script>
+>>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
 </body>
 </html>
