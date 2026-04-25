@@ -1,20 +1,18 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
-<<<<<<< HEAD
 
-=======
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
     {
         Response.Redirect("SearchDashboard.aspx");
     }
 </script>
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect - Teacher Portal</title>
+    <title>Campus Connect - Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * {
@@ -22,6 +20,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -36,20 +35,24 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --active-bg: #e8f0fe;
         }
+
         html, body, form { height: 100%; }
         html, body { overflow: hidden; }
+
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), var(--bg-image);
+            background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
+
         a { color: inherit; text-decoration: none; }
         button, input, textarea { font: inherit; }
+
         .app-shell {
             height: 100vh;
             display: flex;
@@ -58,10 +61,7 @@
             padding: 16px 20px 0;
             overflow: hidden;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .header {
             flex: 0 0 auto;
             background: var(--surface);
@@ -75,21 +75,10 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
-<<<<<<< HEAD
 
-        .footer {
-            flex: 0 0 34px;
-            text-align: center;
-            line-height: 34px;
-            font-size: 12px;
-        }
-
-        form { height: auto; min-height: 100%; overflow: visible; }
-
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; }
         .logo i { color: var(--primary); margin-right: 8px; }
+
         .search-container {
             display: flex;
             gap: 10px;
@@ -98,35 +87,8 @@
             justify-content: center;
             min-width: 0;
         }
-<<<<<<< HEAD
 
-        .search-box {
-            background: var(--surface-soft);
-            border-radius: 30px;
-            padding: 10px 18px;
-            width: min(100%, 320px);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 2px solid #0F172A;
-        }
-
-        .search-box input {
-            background: none;
-            border: none;
-            outline: none;
-            width: 100%;
-            font-size: 14px;
-            color: var(--page-text);
-        }
-
-        .search-box input::placeholder { color: var(--muted-light); }
-        .search-box i, .bell-icon { color: var(--primary); }
-
-        .search-btn, .comment-input button, .modal-close {
-=======
         .search-btn {
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             background: none;
             border: 2px solid #0F172A;
             border-radius: 30px;
@@ -136,23 +98,21 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-<<<<<<< HEAD
 
-        .search-btn:hover, .comment-input button:hover, .modal-close:hover {
-=======
         .search-btn:hover {
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             background: #e8f0fe;
             border-color: rgba(26,58,92,0.4);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
+
         .header-actions {
             display: flex;
             gap: 15px;
             align-items: center;
             white-space: nowrap;
         }
+
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -166,7 +126,9 @@
             border: 1px solid #dce4ec;
             transition: background 0.3s;
         }
+
         .notification-bell:hover { background: var(--active-bg); }
+
         .badge-red {
             position: absolute;
             top: -5px;
@@ -180,6 +142,7 @@
             min-width: 18px;
             text-align: center;
         }
+
         .user-info {
             display: flex;
             align-items: center;
@@ -189,10 +152,12 @@
             border-radius: 40px;
             border: 1px solid #dce4ec;
         }
+
         .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             color: #ffffff;
         }
+
         .avatar {
             width: 36px;
             height: 36px;
@@ -202,12 +167,10 @@
             justify-content: center;
             font-weight: bold;
         }
+
         .user-name { font-size: 14px; font-weight: 600; }
         .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .content-shell {
             flex: 1 1 0;
             min-height: 0;
@@ -217,7 +180,9 @@
             overflow: hidden;
             align-items: stretch;
         }
+
         .sidebar { height: 100%; min-height: 0; overflow: hidden; }
+
         .card {
             background: var(--surface);
             backdrop-filter: blur(10px);
@@ -226,13 +191,16 @@
             box-shadow: var(--shadow);
             overflow: hidden;
         }
+
         .sidebar .card, .main-panel.card {
             height: 100%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
         }
+
         .sidebar-content { min-height: 0; overflow-y: auto; }
+
         .card-header {
             padding: 18px 22px;
             border-bottom: 1px solid #eef2f6;
@@ -240,20 +208,15 @@
             color: var(--primary);
             font-size: 16px;
         }
-        .card-header i { margin-right: 10px; color: var(--primary); }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+        .card-header i { margin-right: 10px; color: var(--primary); }
+
         .profile-section {
             text-align: center;
             padding: 20px;
             border-bottom: 1px solid #eef2f6;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .profile-avatar {
             width: 70px;
             height: 70px;
@@ -264,10 +227,7 @@
             margin: 0 auto 12px;
             font-size: 28px;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .sidebar-toggle {
             border: none;
             background: none;
@@ -276,9 +236,11 @@
             cursor: pointer;
             margin-bottom: 12px;
         }
+
         .profile-name, .post-author, .post-title, .modal-title { color: var(--primary); }
         .profile-name { font-size: 18px; font-weight: 700; }
         .menu-item, .settings-item, .dropdown-item { color: var(--page-text); }
+
         .menu-item, .settings-item {
             display: flex;
             align-items: center;
@@ -293,34 +255,28 @@
             transition: all 0.3s;
             border-left: 3px solid transparent;
         }
+
         .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
-<<<<<<< HEAD
 
-        .menu-item.active, .settings-item.active {
-            background: var(--active-bg);
-            color: var(--primary);
-            border-left: 4px solid var(--primary);
-            font-weight: 600;
-        }
-
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dropdown-icon {
             margin-left: auto;
             font-size: 12px;
             color: var(--muted-light);
             transition: transform 0.3s ease;
         }
+
         .menu-item.open .dropdown-icon { transform: rotate(180deg); }
+
         .dropdown-content {
             margin-left: 45px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
+
         .dropdown-item {
             display: block;
             padding: 10px 22px;
@@ -332,6 +288,7 @@
             text-align: left;
             transition: all 0.3s;
         }
+
         .toggle-switch {
             width: 44px;
             height: 22px;
@@ -343,7 +300,9 @@
             margin-left: auto;
             flex-shrink: 0;
         }
+
         .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+
         .toggle-switch::after {
             content: '';
             width: 18px;
@@ -355,14 +314,9 @@
             left: 2px;
             transition: all 0.3s;
         }
+
         .toggle-switch.active::after { left: 24px; }
-<<<<<<< HEAD
 
-        .main-panel { height: 100%; min-width: 0; min-height: 0; }
-        .main-panel .card-header { flex: 0 0 auto; }
-        .header-filter { float: right; font-size: 12px; color: var(--primary); }
-
-=======
         .main-panel {
             height: 100%;
             min-width: 0;
@@ -371,6 +325,7 @@
             flex-direction: column;
             gap: 12px;
         }
+
         .post-announcement-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             border: none;
@@ -388,10 +343,12 @@
             gap: 12px;
             flex-shrink: 0;
         }
+
         .post-announcement-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26,58,92,0.3);
         }
+
         .create-post-card {
             background: var(--surface-strong);
             border-radius: 16px;
@@ -399,11 +356,13 @@
             border: 1px solid var(--border);
             flex-shrink: 0;
         }
+
         .create-post-header {
             display: flex;
             align-items: center;
             gap: 12px;
         }
+
         .create-post-avatar {
             width: 44px;
             height: 44px;
@@ -416,6 +375,7 @@
             font-size: 18px;
             flex-shrink: 0;
         }
+
         .create-post-input {
             flex: 1;
             background: var(--surface-soft);
@@ -426,7 +386,7 @@
             color: var(--muted);
             cursor: pointer;
         }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .announcement-board {
             flex: 1 1 auto;
             min-height: 0;
@@ -434,26 +394,22 @@
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .announcement-card {
             background: var(--surface-strong);
             border-radius: 20px;
             margin-bottom: 20px;
             border: 1px solid rgba(26, 58, 92, 0.08);
             transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             overflow: hidden;
         }
-        .announcement-card:hover {
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-            border-color: rgba(26, 58, 92, 0.2);
-        }
-<<<<<<< HEAD
 
-=======
+        .announcement-card:hover {
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+            border-color: rgba(26,58,92,0.2);
+        }
+
         .filter-option {
             display: block;
             width: 100%;
@@ -467,24 +423,29 @@
             transition: background 0.2s;
             border-bottom: 1px solid var(--border);
         }
+
         .filter-option:last-child { border-bottom: none; }
+
         .filter-option:hover {
             background: var(--active-bg);
             color: var(--primary);
         }
+
         .filter-option.active-filter {
             background: var(--active-bg);
             color: var(--primary);
             font-weight: 600;
         }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .post-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 18px 22px 12px;
         }
+
         .post-header-left { display: flex; align-items: center; gap: 15px; }
+
         .post-avatar {
             width: 50px;
             height: 50px;
@@ -496,7 +457,9 @@
             font-weight: bold;
             flex-shrink: 0;
         }
+
         .post-author { font-weight: 700; font-size: 16px; }
+
         .post-meta {
             display: flex;
             gap: 12px;
@@ -504,6 +467,7 @@
             margin-top: 4px;
             flex-wrap: wrap;
         }
+
         .post-category {
             display: inline-block;
             padding: 2px 10px;
@@ -511,9 +475,11 @@
             font-size: 10px;
             font-weight: 600;
         }
+
         .post-category-exam { background: #e3f2fd; color: #1976d2; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
+
         .pin-btn-top {
             background: none;
             border: none;
@@ -526,33 +492,17 @@
             width: 36px;
             height: 36px;
         }
+
         .pin-btn-top:hover { background: #f0f2f5; }
         .pin-btn-top.pinned { color: #e65100; }
+
         .post-content { padding: 0 22px 16px; }
         .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-<<<<<<< HEAD
-        .post-text, .comment-text, .notification-text, .modal-text { color: var(--page-text); line-height: 1.5; }
-
-        .post-image {
-            margin-top: 12px;
-            border-radius: 16px;
-            overflow: hidden;
-            max-width: 100%;
-        }
-
-        .post-image img {
-            width: 100%;
-            max-height: 300px;
-            object-fit: cover;
-            border-radius: 16px;
-            display: block;
-        }
-
-=======
         .post-text, .comment-text, .notification-text { color: var(--page-text); line-height: 1.5; }
+
         .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
         .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; display: block; }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .post-stats {
             display: flex;
             gap: 20px;
@@ -562,19 +512,12 @@
             color: var(--muted);
             font-size: 13px;
         }
+
         .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .post-stats span:hover { color: var(--primary); }
-<<<<<<< HEAD
 
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            padding: 8px 22px;
-        }
-
-=======
         .action-buttons { display: flex; gap: 5px; padding: 8px 22px; }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .action-btn {
             flex: 1;
             background: none;
@@ -590,25 +533,20 @@
             gap: 8px;
             transition: all 0.3s;
         }
+
         .action-btn.liked { color: #dc2626; }
         .action-btn.liked i { font-weight: 900; }
+
         .comments-section {
             padding: 0 22px 18px;
             border-top: 1px solid #eef2f6;
             display: none;
         }
+
         .comments-section.show { display: block; }
-<<<<<<< HEAD
 
-        .comment-input {
-            display: flex;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-=======
         .comment-input { display: flex; gap: 10px; margin: 15px 0; }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .comment-input input {
             flex: 1;
             padding: 10px 16px;
@@ -619,9 +557,7 @@
             font-size: 13px;
             color: var(--page-text);
         }
-<<<<<<< HEAD
 
-=======
         .comment-input button {
             padding: 10px 22px;
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -631,7 +567,7 @@
             font-weight: 600;
             color: white;
         }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .comment {
             padding: 10px 0;
             font-size: 13px;
@@ -639,7 +575,9 @@
             display: flex;
             gap: 10px;
         }
+
         .comment:last-child { border-bottom: none; }
+
         .comment-avatar {
             width: 32px;
             height: 32px;
@@ -653,17 +591,16 @@
             font-weight: bold;
             flex-shrink: 0;
         }
+
         .comment-author { font-weight: bold; color: var(--primary); }
+
         .no-comments {
             padding: 15px;
             text-align: center;
             color: var(--muted-light);
             font-size: 12px;
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .notification-dropdown {
             position: absolute;
             top: 84px;
@@ -671,12 +608,14 @@
             width: 320px;
             background: var(--surface-strong);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 1px solid var(--border);
             z-index: 200;
             display: none;
         }
+
         .notification-dropdown.show { display: block; }
+
         .notification-header {
             padding: 15px 18px;
             border-bottom: 1px solid #eef2f6;
@@ -686,6 +625,7 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .notification-header button {
             background: none;
             border: none;
@@ -693,16 +633,9 @@
             font-size: 11px;
             cursor: pointer;
         }
-<<<<<<< HEAD
 
-        .notification-list {
-            max-height: 350px;
-            overflow-y: auto;
-        }
-
-=======
         .notification-list { max-height: 350px; overflow-y: auto; }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .notification-item {
             display: flex;
             align-items: center;
@@ -711,49 +644,12 @@
             border-bottom: 1px solid #eef2f6;
             cursor: pointer;
         }
+
         .notification-item:hover { background: var(--surface-soft); }
         .notification-item.unread { background: var(--active-bg); }
-<<<<<<< HEAD
-
-        .notification-dot {
-            width: 8px;
-            height: 8px;
-            background: #dc2626;
-            border-radius: 50%;
-        }
-
-        .notification-time { font-size: 10px; color: var(--muted-light); }
-
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--surface-strong);
-            border-radius: 24px;
-            max-width: 400px;
-            width: 100%;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .modal-icon { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
-        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-        .modal-text { margin: 15px 0; font-size: 13px; }
-
-=======
         .notification-dot { width: 8px; height: 8px; background: #dc2626; border-radius: 50%; }
         .notification-time { font-size: 10px; color: var(--muted-light); }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .footer {
             position: fixed;
             left: 20px;
@@ -766,17 +662,9 @@
             line-height: 34px;
             font-size: 12px;
             z-index: 50;
+            color: var(--muted);
         }
-<<<<<<< HEAD
 
-        .sidebar.collapsed { width: 88px; }
-        .sidebar.collapsed + .main-panel { margin-left: 0; }
-        .sidebar.collapsed .profile-name, .sidebar.collapsed .profile-email, .sidebar.collapsed .card-header,
-        .sidebar.collapsed .menu-text, .sidebar.collapsed .settings-text, .sidebar.collapsed .dropdown-content { display: none; }
-        .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
-        .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
-
-=======
         .sidebar.collapsed { width: 88px; }
         .sidebar.collapsed .profile-name,
         .sidebar.collapsed .profile-email,
@@ -789,421 +677,32 @@
         .sidebar.collapsed .profile-section { justify-content: center; }
         .sidebar.collapsed .dropdown-icon,
         .sidebar.collapsed .toggle-switch { display: none; }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
-            --surface: rgba(15, 25, 55, 0.75);
-            --surface-strong: rgba(15, 25, 55, 0.92);
-            --surface-soft: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.1);
-            --primary: #818cf8;
-            --primary-2: #6366f1;
-            --muted: #94a3b8;
-            --muted-light: #64748b;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --active-bg: rgba(99, 102, 241, 0.18);
-        }
-<<<<<<< HEAD
-
-        /* Body background matches SearchDashboard exactly */
-        body.dark-mode {
-            background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url('bg.jpg');
-            background-color: #0F172A;
+            --surface: rgba(33, 38, 45, 0.9);
+            --surface-strong: rgba(39, 44, 52, 0.96);
+            --surface-soft: rgba(56, 62, 72, 0.75);
+            --border: rgba(255, 255, 255, 0.08);
+            --muted: #b0bac7;
+            --muted-light: #8ea0b5;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+            --active-bg: rgba(64, 96, 128, 0.36);
         }
 
-        /* Overlay gradient like SearchDashboard */
-        body.dark-mode::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(circle at 50% 50%, rgba(79,70,229,0.12), transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Header / Nav — glass like SearchDashboard */
-        .dark-mode .header {
-            background: rgba(15, 25, 55, 0.75);
-            backdrop-filter: blur(12px);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-        }
-
-        /* Sidebar card */
-        .dark-mode .card {
-            background: rgba(15, 25, 55, 0.7);
-            backdrop-filter: blur(12px);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Announcement cards — glass style */
-        .dark-mode .announcement-card {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-
-        .dark-mode .announcement-card:hover {
-            background: rgba(255, 255, 255, 0.09);
-            border-color: rgba(99, 102, 241, 0.4);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-        }
-
-        /* Announcement board background */
-        .dark-mode .announcement-board {
-            background: rgba(0, 0, 0, 0.15);
-        }
-
-        /* All text elements */
-        .dark-mode .logo,
-        .dark-mode .logo i,
-        .dark-mode .card-header,
-        .dark-mode .card-header i,
-        .dark-mode .profile-name,
-        .dark-mode .post-author,
-        .dark-mode .post-title,
-        .dark-mode .post-text,
-        .dark-mode .modal-title,
-        .dark-mode .modal-text,
-        .dark-mode .user-name,
-        .dark-mode .user-role,
-        .dark-mode .profile-email,
-        .dark-mode .menu-item,
-        .dark-mode .settings-item,
-        .dark-mode .dropdown-item,
-        .dark-mode .menu-item.active,
-        .dark-mode .settings-item.active,
-        .dark-mode .header-filter,
-        .dark-mode .post-stats,
-        .dark-mode .post-stats span,
-        .dark-mode .action-btn,
-        .dark-mode .comment-author,
-        .dark-mode .comment-text,
-        .dark-mode .bell-icon,
-        .dark-mode .notification-header,
-        .dark-mode .notification-header button,
-        .dark-mode .notification-header a,
-        .dark-mode .sidebar-toggle,
-        .dark-mode .dropdown-icon,
-        .dark-mode .no-comments,
-        .dark-mode .footer,
-        .dark-mode .notification-text,
-        .dark-mode .notification-time { color: #e4e6eb; }
-
-        .dark-mode .comment-avatar { color: #818cf8; }
-
-        /* Hover states */
-        .dark-mode .menu-item:hover,
-        .dark-mode .settings-item:hover,
-        .dark-mode .dropdown-item:hover { background: rgba(99,102,241,0.15); color: #ffffff; }
-
-        .dark-mode .post-stats span:hover,
-        .dark-mode .action-btn:hover { color: #818cf8; }
-
-        .dark-mode .pin-btn-top:hover,
-        .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
-
-        /* Active / unread states */
-        .dark-mode .notification-item.unread { background: rgba(99, 102, 241, 0.15); }
-        .dark-mode .menu-item.active,
-        .dark-mode .settings-item.active {
-            background: rgba(99, 102, 241, 0.18);
-            border-left-color: #818cf8;
-        }
-
-        /* User info pill */
-        .dark-mode .user-info {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Notification bell */
-        .dark-mode .notification-bell {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .dark-mode .notification-bell:hover { background: rgba(99,102,241,0.2); }
-
-        /* Notification dropdown */
-        .dark-mode .notification-dropdown {
-            background: rgba(15, 25, 55, 0.95);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-        }
-
-        .dark-mode .notification-item {
-            border-bottom-color: rgba(255, 255, 255, 0.06);
-        }
-
-        .dark-mode .notification-item:hover { background: rgba(99,102,241,0.12); }
-
-        .dark-mode .notification-header {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* Card header borders */
-        .dark-mode .card-header {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* Profile section border */
-        .dark-mode .profile-section {
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-
-        /* Post stats / comments borders */
-        .dark-mode .post-stats {
-            border-top-color: rgba(255, 255, 255, 0.08);
-            border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .dark-mode .comments-section {
-            border-top-color: rgba(255, 255, 255, 0.08);
-        }
-
-        .dark-mode .comment {
-            border-bottom-color: rgba(255, 255, 255, 0.06);
-        }
-
-        /* Comment input */
-        .dark-mode .comment-input input {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #e4e6eb;
-        }
-
-        .dark-mode .comment-input input::placeholder { color: #64748b; }
-
-        .dark-mode .comment-input button {
-            background: #6366f1;
-            border-color: #6366f1;
-            color: #ffffff;
-        }
-
-        .dark-mode .comment-input button:hover { background: #818cf8; }
-
-        /* Comment avatar bg */
-        .dark-mode .comment-avatar {
-            background: rgba(99, 102, 241, 0.2);
-        }
-
-        /* Search / action buttons */
-        .dark-mode .search-btn {
-            background: rgba(255, 255, 255, 0.07) !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
-            color: #e4e6eb !important;
-        }
-
-        .dark-mode .search-btn:hover {
-            background: rgba(99, 102, 241, 0.25) !important;
-            border-color: #6366f1 !important;
-            color: #ffffff !important;
-        }
-
-        /* Modal */
-        .dark-mode .modal-content {
-            background: rgba(15, 25, 55, 0.97);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        }
-
-        .dark-mode .modal-icon { color: #818cf8; }
-        .dark-mode .modal-title { color: #e4e6eb; }
-
-        .dark-mode .modal-close {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.15);
-            color: #e4e6eb;
-        }
-
-        .dark-mode .modal-close:hover {
-            background: rgba(99,102,241,0.25);
-            border-color: #6366f1;
-            color: #ffffff;
-        }
-
-        /* Form inputs inside modal (Teacher create post) */
-        .dark-mode .form-group label { color: #94a3b8; }
-
-        .dark-mode .form-group input,
-        .dark-mode .form-group select,
-        .dark-mode .form-group textarea {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: #e4e6eb;
-        }
-
-        .dark-mode .form-group input:focus,
-        .dark-mode .form-group select:focus,
-        .dark-mode .form-group textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
-        }
-
-        .dark-mode .form-group input::placeholder,
-        .dark-mode .form-group textarea::placeholder { color: #64748b; }
-
-        .dark-mode .form-group select option {
-            background: #0f172a;
-            color: #e4e6eb;
-        }
-
-        /* Modal action buttons */
-        .dark-mode .btn-cancel {
-            border-color: rgba(255,255,255,0.15);
-            color: #94a3b8;
-        }
-
-        .dark-mode .btn-cancel:hover {
-            border-color: #6366f1;
-            color: #818cf8;
-        }
-
-        /* Category badges — keep readable in dark */
-        .dark-mode .post-category-exam { background: rgba(25,118,210,0.2); color: #90caf9; }
-        .dark-mode .post-category-suspension { background: rgba(198,40,40,0.2); color: #ef9a9a; }
-        .dark-mode .post-category-event { background: rgba(46,125,50,0.2); color: #a5d6a7; }
-        .dark-mode .post-category-general { background: rgba(123,31,162,0.2); color: #ce93d8; }
-
-        /* Pin button */
-        .dark-mode .pin-btn-top { color: #64748b; }
-        .dark-mode .pin-btn-top.pinned { color: #fb923c; }
-
-        /* Post announcement button (Teacher) */
-        .dark-mode .post-announcement-btn {
-            background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(129,140,248,0.2));
-            border: 1px solid rgba(99,102,241,0.4);
-            box-shadow: 0 4px 15px rgba(99,102,241,0.2);
-        }
-
-        .dark-mode .post-announcement-btn:hover {
-            background: linear-gradient(135deg, rgba(99,102,241,0.5), rgba(129,140,248,0.35));
-            box-shadow: 0 8px 25px rgba(99,102,241,0.35);
-        }
-        .post-announcement-btn {
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            border: none;
-            border-radius: 16px;
-            padding: 16px 28px;
-            color: white;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(26,58,92,0.3);
-        }
-
-        .post-announcement-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(26,58,92,0.4);
-        }
-
-        /* Create Post Modal wider */
-        .modal-content.create-modal {
-            max-width: 520px;
-            text-align: left;
-        }
-
-        .modal-content.create-modal .modal-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #dce4ec;
-            border-radius: 12px;
-            background: var(--surface-soft);
-            color: var(--page-text);
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 90px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            justify-content: flex-end;
-        }
-
-        .btn-cancel {
-            background: none;
-            border: 2px solid #dce4ec;
-            border-radius: 12px;
-            padding: 10px 22px;
-            color: var(--muted);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-cancel:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-publish {
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            border: none;
-            border-radius: 12px;
-            padding: 10px 28px;
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-publish:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-=======
         .dark-mode .search-btn {
             border-color: rgba(255,255,255,0.08);
             color: #ffffff;
             background: transparent;
         }
+
         .dark-mode .search-btn:hover {
             background: rgba(255,255,255,0.04);
             box-shadow: none;
             transform: translateY(0);
         }
+
         .dark-mode .comment-input button { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
         .dark-mode .notification-bell { border-color: var(--border); }
         .dark-mode .user-info { border-color: var(--border); }
@@ -1215,6 +714,7 @@
         .dark-mode .create-post-input { background: var(--surface-soft); border-color: rgba(255,255,255,0.06); color: var(--muted); }
         .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
         .dark-mode .notification-item.unread { background: rgba(64, 96, 128, 0.36); }
+
         .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
         .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title,
         .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
@@ -1224,11 +724,13 @@
         .dark-mode .notification-header, .dark-mode .notification-header button,
         .dark-mode .sidebar-toggle, .dark-mode .dropdown-icon,
         .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
+
         .dark-mode .menu-item:hover, .dark-mode .settings-item:hover,
         .dark-mode .dropdown-item:hover, .dark-mode .post-stats span:hover,
         .dark-mode .action-btn:hover { color: #ffffff; }
+
         .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
+
         @media (max-width: 980px) {
             html, body { overflow: auto; }
             .app-shell, form { height: auto; min-height: 100%; overflow: visible; }
@@ -1240,196 +742,125 @@
             .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
             .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
-
-        /* ── PAGE FLIP TRANSITION ── */
-        @keyframes flipOut {
-            0%   { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
-            100% { transform: perspective(1200px) rotateY(-90deg); opacity: 0; }
-        }
-        @keyframes flipIn {
-            0%   { transform: perspective(1200px) rotateY(90deg); opacity: 0; }
-            100% { transform: perspective(1200px) rotateY(0deg); opacity: 1; }
-        }
-
-        .page-flip-out {
-            animation: flipOut 0.18s ease-in forwards;
-            transform-origin: center center;
-        }
-        .page-flip-in {
-            animation: flipIn 0.18s ease-out forwards;
-            transform-origin: center center;
-        }
-
-        /* Smooth color transitions on all elements */
-        *, *::before, *::after {
-            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-        }
-        /* Exclude transitions that would break animations */
-        .page-flip-out, .page-flip-in { transition: none !important; }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
         <div class="app-shell">
-<<<<<<< HEAD
-
-            <!-- HEADER -->
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             <div class="header">
                 <div class="logo">
-                    <i class="fas fa-university"></i> CampusAnnouncement
+                    <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
                 </div>
+
                 <div class="search-container">
-                    <asp:Button ID="searchBtn" runat="server" CssClass="search-btn"
-                        Text=" 🔎 Search........"
-                        OnClientClick="navigateWithFlip('SearchDashboard.aspx'); return false;"
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
+                        Text=" 🔎 Search........" OnClick="SearchButton_Click"
                         Width="420px" Font-Bold="False" ForeColor="#0F172A"
                         Font-Size="Medium" Height="54px" />
                 </div>
+
                 <div class="header-actions">
-                    <div class="notification-bell" onclick="toggleNotificationPanel()">
+                    <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
+                        <span id="notificationBadge" class="badge-red">3</span>
                     </div>
                     <div class="user-info">
                         <div class="avatar">
-                            <i class="fas fa-chalkboard-user"></i>
+                            <i class="fas fa-user"></i>
                         </div>
                         <div class="user-details">
-<<<<<<< HEAD
-                            <div class="user-name">Prof. Emily Davis</div>
-                            <div class="user-role">Faculty</div>
-=======
                             <div class="user-name" id="userName">Maria Santos</div>
                             <div class="user-role" id="userRole">Teacher</div>
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                         </div>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
 
-            <!-- NOTIFICATION DROPDOWN -->
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
                     <a href="Notifications.aspx" style="text-decoration:none;color:inherit;">
                         <span><i class="fas fa-bell"></i> Notifications</span>
                     </a>
-                    <button type="button" onclick="markAllReadNotif()">Mark all read</button>
+                    <button type="button" onclick="markAllRead()">Mark all read</button>
                 </div>
                 <div class="notification-list" id="notificationList">
-                    <div style="padding:20px;text-align:center;color:var(--muted);">No notifications yet.</div>
+                    <div class="notification-item unread" onclick="markRead(this)">
+                        <div class="notification-dot"></div>
+                        <div class="notification-text">New exam schedule announced</div>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <div class="notification-item unread" onclick="markRead(this)">
+                        <div class="notification-dot"></div>
+                        <div class="notification-text">Class suspension due to typhoon</div>
+                        <div class="notification-time">1 day ago</div>
+                    </div>
+                    <div class="notification-item" onclick="markRead(this)">
+                        <div class="notification-text">Foundation Week activities posted</div>
+                        <div class="notification-time">3 days ago</div>
+                    </div>
                 </div>
             </div>
-<<<<<<< HEAD
 
-            <!-- CONTENT SHELL -->
             <div class="content-shell">
-
-                <!-- SIDEBAR -->
-=======
-            <div class="content-shell">
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                 <aside class="sidebar">
                     <div class="card">
                         <div class="sidebar-content">
-
-                            <!-- Profile -->
                             <div class="profile-section">
                                 <button type="button" class="sidebar-toggle" onclick="toggleSidebar()">
                                     <i class="fas fa-bars"></i>
                                 </button>
-                                <div class="profile-avatar">
-                                    <i class="fas fa-chalkboard-user"></i>
-                                </div>
-                                <div class="profile-name" id="sidebarProfileName">Prof. Emily Davis</div>
-                                <div class="profile-email">faculty@ctu.edu.ph</div>
+                                <div class="profile-name" id="profileName">Maria Santos</div>
+                                <div class="profile-email" id="profileEmail">maria.santos@ctu.edu.ph</div>
                             </div>
-<<<<<<< HEAD
 
-                            <!-- Filters -->
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
                             </div>
-                            <button type="button" class="menu-item" onclick="toggleCategoryMenu('categoryDropdown', this)">
+                            <button type="button" class="menu-item" onclick="toggleDropdown('categoryDropdown', this)">
                                 <i class="fas fa-layer-group"></i>
                                 <span class="menu-text">Filter by Category</span>
                                 <i class="fas fa-chevron-down dropdown-icon"></i>
                             </button>
                             <div id="categoryDropdown" class="dropdown-content">
-                                <button type="button" class="dropdown-item" onclick="setFilter('All')">All Announcements</button>
-                                <button type="button" class="dropdown-item" onclick="setFilter('Exam')">Exam Schedule</button>
-                                <button type="button" class="dropdown-item" onclick="setFilter('Suspension')">Class Suspension</button>
-                                <button type="button" class="dropdown-item" onclick="setFilter('Event')">Campus Events</button>
-                                <button type="button" class="dropdown-item" onclick="setFilter('General')">General</button>
+                                <button type="button" class="dropdown-item" onclick="filterCategory('All')">All Announcements</button>
+                                <button type="button" class="dropdown-item" onclick="filterCategory('Exam')">Exam Schedule</button>
+                                <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
+                                <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
+
                             <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
                             </button>
-<<<<<<< HEAD
 
-                            <!-- Settings -->
                             <div class="card-header" style="margin-top:5px;">
                                 <i class="fas fa-cog"></i> Settings
                             </div>
 
-                            <button type="button" class="settings-item" onclick="toggleDarkMode(this)">
-=======
-                            <div class="card-header" style="margin-top:5px;">
-                                <i class="fas fa-cog"></i> Settings
-                            </div>
                             <button type="button" class="settings-item" onclick="toggleTheme()">
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
                                 <div class="toggle-switch" id="themeToggle"></div>
                             </button>
+
                             <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=teacher'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
-<<<<<<< HEAD
 
-                            <button type="button" class="settings-item" onclick="logoutAction()">
-=======
                             <button type="button" class="settings-item" onclick="logout()">
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span class="settings-text">Logout</span>
                             </button>
-
                         </div>
                     </div>
                 </aside>
-<<<<<<< HEAD
 
-                <!-- MAIN PANEL -->
-                <main class="main-panel card">
-
-                    <div class="announcement-board">
-                        <!-- Teacher-specific: Post Announcement Button -->
-                        <button type="button" class="post-announcement-btn" onclick="openCreateModal()">
-                            <i class="fas fa-plus-circle"></i> Want to post an announcement?
-                        </button>
-
-                        <!-- Announcements rendered by JS -->
-                    <div class="card-header">
-                        <i class="fas fa-bullhorn"></i> Announcement Board
-                        <span class="header-filter">Showing: <span id="activeFilterLabel">All</span></span>
-                    </div>
-
-                        <div id="announcementsContainer"></div>
-=======
                 <main class="main-panel">
                     <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
                         <i class="fas fa-plus-circle"></i> Want to post an announcement?
                     </button>
+
                     <div class="create-post-card">
                         <div class="create-post-header">
                             <div class="create-post-avatar">
@@ -1440,6 +871,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
                         <div class="card-header" style="flex-shrink:0; position:relative;">
                             <i class="fas fa-bullhorn"></i> Announcement Board
@@ -1453,6 +885,7 @@
                                 <button type="button" onclick="filterCategory('Event')" class="filter-option">Campus Events</button>
                             </div>
                         </div>
+
                         <div id="announcementsContainer" class="announcement-board">
                             <div class="announcement-card" data-category="Exam">
                                 <div class="post-header">
@@ -1503,6 +936,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="announcement-card" data-category="Suspension">
                                 <div class="post-header">
                                     <div class="post-header-left">
@@ -1552,6 +986,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="announcement-card" data-category="Event">
                                 <div class="post-header">
                                     <div class="post-header-left">
@@ -1595,336 +1030,20 @@
                                 </div>
                             </div>
                         </div>
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                     </div>
                 </main>
-
-            </div><!-- end content-shell -->
-        </div><!-- end app-shell -->
-
-        <!-- ===== CREATE POST MODAL ===== -->
-        <div id="createPostModal" class="modal" style="display:none;">
-            <div class="modal-content create-modal">
-                <div class="modal-title"><i class="fas fa-bullhorn"></i> New Announcement</div>
-
-                <div class="form-group">
-                    <label for="postTitle">Title</label>
-                    <input type="text" id="postTitle" placeholder="Enter announcement title..." />
-                </div>
-
-                <div class="form-group">
-                    <label for="postCategory">Category</label>
-                    <select id="postCategory">
-                        <option value="General">General</option>
-                        <option value="Exam">Exam</option>
-                        <option value="Suspension">Suspension</option>
-                        <option value="Event">Event</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="postContent">Content</label>
-                    <textarea id="postContent" placeholder="Write your announcement here..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="postImageUrl">Image URL <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
-                    <input type="text" id="postImageUrl" placeholder="https://example.com/image.jpg" />
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancel" onclick="closeCreateModal()">Cancel</button>
-                    <button type="button" class="btn-publish" onclick="publishAnnouncement()">
-                        <i class="fas fa-paper-plane"></i> Publish
-                    </button>
-                </div>
             </div>
         </div>
-<<<<<<< HEAD
-
-        <!-- ===== ABOUT MODAL ===== -->
-        <div id="aboutModal" class="modal" style="display:none;">
-            <div class="modal-content">
-                <div class="modal-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div class="modal-title">Campus Connect</div>
-                <div class="modal-text">
-                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
-                    It allows faculty to post and manage official announcements, exam schedules, class suspensions, and campus events in one place.
-                </div>
-                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
-            </div>
-        </div>
-
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     </form>
+
     <script>
-<<<<<<< HEAD
-        // ── Mock Data ──────────────────────────────────────────────────────────
-        var teacher = { id: 1, name: "Prof. Emily Davis" };
-
-        var posts = [
-            {
-                id: 101,
-                title: "Midterm Examination Schedule",
-                category: "Exam",
-                content: "The midterm examinations will be held from October 14–18, 2024. Please check your respective department bulletin boards for the detailed room assignments and time slots. All students are required to bring their school IDs.",
-                author: "Prof. Emily Davis",
-                date: "Oct 10, 2024",
-                likes: 24,
-                shares: 8,
-                comments: [],
-                isPinned: true,
-                imageUrl: null,
-                liked: false
-            },
-            {
-                id: 102,
-                title: "Class Suspension - Typhoon Warning",
-                category: "Suspension",
-                content: "Due to Typhoon Signal No. 2 raised over the province, all classes in all levels are hereby suspended effective immediately. Students are advised to stay home and monitor official announcements for updates on class resumption.",
-                author: "Prof. Emily Davis",
-                date: "Oct 9, 2024",
-                likes: 57,
-                shares: 32,
-                comments: [],
-                isPinned: false,
-                imageUrl: null,
-                liked: false
-            },
-            {
-                id: 103,
-                title: "Campus Talent Fest 2024",
-                category: "Event",
-                content: "Get ready for the biggest campus event of the year! Campus Talent Fest 2024 will showcase the diverse talents of CTU students. Join us on October 25, 2024 at the University Gymnasium. Registration is open until October 20.",
-                author: "Prof. Emily Davis",
-                date: "Oct 8, 2024",
-                likes: 89,
-                shares: 45,
-                comments: [],
-                isPinned: false,
-                imageUrl: "https://picsum.photos/id/20/400/200",
-                liked: false
-            },
-            {
-                id: 104,
-                title: "Library Extended Hours",
-                category: "General",
-                content: "The university library will extend its operating hours starting October 11, 2024 until the end of the midterm examination period. New hours: Monday–Friday 7:00 AM – 9:00 PM, Saturday 8:00 AM – 6:00 PM.",
-                author: "Prof. Emily Davis",
-                date: "Oct 7, 2024",
-                likes: 15,
-                shares: 6,
-                comments: [],
-                isPinned: false,
-                imageUrl: null,
-                liked: false
-            }
-        ];
-
-        var notifications = [];
-        var currentFilter = 'All';
-        var globalSearch = '';
-
-        // ── Render Posts ───────────────────────────────────────────────────────
-        function renderPosts() {
-            var container = document.getElementById('announcementsContainer');
-            if (!container) return;
-
-            var filtered = posts.filter(function(p) {
-                var matchFilter = currentFilter === 'All' || p.category === currentFilter;
-                var matchSearch = globalSearch === '' ||
-                    p.title.toLowerCase().indexOf(globalSearch.toLowerCase()) !== -1 ||
-                    p.content.toLowerCase().indexOf(globalSearch.toLowerCase()) !== -1;
-                return matchFilter && matchSearch;
-            });
-
-            // Pinned first
-            filtered.sort(function(a, b) {
-                return (b.isPinned ? 1 : 0) - (a.isPinned ? 1 : 0);
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">No announcements found.</div>';
-                return;
-            }
-
-            var html = '';
-            filtered.forEach(function(post) {
-                var catClass = 'post-category-' + post.category.toLowerCase();
-                var pinClass = post.isPinned ? 'pinned' : '';
-                var pinIcon = post.isPinned ? 'fas fa-thumbtack' : 'far fa-thumbtack';
-                var pinColor = post.isPinned ? '#e65100' : 'var(--muted-light)';
-                var likedClass = post.liked ? 'liked' : '';
-                var likeIcon = post.liked ? 'fas fa-heart' : 'far fa-heart';
-                var likeLabel = post.liked ? 'Liked' : 'Like';
-
-                var imageHtml = '';
-                if (post.imageUrl) {
-                    imageHtml = '<div class="post-image"><img src="' + post.imageUrl + '" alt="Post image" /></div>';
-                }
-
-                html += '<div class="announcement-card" data-id="' + post.id + '" data-category="' + post.category + '">';
-
-                // Post header
-                html += '<div class="post-header">';
-                html += '  <div class="post-header-left">';
-                html += '    <div class="post-avatar"><i class="fas fa-chalkboard-user"></i></div>';
-                html += '    <div>';
-                html += '      <div class="post-author">' + escHtml(post.author) + '</div>';
-                html += '      <div class="post-meta">';
-                html += '        <span>' + escHtml(post.date) + '</span>';
-                html += '        <span class="post-category ' + catClass + '">' + escHtml(post.category) + '</span>';
-                if (post.isPinned) {
-                    html += '        <span style="color:#e65100;font-size:11px;"><i class="fas fa-thumbtack"></i> Pinned</span>';
-                }
-                html += '      </div>';
-                html += '    </div>';
-                html += '  </div>';
-                html += '  <button type="button" class="pin-btn-top ' + pinClass + '" onclick="togglePin(' + post.id + ', this)" title="' + (post.isPinned ? 'Unpin' : 'Pin') + '" style="color:' + pinColor + '">';
-                html += '    <i class="' + pinIcon + '"></i>';
-                html += '  </button>';
-                html += '</div>';
-
-                // Post content
-                html += '<div class="post-content">';
-                html += '  <div class="post-title">' + escHtml(post.title) + '</div>';
-                html += '  <div class="post-text">' + escHtml(post.content) + '</div>';
-                html += imageHtml;
-                html += '</div>';
-
-                // Stats
-                html += '<div class="post-stats">';
-                html += '  <span onclick="likePost(' + post.id + ')"><i class="fas fa-heart" style="color:#dc2626;"></i> <span class="like-count">' + post.likes + '</span> Likes</span>';
-                html += '  <span><i class="fas fa-comment"></i> <span class="comment-count">' + post.comments.length + '</span> Comments</span>';
-                html += '  <span><i class="fas fa-share"></i> ' + post.shares + ' Shares</span>';
-                html += '</div>';
-
-                // Action buttons
-                html += '<div class="action-buttons">';
-                html += '  <button type="button" class="action-btn ' + likedClass + '" onclick="likePost(' + post.id + ', this)">';
-                html += '    <i class="' + likeIcon + '"></i> ' + likeLabel;
-                html += '  </button>';
-                html += '  <button type="button" class="action-btn" onclick="toggleCommentSection(' + post.id + ')">';
-                html += '    <i class="far fa-comment"></i> Comment';
-                html += '  </button>';
-                html += '  <button type="button" class="action-btn" onclick="sharePost(' + post.id + ')">';
-                html += '    <i class="fas fa-share"></i> Share';
-                html += '  </button>';
-                html += '</div>';
-
-                // Comments section
-                html += '<div class="comments-section" id="commentsSection_' + post.id + '">';
-                html += '  <div class="comment-input">';
-                html += '    <input type="text" id="commentInput_' + post.id + '" placeholder="Write a comment..." />';
-                html += '    <button type="button" onclick="addComment(' + post.id + ')">Post</button>';
-                html += '  </div>';
-                html += '  <div id="commentsList_' + post.id + '">';
-                if (post.comments.length === 0) {
-                    html += '<div class="no-comments">No comments yet. Be the first!</div>';
-                } else {
-                    post.comments.forEach(function(c) {
-                        html += '<div class="comment">';
-                        html += '  <div class="comment-avatar"><i class="fas fa-user"></i></div>';
-                        html += '  <div class="comment-content">';
-                        html += '    <span class="comment-author">' + escHtml(c.author) + '</span>';
-                        html += '    <div class="comment-text">' + escHtml(c.text) + '</div>';
-                        html += '    <div class="comment-time">' + escHtml(c.date) + '</div>';
-                        html += '  </div>';
-                        html += '</div>';
-                    });
-                }
-                html += '  </div>';
-                html += '</div>';
-
-                html += '</div>'; // end announcement-card
-            });
-
-            container.innerHTML = html;
-        }
-
-        // ── Post Actions ───────────────────────────────────────────────────────
-        function likePost(postId, btn) {
-            var post = posts.find(function(p) { return p.id === postId; });
-            if (!post) return;
-            post.liked = !post.liked;
-            post.likes += post.liked ? 1 : -1;
-            renderPosts();
-            showToast(post.liked ? 'You liked this post!' : 'Like removed.');
-            addNotification(post.liked ? 'You liked: ' + post.title : 'You unliked: ' + post.title);
-        }
-
-        function sharePost(postId) {
-            var post = posts.find(function(p) { return p.id === postId; });
-            if (!post) return;
-            post.shares += 1;
-            renderPosts();
-            showToast('Announcement shared!');
-            addNotification('You shared: ' + post.title);
-        }
-
-        function addComment(postId) {
-            var input = document.getElementById('commentInput_' + postId);
-            if (!input) return;
-            var text = input.value.trim();
-            if (!text) { showToast('Please enter a comment!'); return; }
-            var post = posts.find(function(p) { return p.id === postId; });
-            if (!post) return;
-            post.comments.push({ author: teacher.name, text: text, date: 'Just now' });
-            renderPosts();
-            showToast('Comment posted!');
-            addNotification('You commented on: ' + post.title);
-            // Re-open comments section after re-render
-            var section = document.getElementById('commentsSection_' + postId);
-            if (section) section.classList.add('show');
-        }
-
-        function togglePin(postId, btn) {
-            var post = posts.find(function(p) { return p.id === postId; });
-            if (!post) return;
-            post.isPinned = !post.isPinned;
-
-            // Sync to shared campus_pins localStorage key
-            var campusPins = JSON.parse(localStorage.getItem('campus_pins') || '{}');
-            campusPins[postId] = post.isPinned;
-            localStorage.setItem('campus_pins', JSON.stringify(campusPins));
-            // Notify other tabs
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(campusPins) }));
-
-            renderPosts();
-            showToast(post.isPinned ? 'Announcement pinned!' : 'Announcement unpinned!');
-            addNotification((post.isPinned ? 'Pinned: ' : 'Unpinned: ') + post.title);
-        }
-
-        function toggleCommentSection(postId) {
-            var section = document.getElementById('commentsSection_' + postId);
-            if (section) section.classList.toggle('show');
-        }
-
-        // ── Filter & Search ────────────────────────────────────────────────────
-        function setFilter(category) {
-            currentFilter = category;
-            var label = document.getElementById('activeFilterLabel');
-            if (label) label.textContent = category;
-            renderPosts();
-        }
-
-        function performGlobalSearch(query) {
-            globalSearch = query || '';
-            renderPosts();
-        }
-
-        // ── Category Dropdown ──────────────────────────────────────────────────
-        function toggleCategoryMenu(id, trigger) {
-=======
         function toggleTheme() {
             var isDark = document.body.classList.toggle('dark-mode');
             var toggle = document.getElementById('themeToggle');
             if (toggle) toggle.classList.toggle('active', isDark);
             localStorage.setItem('campusTheme', isDark ? 'dark' : 'light');
         }
+
         document.addEventListener('DOMContentLoaded', function () {
             var isDark = localStorage.getItem('campusTheme') === 'dark';
             if (isDark) {
@@ -1933,242 +1052,25 @@
                 if (toggle) toggle.classList.add('active');
             }
         });
+
         function toggleDropdown(id, trigger) {
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             var dropdown = document.getElementById(id);
             if (!dropdown) return;
-            var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== '0px';
-            dropdown.style.maxHeight = isOpen ? '0px' : dropdown.scrollHeight + 'px';
+            var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
+            dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
             if (trigger) trigger.classList.toggle('open', !isOpen);
         }
-<<<<<<< HEAD
 
-        // ── Notifications ──────────────────────────────────────────────────────
-        function addNotification(message) {
-            notifications.unshift({ message: message, time: 'Just now', read: false });
-            updateNotificationUI();
-        }
-
-        function updateNotificationUI() {
-            var badge = document.getElementById('notificationBadge');
-            var list = document.getElementById('notificationList');
-            var unread = notifications.filter(function(n) { return !n.read; }).length;
-
-            if (badge) {
-                badge.textContent = unread;
-                badge.style.display = unread > 0 ? 'block' : 'none';
-            }
-
-            if (!list) return;
-            if (notifications.length === 0) {
-                list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted);">No notifications yet.</div>';
-                return;
-            }
-
-            var html = '';
-            notifications.forEach(function(n, i) {
-                html += '<div class="notification-item ' + (n.read ? '' : 'unread') + '" onclick="markRead(' + i + ')">';
-                if (!n.read) html += '<div class="notification-dot"></div>';
-                html += '<div>';
-                html += '  <div class="notification-text">' + escHtml(n.message) + '</div>';
-                html += '  <div class="notification-time">' + escHtml(n.time) + '</div>';
-                html += '</div>';
-                html += '</div>';
-            });
-            list.innerHTML = html;
-        }
-
-        function markRead(index) {
-            if (notifications[index]) {
-                notifications[index].read = true;
-                updateNotificationUI();
-            }
-        }
-
-        function markAllReadNotif() {
-            notifications.forEach(function(n) { n.read = true; });
-            updateNotificationUI();
-        }
-
-        function toggleNotificationPanel() {
-            var dropdown = document.getElementById('notificationDropdown');
-            if (dropdown) dropdown.classList.toggle('show');
-        }
-
-        document.addEventListener('click', function(e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        // ── Theme (global — persists across all pages via campus_theme) ──────────
-        var THEME_KEY = 'campus_theme';
-
-        function toggleDarkMode(btn) {
-            document.body.classList.toggle('dark-mode');
-            var toggle = document.getElementById('themeToggle');
-            if (toggle) toggle.classList.toggle('active');
-            localStorage.setItem(THEME_KEY, document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        }
-
-        function loadThemePref() {
-            if (localStorage.getItem(THEME_KEY) === 'dark') {
-                document.body.classList.add('dark-mode');
-                var toggle = document.getElementById('themeToggle');
-                if (toggle) toggle.classList.add('active');
-            }
-            // Load shared pin state from campus_pins
-            var campusPins = JSON.parse(localStorage.getItem('campus_pins') || '{}');
-            posts.forEach(function(p) {
-                if (campusPins[p.id] !== undefined) {
-                    p.isPinned = !!campusPins[p.id];
-                }
-            });
-        }
-
-        // Sync pins when changed from another tab (e.g. SearchDashboard)
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'campus_pins') {
-                var campusPins = JSON.parse(e.newValue || '{}');
-                posts.forEach(function(p) {
-                    if (campusPins[p.id] !== undefined) {
-                        p.isPinned = !!campusPins[p.id];
-                    }
-                });
-                renderPosts();
-            }
-        });
-
-        // ── Modals ─────────────────────────────────────────────────────────────
-        function openAboutModal() {
-            var modal = document.getElementById('aboutModal');
-            if (modal) modal.style.display = 'flex';
-        }
-
-        function closeAboutModal() {
-            var modal = document.getElementById('aboutModal');
-            if (modal) modal.style.display = 'none';
-        }
-
-        function openCreateModal() {
-            var modal = document.getElementById('createPostModal');
-            if (modal) modal.style.display = 'flex';
-        }
-
-        function closeCreateModal() {
-            var modal = document.getElementById('createPostModal');
-            if (modal) modal.style.display = 'none';
-            // Clear fields
-            var fields = ['postTitle', 'postContent', 'postImageUrl'];
-            fields.forEach(function(id) {
-                var el = document.getElementById(id);
-                if (el) el.value = '';
-            });
-            var cat = document.getElementById('postCategory');
-            if (cat) cat.value = 'General';
-        }
-
-        function publishAnnouncement() {
-            var title = (document.getElementById('postTitle').value || '').trim();
-            var category = document.getElementById('postCategory').value || 'General';
-            var content = (document.getElementById('postContent').value || '').trim();
-            var imageUrl = (document.getElementById('postImageUrl').value || '').trim();
-
-            if (!title) { showToast('Please enter a title.'); return; }
-            if (!content) { showToast('Please enter content.'); return; }
-
-            var newId = posts.length > 0 ? Math.max.apply(null, posts.map(function(p) { return p.id; })) + 1 : 200;
-            var now = new Date();
-            var dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-
-            posts.unshift({
-                id: newId,
-                title: title,
-                category: category,
-                content: content,
-                author: teacher.name,
-                date: dateStr,
-                likes: 0,
-                shares: 0,
-                comments: [],
-                isPinned: false,
-                imageUrl: imageUrl || null,
-                liked: false
-            });
-
-            closeCreateModal();
-            renderPosts();
-            showToast('Announcement published!');
-            addNotification('You posted: ' + title);
-        }
-
-        // ── Misc ───────────────────────────────────────────────────────────────
-        function logoutAction() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
-            }
-        }
-
-        function showToast(message) {
-            var toast = document.createElement('div');
-            toast.innerText = message;
-            toast.style.cssText = 'position:fixed;bottom:50px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);';
-            document.body.appendChild(toast);
-            setTimeout(function() { toast.remove(); }, 2500);
-        }
-
-=======
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidebar');
             if (sidebar) sidebar.classList.toggle('collapsed');
         }
-<<<<<<< HEAD
 
-        function escHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/[&<>"']/g, function(m) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-            });
-        }
-
-        // ── Init ───────────────────────────────────────────────────────────────
-        loadThemePref();
-        renderPosts();
-
-        // ── Page Flip Transition ───────────────────────────────────────────────
-        function navigateWithFlip(url) {
-            var shell = document.querySelector('.app-shell') || document.body;
-            shell.classList.add('page-flip-out');
-            setTimeout(function() { window.location.href = url; }, 180);
-        }
-
-        // Flip-in on page load
-        (function() {
-            var shell = document.querySelector('.app-shell') || document.body;
-            shell.classList.add('page-flip-in');
-            shell.addEventListener('animationend', function() {
-                shell.classList.remove('page-flip-in');
-            }, { once: true });
-        })();
-
-        // ── Performance: prefetch linked pages ────────────────────────────────
-        (function() {
-            var pages = ['SearchDashboard.aspx', 'Student.aspx', 'Pinned.aspx', 'Notifications.aspx'];
-            pages.forEach(function(page) {
-                var link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = page;
-                document.head.appendChild(link);
-            });
-        })();
-=======
         function toggleNotificationDropdown() {
             var dropdown = document.getElementById('notificationDropdown');
             if (dropdown) dropdown.classList.toggle('show');
         }
+
         function toggleFilterDropdown() {
             var dd = document.getElementById('filterDropdown');
             var chevron = document.getElementById('filterChevron');
@@ -2177,12 +1079,14 @@
             chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
             chevron.style.transition = 'transform 0.3s';
         }
+
         document.addEventListener('click', function (e) {
             var bell = document.querySelector('.notification-bell');
             var dropdown = document.getElementById('notificationDropdown');
             if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
                 dropdown.classList.remove('show');
             }
+
             var dd = document.getElementById('filterDropdown');
             var trigger = document.querySelector('.header-filter');
             if (dd && trigger && !trigger.contains(e.target) && !dd.contains(e.target)) {
@@ -2191,18 +1095,21 @@
                 if (chevron) chevron.style.transform = 'rotate(0deg)';
             }
         });
+
         function filterCategory(category) {
             var cards = document.querySelectorAll('.announcement-card');
             document.getElementById('activeFilterLabel').innerText = category;
             cards.forEach(function (card) {
                 card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
             });
+
             document.querySelectorAll('.filter-option').forEach(function (btn) {
                 btn.classList.remove('active-filter');
                 if (btn.textContent.trim().startsWith(category) || (category === 'All' && btn.textContent.trim() === 'All Announcements')) {
                     btn.classList.add('active-filter');
                 }
             });
+
             var dd = document.getElementById('filterDropdown');
             if (dd) dd.style.display = 'none';
             var chevron = document.getElementById('filterChevron');
@@ -2210,6 +1117,7 @@
             var catDd = document.getElementById('categoryDropdown');
             if (catDd) catDd.style.maxHeight = '0px';
         }
+
         function toggleLike(btn) {
             btn.classList.toggle('liked');
             btn.innerHTML = btn.classList.contains('liked')
@@ -2221,20 +1129,24 @@
                 ? parseInt(likeCount.innerText, 10) + 1
                 : parseInt(likeCount.innerText, 10) - 1;
         }
+
         function toggleLikeFromStats(span) {
             var card = span.closest('.announcement-card');
             var likeBtn = card.querySelector('.action-btn:first-child');
             toggleLike(likeBtn);
         }
+
         function toggleComments(btn) {
             btn.closest('.announcement-card').querySelector('.comments-section').classList.toggle('show');
         }
+
         function scrollToComments(element) {
             var card = element.closest('.announcement-card');
             var comments = card.querySelector('.comments-section');
             comments.classList.add('show');
             comments.scrollIntoView({ behavior: 'smooth' });
         }
+
         function addComment(btn) {
             var input = btn.parentElement.querySelector('input');
             var comment = input.value.trim();
@@ -2258,26 +1170,32 @@
             input.value = '';
             showToast('Comment posted!');
         }
+
         function sharePost() { showToast('Share feature coming soon!'); }
+
         function togglePinTop(btn) {
             btn.classList.toggle('pinned');
             showToast(btn.classList.contains('pinned') ? 'Announcement pinned!' : 'Announcement unpinned!');
         }
+
         function markRead(item) {
             item.classList.remove('unread');
             var dot = item.querySelector('.notification-dot');
             if (dot) dot.remove();
             updateBadge();
         }
+
         function markAllRead() {
             document.querySelectorAll('.notification-item.unread').forEach(markRead);
         }
+
         function updateBadge() {
             var count = document.querySelectorAll('.notification-item.unread').length;
             var badge = document.getElementById('notificationBadge');
             badge.innerText = count;
             badge.style.display = count > 0 ? 'inline-block' : 'none';
         }
+
         function showToast(message) {
             var toast = document.createElement('div');
             toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a3a5c;color:white;padding:12px 24px;border-radius:30px;font-size:14px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
@@ -2289,13 +1207,14 @@
                 setTimeout(function () { toast.remove(); }, 300);
             }, 2000);
         }
+
         function openCreatePostModal() { showToast('Create post feature coming soon!'); }
+
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = 'login.aspx';
             }
         }
->>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     </script>
 </body>
 </html>
