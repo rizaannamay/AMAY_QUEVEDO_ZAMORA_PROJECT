@@ -5,12 +5,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-<<<<<<< HEAD
-        private readonly SqlConnection con = new SqlConnection(
-        @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
-
-=======
->>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
