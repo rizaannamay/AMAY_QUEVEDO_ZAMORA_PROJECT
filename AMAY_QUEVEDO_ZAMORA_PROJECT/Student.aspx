@@ -1497,9 +1497,7 @@
         }
 
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'Logout.aspx';
-            }
+            window.location.href = 'Logout.aspx';
         }
 
         // ── Restore theme on load ──────────────────────────────

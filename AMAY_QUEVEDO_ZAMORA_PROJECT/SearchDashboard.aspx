@@ -59,7 +59,8 @@
             --muted-light: #64748b;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
             --active-bg: rgba(99,102,241,0.18);
-            background: #0f172a;
+            background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url('bg.jpg');
+            background-color: #0F172A;
         }
 
         /* ── NAVBAR — blue gradient header ── */
