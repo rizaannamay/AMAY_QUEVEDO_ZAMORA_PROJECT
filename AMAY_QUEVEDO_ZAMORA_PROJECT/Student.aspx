@@ -1,11 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
-
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
     {
-            Response.Redirect("SearchStudent.aspx");
-        
+        Response.Redirect("SearchStudent.aspx");
     }
 </script>
 
@@ -107,9 +105,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-
-            border: 2px solid #0F172A; 
+            border: 2px solid #0F172A;
         }
+
         .search-box input {
             background: none;
             border: none;
@@ -124,7 +122,7 @@
 
         .search-btn, .comment-input button, .modal-close {
             background: none;
-            border: 2px solid #0F172A; 
+            border: 2px solid #0F172A;
             border-radius: 30px;
             padding: 10px 22px;
             color: #0F172A;
@@ -132,13 +130,10 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
-             background: #e8f0fe;
-             border-color: rgba(26,58,92,0.4);
-             transform: translateY(-1px);
-             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(26, 58, 92, 0.18);
         }
 
         .header-actions {
@@ -661,12 +656,18 @@
 
         .sidebar.collapsed { width: 88px; }
         .sidebar.collapsed + .main-panel { margin-left: 0; }
-        .sidebar.collapsed .profile-name, .sidebar.collapsed .profile-email, .sidebar.collapsed .card-header,
-        .sidebar.collapsed .menu-text, .sidebar.collapsed .settings-text, .sidebar.collapsed .dropdown-content { display: none; }
-        .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
-        .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-email,
+        .sidebar.collapsed .card-header,
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .settings-text,
+        .sidebar.collapsed .dropdown-content { display: none; }
+        .sidebar.collapsed .menu-item,
+        .sidebar.collapsed .settings-item,
+        .sidebar.collapsed .profile-section { justify-content: center; }
+        .sidebar.collapsed .dropdown-icon,
+        .sidebar.collapsed .toggle-switch { display: none; }
 
-        /* Dark mode variables and tweaks */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -680,43 +681,49 @@
             --active-bg: rgba(64, 96, 128, 0.36);
         }
 
-        /* Additional element level dark-mode rules so borders / buttons look correct */
-        .dark-mode .search-btn, .dark-mode .comment-input button, .dark-mode .modal-close {
-            border-color: rgba(255,255,255,0.08);
-            color: #ffffff;
-            background: transparent;
-        }
-
-        .dark-mode .search-btn:hover, .dark-mode .comment-input button:hover, .dark-mode .modal-close:hover {
-            background: rgba(255,255,255,0.04);
-            box-shadow: none;
-            transform: translateY(0);
-        }
-
-        .dark-mode .notification-bell { border-color: var(--border); }
-        .dark-mode .user-info { border-color: var(--border); }
-        .dark-mode .search-box { border-color: rgba(255,255,255,0.06); }
-        .dark-mode .comment-input input { border-color: rgba(255,255,255,0.06); background: var(--surface-soft); color: var(--page-text); }
-        .dark-mode .card-header { border-bottom-color: rgba(255,255,255,0.04); }
-        .dark-mode .post-stats { border-top-color: rgba(255,255,255,0.04); border-bottom-color: rgba(255,255,255,0.04); }
-        .dark-mode .comment { border-bottom-color: rgba(255,255,255,0.03); }
-        .dark-mode .notification-header { border-bottom-color: rgba(255,255,255,0.04); }
-
         .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
-        .dark-mode .notification-item.unread, .dark-mode .menu-item.active, .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
-        .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
-        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title, .dark-mode .modal-title,
-        .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
-        .dark-mode .settings-item, .dark-mode .dropdown-item, .dark-mode .menu-item.active, .dark-mode .settings-item.active,
-        .dark-mode .header-filter, .dark-mode .post-stats, .dark-mode .post-stats span, .dark-mode .action-btn,
-        .dark-mode .comment-author, .dark-mode .comment-avatar, .dark-mode .bell-icon, .dark-mode .notification-header,
-        .dark-mode .notification-header button, .dark-mode .notification-header a, .dark-mode .sidebar-toggle,
-        .dark-mode .dropdown-icon, .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
+        .dark-mode .notification-item.unread,
+        .dark-mode .menu-item.active,
+        .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
+        .dark-mode .logo,
+        .dark-mode .logo i,
+        .dark-mode .card-header,
+        .dark-mode .card-header i,
+        .dark-mode .profile-name,
+        .dark-mode .post-author,
+        .dark-mode .post-title,
+        .dark-mode .modal-title,
+        .dark-mode .user-name,
+        .dark-mode .user-role,
+        .dark-mode .profile-email,
+        .dark-mode .menu-item,
+        .dark-mode .settings-item,
+        .dark-mode .dropdown-item,
+        .dark-mode .menu-item.active,
+        .dark-mode .settings-item.active,
+        .dark-mode .header-filter,
+        .dark-mode .post-stats,
+        .dark-mode .post-stats span,
+        .dark-mode .action-btn,
+        .dark-mode .comment-author,
+        .dark-mode .comment-avatar,
+        .dark-mode .bell-icon,
+        .dark-mode .notification-header,
+        .dark-mode .notification-header button,
+        .dark-mode .notification-header a,
+        .dark-mode .sidebar-toggle,
+        .dark-mode .dropdown-icon,
+        .dark-mode .no-comments,
+        .dark-mode .footer { color: #ffffff; }
 
-        .dark-mode .menu-item:hover, .dark-mode .settings-item:hover, .dark-mode .dropdown-item:hover,
-        .dark-mode .post-stats span:hover, .dark-mode .action-btn:hover { color: #ffffff; }
+        .dark-mode .menu-item:hover,
+        .dark-mode .settings-item:hover,
+        .dark-mode .dropdown-item:hover,
+        .dark-mode .post-stats span:hover,
+        .dark-mode .action-btn:hover { color: #ffffff; }
 
-        .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
+        .dark-mode .pin-btn-top:hover,
+        .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
@@ -740,13 +747,13 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClick="SearchButton_Click" Width="430px" Font-Bold="False" ForeColor="#0F172A" Font-Size="Large" Height="61px" />
                 </div>
 
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">0       </span>
+                        <span id="notificationBadge" class="badge-red">0</span>
                     </div>
                     <div class="user-info">
                         <div class="avatar">
@@ -808,13 +815,13 @@
                                 <i class="fas fa-cog"></i> Settings
                             </div>
 
-                            <button type="button" class="settings-item" onclick="toggleTheme(this)" aria-pressed="false" title="Toggle dark / light theme">
+                            <button type="button" class="settings-item" onclick="toggleTheme()">
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
-                                <div class="toggle-switch" id="themeToggle" role="switch" aria-checked="false"></div>
+                                <div class="toggle-switch" id="themeToggle"></div>
                             </button>
 
-                            <button type="button" class="settings-item" onclick="openAboutModal()">
+                            <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=student'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
@@ -839,20 +846,6 @@
                 </main>
             </div>
         </div>
-
-        <div id="aboutModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div class="modal-title">Campus Connect</div>
-                <div class="modal-text">
-                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
-                    It allows students to access official announcements, exam schedules, class suspensions, and campus events in one place.
-                </div>
-                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
-            </div>
-        </div>
     </form>
 
     <script>
@@ -861,118 +854,63 @@
             if (!dropdown) return;
             var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
             dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
-            if (trigger) trigger.classList.toggle('open', !isOpen);
+            if (trigger) {
+                trigger.classList.toggle("open", !isOpen);
+            }
         }
 
         function toggleSidebar() {
-            var sidebar = document.querySelector('.sidebar');
-            if (sidebar) sidebar.classList.toggle('collapsed');
+            var sidebar = document.querySelector(".sidebar");
+            if (sidebar) sidebar.classList.toggle("collapsed");
         }
 
         function toggleNotificationDropdown() {
-            var dropdown = document.getElementById('notificationDropdown');
-            if (dropdown) dropdown.classList.toggle('show');
+            var dropdown = document.getElementById("notificationDropdown");
+            if (dropdown) dropdown.classList.toggle("show");
         }
 
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
+        function toggleTheme() {
+            var body = document.body;
+            var toggle = document.getElementById("themeToggle");
+            var isDark = body.classList.toggle("dark-mode");
+            if (toggle) toggle.classList.toggle("active", isDark);
+            localStorage.setItem("campusTheme", isDark ? "dark" : "light");
+        }
+
+        function applySavedTheme() {
+            var savedTheme = localStorage.getItem("campusTheme");
+            var shouldUseDark = savedTheme === "dark";
+            if (shouldUseDark) {
+                document.body.classList.add("dark-mode");
             }
-        });
-
-        function loadComments(postId) {
-            fetch('Comments.aspx?action=get&postId=' + encodeURIComponent(postId))
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                    var commentsList = document.getElementById('commentsList_' + postId);
-                    if (!commentsList) return;
-                    if (!Array.isArray(data) || data.length === 0) {
-                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
-                        return;
-                    }
-                    var html = '';
-                    data.forEach(function (comment) {
-                        html += '\
-<div class="comment">\
-  <div class="comment-avatar"><i class="fas fa-user"></i></div>\
-  <div class="comment-content">\
-    <span class="comment-author">' + escapeHtml(comment.author) + '</span>\
-    <div class="comment-text">' + escapeHtml(comment.text) + '</div>\
-    <div class="comment-time">' + (comment.date || '') + '</div>\
-  </div>\
-</div>';
-                    });
-                    commentsList.innerHTML = html;
-                })
-                .catch(function (err) { console.error('Error loading comments:', err); });
-        }
-
-        // body must be valid JSON string
-        function addComment(btn, postId) {
-            var input = document.getElementById('commentInput_' + postId);
-            if (!input) return;
-            var commentText = input.value.trim();
-            if (commentText === '') { showToast('Please enter a comment!'); return; }
-
-            var payload = JSON.stringify({ postId: postId, comment: commentText });
-
-            fetch('Comments.aspx?action=add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: payload
-            })
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                    if (data && data.success) {
-                        input.value = '';
-                        loadComments(postId);
-                        showToast('Comment posted');
-                    } else {
-                        showToast('Error posting comment');
-                    }
-                })
-                .catch(function (err) {
-                    console.error('Error posting comment:', err);
-                    showToast('Error posting comment');
-                });
-        }
-
-        // small helpers
-        function escapeHtml(s) {
-            if (!s) return '';
-            return String(s).replace(/[&<>"'\/]/g, function (c) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;' }[c];
-            });
-        }
-
-        function showToast(message) {
-            // simple placeholder - implement a nicer toast if needed
-            alert(message);
-        }
-
-        // THEME HANDLING
-        function toggleTheme(item) {
-            var toggle = item.querySelector('.toggle-switch');
-            toggle.classList.toggle('active');
-            document.body.classList.toggle('dark-mode');
-        }
-
-        function openAboutModal() {
-            document.getElementById('aboutModal').style.display = 'flex';
-        }
-        a
-        function closeAboutModal() {
-            document.getElementById('aboutModal').style.display = 'none';
+            var toggle = document.getElementById("themeToggle");
+            if (toggle) toggle.classList.toggle("active", shouldUseDark);
         }
 
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
-            }
+            window.location.href = "Login.aspx";
         }
 
+        function markAllRead() {
+            var unreadItems = document.querySelectorAll(".notification-item.unread");
+            unreadItems.forEach(function (item) {
+                item.classList.remove("unread");
+            });
+            var badge = document.getElementById("notificationBadge");
+            if (badge) badge.textContent = "0";
+        }
+
+        document.addEventListener("click", function (e) {
+            var bell = document.querySelector(".notification-bell");
+            var dropdown = document.getElementById("notificationDropdown");
+            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            applySavedTheme();
+        });
     </script>
 </body>
 </html>

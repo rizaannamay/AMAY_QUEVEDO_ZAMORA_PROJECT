@@ -1,12 +1,10 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
-
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
     {
         Response.Redirect("SearchDashboard.aspx");
     }
 </script>
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -20,7 +18,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -35,10 +32,8 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --active-bg: #e8f0fe;
         }
-
         html, body, form { height: 100%; }
         html, body { overflow: hidden; }
-
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
@@ -49,10 +44,8 @@
             background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
-
         a { color: inherit; text-decoration: none; }
         button, input, textarea { font: inherit; }
-
         .app-shell {
             height: 100vh;
             display: flex;
@@ -61,8 +54,6 @@
             padding: 16px 20px 0;
             overflow: hidden;
         }
-
-        /* ── HEADER ── */
         .header {
             flex: 0 0 auto;
             background: var(--surface);
@@ -76,10 +67,8 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
-
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; }
         .logo i { color: var(--primary); margin-right: 8px; }
-
         .search-container {
             display: flex;
             gap: 10px;
@@ -88,7 +77,6 @@
             justify-content: center;
             min-width: 0;
         }
-
         .search-btn {
             background: none;
             border: 2px solid #0F172A;
@@ -99,21 +87,18 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
         .search-btn:hover {
             background: #e8f0fe;
             border-color: rgba(26,58,92,0.4);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-
         .header-actions {
             display: flex;
             gap: 15px;
             align-items: center;
             white-space: nowrap;
         }
-
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -127,9 +112,7 @@
             border: 1px solid #dce4ec;
             transition: background 0.3s;
         }
-
         .notification-bell:hover { background: var(--active-bg); }
-
         .badge-red {
             position: absolute;
             top: -5px;
@@ -143,7 +126,6 @@
             min-width: 18px;
             text-align: center;
         }
-
         .user-info {
             display: flex;
             align-items: center;
@@ -153,12 +135,10 @@
             border-radius: 40px;
             border: 1px solid #dce4ec;
         }
-
         .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             color: #ffffff;
         }
-
         .avatar {
             width: 36px;
             height: 36px;
@@ -168,11 +148,8 @@
             justify-content: center;
             font-weight: bold;
         }
-
         .user-name { font-size: 14px; font-weight: 600; }
         .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
-
-        /* ── CONTENT SHELL ── */
         .content-shell {
             flex: 1 1 0;
             min-height: 0;
@@ -182,9 +159,7 @@
             overflow: hidden;
             align-items: stretch;
         }
-
         .sidebar { height: 100%; min-height: 0; overflow: hidden; }
-
         .card {
             background: var(--surface);
             backdrop-filter: blur(10px);
@@ -193,16 +168,13 @@
             box-shadow: var(--shadow);
             overflow: hidden;
         }
-
         .sidebar .card, .main-panel.card {
             height: 100%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
         }
-
         .sidebar-content { min-height: 0; overflow-y: auto; }
-
         .card-header {
             padding: 18px 22px;
             border-bottom: 1px solid #eef2f6;
@@ -210,27 +182,22 @@
             color: var(--primary);
             font-size: 16px;
         }
-
         .card-header i { margin-right: 10px; color: var(--primary); }
-
-        /* ── SIDEBAR PROFILE ── */
         .profile-section {
-    text-align: center;
-    padding: 20px;
-    border-bottom: 1px solid #eef2f6;
-}
-
-.profile-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 12px;
-    font-size: 28px;
-}
-
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #eef2f6;
+        }
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 28px;
+        }
         .sidebar-toggle {
             border: none;
             background: none;
@@ -239,11 +206,9 @@
             cursor: pointer;
             margin-bottom: 12px;
         }
-
         .profile-name, .post-author, .post-title, .modal-title { color: var(--primary); }
         .profile-name { font-size: 18px; font-weight: 700; }
         .menu-item, .settings-item, .dropdown-item { color: var(--page-text); }
-
         .menu-item, .settings-item {
             display: flex;
             align-items: center;
@@ -258,28 +223,23 @@
             transition: all 0.3s;
             border-left: 3px solid transparent;
         }
-
         .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
-
         .dropdown-icon {
             margin-left: auto;
             font-size: 12px;
             color: var(--muted-light);
             transition: transform 0.3s ease;
         }
-
         .menu-item.open .dropdown-icon { transform: rotate(180deg); }
-
         .dropdown-content {
             margin-left: 45px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
-
         .dropdown-item {
             display: block;
             padding: 10px 22px;
@@ -291,7 +251,6 @@
             text-align: left;
             transition: all 0.3s;
         }
-
         .toggle-switch {
             width: 44px;
             height: 22px;
@@ -303,9 +262,7 @@
             margin-left: auto;
             flex-shrink: 0;
         }
-
         .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-
         .toggle-switch::after {
             content: '';
             width: 18px;
@@ -317,20 +274,15 @@
             left: 2px;
             transition: all 0.3s;
         }
-
         .toggle-switch.active::after { left: 24px; }
-
-        /* ── MAIN PANEL ── */
-       .main-panel {
-    height: 100%;
-    min-width: 0;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-        /* ── POST ANNOUNCEMENT BUTTON ── */
+        .main-panel {
+            height: 100%;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
         .post-announcement-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             border: none;
@@ -348,13 +300,10 @@
             gap: 12px;
             flex-shrink: 0;
         }
-
         .post-announcement-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(26,58,92,0.3);
         }
-
-        /* ── CREATE POST BOX ── */
         .create-post-card {
             background: var(--surface-strong);
             border-radius: 16px;
@@ -362,13 +311,11 @@
             border: 1px solid var(--border);
             flex-shrink: 0;
         }
-
         .create-post-header {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .create-post-avatar {
             width: 44px;
             height: 44px;
@@ -381,7 +328,6 @@
             font-size: 18px;
             flex-shrink: 0;
         }
-
         .create-post-input {
             flex: 1;
             background: var(--surface-soft);
@@ -392,8 +338,6 @@
             color: var(--muted);
             cursor: pointer;
         }
-
-        /* ── ANNOUNCEMENT BOARD ── */
         .announcement-board {
             flex: 1 1 auto;
             min-height: 0;
@@ -401,17 +345,6 @@
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
         }
-
-        .main-panel-inner {
-            height: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 18px;
-            overflow: hidden;
-        }
-
         .announcement-card {
             background: var(--surface-strong);
             border-radius: 20px;
@@ -421,47 +354,40 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             overflow: hidden;
         }
-
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0,0,0,0.08);
             border-color: rgba(26,58,92,0.2);
         }
         .filter-option {
-    display: block;
-    width: 100%;
-    padding: 11px 18px;
-    background: none;
-    border: none;
-    text-align: left;
-    font-size: 13px;
-    color: var(--page-text);
-    cursor: pointer;
-    transition: background 0.2s;
-    border-bottom: 1px solid var(--border);
-}
-
-.filter-option:last-child { border-bottom: none; }
-
-.filter-option:hover {
-    background: var(--active-bg);
-    color: var(--primary);
-}
-
-.filter-option.active-filter {
-    background: var(--active-bg);
-    color: var(--primary);
-    font-weight: 600;
-}
-
+            display: block;
+            width: 100%;
+            padding: 11px 18px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 13px;
+            color: var(--page-text);
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-option:last-child { border-bottom: none; }
+        .filter-option:hover {
+            background: var(--active-bg);
+            color: var(--primary);
+        }
+        .filter-option.active-filter {
+            background: var(--active-bg);
+            color: var(--primary);
+            font-weight: 600;
+        }
         .post-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 18px 22px 12px;
         }
-
         .post-header-left { display: flex; align-items: center; gap: 15px; }
-
         .post-avatar {
             width: 50px;
             height: 50px;
@@ -473,9 +399,7 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-
         .post-author { font-weight: 700; font-size: 16px; }
-
         .post-meta {
             display: flex;
             gap: 12px;
@@ -483,7 +407,6 @@
             margin-top: 4px;
             flex-wrap: wrap;
         }
-
         .post-category {
             display: inline-block;
             padding: 2px 10px;
@@ -491,11 +414,9 @@
             font-size: 10px;
             font-weight: 600;
         }
-
         .post-category-exam { background: #e3f2fd; color: #1976d2; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
-
         .pin-btn-top {
             background: none;
             border: none;
@@ -508,17 +429,13 @@
             width: 36px;
             height: 36px;
         }
-
         .pin-btn-top:hover { background: #f0f2f5; }
         .pin-btn-top.pinned { color: #e65100; }
-
         .post-content { padding: 0 22px 16px; }
         .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
-        .post-text, .comment-text, .notification-text, .modal-text { color: var(--page-text); line-height: 1.5; }
-
+        .post-text, .comment-text, .notification-text { color: var(--page-text); line-height: 1.5; }
         .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
         .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; display: block; }
-
         .post-stats {
             display: flex;
             gap: 20px;
@@ -528,12 +445,9 @@
             color: var(--muted);
             font-size: 13px;
         }
-
         .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .post-stats span:hover { color: var(--primary); }
-
         .action-buttons { display: flex; gap: 5px; padding: 8px 22px; }
-
         .action-btn {
             flex: 1;
             background: none;
@@ -549,20 +463,15 @@
             gap: 8px;
             transition: all 0.3s;
         }
-
         .action-btn.liked { color: #dc2626; }
         .action-btn.liked i { font-weight: 900; }
-
         .comments-section {
             padding: 0 22px 18px;
             border-top: 1px solid #eef2f6;
             display: none;
         }
-
         .comments-section.show { display: block; }
-
         .comment-input { display: flex; gap: 10px; margin: 15px 0; }
-
         .comment-input input {
             flex: 1;
             padding: 10px 16px;
@@ -573,7 +482,6 @@
             font-size: 13px;
             color: var(--page-text);
         }
-
         .comment-input button {
             padding: 10px 22px;
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -583,7 +491,6 @@
             font-weight: 600;
             color: white;
         }
-
         .comment {
             padding: 10px 0;
             font-size: 13px;
@@ -591,9 +498,7 @@
             display: flex;
             gap: 10px;
         }
-
         .comment:last-child { border-bottom: none; }
-
         .comment-avatar {
             width: 32px;
             height: 32px;
@@ -607,17 +512,13 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-
         .comment-author { font-weight: bold; color: var(--primary); }
-
         .no-comments {
             padding: 15px;
             text-align: center;
             color: var(--muted-light);
             font-size: 12px;
         }
-
-        /* ── NOTIFICATION DROPDOWN ── */
         .notification-dropdown {
             position: absolute;
             top: 84px;
@@ -630,9 +531,7 @@
             z-index: 200;
             display: none;
         }
-
         .notification-dropdown.show { display: block; }
-
         .notification-header {
             padding: 15px 18px;
             border-bottom: 1px solid #eef2f6;
@@ -642,7 +541,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .notification-header button {
             background: none;
             border: none;
@@ -650,9 +548,7 @@
             font-size: 11px;
             cursor: pointer;
         }
-
         .notification-list { max-height: 350px; overflow-y: auto; }
-
         .notification-item {
             display: flex;
             align-items: center;
@@ -661,59 +557,10 @@
             border-bottom: 1px solid #eef2f6;
             cursor: pointer;
         }
-
         .notification-item:hover { background: var(--surface-soft); }
         .notification-item.unread { background: var(--active-bg); }
-
         .notification-dot { width: 8px; height: 8px; background: #dc2626; border-radius: 50%; }
         .notification-time { font-size: 10px; color: var(--muted-light); }
-
-        /* ── MODAL ── */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-content {
-            background: var(--surface-strong);
-            border-radius: 24px;
-            max-width: 400px;
-            width: 100%;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .modal-icon { font-size: 50px; color: var(--primary); margin-bottom: 15px; }
-        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
-        .modal-text { margin: 15px 0; font-size: 13px; }
-
-        .modal-close {
-            background: none;
-            border: 2px solid #0F172A;
-            border-radius: 30px;
-            padding: 10px 22px;
-            color: #0F172A;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: #e8f0fe;
-            border-color: rgba(26,58,92,0.4);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        /* ── FOOTER ── */
         .footer {
             position: fixed;
             left: 20px;
@@ -728,8 +575,6 @@
             z-index: 50;
             color: var(--muted);
         }
-
-        /* ── SIDEBAR COLLAPSED ── */
         .sidebar.collapsed { width: 88px; }
         .sidebar.collapsed .profile-name,
         .sidebar.collapsed .profile-email,
@@ -742,8 +587,6 @@
         .sidebar.collapsed .profile-section { justify-content: center; }
         .sidebar.collapsed .dropdown-icon,
         .sidebar.collapsed .toggle-switch { display: none; }
-
-        /* ── DARK MODE ── */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -756,19 +599,16 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
             --active-bg: rgba(64, 96, 128, 0.36);
         }
-
-        .dark-mode .search-btn, .dark-mode .modal-close {
+        .dark-mode .search-btn {
             border-color: rgba(255,255,255,0.08);
             color: #ffffff;
             background: transparent;
         }
-
-        .dark-mode .search-btn:hover, .dark-mode .modal-close:hover {
+        .dark-mode .search-btn:hover {
             background: rgba(255,255,255,0.04);
             box-shadow: none;
             transform: translateY(0);
         }
-
         .dark-mode .comment-input button { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
         .dark-mode .notification-bell { border-color: var(--border); }
         .dark-mode .user-info { border-color: var(--border); }
@@ -779,12 +619,9 @@
         .dark-mode .comment-input input { border-color: rgba(255,255,255,0.06); background: var(--surface-soft); color: var(--page-text); }
         .dark-mode .create-post-input { background: var(--surface-soft); border-color: rgba(255,255,255,0.06); color: var(--muted); }
         .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
-        .dark-mode .notification-item.unread,
-        .dark-mode .menu-item.active,
-        .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
-
+        .dark-mode .notification-item.unread { background: rgba(64, 96, 128, 0.36); }
         .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
-        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title, .dark-mode .modal-title,
+        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title,
         .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
         .dark-mode .settings-item, .dark-mode .dropdown-item, .dark-mode .header-filter,
         .dark-mode .post-stats, .dark-mode .post-stats span, .dark-mode .action-btn,
@@ -792,14 +629,10 @@
         .dark-mode .notification-header, .dark-mode .notification-header button,
         .dark-mode .sidebar-toggle, .dark-mode .dropdown-icon,
         .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
-
         .dark-mode .menu-item:hover, .dark-mode .settings-item:hover,
         .dark-mode .dropdown-item:hover, .dark-mode .post-stats span:hover,
         .dark-mode .action-btn:hover { color: #ffffff; }
-
         .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); }
-
-        /* ── RESPONSIVE ── */
         @media (max-width: 980px) {
             html, body { overflow: auto; }
             .app-shell, form { height: auto; min-height: 100%; overflow: visible; }
@@ -807,7 +640,7 @@
             .header { flex-wrap: wrap; }
             .search-container { order: 3; width: 100%; justify-content: stretch; }
             .content-shell { grid-template-columns: 1fr; overflow: visible; }
-            .sidebar, .main-panel, .sidebar .card, .main-panel.card { height: auto; }
+            .sidebar, .main-panel, .sidebar .card { height: auto; }
             .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
             .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
@@ -816,20 +649,16 @@
 <body>
     <form id="form1" runat="server">
         <div class="app-shell">
-
-            <!-- ── HEADER ── -->
             <div class="header">
                 <div class="logo">
                     <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
                 </div>
-
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
                         Text=" 🔎 Search........" OnClick="SearchButton_Click"
                         Width="420px" Font-Bold="False" ForeColor="#0F172A"
                         Font-Size="Medium" Height="54px" />
                 </div>
-
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
@@ -840,14 +669,12 @@
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="user-details">
-                            <div class="user-name" id="userName">Mariia Santos</div>
+                            <div class="user-name" id="userName">Maria Santos</div>
                             <div class="user-role" id="userRole">Teacher</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- ── NOTIFICATION DROPDOWN ── -->
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
                     <a href="Notifications.aspx" style="text-decoration:none;color:inherit;">
@@ -872,11 +699,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ── CONTENT SHELL ── -->
             <div class="content-shell">
-
-                <!-- ── SIDEBAR ── -->
                 <aside class="sidebar">
                     <div class="card">
                         <div class="sidebar-content">
@@ -887,7 +710,6 @@
                                 <div class="profile-name" id="profileName">Maria Santos</div>
                                 <div class="profile-email" id="profileEmail">maria.santos@ctu.edu.ph</div>
                             </div>
-
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
                             </div>
@@ -902,27 +724,22 @@
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Suspension')">Class Suspension</button>
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
-
                             <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
                             </button>
-
                             <div class="card-header" style="margin-top:5px;">
                                 <i class="fas fa-cog"></i> Settings
                             </div>
-
-                            <button type="button" class="settings-item" onclick="toggleTheme(this)">
+                            <button type="button" class="settings-item" onclick="toggleTheme()">
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
                                 <div class="toggle-switch" id="themeToggle"></div>
                             </button>
-
-                            <button type="button" class="settings-item" onclick="openAboutModal()">
+                            <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=teacher'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
-
                             <button type="button" class="settings-item" onclick="logout()">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span class="settings-text">Logout</span>
@@ -930,57 +747,35 @@
                         </div>
                     </div>
                 </aside>
-
-                <!-- ── MAIN PANEL ── -->
                 <main class="main-panel">
-    <!-- Post Announcement Button -->
-    <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
-        <i class="fas fa-plus-circle"></i> Want to post an announcement?
-    </button>
-
-    <!-- Create Post Box -->
-    <div class="create-post-card">
-        <div class="create-post-header">
-            <div class="create-post-avatar">
-                <i class="fas fa-user-edit"></i>
-            </div>
-            <div class="create-post-input" onclick="openCreatePostModal()">
-                Want to post an announcement?
-            </div>
-        </div>
-    </div>
-
-    <!-- Announcement Board Card (scrolls independently) -->
-    <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
-       <div class="card-header" style="flex-shrink:0; position:relative;">
-    <i class="fas fa-bullhorn"></i> Announcement Board
-    <span class="header-filter" onclick="toggleFilterDropdown()" style="cursor:pointer; float:right; font-size:12px; color:var(--primary); display:flex; align-items:center; gap:6px; float:right;">
-        Showing: <strong id="activeFilterLabel">All</strong> <i class="fas fa-chevron-down" id="filterChevron" style="font-size:10px;"></i>
-    </span>
-    <div id="filterDropdown" style="
-        display:none;
-        position:absolute;
-        top:52px;
-        right:18px;
-        background:var(--surface-strong);
-        border:1px solid var(--border);
-        border-radius:14px;
-        box-shadow:0 8px 24px rgba(0,0,0,0.12);
-        z-index:100;
-        min-width:180px;
-        overflow:hidden;
-    ">
-        <button type="button" onclick="filterCategory('All')"       class="filter-option">All Announcements</button>
-        <button type="button" onclick="filterCategory('Exam')"      class="filter-option">Exam Schedule</button>
-        <button type="button" onclick="filterCategory('Suspension')" class="filter-option">Class Suspension</button>
-        <button type="button" onclick="filterCategory('Event')"     class="filter-option">Campus Events</button>
-    </div>
-</div>
-        <!-- Scrollable Announcements -->
-        <div id="announcementsContainer" class="announcement-board">
-
-                            <!-- Announcement 1 - Exam -->
-                            <div class="announcement-card" data-category="Exam" data-post-id="1">
+                    <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
+                        <i class="fas fa-plus-circle"></i> Want to post an announcement?
+                    </button>
+                    <div class="create-post-card">
+                        <div class="create-post-header">
+                            <div class="create-post-avatar">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="create-post-input" onclick="openCreatePostModal()">
+                                Want to post an announcement?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
+                        <div class="card-header" style="flex-shrink:0; position:relative;">
+                            <i class="fas fa-bullhorn"></i> Announcement Board
+                            <span class="header-filter" onclick="toggleFilterDropdown()" style="cursor:pointer; float:right; font-size:12px; color:var(--primary); display:flex; align-items:center; gap:6px;">
+                                Showing: <strong id="activeFilterLabel">All</strong> <i class="fas fa-chevron-down" id="filterChevron" style="font-size:10px;"></i>
+                            </span>
+                            <div id="filterDropdown" style="display:none; position:absolute; top:52px; right:18px; background:var(--surface-strong); border:1px solid var(--border); border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:100; min-width:180px; overflow:hidden;">
+                                <button type="button" onclick="filterCategory('All')" class="filter-option">All Announcements</button>
+                                <button type="button" onclick="filterCategory('Exam')" class="filter-option">Exam Schedule</button>
+                                <button type="button" onclick="filterCategory('Suspension')" class="filter-option">Class Suspension</button>
+                                <button type="button" onclick="filterCategory('Event')" class="filter-option">Campus Events</button>
+                            </div>
+                        </div>
+                        <div id="announcementsContainer" class="announcement-board">
+                            <div class="announcement-card" data-category="Exam">
                                 <div class="post-header">
                                     <div class="post-header-left">
                                         <div class="post-avatar"><i class="fas fa-user-tie"></i></div>
@@ -1029,9 +824,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Announcement 2 - Suspension -->
-                            <div class="announcement-card" data-category="Suspension" data-post-id="2">
+                            <div class="announcement-card" data-category="Suspension">
                                 <div class="post-header">
                                     <div class="post-header-left">
                                         <div class="post-avatar"><i class="fas fa-building"></i></div>
@@ -1080,9 +873,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Announcement 3 - Event -->
-                            <div class="announcement-card" data-category="Event" data-post-id="3">
+                            <div class="announcement-card" data-category="Event">
                                 <div class="post-header">
                                     <div class="post-header-left">
                                         <div class="post-avatar"><i class="fas fa-calendar-alt"></i></div>
@@ -1124,48 +915,27 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </main>
             </div>
         </div>
-
-        <!-- About Modal -->
-        <div id="aboutModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-icon"><i class="fas fa-university"></i></div>
-                <div class="modal-title">Campus Connect</div>
-                <div class="modal-text">
-                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
-                    It allows teachers to post official announcements, exam schedules, class suspensions, and campus events.
-                </div>
-                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
-            </div>
-        </div>
     </form>
-
     <script>
-
-        // ── DARK MODE ──────────────────────────────────────────────
-        function toggleTheme(item) {
+        function toggleTheme() {
             var isDark = document.body.classList.toggle('dark-mode');
             var toggle = document.getElementById('themeToggle');
             if (toggle) toggle.classList.toggle('active', isDark);
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('campusTheme', isDark ? 'dark' : 'light');
         }
-
-        (function initTheme() {
-            if (localStorage.getItem('theme') === 'dark') {
+        document.addEventListener('DOMContentLoaded', function () {
+            var isDark = localStorage.getItem('campusTheme') === 'dark';
+            if (isDark) {
                 document.body.classList.add('dark-mode');
-                document.addEventListener('DOMContentLoaded', function () {
-                    var toggle = document.getElementById('themeToggle');
-                    if (toggle) toggle.classList.add('active');
-                });
+                var toggle = document.getElementById('themeToggle');
+                if (toggle) toggle.classList.add('active');
             }
-        })();
-        // ──────────────────────────────────────────────────────────
-
+        });
         function toggleDropdown(id, trigger) {
             var dropdown = document.getElementById(id);
             if (!dropdown) return;
@@ -1173,24 +943,14 @@
             dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
             if (trigger) trigger.classList.toggle('open', !isOpen);
         }
-
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidebar');
             if (sidebar) sidebar.classList.toggle('collapsed');
         }
-
         function toggleNotificationDropdown() {
             var dropdown = document.getElementById('notificationDropdown');
             if (dropdown) dropdown.classList.toggle('show');
         }
-
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
         function toggleFilterDropdown() {
             var dd = document.getElementById('filterDropdown');
             var chevron = document.getElementById('filterChevron');
@@ -1199,9 +959,12 @@
             chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
             chevron.style.transition = 'transform 0.3s';
         }
-
-        // Close filter dropdown when clicking outside
         document.addEventListener('click', function (e) {
+            var bell = document.querySelector('.notification-bell');
+            var dropdown = document.getElementById('notificationDropdown');
+            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
             var dd = document.getElementById('filterDropdown');
             var trigger = document.querySelector('.header-filter');
             if (dd && trigger && !trigger.contains(e.target) && !dd.contains(e.target)) {
@@ -1210,23 +973,18 @@
                 if (chevron) chevron.style.transform = 'rotate(0deg)';
             }
         });
-
         function filterCategory(category) {
             var cards = document.querySelectorAll('.announcement-card');
             document.getElementById('activeFilterLabel').innerText = category;
             cards.forEach(function (card) {
                 card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
             });
-
-            // highlight active
             document.querySelectorAll('.filter-option').forEach(function (btn) {
                 btn.classList.remove('active-filter');
                 if (btn.textContent.trim().startsWith(category) || (category === 'All' && btn.textContent.trim() === 'All Announcements')) {
                     btn.classList.add('active-filter');
                 }
             });
-
-            // close both dropdowns
             var dd = document.getElementById('filterDropdown');
             if (dd) dd.style.display = 'none';
             var chevron = document.getElementById('filterChevron');
@@ -1234,7 +992,6 @@
             var catDd = document.getElementById('categoryDropdown');
             if (catDd) catDd.style.maxHeight = '0px';
         }
-
         function toggleLike(btn) {
             btn.classList.toggle('liked');
             btn.innerHTML = btn.classList.contains('liked')
@@ -1243,27 +1000,23 @@
             var card = btn.closest('.announcement-card');
             var likeCount = card.querySelector('.like-count');
             likeCount.innerText = btn.classList.contains('liked')
-                ? parseInt(likeCount.innerText) + 1
-                : parseInt(likeCount.innerText) - 1;
+                ? parseInt(likeCount.innerText, 10) + 1
+                : parseInt(likeCount.innerText, 10) - 1;
         }
-
         function toggleLikeFromStats(span) {
             var card = span.closest('.announcement-card');
             var likeBtn = card.querySelector('.action-btn:first-child');
             toggleLike(likeBtn);
         }
-
         function toggleComments(btn) {
             btn.closest('.announcement-card').querySelector('.comments-section').classList.toggle('show');
         }
-
         function scrollToComments(element) {
             var card = element.closest('.announcement-card');
             var comments = card.querySelector('.comments-section');
             comments.classList.add('show');
             comments.scrollIntoView({ behavior: 'smooth' });
         }
-
         function addComment(btn) {
             var input = btn.parentElement.querySelector('input');
             var comment = input.value.trim();
@@ -1283,36 +1036,30 @@
                 '</div>';
             list.appendChild(newComment);
             var count = card.querySelector('.comment-count');
-            count.innerText = parseInt(count.innerText) + 1;
+            count.innerText = parseInt(count.innerText, 10) + 1;
             input.value = '';
             showToast('Comment posted!');
         }
-
         function sharePost() { showToast('Share feature coming soon!'); }
-
         function togglePinTop(btn) {
             btn.classList.toggle('pinned');
             showToast(btn.classList.contains('pinned') ? 'Announcement pinned!' : 'Announcement unpinned!');
         }
-
         function markRead(item) {
             item.classList.remove('unread');
             var dot = item.querySelector('.notification-dot');
             if (dot) dot.remove();
             updateBadge();
         }
-
         function markAllRead() {
             document.querySelectorAll('.notification-item.unread').forEach(markRead);
         }
-
         function updateBadge() {
             var count = document.querySelectorAll('.notification-item.unread').length;
             var badge = document.getElementById('notificationBadge');
             badge.innerText = count;
             badge.style.display = count > 0 ? 'inline-block' : 'none';
         }
-
         function showToast(message) {
             var toast = document.createElement('div');
             toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a3a5c;color:white;padding:12px 24px;border-radius:30px;font-size:14px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
@@ -1324,17 +1071,12 @@
                 setTimeout(function () { toast.remove(); }, 300);
             }, 2000);
         }
-
-        function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
-        function closeAboutModal() { document.getElementById('aboutModal').style.display = 'none'; }
         function openCreatePostModal() { showToast('Create post feature coming soon!'); }
-
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = 'login.aspx';
             }
         }
-
     </script>
 </body>
 </html>

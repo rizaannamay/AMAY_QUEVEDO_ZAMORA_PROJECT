@@ -1,4 +1,24 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+<script runat="server">
+    protected string BackUrl
+    {
+        get
+        {
+            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
+        }
+    }
+
+    protected string BackLabel
+    {
+        get
+        {
+            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            return source == "teacher" ? "Back to Teacher" : "Back to Student";
+        }
+    }
+
+</script>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -297,6 +317,81 @@
             padding-bottom: 8px;
         }
 
+        .creators-section {
+            display: grid;
+            gap: 18px;
+        }
+
+        .creators-intro {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 0.98rem;
+            max-width: 760px;
+        }
+
+        .creators-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .creator-card {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            align-items: center;
+            gap: 22px;
+            padding: 22px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .creator-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid rgba(127, 200, 255, 0.24);
+            background: linear-gradient(135deg, rgba(127, 200, 255, 0.28), rgba(247, 178, 103, 0.22));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+        }
+
+        .creator-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .creator-photo i {
+            font-size: 2.2rem;
+            color: #ffffff;
+        }
+
+        .creator-info h4 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .creator-role {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .creator-quote {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 0.97rem;
+            font-style: italic;
+        }
+
         @media (max-width: 980px) {
             body { padding: 16px; }
             .hero,
@@ -306,6 +401,8 @@
             .hero-stats,
             .gallery-grid { grid-template-columns: 1fr; }
             .topbar { align-items: flex-start; flex-direction: column; }
+            .creator-card { grid-template-columns: 1fr; text-align: center; }
+            .creator-photo { margin: 0 auto; }
         }
     </style>
 </head>
@@ -324,7 +421,7 @@
                 </div>
 
                 <div class="top-actions">
-                    <a class="action-link" href="Student.aspx"><i class="fas fa-arrow-left"></i> Back to Portal</a>
+                    <a class="action-link" href="<%= BackUrl %>"><i class="fas fa-arrow-left"></i> <%= BackLabel %></a>
                 </div>
             </div>
 
@@ -442,6 +539,54 @@
                 Replace the image files `campus-main.jpg`, `campus-event-1.jpg`, `campus-event-2.jpg`, `campus-event-3.jpg`, and `campus-event-4.jpg`
                 with your actual school photos in the same project folder.
             </div>
+
+            <section class="section-card creators-section">
+                <div class="section-heading">
+                    <i class="fas fa-users"></i>
+                    <h3>Meet The Creators</h3>
+                </div>
+
+                <p class="creators-intro">
+                    This portal was created with the goal of making campus announcements more organized, accessible,
+                    and helpful for both students and teachers. Add your real profile photos anytime by replacing the
+                    image filenames below in the same project folder.
+                </p>
+
+                <div class="creators-grid">
+                    <article class="creator-card">
+                        <div class="creator-photo">
+                            <img src="creator-amay.jpg" alt="Amay Riza Ann" />
+                        </div>
+                        <div class="creator-info">
+                            <h4>Amay Riza Ann</h4>
+                            <div class="creator-role">Creator</div>
+                            <div class="creator-quote">"We built this platform to make every important school update easier to reach, understand, and trust."</div>
+                        </div>
+                    </article>
+
+                    <article class="creator-card">
+                        <div class="creator-photo">
+                            <img src="creator-mary.jpg" alt="Quevedo Mary Chris" />
+                        </div>
+                        <div class="creator-info">
+                            <h4>Quevedo Mary Chris</h4>
+                            <div class="creator-role">Creator</div>
+                            <div class="creator-quote">"Good communication creates a stronger campus community, and this portal was designed to support that every day."</div>
+                        </div>
+                    </article>
+
+                    <article class="creator-card">
+                        <div class="creator-photo">
+                            <img src="creator-shaira.jpg" alt="Zamora Shaira Jane" />
+                        </div>
+                        <div class="creator-info">
+                            <h4>Zamora Shaira Jane</h4>
+                            <div class="creator-role">Creator</div>
+                            <div class="creator-quote">"Our vision was to create a space where announcements feel clear, official, and always within reach."</div>
+                        </div>
+                    </article>
+                </div>
+            </section>
         </div>
     </form>
 </body>
