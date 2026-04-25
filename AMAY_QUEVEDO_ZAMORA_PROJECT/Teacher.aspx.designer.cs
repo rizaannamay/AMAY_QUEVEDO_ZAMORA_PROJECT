@@ -24,6 +24,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+<<<<<<< HEAD
         /// searchButton control.
         /// </summary>
         /// <remarks>
@@ -31,5 +32,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button searchButton;
+=======
+
+>>>>>>> 826c43e85864f69164de288ebdb574d79feeeee6
     }
 }
