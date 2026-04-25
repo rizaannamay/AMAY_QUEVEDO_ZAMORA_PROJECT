@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchStudent.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchStudent" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,22 +16,20 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        /* ── LIGHT MODE — Ice Blue palette ── */
+        /* ── BACKGROUND — same as SearchDashboard.aspx ── */
         :root {
-            --page-text: #1E3A8A;
-            --surface: rgba(255,255,255,0.97);
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255,255,255,0.95);
             --surface-strong: #ffffff;
-            --surface-soft: #EFF6FF;
-            --border: #DBEAFE;
-            --border-strong: #93C5FD;
-            --primary: #1E3A8A;
-            --primary-2: #2563EB;
-            --accent: #3B82F6;
-            --muted: #64748B;
-            --muted-light: #94A3B8;
-            --shadow: 0 4px 20px rgba(30,58,138,0.10);
-            --shadow-md: 0 8px 32px rgba(30,58,138,0.14);
-            --active-bg: #DBEAFE;
+            --surface-soft: #f0f5ff;
+            --border: rgba(26,58,92,0.12);
+            --primary: #1a3a5c;
+            --primary-2: #2c5a7a;
+            --muted: #6b7c8f;
+            --muted-light: #9db0c4;
+            --shadow: 0 8px 24px rgba(0,0,0,0.08);
+            --active-bg: #e8f0fe;
         }
 
         body {
@@ -39,84 +37,75 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background: linear-gradient(160deg,#EFF6FF 0%,#F0F5FF 50%,#E8F0FE 100%);
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
 
         /* ── DARK MODE ── */
         body.dark-mode {
+            --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
             --surface: rgba(15,25,55,0.75);
             --surface-strong: rgba(15,25,55,0.92);
             --surface-soft: rgba(255,255,255,0.07);
             --border: rgba(255,255,255,0.1);
-            --border-strong: rgba(255,255,255,0.2);
             --primary: #818cf8;
             --primary-2: #6366f1;
-            --accent: #6366f1;
             --muted: #94a3b8;
             --muted-light: #64748b;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
-            --shadow-md: 0 12px 40px rgba(0,0,0,0.6);
             --active-bg: rgba(99,102,241,0.18);
-            background: linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url('bg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: #0f172a;
         }
 
+        /* ── NAVBAR — blue gradient header ── */
         .glass-nav {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid #DBEAFE;
-            box-shadow: 0 2px 16px rgba(30,58,138,0.08);
-            transition: background 0.4s ease, border-color 0.4s ease;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            border-bottom: none;
+            box-shadow: 0 4px 20px rgba(30,58,138,0.3);
+            transition: background 0.4s ease;
         }
         body.dark-mode .glass-nav {
-            background: rgba(15,25,55,0.82);
-            border-bottom-color: rgba(255,255,255,0.08);
-            box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
+        /* Force nav text/icons white on the blue header */
+        .glass-nav h1,
+        .glass-nav p,
+        .glass-nav a,
+        .glass-nav button { color: #ffffff !important; }
+        .glass-nav .text-muted { color: rgba(255,255,255,0.7) !important; }
+
+        /* ── GLASS SIDEBAR ── */
         .glass-sidebar {
-            background: linear-gradient(145deg,#EFF6FF 0%,#F8FAFF 100%);
+            background: var(--surface);
             backdrop-filter: blur(12px);
-            border: 1px solid #DBEAFE;
-            box-shadow: 0 4px 24px rgba(30,58,138,0.10);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
             transition: background 0.4s ease, border-color 0.4s ease;
         }
-        body.dark-mode .glass-sidebar {
-            background: rgba(15,25,55,0.75);
-            border-color: rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
 
+        /* ── GLASS CARD ── */
         .glass-card {
-            background: linear-gradient(145deg,#EFF6FF 0%,#F8FAFF 100%);
+            background: var(--surface);
             backdrop-filter: blur(12px);
-            border: 1px solid #DBEAFE;
-            box-shadow: 0 4px 20px rgba(30,58,138,0.08);
+            border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
 
         .glass-card:hover {
-            border-color: #93C5FD;
-            box-shadow: 0 8px 28px rgba(30,58,138,0.14);
+            border-color: rgba(99,102,241,0.3);
             transform: translateY(-2px);
         }
-        body.dark-mode .glass-card {
-            background: rgba(15,25,55,0.75);
-            border-color: rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
-        body.dark-mode .glass-card:hover {
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6);
-        }
 
+        /* ── HERO ── */
         .hero-section {
-            background: linear-gradient(135deg,#1E3A8A 0%,#2563EB 60%,#3B82F6 100%);
+            background: linear-gradient(135deg, rgba(30,58,138,0.9), rgba(79,70,229,0.85));
             backdrop-filter: blur(4px);
             position: relative;
             overflow: hidden;
@@ -132,37 +121,37 @@
             opacity: 0.5;
         }
 
+        /* ── ANNOUNCE CARD ── */
         .announce-card {
-            background: linear-gradient(145deg,#EFF6FF 0%,#FFFFFF 100%);
-            border: 1px solid #DBEAFE;
+            background: var(--surface-strong);
+            border: 1px solid #3B82F6;
             border-radius: 20px;
-            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-            box-shadow: 0 4px 20px rgba(30,58,138,0.08);
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: var(--shadow);
             overflow: hidden;
+            will-change: transform;
         }
 
         .announce-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(30,58,138,0.15);
-            border-color: #93C5FD;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+            border-color: #1E3A8A;
         }
         body.dark-mode .announce-card {
             background: rgba(15,25,55,0.92);
-            border-color: rgba(255,255,255,0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-color: #3B82F6;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
         }
         body.dark-mode .announce-card:hover {
+            border-color: #93C5FD;
             box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-            border-color: rgba(99,102,241,0.4);
         }
 
-        .card-author-name { color: #1E3A8A; font-weight: 700; font-size: 15px; }
-        .card-meta        { color: #64748B; font-size: 12px; }
-        .card-title       { color: #1E3A8A; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .card-desc        { color: #334155; font-size: 13px; line-height: 1.6; }
-        body.dark-mode .card-author-name,
-        body.dark-mode .card-title { color: #93C5FD; }
-        body.dark-mode .card-desc  { color: #e4e6eb; }
+        /* Card text colors */
+        .card-author-name { color: var(--primary); font-weight: 700; font-size: 15px; }
+        .card-meta        { color: var(--muted); font-size: 12px; }
+        .card-title       { color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .card-desc        { color: var(--page-text); font-size: 13px; line-height: 1.6; }
 
         .card-banner {
             background: linear-gradient(135deg,#1e3a8a,#4f46e5);
@@ -178,6 +167,7 @@
         .banner-events     { background: linear-gradient(135deg,#064e3b,#0d9488,#14b8a6); }
         .banner-default    { background: linear-gradient(135deg,#1e1b4b,#4f46e5,#818cf8); }
 
+        /* ── POST STATS BAR ── */
         .post-stats {
             display: flex;
             gap: 16px;
@@ -190,6 +180,7 @@
         .post-stats span { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
         .post-stats span:hover { color: var(--primary); }
 
+        /* ── ACTION BUTTONS ── */
         .action-buttons { display: flex; gap: 4px; padding: 6px 20px 10px; }
         .action-btn {
             flex: 1;
@@ -207,11 +198,13 @@
             transition: all 0.2s;
             font-family: inherit;
         }
-        .action-btn:hover { background: var(--surface-soft); color: var(--primary); }
+        .action-btn:hover { background: #DBEAFE; color: #1E3A8A; }
         .action-btn.liked { color: #dc2626; }
         .action-btn.pinned-active { color: #e65100; }
-        .action-btn.notif-active { color: #6366f1; }
+        .action-btn.notif-active { color: #3B82F6; }
+        body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
 
+        /* ── COMMENTS SECTION ── */
         .comments-section { padding: 0 20px 16px; border-top: 1px solid var(--border); display: none; }
         .comments-section.show { display: block; }
         .comment-input-row { display: flex; gap: 8px; margin: 12px 0; }
@@ -258,17 +251,25 @@
         .comment-time   { font-size: 10px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px 0; text-align: center; color: var(--muted-light); font-size: 12px; }
 
-        .cat-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
-        .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        /* ── CATEGORY BADGE ── */
+        .cat-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        .cat-exam       { background: #DBEAFE; color: #1E3A8A; }
         .cat-suspension { background: #ffebee; color: #c62828; }
-        .cat-event      { background: #e8f5e9; color: #2e7d32; }
-        .cat-default    { background: #f3e5f5; color: #7b1fa2; }
+        .cat-event      { background: #dcfce7; color: #166534; }
+        .cat-default    { background: #EDE9FE; color: #5B21B6; }
 
-        body.dark-mode .cat-exam       { background: rgba(25,118,210,0.2); color: #90caf9; }
+        body.dark-mode .cat-exam       { background: rgba(30,58,138,0.3);  color: #93C5FD; }
         body.dark-mode .cat-suspension { background: rgba(198,40,40,0.2);  color: #ef9a9a; }
-        body.dark-mode .cat-event      { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
-        body.dark-mode .cat-default    { background: rgba(123,31,162,0.2); color: #ce93d8; }
+        body.dark-mode .cat-event      { background: rgba(22,101,52,0.25); color: #86efac; }
+        body.dark-mode .cat-default    { background: rgba(91,33,182,0.2);  color: #c4b5fd; }
 
+        /* ── HISTORY ITEMS ── */
         .history-item {
             cursor: pointer;
             transition: all 0.2s ease;
@@ -286,21 +287,25 @@
             color: var(--primary);
         }
 
+        /* ── SEARCH INPUT ── */
         .search-input {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1.5px solid rgba(255,255,255,0.5);
             transition: all 0.2s;
-            color: white;
+            color: #ffffff;
         }
         .search-input:focus {
-            background: rgba(255,255,255,0.15);
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.9);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
             outline: none;
         }
-        .search-input::placeholder { color: rgba(255,255,255,0.6); }
+        .search-input::placeholder { color: rgba(255,255,255,0.65); }
+        /* search icon always white on blue nav */
+        .glass-nav .fa-search { color: rgba(255,255,255,0.85) !important; }
 
+        /* ── FILTER SELECTS ── */
         .filter-select {
             background: var(--surface-soft);
             backdrop-filter: blur(4px);
@@ -311,10 +316,19 @@
         .filter-select:focus { border-color: #6366f1; outline: none; }
         .filter-select option { background: var(--surface-strong); color: var(--page-text); }
 
+        /* flatpickr alt-input inherits icon spacing */
+        .flatpickr-input.form-control.input { padding-left: 2.25rem !important; }
+
+        /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.5); border-radius: 10px; }
 
+        /* ── RESULTS CONTAINER ── */
+        #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
+        .announce-card { will-change: transform; }
+
+        /* ── TOAST ── */
         .toast-msg {
             position: fixed;
             bottom: 28px;
@@ -338,12 +352,14 @@
             100% { opacity: 0; }
         }
 
+        /* ── FLIP TRANSITION ── */
         @keyframes flipIn {
             0%   { transform: perspective(1200px) rotateY(90deg); opacity: 0; }
             100% { transform: perspective(1200px) rotateY(0deg);  opacity: 1; }
         }
         .page-flip-in { animation: flipIn 0.18s ease-out forwards; transform-origin: center center; }
 
+        /* ── SMOOTH TRANSITIONS ── */
         *, *::before, *::after {
             transition: background-color 0.3s ease, border-color 0.3s ease,
                         color 0.3s ease, box-shadow 0.3s ease;
@@ -354,6 +370,7 @@
             .sidebar-hidden-mobile { position: fixed; left: -280px; transition: left 0.3s; z-index: 50; }
         }
 
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
             .action-buttons { padding: 6px 14px 10px; gap: 2px; }
@@ -385,68 +402,43 @@
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
 
                         <!-- Logo -->
-                        <div class="flex items-center gap-3 cursor-pointer group">
-                            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
+                        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateWithFlip('Student.aspx')">
+                            <div class="bg-white/20 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
                             <div>
-                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight" style="color:var(--primary)">CampusConnect</h1>
-                                <p class="text-xs font-medium hidden sm:block" style="color:var(--muted)">Student Portal</p>
+                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusConnect</h1>
+                                <p class="text-xs font-medium hidden sm:block text-white/70">Student Portal</p>
                             </div>
                         </div>
 
                         <!-- Search Bar -->
                         <div class="flex-1 max-w-md mx-4">
                             <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-indigo-300 text-sm"></i>
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/80"></i>
                                 <asp:TextBox ID="searchInput" runat="server" CssClass="search-input w-full pl-10 pr-4 py-2 rounded-xl" placeholder="Search announcements..."></asp:TextBox>
                             </div>
                         </div>
 
                         <!-- Right controls -->
                         <div class="flex items-center gap-3 md:gap-4">
-                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx"
-                                CssClass="p-2 hover:bg-white/20 rounded-full transition-all" style="color:var(--primary)">
-                                <i class="fas fa-home text-xl"></i>
-                            </asp:HyperLink>
-
                             <div class="relative">
-                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition" style="color:var(--primary)">
+                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
                                     <i class="fas fa-bell text-xl"></i>
                                 </button>
-                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg" style="display:none">0</span>
+                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-400 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
                             </div>
 
-                            <div class="flex items-center gap-3 pl-2" style="border-left:1px solid var(--border)">
-                                <div class="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                                    <i class="fas fa-user-graduate text-sm md:text-base"></i>
-                                </div>
-                                <div class="hidden sm:block">
-                                    <p class="text-sm font-semibold leading-tight" style="color:var(--primary)">Maria Santos</p>
-                                    <p class="text-xs" style="color:var(--muted)">Student · BSIT</p>
-                                </div>
-                            </div>
+                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx"
+                                CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
+                                <i class="fas fa-home text-xl"></i>
+                            </asp:HyperLink>
                         </div>
                     </div>
                 </div>
             </header>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-
-                <!-- HERO -->
-                <div class="hero-section rounded-2xl mb-8 p-8 md:p-10 text-center shadow-2xl border border-white/20 relative overflow-hidden">
-                    <div class="relative z-10">
-                        <div class="inline-block p-4 bg-white/20 backdrop-blur-md rounded-full mb-5">
-                            <i class="fas fa-megaphone text-4xl md:text-5xl text-white"></i>
-                        </div>
-                        <h2 class="text-2xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-2xl mb-3">
-                            Stay Updated with Campus Announcements
-                        </h2>
-                        <p class="text-indigo-100 text-base md:text-lg max-w-2xl mx-auto drop-shadow">
-                            Find events, schedules, and important updates from your university community
-                        </p>
-                    </div>
-                </div>
 
                 <!-- TWO COLUMN LAYOUT -->
                 <div class="flex flex-col lg:flex-row gap-6">
@@ -459,7 +451,7 @@
                                     <i class="fas fa-history text-lg" style="color:var(--primary)"></i>
                                     <h3 class="font-bold text-base" style="color:var(--primary)">Search History</h3>
                                 </div>
-                                <button type="button" id="clearHistoryBtn" class="text-xs transition px-2 py-1 rounded-lg hover:bg-white/10" style="color:#ef4444">
+                                <button type="button" id="clearHistoryBtn" class="text-xs transition px-3 py-1 rounded-lg" style="color:#ef4444">
                                     <i class="fas fa-trash-alt mr-1"></i>Clear
                                 </button>
                             </div>
@@ -468,7 +460,7 @@
                             </div>
 
                             <!-- Pinned section -->
-                            <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
+                            <div class="mt-5 pt-4" style="border-top:2px solid var(--border)">
                                 <div class="flex items-center gap-2 mb-3">
                                     <i class="fas fa-thumbtack text-sm" style="color:#e65100"></i>
                                     <h3 class="font-bold text-sm" style="color:var(--primary)">Pinned (<span id="pinnedCount">0</span>)</h3>
@@ -485,18 +477,14 @@
 
                         <!-- Filters -->
                         <div class="glass-card rounded-2xl p-4 mb-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <select id="categoryFilter" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer">
-                                    <option value="all">📢 All Announcements</option>
-                                    <option value="Exam Schedule">📅 Exam Schedule</option>
-                                    <option value="Class Suspension">⚠️ Class Suspension</option>
-                                    <option value="Campus Events">🎉 Campus Events</option>
-                                </select>
-                                <input type="text" id="dateFilter" placeholder="📅 Filter by date" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer" />
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none" style="color:var(--muted);z-index:1"></i>
+                                    <input type="text" id="dateFilter" placeholder="Filter by date" class="filter-select w-full pl-9 pr-4 py-2 rounded-xl text-sm cursor-pointer" />
+                                </div>
                                 <select id="sortFilter" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer">
-                                    <option value="latest">📅 Latest First</option>
-                                    <option value="oldest">📅 Oldest First</option>
-                                    <option value="pinned">📌 Pinned First</option>
+                                    <option value="latest">Latest First</option>
+                                    <option value="oldest">Oldest First</option>
                                 </select>
                             </div>
                         </div>
@@ -529,7 +517,7 @@
             </div>
 
             <!-- Footer -->
-            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
+            <footer class="border-t-2 mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
                 <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Students to Campus Life
             </footer>
         </div>
@@ -553,7 +541,7 @@
 
     let likes      = STORAGE.get('sd_likes')     || {};
     let likeCounts = STORAGE.get('sd_likeCounts') || {};
-    let pins       = STORAGE.get('campus_pins')   || {};   // shared with Teacher + SearchDashboard
+    let pins       = STORAGE.get('campus_pins')   || {};
     let notifs     = STORAGE.get('sd_notifs')     || {};
     let comments   = STORAGE.get('sd_comments')   || {};
     let searchHistory = STORAGE.get('campus_history') || [];
@@ -572,7 +560,6 @@
 
     const searchInput      = document.getElementById('<%= searchInput.ClientID %>');
     const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
-    const categoryFilter   = document.getElementById('categoryFilter');
     const dateFilter       = document.getElementById('dateFilter');
     const sortFilter       = document.getElementById('sortFilter');
     const resultsContainer = document.getElementById('resultsContainer');
@@ -585,7 +572,6 @@
     const notificationBadge= document.getElementById('notificationBadge');
 
     let currentSearchTerm = '';
-    let currentCategory   = 'all';
     let currentDate       = '';
     let currentSort       = 'latest';
 
@@ -617,12 +603,6 @@
         setTimeout(() => t.remove(), 2700);
     }
 
-    function updateNotifBadge() {
-        const count = Object.values(notifs).filter(Boolean).length;
-        notificationBadge.textContent = count;
-        notificationBadge.style.display = count > 0 ? 'flex' : 'none';
-    }
-
     function saveHistory() {
         STORAGE.set('campus_history', searchHistory.slice(0,15));
         renderHistory();
@@ -643,7 +623,7 @@
         }
         historyListDiv.innerHTML = searchHistory.map(term => `
             <div class="history-item flex items-center justify-between group" data-term="${escapeHtml(term)}">
-                <span><i class="fas fa-search text-xs mr-2 opacity-50"></i>${escapeHtml(term)}</span>
+                <span><i class="fas fa-search text-xs mr-2"></i>${escapeHtml(term)}</span>
                 <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
             </div>
         `).join('');
@@ -682,7 +662,6 @@
                 a.professor.toLowerCase().includes(kw)
             );
         }
-        if (currentCategory !== 'all') results = results.filter(a => a.category === currentCategory);
         if (currentDate) results = results.filter(a => a.date === currentDate);
 
         if (currentSort === 'pinned') {
@@ -696,6 +675,14 @@
             results.sort((a,b) => (pins[b.id]?1:0) - (pins[a.id]?1:0));
         }
         return results;
+    }
+
+    function updateNotifBadge() {
+        const count = Object.values(notifs).filter(Boolean).length;
+        if (notificationBadge) {
+            notificationBadge.textContent = count;
+            notificationBadge.style.display = count > 0 ? 'flex' : 'none';
+        }
     }
 
     function renderCommentsList(id) {
@@ -739,7 +726,9 @@
                 <div style="padding:18px 20px 12px">
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
                         <div style="display:flex;align-items:center;gap:12px;flex:1">
-                            <div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${ann.professorAvatar}</div>
+                            <div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                                            <i class="fas fa-user" style="color:var(--primary);font-size:18px"></i>
+                                        </div>
                             <div>
                                 <div class="card-author-name">${escapeHtml(ann.professor)}</div>
                                 <div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)} at ${ann.time}</div>
@@ -752,7 +741,7 @@
                             <button type="button"
                                 onclick="togglePin(${ann.id})"
                                 title="${pinned ? 'Unpin' : 'Pin this announcement'}"
-                                style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'rgba(255,255,255,0.7)'}">
+                                style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'var(--muted-light)'}">
                                 <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
                             </button>
                         </div>
@@ -777,10 +766,6 @@
                     <span onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
                         <i class="far fa-share-square"></i> Share
                     </span>
-                    <span onclick="toggleNotif(${ann.id})" title="Toggle notification">
-                        <i class="${notifOn?'fas':'far'} fa-bell" style="${notifOn?'color:#6366f1':''}"></i>
-                        ${notifOn ? '<span style="font-size:10px;color:#6366f1">On</span>' : 'Notify'}
-                    </span>
                 </div>
 
                 <div class="action-buttons">
@@ -792,9 +777,6 @@
                     </button>
                     <button type="button" class="action-btn" onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
                         <i class="fas fa-share-alt"></i> Share
-                    </button>
-                    <button type="button" class="action-btn ${notifOn?'notif-active':''}" onclick="toggleNotif(${ann.id})">
-                        <i class="${notifOn?'fas':'far'} fa-bell"></i> ${notifOn?'Notif On':'Notify'}
                     </button>
                 </div>
 
@@ -884,7 +866,6 @@
     }
 
     function applyFilters() {
-        currentCategory = categoryFilter.value;
         currentDate     = dateFilter.value || '';
         currentSort     = sortFilter.value;
         renderResults();
@@ -892,10 +873,9 @@
 
     function resetEverything() {
         searchInput.value    = '';
-        categoryFilter.value = 'all';
         dateFilter.value     = '';
         sortFilter.value     = 'latest';
-        currentSearchTerm = ''; currentCategory = 'all'; currentDate = ''; currentSort = 'latest';
+        currentSearchTerm = ''; currentDate = ''; currentSort = 'latest';
         if (lastSearchHidden) lastSearchHidden.value = '';
         renderResults();
     }
@@ -909,19 +889,24 @@
             dateFormat: "Y-m-d",
             altInput: true,
             altFormat: "F j, Y",
+            allowInput: true,
+            wrap: false,
             onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
         });
+        // Add calendar icon to the flatpickr input after init
+        const fpInput = dateFilter.nextElementSibling || dateFilter;
+        if (fpInput && fpInput.classList.contains('flatpickr-input')) {
+            fpInput.style.paddingLeft = '2rem';
+        }
 
         searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
-        categoryFilter.addEventListener('change', applyFilters);
         sortFilter.addEventListener('change', applyFilters);
         if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
         if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => {
             if (confirm('Clear all search history?')) { searchHistory = []; saveHistory(); }
         });
         if (notificationBtn) notificationBtn.addEventListener('click', () => {
-            const on = Object.values(notifs).filter(Boolean).length;
-            showToast(on > 0 ? `🔔 You have ${on} active notification(s)` : '🔕 No active notifications');
+            navigateWithFlip('Notifications.aspx');
         });
 
         try {
@@ -936,6 +921,13 @@
 
     init();
 
+    function navigateWithFlip(url) {
+        var shell = document.querySelector('.relative.z-10') || document.body;
+        shell.style.opacity = '0';
+        shell.style.transition = 'opacity 0.15s ease';
+        setTimeout(function() { window.location.href = url; }, 150);
+    }
+
     // ── Theme + flip-in ──────────────────────────────────────
     (function () {
         const KEY = 'campus_theme';
@@ -944,12 +936,17 @@
             document.body.classList.toggle('dark-mode', mode === 'dark');
         }
 
-        applyTheme(localStorage.getItem(KEY) || 'dark');
+        applyTheme(localStorage.getItem(KEY) || 'light');
 
         window.addEventListener('storage', e => {
-            if (e.key === KEY) applyTheme(e.newValue || 'dark');
+            if (e.key === KEY) applyTheme(e.newValue || 'light');
             if (e.key === 'campus_pins') {
                 pins = JSON.parse(e.newValue || '{}');
+                renderResults();
+            }
+            if (e.key === 'sd_notifs') {
+                notifs = JSON.parse(e.newValue || '{}');
+                updateNotifBadge();
                 renderResults();
             }
         });

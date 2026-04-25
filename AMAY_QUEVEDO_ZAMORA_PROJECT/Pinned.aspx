@@ -16,13 +16,13 @@
 
         :root {
             --bg-image: url('wbg.jpg');
-            --page-text: #000000;
+            --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.9);
             --surface-strong: rgba(255, 255, 255, 0.95);
             --border: rgba(26, 58, 92, 0.14);
-            --primary: #000000;
+            --primary: #1a3a5c;
             --primary-2: #2c5a7a;
-            --muted: #000000;
+            --muted: #6b7c8f;
             --shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
         }
 
@@ -68,11 +68,11 @@
             gap: 16px;
             font-size: 34px;
             font-weight: 800;
-            color: #000000;
+            color: var(--primary);
         }
 
         .page-title i {
-            color: #000000;
+            color: var(--primary);
         }
 
         .back-link {
@@ -191,6 +191,16 @@
             box-shadow: var(--shadow);
         }
 
+        /* Category badges */
+        .cat-badge { display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700; }
+        .cat-exam       { background:#DBEAFE;color:#1E3A8A; }
+        .cat-suspension { background:#ffebee;color:#c62828; }
+        .cat-event      { background:#dcfce7;color:#166534; }
+        .cat-default    { background:#EDE9FE;color:#5B21B6; }
+
+        /* Action button hover */
+        button:hover { opacity: 0.85; }
+
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #f2f6fb;
@@ -255,9 +265,9 @@
                         <i class="fas fa-thumbtack"></i>
                         <span>Pinned Announcements</span>
                     </div>
-                    <a class="back-link" href="Student.aspx">
+                    <a class="back-link" href="<%= BackUrl %>">
                         <i class="fas fa-arrow-left"></i>
-                        <span>Back to Student Portal</span>
+                        <span><%= BackLabel %></span>
                     </a>
                 </div>
 
@@ -269,24 +279,185 @@
     </form>
 
     <script>
-        var THEME_STORAGE_KEY = 'campus_theme';
+        // ── Shared data (same as Student/Teacher/Search pages) ──
+        var announcementsDB = [
+            { id:1, title:"Final Exam Schedule Spring 2026",   category:"Exam Schedule",    date:"2026-05-10", time:"09:00 AM", professor:"Dr. Reyes",       description:"Final exams will be held from May 15-20, 2026. Please check your exam permits online. Bring school ID and test permit." },
+            { id:2, title:"Class Suspension due to Typhoon",   category:"Class Suspension", date:"2026-04-25", time:"08:00 PM", professor:"Admin Office",    description:"Classes suspended on April 26-27 due to Typhoon. All activities will shift to online learning platforms." },
+            { id:3, title:"University Hackathon 2026",         category:"Campus Events",    date:"2026-05-20", time:"10:00 AM", professor:"IT Department",   description:"48-hour coding challenge with exciting prizes. Form teams of 3-4 members. Registration ends May 15." },
+            { id:4, title:"Midterm Grade Release",             category:"Exam Schedule",    date:"2026-04-22", time:"02:00 PM", professor:"Registrar",       description:"Midterm grades are now available via the student portal. Check your assessment and email your instructors for concerns." },
+            { id:5, title:"Transport Strike Advisory",         category:"Class Suspension", date:"2026-04-28", time:"07:30 AM", professor:"Student Affairs", description:"No face-to-face classes on April 30 due to nationwide transport strike. Asynchronous activities will be provided." },
+            { id:6, title:"Cultural Festival 2026",            category:"Campus Events",    date:"2026-05-05", time:"09:00 AM", professor:"OSA",             description:"Celebration of arts, international food fair, and cultural performances. Free entrance for all students!" },
+            { id:7, title:"Research Colloquium",               category:"Campus Events",    date:"2026-05-12", time:"11:00 AM", professor:"Graduate School", description:"Present your research papers and get feedback from panelists. Best paper receives recognition award." }
+        ];
 
-function applyStoredTheme() {
-    var savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-}
+        var THEME_KEY = 'campus_theme';
+        var pins      = JSON.parse(localStorage.getItem('campus_pins')   || '{}');
+        var likes     = JSON.parse(localStorage.getItem('sd_likes')      || '{}');
+        var likeCounts= JSON.parse(localStorage.getItem('sd_likeCounts') || '{}');
+        var comments  = JSON.parse(localStorage.getItem('sd_comments')   || '{}');
 
-window.addEventListener('storage', function(event) {
-    if (event.key === THEME_STORAGE_KEY) {
+        function saveState() {
+            localStorage.setItem('campus_pins',    JSON.stringify(pins));
+            localStorage.setItem('sd_likes',       JSON.stringify(likes));
+            localStorage.setItem('sd_likeCounts',  JSON.stringify(likeCounts));
+            localStorage.setItem('sd_comments',    JSON.stringify(comments));
+        }
+
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/[&<>"']/g, function(c) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+            });
+        }
+
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+        }
+
+        function getCatClass(cat) {
+            if (cat === 'Exam Schedule')    return 'cat-exam';
+            if (cat === 'Class Suspension') return 'cat-suspension';
+            if (cat === 'Campus Events')    return 'cat-event';
+            return 'cat-default';
+        }
+
+        function showToast(msg) {
+            var t = document.createElement('div');
+            t.textContent = msg;
+            t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
+            document.body.appendChild(t);
+            setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
+        }
+
+        function renderComments(id) {
+            var list = comments[id] || [];
+            if (!list.length) return '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>';
+            return list.map(function(c) {
+                return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                    + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                    + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                    + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                    + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.time) + '</div></div></div>';
+            }).join('');
+        }
+
+        function toggleLike(id) {
+            likes[id] = !likes[id];
+            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
+            if (likeCounts[id] < 0) likeCounts[id] = 0;
+            saveState();
+            renderPinned();
+            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
+        }
+
+        function togglePin(id) {
+            pins[id] = !pins[id];
+            saveState();
+            renderPinned();
+            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
+        }
+
+        function openComments(id) {
+            var sec = document.getElementById('cs-' + id);
+            if (sec) sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function postComment(id) {
+            var input = document.getElementById('ci-' + id);
+            if (!input) return;
+            var text = input.value.trim();
+            if (!text) { showToast('Please write a comment first'); return; }
+            if (!comments[id]) comments[id] = [];
+            comments[id].push({ author:'You', text:text, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
+            saveState();
+            input.value = '';
+            var cl = document.getElementById('cl-' + id);
+            if (cl) cl.innerHTML = renderComments(id);
+            showToast('💬 Comment posted!');
+        }
+
+        function sharePost(id, title) {
+            var url = window.location.href.split('?')[0] + '?post=' + id;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied: ' + title); });
+            } else { showToast('📤 Shared!'); }
+        }
+
+        function renderPinned() {
+            var pinned = announcementsDB.filter(function(a) { return !!pins[a.id]; });
+            var container = document.querySelector('.pinned-list');
+            if (!container) return;
+
+            if (!pinned.length) {
+                container.innerHTML = '<div class="empty-state"><i class="fas fa-thumbtack" style="font-size:40px;margin-bottom:12px;opacity:0.4"></i><p>No pinned announcements yet.</p><p style="font-size:13px;margin-top:6px">Pin announcements from the main board to see them here.</p></div>';
+                return;
+            }
+
+            container.innerHTML = pinned.map(function(ann) {
+                var liked   = !!likes[ann.id];
+                var lc      = likeCounts[ann.id] || 0;
+                var cc      = (comments[ann.id] || []).length;
+                var catCls  = getCatClass(ann.category);
+                var catIcon = ann.category === 'Exam Schedule' ? 'fas fa-file-alt' : ann.category === 'Class Suspension' ? 'fas fa-cloud-rain' : 'fas fa-calendar-alt';
+
+                return '<div class="pinned-card">'
+                    + '<div class="card-top">'
+                    +   '<div class="card-author">'
+                    +     '<div class="avatar"><i class="' + catIcon + '"></i></div>'
+                    +     '<div>'
+                    +       '<div class="author-name">' + escapeHtml(ann.professor) + '</div>'
+                    +       '<div class="meta">'
+                    +         '<span><i class="far fa-calendar-alt"></i> ' + formatDate(ann.date) + ' at ' + ann.time + '</span>'
+                    +         '<span class="cat-badge ' + catCls + '">' + escapeHtml(ann.category) + '</span>'
+                    +       '</div>'
+                    +     '</div>'
+                    +   '</div>'
+                    +   '<div style="display:flex;align-items:center;gap:8px">'
+                    +     '<span class="status-pill"><i class="fas fa-thumbtack" style="margin-right:4px"></i>Pinned</span>'
+                    +     '<button onclick="togglePin(' + ann.id + ')" style="background:none;border:none;cursor:pointer;font-size:18px;color:#ea580c;padding:4px" title="Unpin"><i class="fas fa-thumbtack"></i></button>'
+                    +   '</div>'
+                    + '</div>'
+                    + '<div class="card-title">' + escapeHtml(ann.title) + '</div>'
+                    + '<div class="card-text">' + escapeHtml(ann.description) + '</div>'
+                    // stats bar
+                    + '<div style="display:flex;gap:16px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);color:var(--muted);font-size:13px;margin-top:14px">'
+                    +   '<span onclick="toggleLike(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="' + (liked?'fas':'far') + ' fa-heart" style="' + (liked?'color:#dc2626':'') + '"></i> ' + lc + ' Likes</span>'
+                    +   '<span onclick="openComments(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="far fa-comment"></i> ' + cc + ' Comments</span>'
+                    +   '<span onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="far fa-share-square"></i> Share</span>'
+                    + '</div>'
+                    // action buttons
+                    + '<div style="display:flex;gap:4px;padding:6px 0">'
+                    +   '<button onclick="toggleLike(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:' + (liked?'#dc2626':'var(--muted)') + ';display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="' + (liked?'fas':'far') + ' fa-heart"></i> ' + (liked?'Liked':'Like') + '</button>'
+                    +   '<button onclick="openComments(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="far fa-comment"></i> Comment</button>'
+                    +   '<button onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="fas fa-share-alt"></i> Share</button>'
+                    + '</div>'
+                    // comments section
+                    + '<div id="cs-' + ann.id + '" style="display:none;border-top:1px solid var(--border);padding-top:12px">'
+                    +   '<div style="display:flex;gap:8px;margin-bottom:10px">'
+                    +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment..." style="flex:1;padding:9px 14px;background:var(--surface-soft,#f8fafc);border:1px solid var(--border);border-radius:30px;outline:none;font-size:13px;color:var(--page-text)">'
+                    +     '<button onclick="postComment(' + ann.id + ')" style="background:linear-gradient(135deg,#1a3a5c,#2c5a7a);border:none;padding:0 18px;border-radius:30px;color:#fff;font-weight:600;cursor:pointer;font-size:13px">Post</button>'
+                    +   '</div>'
+                    +   '<div id="cl-' + ann.id + '">' + renderComments(ann.id) + '</div>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
+        }
+
+        // ── Theme ──────────────────────────────────────────────
+        function applyStoredTheme() {
+            document.body.classList.toggle('dark-mode', localStorage.getItem(THEME_KEY) === 'dark');
+        }
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === THEME_KEY) applyStoredTheme();
+            if (e.key === 'campus_pins') {
+                pins = JSON.parse(e.newValue || '{}');
+                renderPinned();
+            }
+        });
+
         applyStoredTheme();
-    }
-});
-
-applyStoredTheme();
+        renderPinned();
     </script>
 </body>
 </html>

@@ -8,17 +8,20 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Student : Page
     {
-<<<<<<< HEAD
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
-
-
-=======
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UserId"] == null)
+            // Session guard — must be logged in as Student
+            if (Session["IsLoggedIn"] == null || !(bool)Session["IsLoggedIn"])
             {
-                Response.Redirect("login.aspx");
+                Response.Redirect("login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+            if (!string.Equals(Session["Role"]?.ToString(), "Student", StringComparison.OrdinalIgnoreCase))
+            {
+                Response.Redirect("Teacher.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
             }
 
             if (!IsPostBack)
@@ -29,288 +32,142 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // NOTE: database calls removed. Using session values or sample data so the page builds and runs without a DB.
+        protected void SearchButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("SearchStudent.aspx");
+        }
+
         private void LoadUserInfo()
         {
-            try
-            {
-                // Prefer session values if present; otherwise use sample defaults
-                string fullName = Session["FullName"]?.ToString() ?? "John Dela Cruz";
-                string email = Session["Email"]?.ToString() ?? "john.delacruz@ctu.edu.ph";
-                string role = Session["Role"]?.ToString() ?? "Student";
+            string fullName = Session["FullName"]?.ToString() ?? "Student";
+            string email    = Session["Email"]?.ToString()    ?? "";
+            string role     = Session["Role"]?.ToString()     ?? "Student";
+            string username = Session["Username"]?.ToString() ?? "";
 
-                // store back to session (keeps existing behavior)
-                Session["FullName"] = fullName;
-                Session["Email"] = email;
-                Session["Role"] = role;
+            string fn = HttpUtility.JavaScriptStringEncode(fullName);
+            string em = HttpUtility.JavaScriptStringEncode(email);
+            string rl = HttpUtility.JavaScriptStringEncode(role);
+            string un = HttpUtility.JavaScriptStringEncode(username);
 
-                string fn = HttpUtility.JavaScriptStringEncode(fullName);
-                string em = HttpUtility.JavaScriptStringEncode(email);
-                string rl = HttpUtility.JavaScriptStringEncode(role);
+            string script = "<script>"
+                + "var el; "
+                + "el=document.getElementById('userName');    if(el) el.innerText=\"" + fn + "\";"
+                + "el=document.getElementById('userRole');    if(el) el.innerText=\"" + rl + "\";"
+                + "el=document.getElementById('pm-fullname'); if(el) el.innerText=\"" + fn + "\";"
+                + "el=document.getElementById('pm-username'); if(el) el.innerText=\"" + un + "\";"
+                + "el=document.getElementById('pm-email');    if(el) el.innerText=\"" + em + "\";"
+                + "el=document.getElementById('pm-role');     if(el) el.innerText=\"" + rl + "\";"
+                + "el=document.getElementById('pm-role2');    if(el) el.innerText=\"" + rl + "\";"
+                + "</script>";
 
-                string script = "<script>"
-                    + "var userName = document.getElementById('userName');"
-                    + "var userRole = document.getElementById('userRole');"
-                    + "var profileName = document.getElementById('profileName');"
-                    + "var profileEmail = document.getElementById('profileEmail');"
-                    + "if(userName) userName.innerText = \"" + fn + "\";"
-                    + "if(userRole) userRole.innerText = \"" + rl + "\";"
-                    + "if(profileName) profileName.innerText = \"" + fn + "\";"
-                    + "if(profileEmail) profileEmail.innerText = \"" + em + "\";"
-                    + "</script>";
-
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadUser", script);
-            }
-            catch (Exception ex)
-            {
-                // keep debug logging so 'ex' is used (removes unused variable warnings)
-                System.Diagnostics.Debug.WriteLine("LoadUserInfo Error: " + ex.Message);
-            }
+            ClientScript.RegisterStartupScript(GetType(), "LoadUser", script);
         }
 
         private void LoadAnnouncements()
         {
-            try
+            var items = new List<Announcement>
             {
-                // Sample announcements - replace with DB logic later if desired
-                var items = new List<Announcement>
-                {
-                    new Announcement
-                    {
-                        AnnouncementId = 1,
-                        Title = "Final Exam Schedule",
-                        Content = "All final examinations will be conducted on May 11-14. Please check department schedules.",
-                        Category = "Exam",
-                        AuthorName = "Office of the Registrar",
-                        CreatedDate = DateTime.Now.AddDays(-2),
-                        LikeCount = 24,
-                        CommentCount = 5,
-                        ShareCount = 3,
-                        IsPinned = true
-                    },
-                    new Announcement
-                    {
-                        AnnouncementId = 2,
-                        Title = "Library Hours Extended",
-                        Content = "Library extended hours during exam week: 7:00 AM - Midnight.",
-                        Category = "Event",
-                        AuthorName = "Student Affairs",
-                        CreatedDate = DateTime.Now.AddDays(-10),
-                        LikeCount = 8,
-                        CommentCount = 2,
-                        ShareCount = 1,
-                        IsPinned = false
-                    }
-                };
+                new Announcement { Id=1, Title="Final Exam Schedule Spring 2026",   Category="Exam",       Author="Dr. Reyes",       Date=DateTime.Now.AddDays(-5),  Content="Final exams will be held from May 15-20, 2026. Please check your exam permits online. Bring school ID and test permit.", Likes=24, Comments=5, Shares=3, Pinned=true  },
+                new Announcement { Id=2, Title="Class Suspension due to Typhoon",   Category="Suspension", Author="Admin Office",    Date=DateTime.Now.AddDays(-2),  Content="Classes suspended on April 26-27 due to Typhoon. All activities will shift to online learning platforms.",              Likes=18, Comments=3, Shares=7, Pinned=false },
+                new Announcement { Id=3, Title="University Hackathon 2026",         Category="Event",      Author="IT Department",   Date=DateTime.Now.AddDays(-10), Content="48-hour coding challenge with exciting prizes. Form teams of 3-4 members. Registration ends May 15.",                   Likes=42, Comments=9, Shares=15,Pinned=false },
+                new Announcement { Id=4, Title="Midterm Grade Release",             Category="Exam",       Author="Registrar",       Date=DateTime.Now.AddDays(-7),  Content="Midterm grades are now available via the student portal. Check your assessment and email your instructors for concerns.",  Likes=31, Comments=6, Shares=4, Pinned=false },
+                new Announcement { Id=5, Title="Cultural Festival 2026",            Category="Event",      Author="OSA",             Date=DateTime.Now.AddDays(-14), Content="Celebration of arts, international food fair, and cultural performances. Free entrance for all students!",                Likes=56, Comments=12,Shares=20,Pinned=false }
+            };
 
-                var sb = new StringBuilder();
-                foreach (var a in items)
-                {
-                    string categoryClass = "";
-                    string categoryIcon = "fas fa-bullhorn";
-                    switch ((a.Category ?? "").ToLower())
-                    {
-                        case "exam":
-                            categoryClass = "post-category-exam";
-                            categoryIcon = "fas fa-file-alt";
-                            break;
-                        case "suspension":
-                            categoryClass = "post-category-suspension";
-                            categoryIcon = "fas fa-cloud-rain";
-                            break;
-                        case "event":
-                            categoryClass = "post-category-event";
-                            categoryIcon = "fas fa-calendar-alt";
-                            break;
-                    }
-
-                    string pinnedClass = a.IsPinned ? "pinned" : "";
-
-<<<<<<< HEAD
-                    html += $@"
-                        <div class='announcement-card' data-category='{category}' data-post-id='{id}'>
-                            <div class='post-header'>
-                                <div class='post-header-left'>
-                                    <div class='post-avatar'>
-                                        <i class='{categoryIcon}'></i>
-                                    </div>
-                                    <div class='post-user-info'>
-                                        <div class='post-author'>{EscapeHtml(author)}</div>
-                                        <div class='post-meta'>
-                                            <span><i class='far fa-calendar-alt'></i> {date:MMMM dd, yyyy}</span>
-                                            <span><i class='far fa-clock'></i> {date:h:mm tt}</span>
-                                            <span class='post-category {categoryClass}'>{category}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button type='button' class='pin-btn-top {pinnedClass}' onclick='togglePin({id})' title='{(pinned ? "Unpin" : "Pin this announcement")}' style='color:{(pinned ? "#e65100" : "var(--muted-light)")}'>
-                                    <i class='{(pinned ? "fas" : "far")} fa-thumbtack'></i>
-                                </button>
-                            </div>
-                            <div class='post-content'>
-                                <div class='post-title'>{EscapeHtml(title)}</div>
-                                <div class='post-text'>{EscapeHtml(content)}</div>
-                            </div>
-                            <div class='post-stats'>
-                                <span onclick='toggleLike({id})'><i class='far fa-heart'></i> <span class='like-count'>{likes}</span> Likes</span>
-                                <span onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> <span class='comment-count'>{comments}</span> Comments</span>
-                                <span onclick='sharePost({id}, null)'><i class='far fa-share-square'></i> <span class='share-count'>{shares}</span> Shares</span>
-                            </div>
-                            <div class='action-buttons'>
-                                <button type='button' class='action-btn like-btn' onclick='toggleLike({id})'><i class='far fa-heart'></i> Like</button>
-                                <button type='button' class='action-btn' onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> Comment</button>
-                                <button type='button' class='action-btn' onclick='sharePost({id}, null)'><i class='fas fa-share-alt'></i> Share</button>
-                                <button type='button' class='action-btn notif-btn' onclick='toggleNotif({id})'><i class='far fa-bell'></i> Notify</button>
-                            </div>
-                            <div class='comments-section' id='commentsSection_{id}' style='display:none;'>
-                                <div class='comment-input'>
-                                    <input type='text' placeholder='Write a comment...' id='commentInput_{id}' />
-                                    <button type='button' onclick='addComment(this, {id})'>Post</button>
-                                </div>
-                                <div class='comments-list' id='commentsList_{id}'>
-                                    <div class='no-comments'>No comments yet. Be the first!</div>
-                                </div>
-                            </div>
-                        </div>";
-                }
-                reader.Close();
-                con.Close();
-
-                if (string.IsNullOrEmpty(html))
-                {
-                    html = "<div style='text-align:center;padding:40px;'>No announcements available.</div>";
-=======
-                    sb.AppendLine("<div class='announcement-card' data-category='" + HttpUtility.HtmlEncode(a.Category) + "' data-post-id='" + a.AnnouncementId + "'>");
-                    sb.AppendLine("  <div class='post-header'>");
-                    sb.AppendLine("    <div class='post-header-left'>");
-                    sb.AppendLine("      <div class='post-avatar'><i class='" + categoryIcon + "'></i></div>");
-                    sb.AppendLine("      <div class='post-user-info'>");
-                    sb.AppendLine("        <div class='post-author'>" + EscapeHtml(a.AuthorName) + "</div>");
-                    sb.AppendLine("        <div class='post-meta'>");
-                    sb.AppendLine("          <span><i class='far fa-calendar-alt'></i> " + a.CreatedDate.ToString("MMMM dd, yyyy") + "</span>");
-                    sb.AppendLine("          <span><i class='far fa-clock'></i> " + a.CreatedDate.ToString("h:mm tt") + "</span>");
-                    sb.AppendLine("          <span class='post-category " + categoryClass + "'>" + EscapeHtml(a.Category) + "</span>");
-                    sb.AppendLine("        </div>");
-                    sb.AppendLine("      </div>");
-                    sb.AppendLine("    </div>");
-                    sb.AppendLine("    <button type='button' class='pin-btn-top " + pinnedClass + "' onclick='togglePinTop(this, " + a.AnnouncementId + ")'><i class='fas fa-thumbtack'></i></button>");
-                    sb.AppendLine("  </div>");
-                    sb.AppendLine("  <div class='post-content'>");
-                    sb.AppendLine("    <div class='post-title'>" + EscapeHtml(a.Title) + "</div>");
-                    sb.AppendLine("    <div class='post-text'>" + EscapeHtml(a.Content) + "</div>");
-                    sb.AppendLine("  </div>");
-                    sb.AppendLine("  <div class='post-stats'>");
-                    sb.AppendLine("    <span onclick='toggleLikeFromStats(this, " + a.AnnouncementId + ")'><i class='far fa-heart'></i> <span class='like-count'>" + a.LikeCount + "</span> Likes</span>");
-                    sb.AppendLine("    <span onclick='scrollToComments(this, " + a.AnnouncementId + ")'><i class='far fa-comment'></i> <span class='comment-count'>" + a.CommentCount + "</span> Comments</span>");
-                    sb.AppendLine("    <span onclick='sharePost(" + a.AnnouncementId + ")'><i class='far fa-share-square'></i> <span class='share-count'>" + a.ShareCount + "</span> Shares</span>");
-                    sb.AppendLine("  </div>");
-                    sb.AppendLine("  <div class='action-buttons'>");
-                    sb.AppendLine("    <button type='button' class='action-btn' onclick='toggleLike(this, " + a.AnnouncementId + ")'><i class='far fa-heart'></i> Like</button>");
-                    sb.AppendLine("    <button type='button' class='action-btn' onclick='toggleComments(this, " + a.AnnouncementId + ")'><i class='far fa-comment'></i> Comment</button>");
-                    sb.AppendLine("    <button type='button' class='action-btn' onclick='sharePost(" + a.AnnouncementId + ")'><i class='fas fa-share'></i> Share</button>");
-                    sb.AppendLine("  </div>");  
-                    sb.AppendLine("  <div class='comments-section' id='commentsSection_" + a.AnnouncementId + "'>");
-                    sb.AppendLine("    <div class='comment-input'>");
-                    sb.AppendLine("      <input type='text' placeholder='Write a comment...' id='commentInput_" + a.AnnouncementId + "' />");
-                    sb.AppendLine("      <button type='button' onclick='addComment(this, " + a.AnnouncementId + ")'>Post</button>");
-                    sb.AppendLine("    </div>");
-                    sb.AppendLine("    <div class='comments-list' id='commentsList_" + a.AnnouncementId + "'>");
-                    sb.AppendLine("      <div class='no-comments'>No comments yet. Be the first!</div>");
-                    sb.AppendLine("    </div>");
-                    sb.AppendLine("  </div>");
-                    sb.AppendLine("</div>");
->>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
-                }
-
-                string html = sb.Length == 0 ? "<div style='text-align:center;padding:40px;'>No announcements available.</div>" : sb.ToString();
-                string encoded = HttpUtility.JavaScriptStringEncode(html);
-                string finalScript = "<script>document.getElementById('announcementsContainer').innerHTML = \"" + encoded + "\";</script>";
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadAnnouncements", finalScript);
-            }
-            catch (Exception ex)
+            var sb = new StringBuilder();
+            foreach (var a in items)
             {
-                System.Diagnostics.Debug.WriteLine("LoadAnnouncements Error: " + ex);
-                string errorScript = "<script>document.getElementById('announcementsContainer').innerHTML = \"<div style=\\\"text-align:center;padding:40px;color:red;\\\">Error loading announcements</div>\";</script>";
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadError", errorScript);
+                string catClass = a.Category == "Exam" ? "post-category-exam" : a.Category == "Suspension" ? "post-category-suspension" : "post-category-event";
+                string catIcon  = a.Category == "Exam" ? "fas fa-file-alt"    : a.Category == "Suspension" ? "fas fa-cloud-rain"         : "fas fa-calendar-alt";
+                string pinClass = a.Pinned ? "pinned" : "";
+                string pinColor = a.Pinned ? "#e65100" : "var(--muted-light)";
+                string pinIcon  = a.Pinned ? "fas" : "far";
+
+                sb.Append("<div class='announcement-card' data-category='" + HttpUtility.HtmlEncode(a.Category) + "' data-post-id='" + a.Id + "'>");
+                sb.Append("<div class='post-header'><div class='post-header-left'>");
+                sb.Append("<div class='post-avatar'><i class='" + catIcon + "'></i></div>");
+                sb.Append("<div class='post-user-info'><div class='post-author'>" + EscapeHtml(a.Author) + "</div>");
+                sb.Append("<div class='post-meta'><span><i class='far fa-calendar-alt'></i> " + a.Date.ToString("MMMM dd, yyyy") + "</span>");
+                sb.Append("<span class='post-category " + catClass + "'>" + EscapeHtml(a.Category) + "</span></div></div></div>");
+                sb.Append("<button type='button' class='pin-btn-top " + pinClass + "' onclick='togglePin(" + a.Id + ")' style='color:" + pinColor + "'><i class='" + pinIcon + " fa-thumbtack'></i></button>");
+                sb.Append("</div>");
+                sb.Append("<div class='post-content'><div class='post-title'>" + EscapeHtml(a.Title) + "</div><div class='post-text'>" + EscapeHtml(a.Content) + "</div></div>");
+                sb.Append("<div class='post-stats'>");
+                sb.Append("<span onclick='toggleLike(" + a.Id + ")'><i class='far fa-heart'></i> <span class='like-count'>" + a.Likes + "</span> Likes</span>");
+                sb.Append("<span onclick='toggleCommentSection(" + a.Id + ")'><i class='far fa-comment'></i> <span class='comment-count'>" + a.Comments + "</span> Comments</span>");
+                sb.Append("<span onclick='sharePost(" + a.Id + ", null)'><i class='far fa-share-square'></i> " + a.Shares + " Shares</span>");
+                sb.Append("</div>");
+                sb.Append("<div class='action-buttons'>");
+                sb.Append("<button type='button' class='action-btn like-btn' onclick='toggleLike(" + a.Id + ")'><i class='far fa-heart'></i> Like</button>");
+                sb.Append("<button type='button' class='action-btn' onclick='toggleCommentSection(" + a.Id + ")'><i class='far fa-comment'></i> Comment</button>");
+                sb.Append("<button type='button' class='action-btn' onclick='sharePost(" + a.Id + ", null)'><i class='fas fa-share-alt'></i> Share</button>");
+                sb.Append("</div>");
+                sb.Append("<div class='comments-section' id='commentsSection_" + a.Id + "' style='display:none;'>");
+                sb.Append("<div class='comment-input'><input type='text' placeholder='Write a comment...' id='commentInput_" + a.Id + "' />");
+                sb.Append("<button type='button' onclick='addComment(this," + a.Id + ")'>Post</button></div>");
+                sb.Append("<div class='comments-list' id='commentsList_" + a.Id + "'><div class='no-comments'>No comments yet. Be the first!</div></div>");
+                sb.Append("</div></div>");
             }
+
+            string html    = sb.Length == 0 ? "<div style='text-align:center;padding:40px;'>No announcements available.</div>" : sb.ToString();
+            string encoded = HttpUtility.JavaScriptStringEncode(html);
+            ClientScript.RegisterStartupScript(GetType(), "LoadAnnouncements",
+                "<script>document.getElementById('announcementsContainer').innerHTML=\"" + encoded + "\";</script>");
         }
 
         private void LoadNotifications()
         {
-            try
+            var notes = new[] {
+                new { Id=1, Message="Final Exam Schedule posted.",  IsRead=false, Created=DateTime.Now.AddHours(-2) },
+                new { Id=2, Message="Campus maintenance Apr 30.",   IsRead=true,  Created=DateTime.Now.AddDays(-2)  }
+            };
+
+            var sb = new StringBuilder();
+            int unread = 0;
+            foreach (var n in notes)
             {
-                // sample notifications
-                var notes = new[]
-                {
-                    new { Id = 1, Message = "Final Exam Schedule posted.", IsRead = false, Created = DateTime.Now.AddHours(-2) },
-                    new { Id = 2, Message = "Campus maintenance Apr 30.", IsRead = true, Created = DateTime.Now.AddDays(-2) }
-                };
-
-                var sb = new StringBuilder();
-                int unreadCount = 0;
-                foreach (var n in notes)
-                {
-                    string unreadClass = n.IsRead ? "" : "unread";
-                    string dotHtml = n.IsRead ? "" : "<div class='notification-dot'></div>";
-                    if (!n.IsRead) unreadCount++;
-
-                    sb.AppendLine("<div class='notification-item " + unreadClass + "' onclick='markNotificationRead(this, " + n.Id + ")'>");
-                    sb.AppendLine(dotHtml);
-                    sb.AppendLine("<div class='notification-text'>" + EscapeHtml(n.Message) + "</div>");
-                    sb.AppendLine("<div class='notification-time'>" + GetTimeAgo(n.Created) + "</div>");
-                    sb.AppendLine("</div>");
-                }
-
-                string html = sb.Length == 0 ? "<div class='no-notifications' style='padding:20px;text-align:center;'>No new notifications</div>" : sb.ToString();
-                string encoded = HttpUtility.JavaScriptStringEncode(html);
-
-                var scriptSb = new StringBuilder();
-                scriptSb.Append("<script>");
-                scriptSb.Append("var notificationList = document.getElementById('notificationList');");
-                scriptSb.Append("if(notificationList) notificationList.innerHTML = \"" + encoded + "\";");
-                scriptSb.Append("var badge = document.getElementById('notificationBadge');");
-                scriptSb.Append("if(badge){ if(" + unreadCount + " > 0){ badge.innerText = " + unreadCount + "; badge.style.display = 'inline-block'; } else { badge.style.display = 'none'; } }");
-                scriptSb.Append("</script>");
-
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadNotifications", scriptSb.ToString());
+                if (!n.IsRead) unread++;
+                string cls = n.IsRead ? "" : "unread";
+                string dot = n.IsRead ? "" : "<div class='notification-dot'></div>";
+                sb.Append("<div class='notification-item " + cls + "' onclick='markNotificationRead(this," + n.Id + ")'>");
+                sb.Append(dot + "<div class='notification-text'>" + EscapeHtml(n.Message) + "</div>");
+                sb.Append("<div class='notification-time'>" + GetTimeAgo(n.Created) + "</div></div>");
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("LoadNotifications Error: " + ex.Message);
-                string errorScript = "<script>document.getElementById('notificationList').innerHTML = '<div style=\"padding:20px;text-align:center;\">Notifications unavailable</div>';</script>";
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadNotificationsError", errorScript);
-            }
+
+            string html    = sb.Length == 0 ? "<div style='padding:20px;text-align:center;'>No new notifications</div>" : sb.ToString();
+            string encoded = HttpUtility.JavaScriptStringEncode(html);
+            var s = new StringBuilder("<script>");
+            s.Append("var nl=document.getElementById('notificationList'); if(nl) nl.innerHTML=\"" + encoded + "\";");
+            s.Append("var nb=document.getElementById('notificationBadge'); if(nb){ if(" + unread + ">0){nb.innerText=" + unread + ";nb.style.display='inline-block';}else{nb.style.display='none';}}");
+            s.Append("</script>");
+            ClientScript.RegisterStartupScript(GetType(), "LoadNotifications", s.ToString());
         }
 
-        private string GetTimeAgo(DateTime date)
+        private string GetTimeAgo(DateTime d)
         {
-            TimeSpan timeSpan = DateTime.Now - date;
-            if (timeSpan.TotalMinutes < 1) return "Just now";
-            if (timeSpan.TotalMinutes < 60) return $"{(int)timeSpan.TotalMinutes} minutes ago";
-            if (timeSpan.TotalHours < 24) return $"{(int)timeSpan.TotalHours} hours ago";
-            if (timeSpan.TotalDays < 7) return $"{(int)timeSpan.TotalDays} days ago";
-            return date.ToString("MMM dd, yyyy");
+            var ts = DateTime.Now - d;
+            if (ts.TotalMinutes < 1)  return "Just now";
+            if (ts.TotalMinutes < 60) return (int)ts.TotalMinutes + " minutes ago";
+            if (ts.TotalHours   < 24) return (int)ts.TotalHours   + " hours ago";
+            if (ts.TotalDays    < 7)  return (int)ts.TotalDays    + " days ago";
+            return d.ToString("MMM dd, yyyy");
         }
 
-        private string EscapeHtml(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return "";
-            return System.Security.SecurityElement.Escape(text);
-        }
+        private string EscapeHtml(string t) =>
+            string.IsNullOrEmpty(t) ? "" : System.Security.SecurityElement.Escape(t);
 
-        // Simple local model used for sample announcements
         private class Announcement
         {
-            public int AnnouncementId { get; set; }
-            public string Title { get; set; }
-            public string Content { get; set; }
-            public string Category { get; set; }
-            public string AuthorName { get; set; }
-            public DateTime CreatedDate { get; set; }
-            public int LikeCount { get; set; }
-            public int CommentCount { get; set; }
-            public int ShareCount { get; set; }
-            public bool IsPinned { get; set; }
+            public int      Id       { get; set; }
+            public string   Title    { get; set; }
+            public string   Content  { get; set; }
+            public string   Category { get; set; }
+            public string   Author   { get; set; }
+            public DateTime Date     { get; set; }
+            public int      Likes    { get; set; }
+            public int      Comments { get; set; }
+            public int      Shares   { get; set; }
+            public bool     Pinned   { get; set; }
         }
     }
 }

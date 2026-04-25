@@ -1,18 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-    public partial class Teacher : System.Web.UI.Page
+    public partial class Teacher : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Session guard — only Admin may access Teacher portal
+            if (Session["IsLoggedIn"] == null || !(bool)Session["IsLoggedIn"])
+            {
+                Response.Redirect("login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+            if (!string.Equals(Session["Role"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                Response.Redirect("Student.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
 
+            if (!IsPostBack)
+            {
+                string fullName = Session["FullName"]?.ToString() ?? "Admin";
+                string email    = Session["Email"]?.ToString()    ?? "";
+                string role     = Session["Role"]?.ToString()     ?? "Admin";
+
+                string fn = System.Web.HttpUtility.JavaScriptStringEncode(fullName);
+                string em = System.Web.HttpUtility.JavaScriptStringEncode(email);
+                string rl = System.Web.HttpUtility.JavaScriptStringEncode(role);
+
+                string script = "<script>"
+                    + "var el;"
+                    + "el=document.getElementById('userName');    if(el) el.innerText=\"" + fn + "\";"
+                    + "el=document.getElementById('userRole');    if(el) el.innerText=\"" + rl + "\";"
+                    + "el=document.getElementById('pm-fullname'); if(el) el.innerText=\"" + fn + "\";"
+                    + "el=document.getElementById('pm-username'); if(el) el.innerText=\"" + System.Web.HttpUtility.JavaScriptStringEncode(Session["Username"]?.ToString() ?? "") + "\";"
+                    + "el=document.getElementById('pm-email');    if(el) el.innerText=\"" + em + "\";"
+                    + "el=document.getElementById('pm-role');     if(el) el.innerText=\"" + rl + "\";"
+                    + "el=document.getElementById('pm-role2');    if(el) el.innerText=\"" + rl + "\";"
+                    + "</script>";
+
+                ClientScript.RegisterStartupScript(GetType(), "LoadUser", script);
+            }
         }
-
     }
 }

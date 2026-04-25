@@ -1,14 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
-
-<script runat="server">
-    protected void SearchButton_Click(object sender, EventArgs e)
-    {
-            Response.Redirect("SearchStudent.aspx");
-        
-    }
-</script>
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -107,8 +98,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-
-            border: 2px solid #0F172A; 
+            border: 1px solid rgba(26,58,92,0.2);
         }
         .search-box input {
             background: none;
@@ -124,10 +114,10 @@
 
         .search-btn, .comment-input button, .modal-close {
             background: none;
-            border: 2px solid #0F172A; 
+            border: 1px solid rgba(26,58,92,0.25);
             border-radius: 30px;
             padding: 10px 22px;
-            color: #0F172A;
+            color: var(--primary);
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -158,7 +148,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #dce4ec;
+            border: 1px solid rgba(26,58,92,0.15);
             transition: background 0.3s;
         }
 
@@ -182,11 +172,56 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: var(--surface-soft);
+            background: rgba(255,255,255,0.15);
             padding: 6px 18px;
             border-radius: 40px;
-            border: 1px solid #dce4ec;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
         }
+        .user-info:hover { background: rgba(255,255,255,0.25); }
+
+        /* User dropdown */
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 220px;
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 300;
+            overflow: hidden;
+        }
+        .user-dropdown.show { display: block; }
+        .user-dropdown-header {
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+        .user-dropdown-avatar {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            margin: 0 auto 10px;
+        }
+        .user-dropdown-name  { font-weight: 700; font-size: 15px; color: var(--primary); }
+        .user-dropdown-email { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .user-dropdown-role  { display: inline-block; margin-top: 6px; padding: 2px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #DBEAFE; color: #1E3A8A; }
+        body.dark-mode .user-dropdown-role { background: rgba(30,58,138,0.3); color: #93C5FD; }
+        .user-dropdown-footer { padding: 8px; }
+        .user-dropdown-footer button {
+            width: 100%; padding: 9px; border: none; border-radius: 10px;
+            background: #fef2f2; color: #dc2626; font-weight: 600; font-size: 13px;
+            cursor: pointer; transition: background 0.2s; font-family: inherit;
+        }
+        .user-dropdown-footer button:hover { background: #fee2e2; }
 
         .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -238,7 +273,7 @@
 
         .card-header {
             padding: 18px 22px;
-            border-bottom: 1px solid #eef2f6;
+            border-bottom: 1px solid rgba(26,58,92,0.08);
             font-weight: 700;
             color: var(--primary);
             font-size: 16px;
@@ -249,7 +284,7 @@
         .profile-section {
             text-align: center;
             padding: 20px;
-            border-bottom: 1px solid #eef2f6;
+            border-bottom: 1px solid rgba(26,58,92,0.08);
         }
 
         .profile-avatar {
@@ -375,7 +410,7 @@
             background: var(--surface-strong);
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(26, 58, 92, 0.08);
+            border: 1px solid #3B82F6;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             overflow: hidden;
@@ -383,7 +418,7 @@
 
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-            border-color: rgba(26, 58, 92, 0.2);
+            border-color: #1E3A8A;
         }
 
         .post-header {
@@ -468,8 +503,8 @@
             display: flex;
             gap: 20px;
             padding: 10px 22px;
-            border-top: 1px solid #eef2f6;
-            border-bottom: 1px solid #eef2f6;
+            border-top: 1px solid rgba(26,58,92,0.08);
+            border-bottom: 1px solid rgba(26,58,92,0.08);
             color: var(--muted);
             font-size: 13px;
         }
@@ -504,7 +539,7 @@
 
         .comments-section {
             padding: 0 22px 18px;
-            border-top: 1px solid #eef2f6;
+            border-top: 1px solid rgba(26,58,92,0.08);
             display: none;
         }
 
@@ -520,7 +555,7 @@
             flex: 1;
             padding: 10px 16px;
             background: var(--surface-soft);
-            border: 1px solid #dce4ec;
+            border: 1px solid rgba(26,58,92,0.15);
             border-radius: 30px;
             outline: none;
             font-size: 13px;
@@ -530,7 +565,7 @@
         .comment {
             padding: 10px 0;
             font-size: 13px;
-            border-bottom: 1px solid #eef2f6;
+            border-bottom: 1px solid rgba(26,58,92,0.08);
             display: flex;
             gap: 10px;
         }
@@ -940,27 +975,26 @@
     <form id="form1" runat="server">
         <div class="app-shell">
             <div class="header">
-                <div class="logo">
+                <div class="logo" onclick="navigateWithFlip('Student.aspx')" style="cursor:pointer;">
                     <i class="fas fa-university"></i> CampusAnnouncement
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px" UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
-                    <div class="notification-bell" onclick="toggleNotificationDropdown()">
+                    <div class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')" style="cursor:pointer;">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red">0</span>
-                        <span id="notificationBadge" class="badge-red">0       </span>
+                        <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
                     </div>
-                    <div class="user-info">
+                    <div class="user-info" onclick="openProfileModal(event)">
                         <div class="avatar">
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="user-details">
-                            <div class="user-name" id="userName">Loading...</div>
-                            <div class="user-role" id="userRole">Student</div>
+                            <div class="user-name" id="userName" style="color:#ffffff;">Loading...</div>
+                            <div class="user-role" id="userRole" style="color:rgba(255,255,255,0.75);">Student</div>
                         </div>
                     </div>
                 </div>
@@ -982,13 +1016,7 @@
                 <aside class="sidebar">
                     <div class="card">
                         <div class="sidebar-content">
-                            <div class="profile-section">
-                                <button type="button" class="sidebar-toggle" onclick="toggleSidebar()">
-                                    <i class="fas fa-bars"></i>
-                                </button>
-                                <div class="profile-name" id="profileName">Loading...</div>
-                                <div class="profile-email" id="profileEmail">Loading...</div>
-                            </div>
+                            <!-- Profile removed — info shown in header user pill -->
 
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
@@ -1005,7 +1033,7 @@
                                 <button type="button" class="dropdown-item" onclick="filterCategory('Event')">Campus Events</button>
                             </div>
 
-                            <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
+                            <button type="button" class="menu-item" onclick="navigateWithFlip('Pinned.aspx')">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
                             </button>
@@ -1046,6 +1074,53 @@
             </div>
         </div>
 
+        <!-- ===== PROFILE MODAL ===== -->
+        <div id="profileModal" class="modal" style="display:none;">
+            <div class="modal-content" style="max-width:420px;text-align:left;">
+                <div style="text-align:center;margin-bottom:20px;">
+                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname">Loading...</div>
+                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role">Student</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-user" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Username</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-username">—</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-envelope" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Email</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-email">—</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-shield-alt" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Role</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-role2">Student</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-lock" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Password</div>
+                            <div style="font-weight:600;color:var(--page-text);">••••••••</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button type="button" onclick="closeProfileModal()" style="flex:1;padding:12px;border:1px solid var(--border);border-radius:12px;background:none;color:var(--page-text);font-weight:600;cursor:pointer;font-family:inherit;">Close</button>
+                    <button type="button" onclick="logout()" style="flex:1;padding:12px;border:none;border-radius:12px;background:#fef2f2;color:#dc2626;font-weight:600;cursor:pointer;font-family:inherit;"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+
         <div id="aboutModal" class="modal">
             <div class="modal-content">
                 <div class="modal-icon">
@@ -1070,12 +1145,31 @@
             if (trigger) trigger.classList.toggle('open', !isOpen);
         }
 
+        function openProfileModal(e) {
+            if (e) e.stopPropagation();
+            var modal = document.getElementById('profileModal');
+            if (!modal) return;
+            modal.style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            var modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // Close profile modal on backdrop click
+        document.addEventListener('click', function(e) {
+            var modal = document.getElementById('profileModal');
+            if (modal && e.target === modal) modal.style.display = 'none';
+        });
+
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidebar');
             if (sidebar) sidebar.classList.toggle('collapsed');
         }
 
-        function toggleNotificationDropdown() {
+        function toggleNotificationDropdown(e) {
+            if (e) e.stopPropagation();
             var dropdown = document.getElementById('notificationDropdown');
             if (dropdown) dropdown.classList.toggle('show');
         }
@@ -1088,7 +1182,6 @@
             }
         });
 
-<<<<<<< HEAD
         // ════════════════════════════════════════════════════════
         // SHARED LOCALSTORAGE STATE  (same keys as Teacher + Search)
         // ════════════════════════════════════════════════════════
@@ -1180,13 +1273,6 @@
                 likeBtn.innerHTML = '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like');
             }
 
-            // ── Notify button ──
-            var notifBtn = card.querySelector('.action-btn.notif-btn');
-            if (notifBtn) {
-                notifBtn.className = 'action-btn notif-btn' + (notifOn ? ' notif-active' : '');
-                notifBtn.innerHTML = '<i class="' + (notifOn ? 'fas' : 'far') + ' fa-bell"></i> ' + (notifOn ? 'Notif On' : 'Notify');
-            }
-
             // ── Comments list ──
             var cl = document.getElementById('commentsList_' + postId);
             if (cl && (st_comments[postId] || []).length > 0) {
@@ -1207,7 +1293,7 @@
                     st_likeCounts[postId] = lcSpan ? parseInt(lcSpan.textContent) || 0 : 0;
                 }
 
-                // Replace action-buttons with full set (Like, Comment, Share, Notify)
+                // Replace action-buttons with full set (Like, Comment, Share)
                 var actionDiv = card.querySelector('.action-buttons');
                 if (actionDiv) {
                     actionDiv.innerHTML =
@@ -1219,9 +1305,6 @@
                         '</button>' +
                         '<button type="button" class="action-btn" onclick="sharePost(' + postId + ', this)">' +
                             '<i class="fas fa-share-alt"></i> Share' +
-                        '</button>' +
-                        '<button type="button" class="action-btn notif-btn" onclick="toggleNotif(' + postId + ')">' +
-                            '<i class="far fa-bell"></i> Notify' +
                         '</button>';
                 }
 
@@ -1283,30 +1366,8 @@
         }
 
         function loadComments(postId) {
-            fetch('Comments.aspx?action=get&postId=' + encodeURIComponent(postId))
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                    var commentsList = document.getElementById('commentsList_' + postId);
-                    if (!commentsList) return;
-                    if (!Array.isArray(data) || data.length === 0) {
-                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
-                        return;
-                    }
-                    var html = '';
-                    data.forEach(function (comment) {
-                        html += '\
-<div class="comment">\
-  <div class="comment-avatar"><i class="fas fa-user"></i></div>\
-  <div class="comment-content">\
-    <span class="comment-author">' + escapeHtml(comment.author) + '</span>\
-    <div class="comment-text">' + escapeHtml(comment.text) + '</div>\
-    <div class="comment-time">' + (comment.date || '') + '</div>\
-  </div>\
-</div>';
-                    });
-                    commentsList.innerHTML = html;
-                })
-                .catch(function (err) { console.error('Error loading comments:', err); });
+            var commentsList = document.getElementById('commentsList_' + postId);
+            if (commentsList) commentsList.innerHTML = renderCommentsList(postId);
         }
 
         function addComment(btn, postId) {
@@ -1404,10 +1465,10 @@
 
         // ── Theme ─────────────────────────────────────────────
         function toggleTheme(btn) {
+            var isDark = document.body.classList.toggle('dark-mode');
             var toggle = document.getElementById('themeToggle');
-            document.body.classList.toggle('dark-mode');
-            if (toggle) toggle.classList.toggle('active');
-            localStorage.setItem('campus_theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            if (toggle) toggle.classList.toggle('active', isDark);
+            localStorage.setItem('campus_theme', isDark ? 'dark' : 'light');
         }
 
         function openAboutModal() {
@@ -1418,72 +1479,46 @@
         function closeAboutModal() {
             var modal = document.getElementById('aboutModal');
             if (modal) modal.style.display = 'none';
-
-            var payload = JSON.stringify({ postId: postId, comment: commentText });
-
-            fetch('Comments.aspx?action=add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: payload
-            })
-                .then(function (res) { return res.json(); })
-                .then(function (data) {
-                    if (data && data.success) {
-                        input.value = '';
-                        loadComments(postId);
-                        showToast('Comment posted');
-                    } else {
-                        showToast('Error posting comment');
-                    }
-                })
-                .catch(function (err) {
-                    console.error('Error posting comment:', err);
-                    showToast('Error posting comment');
-                });
-        }
-
-        // small helpers
-        function escapeHtml(s) {
-            if (!s) return '';
-            return String(s).replace(/[&<>"'\/]/g, function (c) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;' }[c];
-            });
         }
 
         function showToast(message) {
-            // simple placeholder - implement a nicer toast if needed
-            alert(message);
+            var t = document.createElement('div');
+            t.innerText = message;
+            t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
+            document.body.appendChild(t);
+            setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
         }
 
-        // THEME HANDLING
-        function toggleTheme(item) {
-            var toggle = item.querySelector('.toggle-switch');
-            toggle.classList.toggle('active');
-            document.body.classList.toggle('dark-mode');
-        }
-
-        function openAboutModal() {
-            document.getElementById('aboutModal').style.display = 'flex';
-        }
-        a
-        function closeAboutModal() {
-            document.getElementById('aboutModal').style.display = 'none';
-
+        function escapeHtml(s) {
+            if (!s) return '';
+            return String(s).replace(/[&<>"'\/]/g, function(c) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#x2F;'}[c];
+            });
         }
 
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
+                window.location.href = 'Logout.aspx';
             }
         }
 
-
-        // Restore theme on load
-        if (localStorage.getItem('campus_theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            var toggle = document.getElementById('themeToggle');
-            if (toggle) toggle.classList.add('active');
-        }
+        // ── Restore theme on load ──────────────────────────────
+        (function() {
+            if (localStorage.getItem('campus_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                var toggle = document.getElementById('themeToggle');
+                if (toggle) toggle.classList.add('active');
+            }
+            // Sync theme changes from other tabs
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_theme') {
+                    var dark = e.newValue === 'dark';
+                    document.body.classList.toggle('dark-mode', dark);
+                    var toggle = document.getElementById('themeToggle');
+                    if (toggle) toggle.classList.toggle('active', dark);
+                }
+            });
+        })();
 
         // ── Run upgradeCards once server HTML is injected ─────
         // The server calls ClientScript.RegisterStartupScript which runs after DOM ready.
@@ -1531,7 +1566,7 @@
 
         // ── Performance: prefetch linked pages ────────────────────────────────
         (function() {
-            var pages = ['SearchStudent.aspx', 'Teacher.aspx', 'Pinned.aspx', 'Notifications.aspx'];
+            var pages = ['SearchStudent.aspx', 'Pinned.aspx', 'Notifications.aspx'];
             pages.forEach(function(page) {
                 var link = document.createElement('link');
                 link.rel = 'prefetch';

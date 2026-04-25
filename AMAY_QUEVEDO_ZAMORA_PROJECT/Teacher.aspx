@@ -172,11 +172,56 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: var(--surface-soft);
+            background: rgba(255,255,255,0.15);
             padding: 6px 18px;
             border-radius: 40px;
-            border: 1px solid #dce4ec;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
         }
+        .user-info:hover { background: rgba(255,255,255,0.25); }
+
+        /* User dropdown */
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            min-width: 220px;
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            z-index: 300;
+            overflow: hidden;
+        }
+        .user-dropdown.show { display: block; }
+        .user-dropdown-header {
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+        .user-dropdown-avatar {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            margin: 0 auto 10px;
+        }
+        .user-dropdown-name  { font-weight: 700; font-size: 15px; color: var(--primary); }
+        .user-dropdown-email { font-size: 12px; color: var(--muted); margin-top: 2px; }
+        .user-dropdown-role  { display: inline-block; margin-top: 6px; padding: 2px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; background: #DBEAFE; color: #1E3A8A; }
+        body.dark-mode .user-dropdown-role { background: rgba(30,58,138,0.3); color: #93C5FD; }
+        .user-dropdown-footer { padding: 8px; }
+        .user-dropdown-footer button {
+            width: 100%; padding: 9px; border: none; border-radius: 10px;
+            background: #fef2f2; color: #dc2626; font-weight: 600; font-size: 13px;
+            cursor: pointer; transition: background 0.2s; font-family: inherit;
+        }
+        .user-dropdown-footer button:hover { background: #fee2e2; }
 
         .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -365,7 +410,7 @@
             background: var(--surface-strong);
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid rgba(26, 58, 92, 0.08);
+            border: 1px solid #3B82F6;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             overflow: hidden;
@@ -373,7 +418,7 @@
 
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-            border-color: rgba(26, 58, 92, 0.2);
+            border-color: #1E3A8A;
         }
 
         .post-header {
@@ -1103,30 +1148,31 @@
 
             <!-- HEADER -->
             <div class="header">
-                <div class="logo">
+                <div class="logo" onclick="navigateWithFlip('Teacher.aspx')" style="cursor:pointer;">
                     <i class="fas fa-university"></i> CampusAnnouncement
                 </div>
 
                 <div class="search-container">
                     <asp:Button ID="searchBtn" runat="server" CssClass="search-btn"
-                        Text=" 🔎 Search........"
+                        Text="🔎 Search........"
                         OnClientClick="navigateWithFlip('SearchDashboard.aspx'); return false;"
-                        Width="420px" Font-Bold="False" ForeColor="#0F172A"
+                        UseSubmitBehavior="false"
+                        Width="420px" Font-Bold="False"
                         Font-Size="Medium" Height="54px" />
                 </div>
 
                 <div class="header-actions">
-                    <div class="notification-bell" onclick="toggleNotificationPanel()">
+                    <div class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')" style="cursor:pointer;">
                         <i class="fas fa-bell bell-icon"></i>
                         <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
                     </div>
-                    <div class="user-info">
+                    <div class="user-info" onclick="openProfileModal()">
                         <div class="avatar">
                             <i class="fas fa-chalkboard-user"></i>
                         </div>
                         <div class="user-details">
-                            <div class="user-name">Prof. Emily Davis</div>
-                            <div class="user-role">Faculty</div>
+                            <div class="user-name" id="userName" style="color:#ffffff;">Loading...</div>
+                            <div class="user-role" id="userRole" style="color:rgba(255,255,255,0.75);">Admin</div>
                         </div>
                     </div>
                 </div>
@@ -1153,17 +1199,7 @@
                     <div class="card">
                         <div class="sidebar-content">
 
-                            <!-- Profile -->
-                            <div class="profile-section">
-                                <button type="button" class="sidebar-toggle" onclick="toggleSidebar()">
-                                    <i class="fas fa-bars"></i>
-                                </button>
-                                <div class="profile-avatar">
-                                    <i class="fas fa-chalkboard-user"></i>
-                                </div>
-                                <div class="profile-name" id="sidebarProfileName">Prof. Emily Davis</div>
-                                <div class="profile-email">faculty@ctu.edu.ph</div>
-                            </div>
+                            <!-- Profile removed — info shown in header user pill -->
 
                             <!-- Filters -->
                             <div class="card-header">
@@ -1182,7 +1218,7 @@
                                 <button type="button" class="dropdown-item" onclick="setFilter('General')">General</button>
                             </div>
 
-                            <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
+                            <button type="button" class="menu-item" onclick="navigateWithFlip('Pinned.aspx')">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
                             </button>
@@ -1269,6 +1305,53 @@
                     <button type="button" class="btn-publish" onclick="publishAnnouncement()">
                         <i class="fas fa-paper-plane"></i> Publish
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== PROFILE MODAL ===== -->
+        <div id="profileModal" class="modal" style="display:none;">
+            <div class="modal-content" style="max-width:420px;text-align:left;">
+                <div style="text-align:center;margin-bottom:20px;">
+                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
+                        <i class="fas fa-chalkboard-user"></i>
+                    </div>
+                    <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname">Loading...</div>
+                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role">Admin</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-user" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Username</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-username">—</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-envelope" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Email</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-email">—</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-shield-alt" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Role</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-role2">Admin</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
+                        <i class="fas fa-lock" style="color:var(--primary);width:18px;text-align:center;"></i>
+                        <div>
+                            <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Password</div>
+                            <div style="font-weight:600;color:var(--page-text);">••••••••</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <button type="button" onclick="closeProfileModal()" style="flex:1;padding:12px;border:1px solid var(--border);border-radius:12px;background:none;color:var(--page-text);font-weight:600;cursor:pointer;font-family:inherit;">Close</button>
+                    <button type="button" onclick="logoutAction()" style="flex:1;padding:12px;border:none;border-radius:12px;background:#fef2f2;color:#dc2626;font-weight:600;cursor:pointer;font-family:inherit;"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
             </div>
         </div>
@@ -1639,8 +1722,14 @@
             });
         }
 
-        // Sync pins when changed from another tab (e.g. SearchDashboard)
+        // Sync theme + pins when changed from another tab
         window.addEventListener('storage', function(e) {
+            if (e.key === THEME_KEY) {
+                var dark = e.newValue === 'dark';
+                document.body.classList.toggle('dark-mode', dark);
+                var toggle = document.getElementById('themeToggle');
+                if (toggle) toggle.classList.toggle('active', dark);
+            }
             if (e.key === 'campus_pins') {
                 var campusPins = JSON.parse(e.newValue || '{}');
                 posts.forEach(function(p) {
@@ -1715,10 +1804,26 @@
             addNotification('You posted: ' + title);
         }
 
+        function openProfileModal() {
+            var modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'flex';
+        }
+
+        function closeProfileModal() {
+            var modal = document.getElementById('profileModal');
+            if (modal) modal.style.display = 'none';
+        }
+
+        // Close profile modal on backdrop click
+        document.addEventListener('click', function(e) {
+            var modal = document.getElementById('profileModal');
+            if (modal && e.target === modal) modal.style.display = 'none';
+        });
+
         // ── Misc ───────────────────────────────────────────────────────────────
         function logoutAction() {
             if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
+                window.location.href = 'Logout.aspx';
             }
         }
 

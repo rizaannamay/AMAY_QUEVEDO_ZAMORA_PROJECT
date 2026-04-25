@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchDashboard.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchDashboard" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,13 +16,13 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        /* ── BACKGROUND — same as Teacher.aspx ── */
+        /* ── BACKGROUND — same as SearchStudent.aspx ── */
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
-            --surface: rgba(255,255,255,0.92);
+            --surface: rgba(255,255,255,0.95);
             --surface-strong: #ffffff;
-            --surface-soft: #f8fafc;
+            --surface-soft: #f0f5ff;
             --border: rgba(26,58,92,0.12);
             --primary: #1a3a5c;
             --primary-2: #2c5a7a;
@@ -37,7 +37,7 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), var(--bg-image);
+            background-image: var(--bg-image);
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -45,7 +45,7 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* ── DARK MODE — matches Teacher.aspx exactly ── */
+        /* ── DARK MODE ── */
         body.dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -59,16 +59,27 @@
             --muted-light: #64748b;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
             --active-bg: rgba(99,102,241,0.18);
-            background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), var(--bg-image);
+            background: #0f172a;
         }
 
-        /* ── GLASS NAV ── */
+        /* ── NAVBAR — blue gradient header ── */
         .glass-nav {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-            transition: background 0.4s ease, border-color 0.4s ease;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            border-bottom: none;
+            box-shadow: 0 4px 20px rgba(30,58,138,0.3);
+            transition: background 0.4s ease;
         }
+        body.dark-mode .glass-nav {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Force nav text/icons white on the blue header */
+        .glass-nav h1,
+        .glass-nav p,
+        .glass-nav a,
+        .glass-nav button { color: #ffffff !important; }
+        .glass-nav .text-muted { color: rgba(255,255,255,0.7) !important; }
 
         /* ── GLASS SIDEBAR ── */
         .glass-sidebar {
@@ -113,17 +124,27 @@
         /* ── ANNOUNCE CARD ── */
         .announce-card {
             background: var(--surface-strong);
-            border: 1px solid var(--border);
+            border: 1px solid #3B82F6;
             border-radius: 20px;
-            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
             box-shadow: var(--shadow);
             overflow: hidden;
+            will-change: transform;
         }
 
         .announce-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 16px 32px rgba(0,0,0,0.15);
-            border-color: rgba(99,102,241,0.35);
+            border-color: #1E3A8A;
+        }
+        body.dark-mode .announce-card {
+            background: rgba(15,25,55,0.92);
+            border-color: #3B82F6;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+        }
+        body.dark-mode .announce-card:hover {
+            border-color: #93C5FD;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.5);
         }
 
         /* Card text colors */
@@ -285,21 +306,23 @@
             color: var(--primary);
         }
 
-        /* ── SEARCH INPUT (never changes) ── */
+        /* ── SEARCH INPUT ── */
         .search-input {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.15);
             backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1.5px solid rgba(255,255,255,0.5);
             transition: all 0.2s;
-            color: white;
+            color: #ffffff;
         }
         .search-input:focus {
-            background: rgba(255,255,255,0.15);
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.9);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
             outline: none;
         }
-        .search-input::placeholder { color: rgba(255,255,255,0.6); }
+        .search-input::placeholder { color: rgba(255,255,255,0.65); }
+        /* search icon always white on blue nav */
+        .glass-nav .fa-search { color: rgba(255,255,255,0.85) !important; }
 
         /* ── FILTER SELECTS ── */
         .filter-select {
@@ -316,6 +339,10 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.5); border-radius: 10px; }
+
+        /* ── RESULTS CONTAINER ── */
+        #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
+        .announce-card { will-change: transform; }
 
         /* ── TOAST ── */
         .toast-msg {
@@ -392,67 +419,42 @@
 
                         <!-- Logo -->
                         <div class="flex items-center gap-3 cursor-pointer group">
-                            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
+                            <div class="bg-white/20 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
                             <div>
-                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight" style="color:var(--primary)">CampusConnect</h1>
-                                <p class="text-xs font-medium hidden sm:block" style="color:var(--muted)">Teacher Portal</p>
+                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusConnect</h1>
+                                <p class="text-xs font-medium hidden sm:block text-white/70">Teacher Portal</p>
                             </div>
                         </div>
 
                         <!-- Search Bar -->
                         <div class="flex-1 max-w-md mx-4">
                             <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-indigo-300 text-sm"></i>
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/80"></i>
                                 <asp:TextBox ID="searchInput" runat="server" CssClass="search-input w-full pl-10 pr-4 py-2 rounded-xl" placeholder="Search announcements..."></asp:TextBox>
                             </div>
                         </div>
 
                         <!-- Right controls -->
                         <div class="flex items-center gap-3 md:gap-4">
-                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Teacher.aspx"
-                                CssClass="p-2 hover:bg-white/20 rounded-full transition-all" style="color:var(--primary)">
-                                <i class="fas fa-home text-xl"></i>
-                            </asp:HyperLink>
-
                             <div class="relative">
-                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition" style="color:var(--primary)">
+                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
                                     <i class="fas fa-bell text-xl"></i>
                                 </button>
-                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
+                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-400 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
                             </div>
 
-                            <div class="flex items-center gap-3 pl-2" style="border-left:1px solid var(--border)">
-                                <div class="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-indigo-400 to-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg">
-                                    <i class="fas fa-chalkboard-teacher text-sm md:text-base"></i>
-                                </div>
-                                <div class="hidden sm:block">
-                                    <p class="text-sm font-semibold leading-tight" style="color:var(--primary)">Maria Santos</p>
-                                    <p class="text-xs" style="color:var(--muted)">Teacher Portal</p>
-                                </div>
-                            </div>
+                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Teacher.aspx"
+                                CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
+                                <i class="fas fa-home text-xl"></i>
+                            </asp:HyperLink>
                         </div>
                     </div>
                 </div>
             </header>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-
-                <!-- HERO -->
-                <div class="hero-section rounded-2xl mb-8 p-8 md:p-10 text-center shadow-2xl border border-white/20 relative overflow-hidden">
-                    <div class="relative z-10">
-                        <div class="inline-block p-4 bg-white/20 backdrop-blur-md rounded-full mb-5">
-                            <i class="fas fa-megaphone text-4xl md:text-5xl text-white"></i>
-                        </div>
-                        <h2 class="text-2xl md:text-4xl lg:text-5xl font-black text-white drop-shadow-2xl mb-3">
-                            Stay Updated with Campus Announcements
-                        </h2>
-                        <p class="text-indigo-100 text-base md:text-lg max-w-2xl mx-auto drop-shadow">
-                            Find events, schedules, and important updates from your university community
-                        </p>
-                    </div>
-                </div>
 
                 <!-- TWO COLUMN LAYOUT -->
                 <div class="flex flex-col lg:flex-row gap-6">
@@ -491,18 +493,14 @@
 
                         <!-- Filters -->
                         <div class="glass-card rounded-2xl p-4 mb-6">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <select id="categoryFilter" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer">
-                                    <option value="all">📢 All Announcements</option>
-                                    <option value="Exam Schedule">📅 Exam Schedule</option>
-                                    <option value="Class Suspension">⚠️ Class Suspension</option>
-                                    <option value="Campus Events">🎉 Campus Events</option>
-                                </select>
-                                <input type="text" id="dateFilter" placeholder="📅 Filter by date" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer" />
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <i class="fas fa-calendar-alt absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none" style="color:var(--muted);z-index:1"></i>
+                                    <input type="text" id="dateFilter" placeholder="Filter by date" class="filter-select w-full pl-9 pr-4 py-2 rounded-xl text-sm cursor-pointer" />
+                                </div>
                                 <select id="sortFilter" class="filter-select px-4 py-2 rounded-xl text-sm cursor-pointer">
-                                    <option value="latest">📅 Latest First</option>
-                                    <option value="oldest">📅 Oldest First</option>
-                                    <option value="pinned">📌 Pinned First</option>
+                                    <option value="latest">Latest First</option>
+                                    <option value="oldest">Oldest First</option>
                                 </select>
                             </div>
                         </div>
@@ -584,7 +582,7 @@
     // ── DOM refs ──────────────────────────────────────────────
     const searchInput      = document.getElementById('<%= searchInput.ClientID %>');
     const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
-    const categoryFilter   = document.getElementById('categoryFilter');
+    const categoryFilter   = null; // removed
     const dateFilter       = document.getElementById('dateFilter');
     const sortFilter       = document.getElementById('sortFilter');
     const resultsContainer = document.getElementById('resultsContainer');
@@ -597,7 +595,6 @@
     const notificationBadge= document.getElementById('notificationBadge');
 
     let currentSearchTerm = '';
-    let currentCategory   = 'all';
     let currentDate       = '';
     let currentSort       = 'latest';
 
@@ -698,7 +695,6 @@
                 a.professor.toLowerCase().includes(kw)
             );
         }
-        if (currentCategory !== 'all') results = results.filter(a => a.category === currentCategory);
         if (currentDate) results = results.filter(a => a.date === currentDate);
 
         if (currentSort === 'pinned') {
@@ -708,7 +704,6 @@
         } else {
             results.sort((a,b) => new Date(a.date) - new Date(b.date));
         }
-        // Always float pinned to top unless sort=pinned already handled
         if (currentSort !== 'pinned') {
             results.sort((a,b) => (pins[b.id]?1:0) - (pins[a.id]?1:0));
         }
@@ -734,8 +729,6 @@
             const notifOn  = !!notifs[ann.id];
             const lc       = likeCounts[ann.id] || 0;
             const cc       = (comments[ann.id] || []).length;
-            const catClass = getCatClass(ann.category);
-            const catIcon  = ann.category === 'Exam Schedule' ? '📅' : ann.category === 'Class Suspension' ? '⚠️' : '🎉';
 
             return `
             <div class="announce-card" data-id="${ann.id}">
@@ -767,11 +760,7 @@
                     <div class="card-title">${escapeHtml(ann.title)}</div>
                     <div class="card-desc">${escapeHtml(ann.description)}</div>
 
-                    <!-- Category badge -->
-                    <div style="margin-top:10px">
-                        <span class="cat-badge ${catClass}">${catIcon} ${ann.category}</span>
-                        ${pinned ? '<span style="margin-left:6px;font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack mr-1"></i>Pinned</span>' : ''}
-                    </div>
+                    ${pinned ? '<div style="margin-top:8px"><span style="font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack mr-1"></i>Pinned</span></div>' : ''}
                 </div>
 
                 <!-- Stats bar -->
@@ -787,10 +776,6 @@
                     <span onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
                         <i class="far fa-share-square"></i> Share
                     </span>
-                    <span onclick="toggleNotif(${ann.id})" title="Toggle notification">
-                        <i class="${notifOn?'fas':'far'} fa-bell" style="${notifOn?'color:#6366f1':''}"></i>
-                        ${notifOn ? '<span style="font-size:10px;color:#6366f1">On</span>' : 'Notify'}
-                    </span>
                 </div>
 
                 <!-- Action buttons -->
@@ -803,9 +788,6 @@
                     </button>
                     <button type="button" class="action-btn" onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
                         <i class="fas fa-share-alt"></i> Share
-                    </button>
-                    <button type="button" class="action-btn ${notifOn?'notif-active':''}" onclick="toggleNotif(${ann.id})">
-                        <i class="${notifOn?'fas':'far'} fa-bell"></i> ${notifOn?'Notif On':'Notify'}
                     </button>
                 </div>
 
@@ -917,18 +899,16 @@
     }
 
     function applyFilters() {
-        currentCategory = categoryFilter.value;
-        currentDate     = dateFilter.value || '';
-        currentSort     = sortFilter.value;
+        currentDate  = dateFilter.value || '';
+        currentSort  = sortFilter.value;
         renderResults();
     }
 
     function resetEverything() {
-        searchInput.value    = '';
-        categoryFilter.value = 'all';
-        dateFilter.value     = '';
-        sortFilter.value     = 'latest';
-        currentSearchTerm = ''; currentCategory = 'all'; currentDate = ''; currentSort = 'latest';
+        searchInput.value = '';
+        dateFilter.value  = '';
+        sortFilter.value  = 'latest';
+        currentSearchTerm = ''; currentDate = ''; currentSort = 'latest';
         if (lastSearchHidden) lastSearchHidden.value = '';
         renderResults();
     }
@@ -947,15 +927,13 @@
         });
 
         searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
-        categoryFilter.addEventListener('change', applyFilters);
         sortFilter.addEventListener('change', applyFilters);
         if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
         if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => {
             if (confirm('Clear all search history?')) { searchHistory = []; saveHistory(); }
         });
         if (notificationBtn) notificationBtn.addEventListener('click', () => {
-            const on = Object.values(notifs).filter(Boolean).length;
-            showToast(on > 0 ? `🔔 You have ${on} active notification(s)` : '🔕 No active notifications');
+            navigateWithFlip('Notifications.aspx');
         });
 
         try {
@@ -970,6 +948,12 @@
 
     init();
 
+    function navigateWithFlip(url) {
+        const shell = document.querySelector('.relative.z-10') || document.body;
+        shell.style.animation = 'flipIn 0.18s ease-in reverse forwards';
+        setTimeout(() => { window.location.href = url; }, 160);
+    }
+
     // ════════════════════════════════════════════════════════
     // THEME — reads global campus_theme
     // ════════════════════════════════════════════════════════
@@ -980,10 +964,10 @@
             document.body.classList.toggle('dark-mode', mode === 'dark');
         }
 
-        applyTheme(localStorage.getItem(KEY) || 'dark');
+        applyTheme(localStorage.getItem(KEY) || 'light');
 
         window.addEventListener('storage', e => {
-            if (e.key === KEY) applyTheme(e.newValue || 'dark');
+            if (e.key === KEY) applyTheme(e.newValue || 'light');
         });
 
         // Flip-in on arrival
