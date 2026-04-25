@@ -525,26 +525,61 @@
     </form>
 
     <script>
-    const announcementsDB = [
-        { id:1, title:"Final Exam Schedule Spring 2026", category:"Exam Schedule", date:"2026-05-10", time:"09:00 AM", professor:"Dr. Reyes", professorAvatar:"👨‍🏫", description:"Final exams will be held from May 15-20, 2026. Please check your exam permits online. Bring school ID and test permit.", bannerText:"EXAM SCHEDULE", bannerType:"exam" },
-        { id:2, title:"Class Suspension due to Typhoon", category:"Class Suspension", date:"2026-04-25", time:"08:00 PM", professor:"Admin Office", professorAvatar:"🏫", description:"Classes suspended on April 26-27 due to Typhoon. All activities will shift to online learning platforms.", bannerText:"CLASS SUSPENSION", bannerType:"suspension" },
-        { id:3, title:"University Hackathon 2026", category:"Campus Events", date:"2026-05-20", time:"10:00 AM", professor:"IT Department", professorAvatar:"💻", description:"48-hour coding challenge with exciting prizes. Form teams of 3-4 members. Registration ends May 15.", bannerText:"HACKATHON", bannerType:"events" },
-        { id:4, title:"Midterm Grade Release", category:"Exam Schedule", date:"2026-04-22", time:"02:00 PM", professor:"Registrar", professorAvatar:"📊", description:"Midterm grades are now available via the student portal. Check your assessment and email your instructors for concerns.", bannerText:"GRADES OUT", bannerType:"exam" },
-        { id:5, title:"Transport Strike Advisory", category:"Class Suspension", date:"2026-04-28", time:"07:30 AM", professor:"Student Affairs", professorAvatar:"🚌", description:"No face-to-face classes on April 30 due to nationwide transport strike. Asynchronous activities will be provided.", bannerText:"STRIKE DAY", bannerType:"suspension" },
-        { id:6, title:"Cultural Festival 2026", category:"Campus Events", date:"2026-05-05", time:"09:00 AM", professor:"OSA", professorAvatar:"🎭", description:"Celebration of arts, international food fair, and cultural performances. Free entrance for all students!", bannerText:"CULTURAL FEST", bannerType:"events" },
-        { id:7, title:"Research Colloquium", category:"Campus Events", date:"2026-05-12", time:"11:00 AM", professor:"Graduate School", professorAvatar:"🔬", description:"Present your research papers and get feedback from panelists. Best paper receives recognition award.", bannerText:"CALL FOR PAPERS", bannerType:"events" }
-    ];
+    // ── Load live announcements from Teacher.aspx (teacher_announcements) ──
+    function loadAnnouncementsDB() {
+        const raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null');
+        if (!raw || !raw.length) return [];
+        return raw.map(a => {
+            const cat = a.category || '';
+            let bannerType = 'default';
+            let bannerText = cat.toUpperCase();
+            if (cat === 'Exam')       { bannerType = 'exam';       bannerText = 'EXAM SCHEDULE'; }
+            if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
+            if (cat === 'Event')      { bannerType = 'events';     bannerText = 'CAMPUS EVENT'; }
+            // Normalise category label for display
+            const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
+                                : cat === 'Suspension' ? 'Class Suspension'
+                                : cat === 'Event' ? 'Campus Events' : cat;
+            return {
+                id:            a.id,
+                title:         a.title        || '',
+                category:      categoryLabel,
+                date:          a.date         || '',
+                time:          '',
+                professor:     a.author       || '',
+                professorAvatar: '👨‍🏫',
+                description:   a.content      || '',
+                bannerText,
+                bannerType
+            };
+        });
+    }
+    let announcementsDB = loadAnnouncementsDB();
 
+    // ── Persistent state (localStorage) ──────────────────────
     const STORAGE = {
         get: k => JSON.parse(localStorage.getItem(k) || 'null'),
         set: (k,v) => localStorage.setItem(k, JSON.stringify(v))
     };
 
+    // Merge pins from both teacher_pins and campus_pins
+    function loadPins() {
+        const tp = STORAGE.get('teacher_pins') || {};
+        const cp = STORAGE.get('campus_pins')  || {};
+        return Object.assign({}, cp, tp);
+    }
+    // Merge likeCounts from teacher_likeCounts + sd_likeCounts
+    function loadLikeCounts() {
+        const tl = STORAGE.get('teacher_likeCounts') || {};
+        const sl = STORAGE.get('sd_likeCounts')      || {};
+        return Object.assign({}, sl, tl);
+    }
+
     let likes      = STORAGE.get('sd_likes')     || {};
-    let likeCounts = STORAGE.get('sd_likeCounts') || {};
-    let pins       = STORAGE.get('campus_pins')   || {};
-    let notifs     = STORAGE.get('sd_notifs')     || {};
-    let comments   = STORAGE.get('sd_comments')   || {};
+    let likeCounts = loadLikeCounts();
+    let pins       = loadPins();
+    let notifs     = STORAGE.get('sd_notifs')    || {};
+    let comments   = STORAGE.get('sd_comments')  || {};
     let searchHistory = STORAGE.get('campus_history') || [];
 
     announcementsDB.forEach(a => {
@@ -554,7 +589,8 @@
     function saveState() {
         STORAGE.set('sd_likes',      likes);
         STORAGE.set('sd_likeCounts', likeCounts);
-        STORAGE.set('campus_pins',   pins);
+        STORAGE.set('campus_pins',   pins);   // shared with Student.aspx
+        STORAGE.set('teacher_pins',  pins);   // shared with Teacher.aspx
         STORAGE.set('sd_notifs',     notifs);
         STORAGE.set('sd_comments',   comments);
     }
@@ -806,7 +842,9 @@
     function togglePin(id) {
         pins[id] = !pins[id];
         saveState();
+        // Notify all tabs — Student uses campus_pins, Teacher uses teacher_pins
         window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
+        window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
         renderResults();
         showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
     }
@@ -941,13 +979,17 @@
 
         window.addEventListener('storage', e => {
             if (e.key === KEY) applyTheme(e.newValue || 'light');
-            if (e.key === 'campus_pins') {
-                pins = JSON.parse(e.newValue || '{}');
+            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                pins = loadPins();
                 renderResults();
             }
             if (e.key === 'sd_notifs') {
                 notifs = JSON.parse(e.newValue || '{}');
                 updateNotifBadge();
+                renderResults();
+            }
+            if (e.key === 'teacher_announcements') {
+                announcementsDB = loadAnnouncementsDB();
                 renderResults();
             }
         });

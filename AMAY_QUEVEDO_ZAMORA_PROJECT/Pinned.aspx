@@ -279,25 +279,32 @@
     </form>
 
     <script>
-        // ── Shared data (same as Student/Teacher/Search pages) ──
-        var announcementsDB = [
-            { id:1, title:"Final Exam Schedule Spring 2026",   category:"Exam Schedule",    date:"2026-05-10", time:"09:00 AM", professor:"Dr. Reyes",       description:"Final exams will be held from May 15-20, 2026. Please check your exam permits online. Bring school ID and test permit." },
-            { id:2, title:"Class Suspension due to Typhoon",   category:"Class Suspension", date:"2026-04-25", time:"08:00 PM", professor:"Admin Office",    description:"Classes suspended on April 26-27 due to Typhoon. All activities will shift to online learning platforms." },
-            { id:3, title:"University Hackathon 2026",         category:"Campus Events",    date:"2026-05-20", time:"10:00 AM", professor:"IT Department",   description:"48-hour coding challenge with exciting prizes. Form teams of 3-4 members. Registration ends May 15." },
-            { id:4, title:"Midterm Grade Release",             category:"Exam Schedule",    date:"2026-04-22", time:"02:00 PM", professor:"Registrar",       description:"Midterm grades are now available via the student portal. Check your assessment and email your instructors for concerns." },
-            { id:5, title:"Transport Strike Advisory",         category:"Class Suspension", date:"2026-04-28", time:"07:30 AM", professor:"Student Affairs", description:"No face-to-face classes on April 30 due to nationwide transport strike. Asynchronous activities will be provided." },
-            { id:6, title:"Cultural Festival 2026",            category:"Campus Events",    date:"2026-05-05", time:"09:00 AM", professor:"OSA",             description:"Celebration of arts, international food fair, and cultural performances. Free entrance for all students!" },
-            { id:7, title:"Research Colloquium",               category:"Campus Events",    date:"2026-05-12", time:"11:00 AM", professor:"Graduate School", description:"Present your research papers and get feedback from panelists. Best paper receives recognition award." }
-        ];
+        // ── Load live data from teacher_announcements ──────────
+        function loadDB() {
+            var raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null') || [];
+            return raw.map(function(a) {
+                var cat = a.category || '';
+                var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
+                return { id: a.id, title: a.title||'', category: catLabel, date: a.date||'', time: '', professor: a.author||'', description: a.content||'' };
+            });
+        }
 
         var THEME_KEY = 'campus_theme';
-        var pins      = JSON.parse(localStorage.getItem('campus_pins')   || '{}');
+
+        function loadPins() {
+            var tp = JSON.parse(localStorage.getItem('teacher_pins') || '{}');
+            var cp = JSON.parse(localStorage.getItem('campus_pins')  || '{}');
+            return Object.assign({}, cp, tp);
+        }
+
+        var pins      = loadPins();
         var likes     = JSON.parse(localStorage.getItem('sd_likes')      || '{}');
         var likeCounts= JSON.parse(localStorage.getItem('sd_likeCounts') || '{}');
         var comments  = JSON.parse(localStorage.getItem('sd_comments')   || '{}');
 
         function saveState() {
             localStorage.setItem('campus_pins',    JSON.stringify(pins));
+            localStorage.setItem('teacher_pins',   JSON.stringify(pins));
             localStorage.setItem('sd_likes',       JSON.stringify(likes));
             localStorage.setItem('sd_likeCounts',  JSON.stringify(likeCounts));
             localStorage.setItem('sd_comments',    JSON.stringify(comments));
@@ -311,7 +318,10 @@
         }
 
         function formatDate(d) {
-            return new Date(d).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+            if (!d) return '';
+            var dt = new Date(d);
+            if (isNaN(dt)) return d;
+            return dt.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
         }
 
         function getCatClass(cat) {
@@ -341,10 +351,19 @@
             }).join('');
         }
 
+        function pushNotification(msg, icon) {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            notifs.unshift({ msg: msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+            if (notifs.length > 50) notifs = notifs.slice(0, 50);
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+        }
+
         function toggleLike(id) {
+            var ann = loadDB().find(function(a) { return a.id === id; });
             likes[id] = !likes[id];
             likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
             if (likeCounts[id] < 0) likeCounts[id] = 0;
+            if (likes[id] && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
             saveState();
             renderPinned();
             showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
@@ -353,6 +372,8 @@
         function togglePin(id) {
             pins[id] = !pins[id];
             saveState();
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(pins) }));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
             renderPinned();
             showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
         }
@@ -367,8 +388,10 @@
             if (!input) return;
             var text = input.value.trim();
             if (!text) { showToast('Please write a comment first'); return; }
+            var ann = loadDB().find(function(a) { return a.id === id; });
             if (!comments[id]) comments[id] = [];
             comments[id].push({ author:'You', text:text, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
+            if (ann) pushNotification('💬 New comment on "' + ann.title + '": ' + text, 'fa-comment');
             saveState();
             input.value = '';
             var cl = document.getElementById('cl-' + id);
@@ -378,12 +401,15 @@
 
         function sharePost(id, title) {
             var url = window.location.href.split('?')[0] + '?post=' + id;
+            pushNotification('🔗 "' + title + '" was shared', 'fa-share-alt');
+            saveState();
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied: ' + title); });
             } else { showToast('📤 Shared!'); }
         }
 
         function renderPinned() {
+            var announcementsDB = loadDB();
             var pinned = announcementsDB.filter(function(a) { return !!pins[a.id]; });
             var container = document.querySelector('.pinned-list');
             if (!container) return;
@@ -407,7 +433,7 @@
                     +     '<div>'
                     +       '<div class="author-name">' + escapeHtml(ann.professor) + '</div>'
                     +       '<div class="meta">'
-                    +         '<span><i class="far fa-calendar-alt"></i> ' + formatDate(ann.date) + ' at ' + ann.time + '</span>'
+                    +         '<span><i class="far fa-calendar-alt"></i> ' + formatDate(ann.date) + (ann.time ? ' at ' + ann.time : '') + '</span>'
                     +         '<span class="cat-badge ' + catCls + '">' + escapeHtml(ann.category) + '</span>'
                     +       '</div>'
                     +     '</div>'
@@ -419,19 +445,16 @@
                     + '</div>'
                     + '<div class="card-title">' + escapeHtml(ann.title) + '</div>'
                     + '<div class="card-text">' + escapeHtml(ann.description) + '</div>'
-                    // stats bar
                     + '<div style="display:flex;gap:16px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);color:var(--muted);font-size:13px;margin-top:14px">'
                     +   '<span onclick="toggleLike(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="' + (liked?'fas':'far') + ' fa-heart" style="' + (liked?'color:#dc2626':'') + '"></i> ' + lc + ' Likes</span>'
                     +   '<span onclick="openComments(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="far fa-comment"></i> ' + cc + ' Comments</span>'
                     +   '<span onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="far fa-share-square"></i> Share</span>'
                     + '</div>'
-                    // action buttons
                     + '<div style="display:flex;gap:4px;padding:6px 0">'
-                    +   '<button onclick="toggleLike(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:' + (liked?'#dc2626':'var(--muted)') + ';display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="' + (liked?'fas':'far') + ' fa-heart"></i> ' + (liked?'Liked':'Like') + '</button>'
-                    +   '<button onclick="openComments(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="far fa-comment"></i> Comment</button>'
-                    +   '<button onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s"><i class="fas fa-share-alt"></i> Share</button>'
+                    +   '<button onclick="toggleLike(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:' + (liked?'#dc2626':'var(--muted)') + ';display:flex;align-items:center;justify-content:center;gap:6px"><i class="' + (liked?'fas':'far') + ' fa-heart"></i> ' + (liked?'Liked':'Like') + '</button>'
+                    +   '<button onclick="openComments(' + ann.id + ')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px"><i class="far fa-comment"></i> Comment</button>'
+                    +   '<button onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')" style="flex:1;background:none;border:none;padding:8px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px"><i class="fas fa-share-alt"></i> Share</button>'
                     + '</div>'
-                    // comments section
                     + '<div id="cs-' + ann.id + '" style="display:none;border-top:1px solid var(--border);padding-top:12px">'
                     +   '<div style="display:flex;gap:8px;margin-bottom:10px">'
                     +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment..." style="flex:1;padding:9px 14px;background:var(--surface-soft,#f8fafc);border:1px solid var(--border);border-radius:30px;outline:none;font-size:13px;color:var(--page-text)">'
@@ -450,8 +473,11 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === THEME_KEY) applyStoredTheme();
-            if (e.key === 'campus_pins') {
-                pins = JSON.parse(e.newValue || '{}');
+            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                pins = loadPins();
+                renderPinned();
+            }
+            if (e.key === 'teacher_announcements') {
                 renderPinned();
             }
         });

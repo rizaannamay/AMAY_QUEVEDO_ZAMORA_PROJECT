@@ -1192,14 +1192,19 @@
 
         var st_likes      = ST.get('sd_likes')      || {};
         var st_likeCounts = ST.get('sd_likeCounts')  || {};
-        var st_pins       = ST.get('campus_pins')    || {};
+        var st_pins       = (function() {
+            var tp = ST.get('teacher_pins') || {};
+            var cp = ST.get('campus_pins')  || {};
+            return Object.assign({}, cp, tp);
+        })();
         var st_notifs     = ST.get('sd_notifs')      || {};
         var st_comments   = ST.get('sd_comments')    || {};
 
         function saveSharedState() {
             ST.set('sd_likes',      st_likes);
             ST.set('sd_likeCounts', st_likeCounts);
-            ST.set('campus_pins',   st_pins);
+            ST.set('campus_pins',   st_pins);   // shared with Search pages
+            ST.set('teacher_pins',  st_pins);   // shared with Teacher.aspx
             ST.set('sd_notifs',     st_notifs);
             ST.set('sd_comments',   st_comments);
         }
@@ -1426,12 +1431,17 @@
 
         // ── Sync pins from other tabs ─────────────────────────
         window.addEventListener('storage', function(e) {
-            if (e.key === 'campus_pins') {
-                st_pins = JSON.parse(e.newValue || '{}');
+            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                var tp = ST.get('teacher_pins') || {};
+                var cp = ST.get('campus_pins')  || {};
+                st_pins = Object.assign({}, cp, tp);
                 document.querySelectorAll('.announcement-card').forEach(function(card) {
                     applyCardState(card);
                 });
                 sortCardsByPin();
+            }
+            if (e.key === 'teacher_announcements') {
+                renderAnnouncementsFromStorage();
             }
         });
 
@@ -1518,32 +1528,94 @@
             });
         })();
 
-        // ── Run upgradeCards once server HTML is injected ─────
-        // The server calls ClientScript.RegisterStartupScript which runs after DOM ready.
-        // We hook into MutationObserver to detect when announcementsContainer gets content.
-        (function() {
+        // ── Render announcements from teacher_announcements localStorage ─────
+        function renderAnnouncementsFromStorage() {
             var container = document.getElementById('announcementsContainer');
             if (!container) return;
 
-            // If already populated (e.g. inline script ran before this)
-            if (container.querySelector('.announcement-card')) {
-                upgradeCards();
+            var announcements = ST.get('teacher_announcements') || [];
+            if (!announcements.length) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">No announcements yet.</div>';
                 return;
             }
 
-            // Otherwise observe for changes
-            var obs = new MutationObserver(function(mutations, observer) {
-                if (container.querySelector('.announcement-card')) {
-                    observer.disconnect();
-                    upgradeCards();
-                }
+            // Sort: pinned first, then newest first
+            announcements.sort(function(a, b) {
+                var ap = st_pins[a.id] ? 1 : 0;
+                var bp = st_pins[b.id] ? 1 : 0;
+                if (bp !== ap) return bp - ap;
+                return b.id - a.id;
             });
-            obs.observe(container, { childList: true, subtree: true });
 
-            // Fallback: run after 800ms regardless
-            setTimeout(function() {
-                if (container.querySelector('.announcement-card')) upgradeCards();
-            }, 800);
+            var categoryClass = function(cat) {
+                return cat === 'Exam' ? 'post-category-exam'
+                     : cat === 'Suspension' ? 'post-category-suspension'
+                     : cat === 'Event' ? 'post-category-event'
+                     : 'post-category-general';
+            };
+
+            container.innerHTML = announcements.map(function(post) {
+                var isPinned    = !!st_pins[post.id];
+                var liked       = !!st_likes[post.id];
+                var notifOn     = !!st_notifs[post.id];
+                var likeCount   = st_likeCounts[post.id] !== undefined ? st_likeCounts[post.id] : (post.likeCount || 0);
+                var commentCount = (st_comments[post.id] || []).length;
+
+                if (st_likeCounts[post.id] === undefined) st_likeCounts[post.id] = post.likeCount || 0;
+
+                return '<div class="announcement-card" data-post-id="' + post.id + '" data-category="' + escapeHtml(post.category) + '">' +
+                    '<div class="post-header">' +
+                        '<div class="post-header-left">' +
+                            '<div class="post-avatar"><i class="fas fa-user-tie"></i></div>' +
+                            '<div>' +
+                                '<div class="post-author">' + escapeHtml(post.author) + '</div>' +
+                                '<div class="post-meta">' +
+                                    '<span><i class="far fa-calendar-alt"></i> ' + escapeHtml(post.date) + '</span>' +
+                                    '<span class="post-category ' + categoryClass(post.category) + '">' + escapeHtml(post.category) + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<button type="button" class="pin-btn-top ' + (isPinned ? 'pinned' : '') + '" onclick="togglePin(' + post.id + ')" title="' + (isPinned ? 'Unpin' : 'Pin') + '">' +
+                            '<i class="' + (isPinned ? 'fas' : 'far') + ' fa-thumbtack"></i>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="post-content">' +
+                        '<div class="post-title">' + escapeHtml(post.title) + '</div>' +
+                        '<div class="post-text">' + escapeHtml(post.content) + '</div>' +
+                        (post.imageUrl ? '<div class="post-image"><img src="' + escapeHtml(post.imageUrl) + '" alt="Announcement image" onerror="this.style.display=\'none\'" /></div>' : '') +
+                    '</div>' +
+                    '<div class="post-stats">' +
+                        '<span onclick="toggleLike(' + post.id + ')"><i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span class="like-count">' + likeCount + '</span> Likes</span>' +
+                        '<span onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> <span class="comment-count">' + commentCount + '</span> Comments</span>' +
+                        '<span onclick="sharePost(' + post.id + ', null)"><i class="far fa-share-square"></i> Share</span>' +
+                    '</div>' +
+                    '<div class="action-buttons">' +
+                        '<button type="button" class="action-btn like-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + post.id + ')">' +
+                            '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like') +
+                        '</button>' +
+                        '<button type="button" class="action-btn" onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> Comment</button>' +
+                        '<button type="button" class="action-btn' + (notifOn ? ' notif-active' : '') + '" onclick="toggleNotif(' + post.id + ')"><i class="' + (notifOn ? 'fas' : 'far') + ' fa-bell"></i> ' + (notifOn ? 'Notif On' : 'Notify') + '</button>' +
+                        '<button type="button" class="action-btn" onclick="sharePost(' + post.id + ', null)"><i class="fas fa-share-alt"></i> Share</button>' +
+                    '</div>' +
+                    '<div class="comments-section" id="commentsSection_' + post.id + '" style="display:none;">' +
+                        '<div class="comment-input">' +
+                            '<input type="text" id="commentInput_' + post.id + '" placeholder="Write a comment..." />' +
+                            '<button type="button" onclick="addComment(this, ' + post.id + ')">Post</button>' +
+                        '</div>' +
+                        '<div class="comments-list" id="commentsList_' + post.id + '">' +
+                            renderCommentsList(post.id) +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            saveSharedState();
+            updateNotifBadge();
+        }
+
+        // ── Run on page load ──────────────────────────────────
+        (function() {
+            renderAnnouncementsFromStorage();
         })();
 
         // ── Page Flip Transition ───────────────────────────────────────────────
