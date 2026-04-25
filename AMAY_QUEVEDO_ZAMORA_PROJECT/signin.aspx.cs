@@ -1,105 +1,136 @@
 ﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-<<<<<<< HEAD
         private readonly SqlConnection con = new SqlConnection(
-        @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
+            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
 
-=======
->>>>>>> fa6f73f1f4eefd367af5254f688c3ed50e2751ff
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                Session.Clear();
-            }
         }
 
         protected void BtnSignUp_Click(object sender, EventArgs e)
         {
-            if (!ValidateInputs())
+            string fullName         = txtFullName.Text.Trim();
+            string email            = txtEmail.Text.Trim();
+            string username         = txtUsername.Text.Trim();
+            string password         = txtPassword.Text;
+            string confirmPassword  = txtConfirmPassword.Text;
+            string role             = rbAdmin.Checked ? "Admin" : "Student";
+
+            // Validation — unchanged
+            if (string.IsNullOrWhiteSpace(fullName)  ||
+                string.IsNullOrWhiteSpace(email)      ||
+                string.IsNullOrWhiteSpace(username)   ||
+                string.IsNullOrWhiteSpace(password)   ||
+                string.IsNullOrWhiteSpace(confirmPassword))
+            {
+                ShowMessage("Please complete all required fields.", false);
                 return;
-
-            // Gather inputs (simulating what would go to the DB)
-            string fullName = txtFullName.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text.Trim();
-            string role = rbStudent.Checked ? "Student" : "Admin";
-
-            // --- SIMULATED SUCCESS ---
-            // Since SQL is detached, we skip the Database Insert command.
-            // We just show a success message and perhaps clear the form.
-
-            ShowMessage($"Success! Account for {username} created (Simulated).", true);
-
-            // Optional: Automatically redirect to login after a short delay or via a link
-            // Response.Redirect("login.aspx"); 
-        }
-
-        private bool ValidateInputs()
-        {
-            if (string.IsNullOrWhiteSpace(txtFullName.Text))
-            {
-                ShowMessage("Please enter your full name.", false);
-                return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtEmail.Text))
-            {
-                ShowMessage("Please enter your email address.", false);
-                return false;
-            }
-
-            if (!IsValidEmail(txtEmail.Text.Trim()))
+            if (!IsValidEmail(email))
             {
                 ShowMessage("Please enter a valid email address.", false);
-                return false;
+                return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+            if (password.Length < 6)
             {
-                ShowMessage("Please choose a username.", false);
-                return false;
+                ShowMessage("Password must be at least 6 characters long.", false);
+                return;
             }
 
-            if (txtUsername.Text.Trim().Length < 3)
-            {
-                ShowMessage("Username must be at least 3 characters.", false);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtPassword.Text))
-            {
-                ShowMessage("Please create a password.", false);
-                return false;
-            }
-
-            if (txtPassword.Text.Length < 6)
-            {
-                ShowMessage("Password must be at least 6 characters.", false);
-                return false;
-            }
-
-            if (txtPassword.Text != txtConfirmPassword.Text)
+            if (!string.Equals(password, confirmPassword, StringComparison.Ordinal))
             {
                 ShowMessage("Passwords do not match.", false);
-                return false;
+                return;
             }
 
-            return true;
+            string passwordHash = ComputeSha256(password);
+
+            try
+            {
+                con.Open();
+
+                // Check if username already exists
+                SqlCommand checkUser = new SqlCommand(
+                    "SELECT COUNT(*) FROM Users WHERE Username = @Username", con);
+                checkUser.Parameters.AddWithValue("@Username", username);
+                if ((int)checkUser.ExecuteScalar() > 0)
+                {
+                    con.Close();
+                    ShowMessage("That username is already taken. Please choose another one.", false);
+                    return;
+                }
+
+                // Check if email already exists
+                SqlCommand checkEmail = new SqlCommand(
+                    "SELECT COUNT(*) FROM Users WHERE Email = @Email", con);
+                checkEmail.Parameters.AddWithValue("@Email", email);
+                if ((int)checkEmail.ExecuteScalar() > 0)
+                {
+                    con.Close();
+                    ShowMessage("That email address is already registered.", false);
+                    return;
+                }
+
+                // Insert new user with hashed password
+                SqlCommand insert = new SqlCommand(
+                    @"INSERT INTO Users (FullName, Email, Username, Password, Role)
+                      VALUES (@FullName, @Email, @Username, @Password, @Role)", con);
+
+                insert.Parameters.AddWithValue("@FullName", fullName);
+                insert.Parameters.AddWithValue("@Email",    email);
+                insert.Parameters.AddWithValue("@Username", username);
+                insert.Parameters.AddWithValue("@Password", passwordHash);
+                insert.Parameters.AddWithValue("@Role",     role);
+                insert.ExecuteNonQuery();
+
+                con.Close();
+                ClearForm();
+                ShowMessage("Account created successfully. You can now log in.", true);
+            }
+            catch (Exception ex)
+            {
+                if (con.State == ConnectionState.Open) con.Close();
+                ShowMessage("Registration failed. Please try again.", false);
+                System.Diagnostics.Debug.WriteLine("SignUp Error: " + ex.Message);
+            }
+        }
+
+        private void ShowMessage(string message, bool isSuccess)
+        {
+            lblMessage.Text    = message;
+            lblMessage.Visible = true;
+            lblMessage.CssClass = isSuccess ? "success-message" : "error-message";
+        }
+
+        private void ClearForm()
+        {
+            txtFullName.Text        = string.Empty;
+            txtEmail.Text           = string.Empty;
+            txtUsername.Text        = string.Empty;
+            txtPassword.Text        = string.Empty;
+            txtConfirmPassword.Text = string.Empty;
+            rbStudent.Checked       = true;
+            rbAdmin.Checked         = false;
         }
 
         private bool IsValidEmail(string email)
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
+                MailAddress address = new MailAddress(email);
+                return string.Equals(address.Address, email, StringComparison.OrdinalIgnoreCase);
             }
             catch
             {
@@ -107,22 +138,17 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        private void ShowMessage(string message, bool isSuccess)
+        private string ComputeSha256(string input)
         {
-            lblMessage.Text = message;
-            // Ensure these CSS classes exist in your stylesheet for the red/green colors
-            lblMessage.CssClass = isSuccess ? "text-success" : "text-danger";
-            lblMessage.Visible = true;
-        }
-
-        private void ClearForm()
-        {
-            txtFullName.Text = "";
-            txtEmail.Text = "";
-            txtUsername.Text = "";
-            txtPassword.Text = "";
-            txtConfirmPassword.Text = "";
-            rbStudent.Checked = true;
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+                byte[] hash  = sha256.ComputeHash(bytes);
+                StringBuilder builder = new StringBuilder();
+                foreach (byte value in hash)
+                    builder.Append(value.ToString("x2"));
+                return builder.ToString();
+            }
         }
     }
 }

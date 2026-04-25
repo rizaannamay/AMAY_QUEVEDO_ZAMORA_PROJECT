@@ -244,37 +244,6 @@
             gap: 12px;
         }
     }
-
-    /* Dark mode */
-    body.dark-mode {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    }
-
-    body.dark-mode .signup-card {
-        background: rgba(33, 38, 45, 0.95);
-        border-color: rgba(255,255,255,0.08);
-    }
-
-    body.dark-mode .logo h1,
-    body.dark-mode .card-header h2 { color: #e4e6eb; }
-
-    body.dark-mode .logo p,
-    body.dark-mode .card-header span,
-    body.dark-mode .input-group label,
-    body.dark-mode .role-group label,
-    body.dark-mode .role-option span,
-    body.dark-mode .footer-links p,
-    body.dark-mode .password-requirements { color: #9db0c4; }
-
-    body.dark-mode .input-field,
-    body.dark-mode .role-options {
-        background: rgba(56,62,72,0.75);
-        border-color: rgba(255,255,255,0.1);
-        color: #e4e6eb;
-    }
-
-    body.dark-mode .footer-links a { color: #7fa6d1; }
-    body.dark-mode .footer-links { border-top-color: rgba(255,255,255,0.08); }
 </style>
 </head>
 <body>
@@ -347,41 +316,33 @@
     </form>
 
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Apply global theme
-    if (localStorage.getItem('campus_theme') === 'dark') {
-        document.body.classList.add('dark-mode');
-    }
-    var passwordField = document.getElementById('<%= txtPassword.ClientID %>') as HTMLInputElement | null;
-            var confirmField = document.getElementById('<%= txtConfirmPassword.ClientID %>') as HTMLInputElement | null;
-            var passwordReq = document.getElementById('passwordReq') as HTMLElement | null;
+        document.addEventListener(''DOMContentLoaded'', function () {
+            var passwordField = document.getElementById(''<%= txtPassword.ClientID %>'');
+    var confirmField = document.getElementById(''<%= txtConfirmPassword.ClientID %>'');
+    var passwordReq = document.getElementById(''passwordReq'');
 
-            if (passwordField && passwordReq) {
-                const pass = passwordField;
-                const req = passwordReq;
-                pass.addEventListener('keyup', function(this: HTMLInputElement) {
-                    if (this.value && this.value.length >= 6) {
-                        req.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
-                        req.style.color = '#16a34a';
-                    } else {
-                        req.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
-                        req.style.color = '#8a9bb0';
-                    }
-                });
-            }
-
-            if (confirmField && passwordField) {
-                const pass = passwordField;
-                const conf = confirmField;
-                conf.addEventListener('keyup', function(this: HTMLInputElement) {
-                    if (pass && this.value === pass.value && pass.value.length >= 6) {
-                        this.style.borderColor = '#16a34a';
-                    } else {
-                        this.style.borderColor = '#dce4ec';
-                    }
-                });
+    if (passwordField && passwordReq) {
+        passwordField.addEventListener(''keyup'', function () {
+            if (this.value && this.value.length >= 6) {
+                passwordReq.innerHTML = '' < i class="fas fa-check-circle" ></i > Password strength: Good'';
+                passwordReq.style.color = ''#16a34a'';
+            } else {
+                passwordReq.innerHTML = '' < i class="fas fa-info-circle" ></i > Password must be at least 6 characters'';
+                passwordReq.style.color = ''#8a9bb0'';
             }
         });
+    }
+
+    if (confirmField && passwordField) {
+        confirmField.addEventListener(''keyup'', function () {
+            if (this.value === passwordField.value && passwordField.value.length >= 6) {
+                this.style.borderColor = ''#16a34a'';
+            } else {
+                this.style.borderColor = ''#dce4ec'';
+            }
+        });
+    }
+});
     </script>
 </body>
 </html>
