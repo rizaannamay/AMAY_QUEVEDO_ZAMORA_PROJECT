@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchStudent.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchStudent" %>
+<%@ Page Language="C#" AutoEventWireup="true"  %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
