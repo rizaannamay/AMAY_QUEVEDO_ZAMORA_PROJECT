@@ -8,6 +8,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Student : Page
     {
+<<<<<<< HEAD
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
+
+
+=======
+>>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
@@ -120,6 +126,60 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                     string pinnedClass = a.IsPinned ? "pinned" : "";
 
+<<<<<<< HEAD
+                    html += $@"
+                        <div class='announcement-card' data-category='{category}' data-post-id='{id}'>
+                            <div class='post-header'>
+                                <div class='post-header-left'>
+                                    <div class='post-avatar'>
+                                        <i class='{categoryIcon}'></i>
+                                    </div>
+                                    <div class='post-user-info'>
+                                        <div class='post-author'>{EscapeHtml(author)}</div>
+                                        <div class='post-meta'>
+                                            <span><i class='far fa-calendar-alt'></i> {date:MMMM dd, yyyy}</span>
+                                            <span><i class='far fa-clock'></i> {date:h:mm tt}</span>
+                                            <span class='post-category {categoryClass}'>{category}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type='button' class='pin-btn-top {pinnedClass}' onclick='togglePin({id})' title='{(pinned ? "Unpin" : "Pin this announcement")}' style='color:{(pinned ? "#e65100" : "var(--muted-light)")}'>
+                                    <i class='{(pinned ? "fas" : "far")} fa-thumbtack'></i>
+                                </button>
+                            </div>
+                            <div class='post-content'>
+                                <div class='post-title'>{EscapeHtml(title)}</div>
+                                <div class='post-text'>{EscapeHtml(content)}</div>
+                            </div>
+                            <div class='post-stats'>
+                                <span onclick='toggleLike({id})'><i class='far fa-heart'></i> <span class='like-count'>{likes}</span> Likes</span>
+                                <span onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> <span class='comment-count'>{comments}</span> Comments</span>
+                                <span onclick='sharePost({id}, null)'><i class='far fa-share-square'></i> <span class='share-count'>{shares}</span> Shares</span>
+                            </div>
+                            <div class='action-buttons'>
+                                <button type='button' class='action-btn like-btn' onclick='toggleLike({id})'><i class='far fa-heart'></i> Like</button>
+                                <button type='button' class='action-btn' onclick='toggleCommentSection({id})'><i class='far fa-comment'></i> Comment</button>
+                                <button type='button' class='action-btn' onclick='sharePost({id}, null)'><i class='fas fa-share-alt'></i> Share</button>
+                                <button type='button' class='action-btn notif-btn' onclick='toggleNotif({id})'><i class='far fa-bell'></i> Notify</button>
+                            </div>
+                            <div class='comments-section' id='commentsSection_{id}' style='display:none;'>
+                                <div class='comment-input'>
+                                    <input type='text' placeholder='Write a comment...' id='commentInput_{id}' />
+                                    <button type='button' onclick='addComment(this, {id})'>Post</button>
+                                </div>
+                                <div class='comments-list' id='commentsList_{id}'>
+                                    <div class='no-comments'>No comments yet. Be the first!</div>
+                                </div>
+                            </div>
+                        </div>";
+                }
+                reader.Close();
+                con.Close();
+
+                if (string.IsNullOrEmpty(html))
+                {
+                    html = "<div style='text-align:center;padding:40px;'>No announcements available.</div>";
+=======
                     sb.AppendLine("<div class='announcement-card' data-category='" + HttpUtility.HtmlEncode(a.Category) + "' data-post-id='" + a.AnnouncementId + "'>");
                     sb.AppendLine("  <div class='post-header'>");
                     sb.AppendLine("    <div class='post-header-left'>");
@@ -159,6 +219,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     sb.AppendLine("    </div>");
                     sb.AppendLine("  </div>");
                     sb.AppendLine("</div>");
+>>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
                 }
 
                 string html = sb.Length == 0 ? "<div style='text-align:center;padding:40px;'>No announcements available.</div>" : sb.ToString();
