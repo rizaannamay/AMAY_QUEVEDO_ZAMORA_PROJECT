@@ -1,15 +1,19 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Text;
+using System.Web;
 using System.Web.UI;
+using System.Collections.Generic;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Student : Page
     {
+<<<<<<< HEAD
         SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementDB;User ID=Campus_Announcement;Password=campus123");
 
 
+=======
+>>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["UserId"] == null)
@@ -25,44 +29,41 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
+        // NOTE: database calls removed. Using session values or sample data so the page builds and runs without a DB.
         private void LoadUserInfo()
         {
             try
             {
-                con.Open();
-                string query = "SELECT FullName, Email, Role FROM Users WHERE UserId = @UserId";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@UserId", Session["UserId"].ToString());
-                SqlDataReader reader = cmd.ExecuteReader();
+                // Prefer session values if present; otherwise use sample defaults
+                string fullName = Session["FullName"]?.ToString() ?? "John Dela Cruz";
+                string email = Session["Email"]?.ToString() ?? "john.delacruz@ctu.edu.ph";
+                string role = Session["Role"]?.ToString() ?? "Student";
 
-                if (reader.Read())
-                {
-                    string fullName = reader["FullName"].ToString();
-                    string email = reader["Email"].ToString();
-                    string role = reader["Role"].ToString();
+                // store back to session (keeps existing behavior)
+                Session["FullName"] = fullName;
+                Session["Email"] = email;
+                Session["Role"] = role;
 
-                    Session["FullName"] = fullName;
-                    Session["Email"] = email;
+                string fn = HttpUtility.JavaScriptStringEncode(fullName);
+                string em = HttpUtility.JavaScriptStringEncode(email);
+                string rl = HttpUtility.JavaScriptStringEncode(role);
 
-                    string script = $@"
-                        <script>
-                            var userName = document.getElementById('userName');
-                            var userRole = document.getElementById('userRole');
-                            var profileName = document.getElementById('profileName');
-                            var profileEmail = document.getElementById('profileEmail');
-                            if(userName) userName.innerText = '{fullName.Replace("'", "\\'")}';
-                            if(userRole) userRole.innerText = '{role.Replace("'", "\\'")}';
-                            if(profileName) profileName.innerText = '{fullName.Replace("'", "\\'")}';
-                            if(profileEmail) profileEmail.innerText = '{email.Replace("'", "\\'")}';
-                        </script>";
-                    ClientScript.RegisterStartupScript(this.GetType(), "LoadUser", script);
-                }
-                reader.Close();
-                con.Close();
+                string script = "<script>"
+                    + "var userName = document.getElementById('userName');"
+                    + "var userRole = document.getElementById('userRole');"
+                    + "var profileName = document.getElementById('profileName');"
+                    + "var profileEmail = document.getElementById('profileEmail');"
+                    + "if(userName) userName.innerText = \"" + fn + "\";"
+                    + "if(userRole) userRole.innerText = \"" + rl + "\";"
+                    + "if(profileName) profileName.innerText = \"" + fn + "\";"
+                    + "if(profileEmail) profileEmail.innerText = \"" + em + "\";"
+                    + "</script>";
+
+                ClientScript.RegisterStartupScript(this.GetType(), "LoadUser", script);
             }
             catch (Exception ex)
             {
-                if (con.State == ConnectionState.Open) con.Close();
+                // keep debug logging so 'ex' is used (removes unused variable warnings)
                 System.Diagnostics.Debug.WriteLine("LoadUserInfo Error: " + ex.Message);
             }
         }
@@ -71,34 +72,43 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             try
             {
-                con.Open();
-
-                string query = @"SELECT AnnouncementId, Title, Content, Category, AuthorName, 
-                                        CreatedDate, LikeCount, CommentCount, ShareCount, IsPinned
-                                 FROM Announcements 
-                                 WHERE IsActive = 1 
-                                 ORDER BY IsPinned DESC, CreatedDate DESC";
-
-                SqlCommand cmd = new SqlCommand(query, con);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                string html = "";
-                while (reader.Read())
+                // Sample announcements - replace with DB logic later if desired
+                var items = new List<Announcement>
                 {
-                    int id = Convert.ToInt32(reader["AnnouncementId"]);
-                    string title = reader["Title"].ToString();
-                    string content = reader["Content"].ToString();
-                    string category = reader["Category"].ToString();
-                    string author = reader["AuthorName"].ToString();
-                    DateTime date = Convert.ToDateTime(reader["CreatedDate"]);
-                    int likes = Convert.ToInt32(reader["LikeCount"]);
-                    int comments = Convert.ToInt32(reader["CommentCount"]);
-                    int shares = Convert.ToInt32(reader["ShareCount"]);
-                    bool pinned = Convert.ToBoolean(reader["IsPinned"]);
+                    new Announcement
+                    {
+                        AnnouncementId = 1,
+                        Title = "Final Exam Schedule",
+                        Content = "All final examinations will be conducted on May 11-14. Please check department schedules.",
+                        Category = "Exam",
+                        AuthorName = "Office of the Registrar",
+                        CreatedDate = DateTime.Now.AddDays(-2),
+                        LikeCount = 24,
+                        CommentCount = 5,
+                        ShareCount = 3,
+                        IsPinned = true
+                    },
+                    new Announcement
+                    {
+                        AnnouncementId = 2,
+                        Title = "Library Hours Extended",
+                        Content = "Library extended hours during exam week: 7:00 AM - Midnight.",
+                        Category = "Event",
+                        AuthorName = "Student Affairs",
+                        CreatedDate = DateTime.Now.AddDays(-10),
+                        LikeCount = 8,
+                        CommentCount = 2,
+                        ShareCount = 1,
+                        IsPinned = false
+                    }
+                };
 
+                var sb = new StringBuilder();
+                foreach (var a in items)
+                {
                     string categoryClass = "";
                     string categoryIcon = "fas fa-bullhorn";
-                    switch (category.ToLower())
+                    switch ((a.Category ?? "").ToLower())
                     {
                         case "exam":
                             categoryClass = "post-category-exam";
@@ -114,8 +124,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                             break;
                     }
 
-                    string pinnedClass = pinned ? "pinned" : "";
+                    string pinnedClass = a.IsPinned ? "pinned" : "";
 
+<<<<<<< HEAD
                     html += $@"
                         <div class='announcement-card' data-category='{category}' data-post-id='{id}'>
                             <div class='post-header'>
@@ -168,15 +179,58 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 if (string.IsNullOrEmpty(html))
                 {
                     html = "<div style='text-align:center;padding:40px;'>No announcements available.</div>";
+=======
+                    sb.AppendLine("<div class='announcement-card' data-category='" + HttpUtility.HtmlEncode(a.Category) + "' data-post-id='" + a.AnnouncementId + "'>");
+                    sb.AppendLine("  <div class='post-header'>");
+                    sb.AppendLine("    <div class='post-header-left'>");
+                    sb.AppendLine("      <div class='post-avatar'><i class='" + categoryIcon + "'></i></div>");
+                    sb.AppendLine("      <div class='post-user-info'>");
+                    sb.AppendLine("        <div class='post-author'>" + EscapeHtml(a.AuthorName) + "</div>");
+                    sb.AppendLine("        <div class='post-meta'>");
+                    sb.AppendLine("          <span><i class='far fa-calendar-alt'></i> " + a.CreatedDate.ToString("MMMM dd, yyyy") + "</span>");
+                    sb.AppendLine("          <span><i class='far fa-clock'></i> " + a.CreatedDate.ToString("h:mm tt") + "</span>");
+                    sb.AppendLine("          <span class='post-category " + categoryClass + "'>" + EscapeHtml(a.Category) + "</span>");
+                    sb.AppendLine("        </div>");
+                    sb.AppendLine("      </div>");
+                    sb.AppendLine("    </div>");
+                    sb.AppendLine("    <button type='button' class='pin-btn-top " + pinnedClass + "' onclick='togglePinTop(this, " + a.AnnouncementId + ")'><i class='fas fa-thumbtack'></i></button>");
+                    sb.AppendLine("  </div>");
+                    sb.AppendLine("  <div class='post-content'>");
+                    sb.AppendLine("    <div class='post-title'>" + EscapeHtml(a.Title) + "</div>");
+                    sb.AppendLine("    <div class='post-text'>" + EscapeHtml(a.Content) + "</div>");
+                    sb.AppendLine("  </div>");
+                    sb.AppendLine("  <div class='post-stats'>");
+                    sb.AppendLine("    <span onclick='toggleLikeFromStats(this, " + a.AnnouncementId + ")'><i class='far fa-heart'></i> <span class='like-count'>" + a.LikeCount + "</span> Likes</span>");
+                    sb.AppendLine("    <span onclick='scrollToComments(this, " + a.AnnouncementId + ")'><i class='far fa-comment'></i> <span class='comment-count'>" + a.CommentCount + "</span> Comments</span>");
+                    sb.AppendLine("    <span onclick='sharePost(" + a.AnnouncementId + ")'><i class='far fa-share-square'></i> <span class='share-count'>" + a.ShareCount + "</span> Shares</span>");
+                    sb.AppendLine("  </div>");
+                    sb.AppendLine("  <div class='action-buttons'>");
+                    sb.AppendLine("    <button type='button' class='action-btn' onclick='toggleLike(this, " + a.AnnouncementId + ")'><i class='far fa-heart'></i> Like</button>");
+                    sb.AppendLine("    <button type='button' class='action-btn' onclick='toggleComments(this, " + a.AnnouncementId + ")'><i class='far fa-comment'></i> Comment</button>");
+                    sb.AppendLine("    <button type='button' class='action-btn' onclick='sharePost(" + a.AnnouncementId + ")'><i class='fas fa-share'></i> Share</button>");
+                    sb.AppendLine("  </div>");  
+                    sb.AppendLine("  <div class='comments-section' id='commentsSection_" + a.AnnouncementId + "'>");
+                    sb.AppendLine("    <div class='comment-input'>");
+                    sb.AppendLine("      <input type='text' placeholder='Write a comment...' id='commentInput_" + a.AnnouncementId + "' />");
+                    sb.AppendLine("      <button type='button' onclick='addComment(this, " + a.AnnouncementId + ")'>Post</button>");
+                    sb.AppendLine("    </div>");
+                    sb.AppendLine("    <div class='comments-list' id='commentsList_" + a.AnnouncementId + "'>");
+                    sb.AppendLine("      <div class='no-comments'>No comments yet. Be the first!</div>");
+                    sb.AppendLine("    </div>");
+                    sb.AppendLine("  </div>");
+                    sb.AppendLine("</div>");
+>>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
                 }
 
-                string finalScript = $"<script>document.getElementById('announcementsContainer').innerHTML = `{html}`;</script>";
+                string html = sb.Length == 0 ? "<div style='text-align:center;padding:40px;'>No announcements available.</div>" : sb.ToString();
+                string encoded = HttpUtility.JavaScriptStringEncode(html);
+                string finalScript = "<script>document.getElementById('announcementsContainer').innerHTML = \"" + encoded + "\";</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "LoadAnnouncements", finalScript);
             }
             catch (Exception ex)
             {
-                if (con.State == ConnectionState.Open) con.Close();
-                string errorScript = $"<script>document.getElementById('announcementsContainer').innerHTML = '<div style=\"text-align:center;padding:40px;color:red;\">Error loading announcements: {ex.Message.Replace("'", "\\'")}</div>';</script>";
+                System.Diagnostics.Debug.WriteLine("LoadAnnouncements Error: " + ex);
+                string errorScript = "<script>document.getElementById('announcementsContainer').innerHTML = \"<div style=\\\"text-align:center;padding:40px;color:red;\\\">Error loading announcements</div>\";</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "LoadError", errorScript);
             }
         }
@@ -185,66 +239,44 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             try
             {
-                con.Open();
+                // sample notifications
+                var notes = new[]
+                {
+                    new { Id = 1, Message = "Final Exam Schedule posted.", IsRead = false, Created = DateTime.Now.AddHours(-2) },
+                    new { Id = 2, Message = "Campus maintenance Apr 30.", IsRead = true, Created = DateTime.Now.AddDays(-2) }
+                };
 
-                string query = @"SELECT NotificationId, Message, IsRead, CreatedDate 
-                                 FROM Notifications 
-                                 WHERE UserId = @UserId 
-                                 ORDER BY CreatedDate DESC";
-                SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@UserId", Session["UserId"].ToString());
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                string html = "";
+                var sb = new StringBuilder();
                 int unreadCount = 0;
-
-                while (reader.Read())
+                foreach (var n in notes)
                 {
-                    int id = Convert.ToInt32(reader["NotificationId"]);
-                    string message = reader["Message"].ToString();
-                    bool isRead = Convert.ToBoolean(reader["IsRead"]);
-                    DateTime date = Convert.ToDateTime(reader["CreatedDate"]);
-                    string timeAgo = GetTimeAgo(date);
+                    string unreadClass = n.IsRead ? "" : "unread";
+                    string dotHtml = n.IsRead ? "" : "<div class='notification-dot'></div>";
+                    if (!n.IsRead) unreadCount++;
 
-                    string unreadClass = isRead ? "" : "unread";
-                    string dotHtml = isRead ? "" : "<div class='notification-dot'></div>";
-
-                    if (!isRead) unreadCount++;
-
-                    html += $@"
-                        <div class='notification-item {unreadClass}' onclick='markNotificationRead(this, {id})'>
-                            {dotHtml}
-                            <div class='notification-text'>{EscapeHtml(message)}</div>
-                            <div class='notification-time'>{timeAgo}</div>
-                        </div>";
-                }
-                reader.Close();
-                con.Close();
-
-                if (string.IsNullOrEmpty(html))
-                {
-                    html = "<div class='no-notifications' style='padding:20px;text-align:center;'>No new notifications</div>";
+                    sb.AppendLine("<div class='notification-item " + unreadClass + "' onclick='markNotificationRead(this, " + n.Id + ")'>");
+                    sb.AppendLine(dotHtml);
+                    sb.AppendLine("<div class='notification-text'>" + EscapeHtml(n.Message) + "</div>");
+                    sb.AppendLine("<div class='notification-time'>" + GetTimeAgo(n.Created) + "</div>");
+                    sb.AppendLine("</div>");
                 }
 
-                string script = $@"
-                    <script>
-                        var notificationList = document.getElementById('notificationList');
-                        if(notificationList) notificationList.innerHTML = `{html}`;
-                        var badge = document.getElementById('notificationBadge');
-                        if(badge) {{
-                            if({unreadCount} > 0) {{
-                                badge.innerText = {unreadCount};
-                                badge.style.display = 'inline-block';
-                            }} else {{
-                                badge.style.display = 'none';
-                            }}
-                        }}
-                    </script>";
-                ClientScript.RegisterStartupScript(this.GetType(), "LoadNotifications", script);
+                string html = sb.Length == 0 ? "<div class='no-notifications' style='padding:20px;text-align:center;'>No new notifications</div>" : sb.ToString();
+                string encoded = HttpUtility.JavaScriptStringEncode(html);
+
+                var scriptSb = new StringBuilder();
+                scriptSb.Append("<script>");
+                scriptSb.Append("var notificationList = document.getElementById('notificationList');");
+                scriptSb.Append("if(notificationList) notificationList.innerHTML = \"" + encoded + "\";");
+                scriptSb.Append("var badge = document.getElementById('notificationBadge');");
+                scriptSb.Append("if(badge){ if(" + unreadCount + " > 0){ badge.innerText = " + unreadCount + "; badge.style.display = 'inline-block'; } else { badge.style.display = 'none'; } }");
+                scriptSb.Append("</script>");
+
+                ClientScript.RegisterStartupScript(this.GetType(), "LoadNotifications", scriptSb.ToString());
             }
             catch (Exception ex)
             {
-                if (con.State == ConnectionState.Open) con.Close();
+                System.Diagnostics.Debug.WriteLine("LoadNotifications Error: " + ex.Message);
                 string errorScript = "<script>document.getElementById('notificationList').innerHTML = '<div style=\"padding:20px;text-align:center;\">Notifications unavailable</div>';</script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "LoadNotificationsError", errorScript);
             }
@@ -264,6 +296,21 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             if (string.IsNullOrEmpty(text)) return "";
             return System.Security.SecurityElement.Escape(text);
+        }
+
+        // Simple local model used for sample announcements
+        private class Announcement
+        {
+            public int AnnouncementId { get; set; }
+            public string Title { get; set; }
+            public string Content { get; set; }
+            public string Category { get; set; }
+            public string AuthorName { get; set; }
+            public DateTime CreatedDate { get; set; }
+            public int LikeCount { get; set; }
+            public int CommentCount { get; set; }
+            public int ShareCount { get; set; }
+            public bool IsPinned { get; set; }
         }
     }
 }
