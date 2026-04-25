@@ -1,5 +1,14 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
+<<<<<<< HEAD
 
+=======
+<script runat="server">
+    protected void SearchButton_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SearchDashboard.aspx");
+    }
+</script>
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -13,7 +22,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -28,10 +36,8 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             --active-bg: #e8f0fe;
         }
-
         html, body, form { height: 100%; }
         html, body { overflow: hidden; }
-
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
@@ -42,10 +48,8 @@
             background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
-
         a { color: inherit; text-decoration: none; }
         button, input, textarea { font: inherit; }
-
         .app-shell {
             height: 100vh;
             display: flex;
@@ -54,7 +58,10 @@
             padding: 16px 20px 0;
             overflow: hidden;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .header {
             flex: 0 0 auto;
             background: var(--surface);
@@ -68,6 +75,7 @@
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
+<<<<<<< HEAD
 
         .footer {
             flex: 0 0 34px;
@@ -78,9 +86,10 @@
 
         form { height: auto; min-height: 100%; overflow: visible; }
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; }
         .logo i { color: var(--primary); margin-right: 8px; }
-
         .search-container {
             display: flex;
             gap: 10px;
@@ -89,6 +98,7 @@
             justify-content: center;
             min-width: 0;
         }
+<<<<<<< HEAD
 
         .search-box {
             background: var(--surface-soft);
@@ -114,6 +124,9 @@
         .search-box i, .bell-icon { color: var(--primary); }
 
         .search-btn, .comment-input button, .modal-close {
+=======
+        .search-btn {
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             background: none;
             border: 2px solid #0F172A;
             border-radius: 30px;
@@ -123,21 +136,23 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
+<<<<<<< HEAD
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
+=======
+        .search-btn:hover {
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             background: #e8f0fe;
             border-color: rgba(26,58,92,0.4);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
-
         .header-actions {
             display: flex;
             gap: 15px;
             align-items: center;
             white-space: nowrap;
         }
-
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -151,9 +166,7 @@
             border: 1px solid #dce4ec;
             transition: background 0.3s;
         }
-
         .notification-bell:hover { background: var(--active-bg); }
-
         .badge-red {
             position: absolute;
             top: -5px;
@@ -167,7 +180,6 @@
             min-width: 18px;
             text-align: center;
         }
-
         .user-info {
             display: flex;
             align-items: center;
@@ -177,12 +189,10 @@
             border-radius: 40px;
             border: 1px solid #dce4ec;
         }
-
         .avatar, .profile-avatar, .post-avatar {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
             color: #ffffff;
         }
-
         .avatar {
             width: 36px;
             height: 36px;
@@ -192,10 +202,12 @@
             justify-content: center;
             font-weight: bold;
         }
-
         .user-name { font-size: 14px; font-weight: 600; }
         .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .content-shell {
             flex: 1 1 0;
             min-height: 0;
@@ -205,9 +217,7 @@
             overflow: hidden;
             align-items: stretch;
         }
-
         .sidebar { height: 100%; min-height: 0; overflow: hidden; }
-
         .card {
             background: var(--surface);
             backdrop-filter: blur(10px);
@@ -216,16 +226,13 @@
             box-shadow: var(--shadow);
             overflow: hidden;
         }
-
         .sidebar .card, .main-panel.card {
             height: 100%;
             min-height: 100%;
             display: flex;
             flex-direction: column;
         }
-
         .sidebar-content { min-height: 0; overflow-y: auto; }
-
         .card-header {
             padding: 18px 22px;
             border-bottom: 1px solid #eef2f6;
@@ -233,15 +240,20 @@
             color: var(--primary);
             font-size: 16px;
         }
-
         .card-header i { margin-right: 10px; color: var(--primary); }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .profile-section {
             text-align: center;
             padding: 20px;
             border-bottom: 1px solid #eef2f6;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .profile-avatar {
             width: 70px;
             height: 70px;
@@ -252,7 +264,10 @@
             margin: 0 auto 12px;
             font-size: 28px;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .sidebar-toggle {
             border: none;
             background: none;
@@ -261,11 +276,9 @@
             cursor: pointer;
             margin-bottom: 12px;
         }
-
         .profile-name, .post-author, .post-title, .modal-title { color: var(--primary); }
         .profile-name { font-size: 18px; font-weight: 700; }
         .menu-item, .settings-item, .dropdown-item { color: var(--page-text); }
-
         .menu-item, .settings-item {
             display: flex;
             align-items: center;
@@ -280,11 +293,11 @@
             transition: all 0.3s;
             border-left: 3px solid transparent;
         }
-
         .menu-item:hover, .settings-item:hover, .dropdown-item:hover, .action-btn:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
+<<<<<<< HEAD
 
         .menu-item.active, .settings-item.active {
             background: var(--active-bg);
@@ -293,22 +306,21 @@
             font-weight: 600;
         }
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dropdown-icon {
             margin-left: auto;
             font-size: 12px;
             color: var(--muted-light);
             transition: transform 0.3s ease;
         }
-
         .menu-item.open .dropdown-icon { transform: rotate(180deg); }
-
         .dropdown-content {
             margin-left: 45px;
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
-
         .dropdown-item {
             display: block;
             padding: 10px 22px;
@@ -320,7 +332,6 @@
             text-align: left;
             transition: all 0.3s;
         }
-
         .toggle-switch {
             width: 44px;
             height: 22px;
@@ -332,9 +343,7 @@
             margin-left: auto;
             flex-shrink: 0;
         }
-
         .toggle-switch.active { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-
         .toggle-switch::after {
             content: '';
             width: 18px;
@@ -346,13 +355,78 @@
             left: 2px;
             transition: all 0.3s;
         }
-
         .toggle-switch.active::after { left: 24px; }
+<<<<<<< HEAD
 
         .main-panel { height: 100%; min-width: 0; min-height: 0; }
         .main-panel .card-header { flex: 0 0 auto; }
         .header-filter { float: right; font-size: 12px; color: var(--primary); }
 
+=======
+        .main-panel {
+            height: 100%;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .post-announcement-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            border: none;
+            border-radius: 16px;
+            padding: 14px 22px;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .post-announcement-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26,58,92,0.3);
+        }
+        .create-post-card {
+            background: var(--surface-strong);
+            border-radius: 16px;
+            padding: 14px 18px;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .create-post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .create-post-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .create-post-input {
+            flex: 1;
+            background: var(--surface-soft);
+            border: 1px solid #dce4ec;
+            border-radius: 40px;
+            padding: 10px 18px;
+            font-size: 14px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .announcement-board {
             flex: 1 1 auto;
             min-height: 0;
@@ -360,7 +434,10 @@
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .announcement-card {
             background: var(--surface-strong);
             border-radius: 20px;
@@ -370,21 +447,44 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             overflow: hidden;
         }
-
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
             border-color: rgba(26, 58, 92, 0.2);
         }
+<<<<<<< HEAD
 
+=======
+        .filter-option {
+            display: block;
+            width: 100%;
+            padding: 11px 18px;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 13px;
+            color: var(--page-text);
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid var(--border);
+        }
+        .filter-option:last-child { border-bottom: none; }
+        .filter-option:hover {
+            background: var(--active-bg);
+            color: var(--primary);
+        }
+        .filter-option.active-filter {
+            background: var(--active-bg);
+            color: var(--primary);
+            font-weight: 600;
+        }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .post-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 18px 22px 12px;
         }
-
         .post-header-left { display: flex; align-items: center; gap: 15px; }
-
         .post-avatar {
             width: 50px;
             height: 50px;
@@ -396,9 +496,7 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-
         .post-author { font-weight: 700; font-size: 16px; }
-
         .post-meta {
             display: flex;
             gap: 12px;
@@ -406,7 +504,6 @@
             margin-top: 4px;
             flex-wrap: wrap;
         }
-
         .post-category {
             display: inline-block;
             padding: 2px 10px;
@@ -414,11 +511,9 @@
             font-size: 10px;
             font-weight: 600;
         }
-
         .post-category-exam { background: #e3f2fd; color: #1976d2; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
-
         .pin-btn-top {
             background: none;
             border: none;
@@ -431,12 +526,11 @@
             width: 36px;
             height: 36px;
         }
-
         .pin-btn-top:hover { background: #f0f2f5; }
         .pin-btn-top.pinned { color: #e65100; }
-
         .post-content { padding: 0 22px 16px; }
         .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+<<<<<<< HEAD
         .post-text, .comment-text, .notification-text, .modal-text { color: var(--page-text); line-height: 1.5; }
 
         .post-image {
@@ -454,6 +548,11 @@
             display: block;
         }
 
+=======
+        .post-text, .comment-text, .notification-text { color: var(--page-text); line-height: 1.5; }
+        .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
+        .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; display: block; }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .post-stats {
             display: flex;
             gap: 20px;
@@ -463,9 +562,9 @@
             color: var(--muted);
             font-size: 13px;
         }
-
         .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .post-stats span:hover { color: var(--primary); }
+<<<<<<< HEAD
 
         .action-buttons {
             display: flex;
@@ -473,6 +572,9 @@
             padding: 8px 22px;
         }
 
+=======
+        .action-buttons { display: flex; gap: 5px; padding: 8px 22px; }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .action-btn {
             flex: 1;
             background: none;
@@ -488,17 +590,15 @@
             gap: 8px;
             transition: all 0.3s;
         }
-
         .action-btn.liked { color: #dc2626; }
         .action-btn.liked i { font-weight: 900; }
-
         .comments-section {
             padding: 0 22px 18px;
             border-top: 1px solid #eef2f6;
             display: none;
         }
-
         .comments-section.show { display: block; }
+<<<<<<< HEAD
 
         .comment-input {
             display: flex;
@@ -506,6 +606,9 @@
             margin: 15px 0;
         }
 
+=======
+        .comment-input { display: flex; gap: 10px; margin: 15px 0; }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .comment-input input {
             flex: 1;
             padding: 10px 16px;
@@ -516,7 +619,19 @@
             font-size: 13px;
             color: var(--page-text);
         }
+<<<<<<< HEAD
 
+=======
+        .comment-input button {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+        }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .comment {
             padding: 10px 0;
             font-size: 13px;
@@ -524,9 +639,7 @@
             display: flex;
             gap: 10px;
         }
-
         .comment:last-child { border-bottom: none; }
-
         .comment-avatar {
             width: 32px;
             height: 32px;
@@ -540,16 +653,17 @@
             font-weight: bold;
             flex-shrink: 0;
         }
-
         .comment-author { font-weight: bold; color: var(--primary); }
-
         .no-comments {
             padding: 15px;
             text-align: center;
             color: var(--muted-light);
             font-size: 12px;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .notification-dropdown {
             position: absolute;
             top: 84px;
@@ -562,9 +676,7 @@
             z-index: 200;
             display: none;
         }
-
         .notification-dropdown.show { display: block; }
-
         .notification-header {
             padding: 15px 18px;
             border-bottom: 1px solid #eef2f6;
@@ -574,7 +686,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .notification-header button {
             background: none;
             border: none;
@@ -582,12 +693,16 @@
             font-size: 11px;
             cursor: pointer;
         }
+<<<<<<< HEAD
 
         .notification-list {
             max-height: 350px;
             overflow-y: auto;
         }
 
+=======
+        .notification-list { max-height: 350px; overflow-y: auto; }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .notification-item {
             display: flex;
             align-items: center;
@@ -596,9 +711,9 @@
             border-bottom: 1px solid #eef2f6;
             cursor: pointer;
         }
-
         .notification-item:hover { background: var(--surface-soft); }
         .notification-item.unread { background: var(--active-bg); }
+<<<<<<< HEAD
 
         .notification-dot {
             width: 8px;
@@ -635,6 +750,10 @@
         .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
         .modal-text { margin: 15px 0; font-size: 13px; }
 
+=======
+        .notification-dot { width: 8px; height: 8px; background: #dc2626; border-radius: 50%; }
+        .notification-time { font-size: 10px; color: var(--muted-light); }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .footer {
             position: fixed;
             left: 20px;
@@ -648,6 +767,7 @@
             font-size: 12px;
             z-index: 50;
         }
+<<<<<<< HEAD
 
         .sidebar.collapsed { width: 88px; }
         .sidebar.collapsed + .main-panel { margin-left: 0; }
@@ -656,6 +776,20 @@
         .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
         .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
 
+=======
+        .sidebar.collapsed { width: 88px; }
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-email,
+        .sidebar.collapsed .card-header,
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .settings-text,
+        .sidebar.collapsed .dropdown-content { display: none; }
+        .sidebar.collapsed .menu-item,
+        .sidebar.collapsed .settings-item,
+        .sidebar.collapsed .profile-section { justify-content: center; }
+        .sidebar.collapsed .dropdown-icon,
+        .sidebar.collapsed .toggle-switch { display: none; }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -670,6 +804,7 @@
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --active-bg: rgba(99, 102, 241, 0.18);
         }
+<<<<<<< HEAD
 
         /* Body background matches SearchDashboard exactly */
         body.dark-mode {
@@ -1058,6 +1193,42 @@
             transform: translateY(-1px);
         }
 
+=======
+        .dark-mode .search-btn {
+            border-color: rgba(255,255,255,0.08);
+            color: #ffffff;
+            background: transparent;
+        }
+        .dark-mode .search-btn:hover {
+            background: rgba(255,255,255,0.04);
+            box-shadow: none;
+            transform: translateY(0);
+        }
+        .dark-mode .comment-input button { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+        .dark-mode .notification-bell { border-color: var(--border); }
+        .dark-mode .user-info { border-color: var(--border); }
+        .dark-mode .card-header { border-bottom-color: rgba(255,255,255,0.04); }
+        .dark-mode .post-stats { border-top-color: rgba(255,255,255,0.04); border-bottom-color: rgba(255,255,255,0.04); }
+        .dark-mode .comment { border-bottom-color: rgba(255,255,255,0.03); }
+        .dark-mode .notification-header { border-bottom-color: rgba(255,255,255,0.04); }
+        .dark-mode .comment-input input { border-color: rgba(255,255,255,0.06); background: var(--surface-soft); color: var(--page-text); }
+        .dark-mode .create-post-input { background: var(--surface-soft); border-color: rgba(255,255,255,0.06); color: var(--muted); }
+        .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
+        .dark-mode .notification-item.unread { background: rgba(64, 96, 128, 0.36); }
+        .dark-mode .logo, .dark-mode .logo i, .dark-mode .card-header, .dark-mode .card-header i,
+        .dark-mode .profile-name, .dark-mode .post-author, .dark-mode .post-title,
+        .dark-mode .user-name, .dark-mode .user-role, .dark-mode .profile-email, .dark-mode .menu-item,
+        .dark-mode .settings-item, .dark-mode .dropdown-item, .dark-mode .header-filter,
+        .dark-mode .post-stats, .dark-mode .post-stats span, .dark-mode .action-btn,
+        .dark-mode .comment-author, .dark-mode .comment-avatar, .dark-mode .bell-icon,
+        .dark-mode .notification-header, .dark-mode .notification-header button,
+        .dark-mode .sidebar-toggle, .dark-mode .dropdown-icon,
+        .dark-mode .no-comments, .dark-mode .footer { color: #ffffff; }
+        .dark-mode .menu-item:hover, .dark-mode .settings-item:hover,
+        .dark-mode .dropdown-item:hover, .dark-mode .post-stats span:hover,
+        .dark-mode .action-btn:hover { color: #ffffff; }
+        .dark-mode .pin-btn-top:hover, .dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         @media (max-width: 980px) {
             html, body { overflow: auto; }
             .app-shell, form { height: auto; min-height: 100%; overflow: visible; }
@@ -1065,7 +1236,7 @@
             .header { flex-wrap: wrap; }
             .search-container { order: 3; width: 100%; justify-content: stretch; }
             .content-shell { grid-template-columns: 1fr; overflow: visible; }
-            .sidebar, .main-panel, .sidebar .card, .main-panel.card { height: auto; }
+            .sidebar, .main-panel, .sidebar .card { height: auto; }
             .announcement-board, .sidebar-content { overflow: visible; max-height: none; }
             .notification-dropdown { right: 12px; left: 12px; width: auto; }
         }
@@ -1100,13 +1271,15 @@
 <body>
     <form id="form1" runat="server">
         <div class="app-shell">
+<<<<<<< HEAD
 
             <!-- HEADER -->
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             <div class="header">
                 <div class="logo">
                     <i class="fas fa-university"></i> CampusAnnouncement
                 </div>
-
                 <div class="search-container">
                     <asp:Button ID="searchBtn" runat="server" CssClass="search-btn"
                         Text=" 🔎 Search........"
@@ -1114,7 +1287,6 @@
                         Width="420px" Font-Bold="False" ForeColor="#0F172A"
                         Font-Size="Medium" Height="54px" />
                 </div>
-
                 <div class="header-actions">
                     <div class="notification-bell" onclick="toggleNotificationPanel()">
                         <i class="fas fa-bell bell-icon"></i>
@@ -1125,14 +1297,22 @@
                             <i class="fas fa-chalkboard-user"></i>
                         </div>
                         <div class="user-details">
+<<<<<<< HEAD
                             <div class="user-name">Prof. Emily Davis</div>
                             <div class="user-role">Faculty</div>
+=======
+                            <div class="user-name" id="userName">Maria Santos</div>
+                            <div class="user-role" id="userRole">Teacher</div>
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                         </div>
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
 
             <!-- NOTIFICATION DROPDOWN -->
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             <div id="notificationDropdown" class="notification-dropdown">
                 <div class="notification-header">
                     <a href="Notifications.aspx" style="text-decoration:none;color:inherit;">
@@ -1144,11 +1324,15 @@
                     <div style="padding:20px;text-align:center;color:var(--muted);">No notifications yet.</div>
                 </div>
             </div>
+<<<<<<< HEAD
 
             <!-- CONTENT SHELL -->
             <div class="content-shell">
 
                 <!-- SIDEBAR -->
+=======
+            <div class="content-shell">
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                 <aside class="sidebar">
                     <div class="card">
                         <div class="sidebar-content">
@@ -1164,8 +1348,11 @@
                                 <div class="profile-name" id="sidebarProfileName">Prof. Emily Davis</div>
                                 <div class="profile-email">faculty@ctu.edu.ph</div>
                             </div>
+<<<<<<< HEAD
 
                             <!-- Filters -->
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
                             </div>
@@ -1181,11 +1368,11 @@
                                 <button type="button" class="dropdown-item" onclick="setFilter('Event')">Campus Events</button>
                                 <button type="button" class="dropdown-item" onclick="setFilter('General')">General</button>
                             </div>
-
                             <button type="button" class="menu-item" onclick="window.location.href='Pinned.aspx'">
                                 <i class="fas fa-thumbtack"></i>
                                 <span class="menu-text">Pinned Announcements</span>
                             </button>
+<<<<<<< HEAD
 
                             <!-- Settings -->
                             <div class="card-header" style="margin-top:5px;">
@@ -1193,17 +1380,26 @@
                             </div>
 
                             <button type="button" class="settings-item" onclick="toggleDarkMode(this)">
+=======
+                            <div class="card-header" style="margin-top:5px;">
+                                <i class="fas fa-cog"></i> Settings
+                            </div>
+                            <button type="button" class="settings-item" onclick="toggleTheme()">
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
                                 <div class="toggle-switch" id="themeToggle"></div>
                             </button>
-
-                            <button type="button" class="settings-item" onclick="openAboutModal()">
+                            <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=teacher'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
+<<<<<<< HEAD
 
                             <button type="button" class="settings-item" onclick="logoutAction()">
+=======
+                            <button type="button" class="settings-item" onclick="logout()">
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span class="settings-text">Logout</span>
                             </button>
@@ -1211,6 +1407,7 @@
                         </div>
                     </div>
                 </aside>
+<<<<<<< HEAD
 
                 <!-- MAIN PANEL -->
                 <main class="main-panel card">
@@ -1228,6 +1425,177 @@
                     </div>
 
                         <div id="announcementsContainer"></div>
+=======
+                <main class="main-panel">
+                    <button type="button" class="post-announcement-btn" onclick="openCreatePostModal()">
+                        <i class="fas fa-plus-circle"></i> Want to post an announcement?
+                    </button>
+                    <div class="create-post-card">
+                        <div class="create-post-header">
+                            <div class="create-post-avatar">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div class="create-post-input" onclick="openCreatePostModal()">
+                                Want to post an announcement?
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
+                        <div class="card-header" style="flex-shrink:0; position:relative;">
+                            <i class="fas fa-bullhorn"></i> Announcement Board
+                            <span class="header-filter" onclick="toggleFilterDropdown()" style="cursor:pointer; float:right; font-size:12px; color:var(--primary); display:flex; align-items:center; gap:6px;">
+                                Showing: <strong id="activeFilterLabel">All</strong> <i class="fas fa-chevron-down" id="filterChevron" style="font-size:10px;"></i>
+                            </span>
+                            <div id="filterDropdown" style="display:none; position:absolute; top:52px; right:18px; background:var(--surface-strong); border:1px solid var(--border); border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.12); z-index:100; min-width:180px; overflow:hidden;">
+                                <button type="button" onclick="filterCategory('All')" class="filter-option">All Announcements</button>
+                                <button type="button" onclick="filterCategory('Exam')" class="filter-option">Exam Schedule</button>
+                                <button type="button" onclick="filterCategory('Suspension')" class="filter-option">Class Suspension</button>
+                                <button type="button" onclick="filterCategory('Event')" class="filter-option">Campus Events</button>
+                            </div>
+                        </div>
+                        <div id="announcementsContainer" class="announcement-board">
+                            <div class="announcement-card" data-category="Exam">
+                                <div class="post-header">
+                                    <div class="post-header-left">
+                                        <div class="post-avatar"><i class="fas fa-user-tie"></i></div>
+                                        <div>
+                                            <div class="post-author">Prof. Michael Reyes</div>
+                                            <div class="post-meta">
+                                                <span><i class="far fa-calendar-alt"></i> December 10, 2024</span>
+                                                <span><i class="far fa-clock"></i> 9:00 AM</span>
+                                                <span class="post-category post-category-exam">Exam</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                </div>
+                                <div class="post-content">
+                                    <div class="post-title">Final Exam Schedule</div>
+                                    <div class="post-text">The final examinations will be held on December 15-20, 2024. Please check your respective departments for room assignments.</div>
+                                    <div class="post-image">
+                                        <img src="https://placehold.co/600x300/1a3a5c/white?text=Exam+Schedule" alt="Exam Schedule" />
+                                    </div>
+                                </div>
+                                <div class="post-stats">
+                                    <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">24</span> Likes</span>
+                                    <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">2</span> Comments</span>
+                                    <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">5</span> Shares</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                    <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                    <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                </div>
+                                <div class="comments-section">
+                                    <div class="comment-input">
+                                        <input type="text" placeholder="Write a comment..." />
+                                        <button type="button" onclick="addComment(this)">Post</button>
+                                    </div>
+                                    <div class="comments-list">
+                                        <div class="comment">
+                                            <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                            <div class="comment-content">
+                                                <span class="comment-author">Juan Dela Cruz</span>
+                                                <div class="comment-text">Thank you for the update!</div>
+                                                <div class="comment-time">December 8, 2024</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="announcement-card" data-category="Suspension">
+                                <div class="post-header">
+                                    <div class="post-header-left">
+                                        <div class="post-avatar"><i class="fas fa-building"></i></div>
+                                        <div>
+                                            <div class="post-author">Admin Office</div>
+                                            <div class="post-meta">
+                                                <span><i class="far fa-calendar-alt"></i> November 24, 2024</span>
+                                                <span><i class="far fa-clock"></i> 6:00 AM</span>
+                                                <span class="post-category post-category-suspension">Suspension</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="pin-btn-top pinned" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                </div>
+                                <div class="post-content">
+                                    <div class="post-title">Class Suspension - Typhoon Enteng</div>
+                                    <div class="post-text">Due to Typhoon Enteng, classes in all levels are suspended tomorrow, November 25, 2024. Stay safe and monitor for further announcements.</div>
+                                    <div class="post-image">
+                                        <img src="https://placehold.co/600x300/ef4444/white?text=Weather+Advisory" alt="Weather Advisory" />
+                                    </div>
+                                </div>
+                                <div class="post-stats">
+                                    <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">56</span> Likes</span>
+                                    <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">1</span> Comments</span>
+                                    <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">12</span> Shares</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                    <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                    <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                </div>
+                                <div class="comments-section">
+                                    <div class="comment-input">
+                                        <input type="text" placeholder="Write a comment..." />
+                                        <button type="button" onclick="addComment(this)">Post</button>
+                                    </div>
+                                    <div class="comments-list">
+                                        <div class="comment">
+                                            <div class="comment-avatar"><i class="fas fa-user"></i></div>
+                                            <div class="comment-content">
+                                                <span class="comment-author">John Santos</span>
+                                                <div class="comment-text">Stay safe everyone!</div>
+                                                <div class="comment-time">November 24, 2024</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="announcement-card" data-category="Event">
+                                <div class="post-header">
+                                    <div class="post-header-left">
+                                        <div class="post-avatar"><i class="fas fa-calendar-alt"></i></div>
+                                        <div>
+                                            <div class="post-author">Student Affairs Office</div>
+                                            <div class="post-meta">
+                                                <span><i class="far fa-calendar-alt"></i> November 20, 2024</span>
+                                                <span><i class="far fa-clock"></i> 10:00 AM</span>
+                                                <span class="post-category post-category-event">Event</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="pin-btn-top" onclick="togglePinTop(this)"><i class="fas fa-thumbtack"></i></button>
+                                </div>
+                                <div class="post-content">
+                                    <div class="post-title">University Foundation Week 2024</div>
+                                    <div class="post-text">Join us for the annual University Foundation Week celebration on December 1-5, 2024. Activities include parade, talent show, sportsfest, and concert.</div>
+                                    <div class="post-image">
+                                        <img src="https://placehold.co/600x300/10b981/white?text=Foundation+Week" alt="Foundation Week" />
+                                    </div>
+                                </div>
+                                <div class="post-stats">
+                                    <span onclick="toggleLikeFromStats(this)"><i class="far fa-heart"></i> <span class="like-count">89</span> Likes</span>
+                                    <span onclick="scrollToComments(this)"><i class="far fa-comment"></i> <span class="comment-count">0</span> Comments</span>
+                                    <span onclick="sharePost()"><i class="far fa-share-square"></i> <span class="share-count">23</span> Shares</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="action-btn" onclick="toggleLike(this)"><i class="far fa-heart"></i> Like</button>
+                                    <button type="button" class="action-btn" onclick="toggleComments(this)"><i class="far fa-comment"></i> Comment</button>
+                                    <button type="button" class="action-btn" onclick="sharePost()"><i class="fas fa-share"></i> Share</button>
+                                </div>
+                                <div class="comments-section">
+                                    <div class="comment-input">
+                                        <input type="text" placeholder="Write a comment..." />
+                                        <button type="button" onclick="addComment(this)">Post</button>
+                                    </div>
+                                    <div class="comments-list">
+                                        <div class="no-comments">No comments yet. Be the first!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                     </div>
                 </main>
 
@@ -1272,6 +1640,7 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
 
         <!-- ===== ABOUT MODAL ===== -->
         <div id="aboutModal" class="modal" style="display:none;">
@@ -1288,9 +1657,11 @@
             </div>
         </div>
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     </form>
-
     <script>
+<<<<<<< HEAD
         // ── Mock Data ──────────────────────────────────────────────────────────
         var teacher = { id: 1, name: "Prof. Emily Davis" };
 
@@ -1547,12 +1918,30 @@
 
         // ── Category Dropdown ──────────────────────────────────────────────────
         function toggleCategoryMenu(id, trigger) {
+=======
+        function toggleTheme() {
+            var isDark = document.body.classList.toggle('dark-mode');
+            var toggle = document.getElementById('themeToggle');
+            if (toggle) toggle.classList.toggle('active', isDark);
+            localStorage.setItem('campusTheme', isDark ? 'dark' : 'light');
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var isDark = localStorage.getItem('campusTheme') === 'dark';
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                var toggle = document.getElementById('themeToggle');
+                if (toggle) toggle.classList.add('active');
+            }
+        });
+        function toggleDropdown(id, trigger) {
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             var dropdown = document.getElementById(id);
             if (!dropdown) return;
             var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== '0px';
             dropdown.style.maxHeight = isOpen ? '0px' : dropdown.scrollHeight + 'px';
             if (trigger) trigger.classList.toggle('open', !isOpen);
         }
+<<<<<<< HEAD
 
         // ── Notifications ──────────────────────────────────────────────────────
         function addNotification(message) {
@@ -1730,10 +2119,13 @@
             setTimeout(function() { toast.remove(); }, 2500);
         }
 
+=======
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         function toggleSidebar() {
             var sidebar = document.querySelector('.sidebar');
             if (sidebar) sidebar.classList.toggle('collapsed');
         }
+<<<<<<< HEAD
 
         function escHtml(str) {
             if (!str) return '';
@@ -1772,6 +2164,138 @@
                 document.head.appendChild(link);
             });
         })();
+=======
+        function toggleNotificationDropdown() {
+            var dropdown = document.getElementById('notificationDropdown');
+            if (dropdown) dropdown.classList.toggle('show');
+        }
+        function toggleFilterDropdown() {
+            var dd = document.getElementById('filterDropdown');
+            var chevron = document.getElementById('filterChevron');
+            var isOpen = dd.style.display === 'block';
+            dd.style.display = isOpen ? 'none' : 'block';
+            chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+            chevron.style.transition = 'transform 0.3s';
+        }
+        document.addEventListener('click', function (e) {
+            var bell = document.querySelector('.notification-bell');
+            var dropdown = document.getElementById('notificationDropdown');
+            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+            var dd = document.getElementById('filterDropdown');
+            var trigger = document.querySelector('.header-filter');
+            if (dd && trigger && !trigger.contains(e.target) && !dd.contains(e.target)) {
+                dd.style.display = 'none';
+                var chevron = document.getElementById('filterChevron');
+                if (chevron) chevron.style.transform = 'rotate(0deg)';
+            }
+        });
+        function filterCategory(category) {
+            var cards = document.querySelectorAll('.announcement-card');
+            document.getElementById('activeFilterLabel').innerText = category;
+            cards.forEach(function (card) {
+                card.style.display = (category === 'All' || card.dataset.category === category) ? 'block' : 'none';
+            });
+            document.querySelectorAll('.filter-option').forEach(function (btn) {
+                btn.classList.remove('active-filter');
+                if (btn.textContent.trim().startsWith(category) || (category === 'All' && btn.textContent.trim() === 'All Announcements')) {
+                    btn.classList.add('active-filter');
+                }
+            });
+            var dd = document.getElementById('filterDropdown');
+            if (dd) dd.style.display = 'none';
+            var chevron = document.getElementById('filterChevron');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+            var catDd = document.getElementById('categoryDropdown');
+            if (catDd) catDd.style.maxHeight = '0px';
+        }
+        function toggleLike(btn) {
+            btn.classList.toggle('liked');
+            btn.innerHTML = btn.classList.contains('liked')
+                ? '<i class="fas fa-heart"></i> Liked'
+                : '<i class="far fa-heart"></i> Like';
+            var card = btn.closest('.announcement-card');
+            var likeCount = card.querySelector('.like-count');
+            likeCount.innerText = btn.classList.contains('liked')
+                ? parseInt(likeCount.innerText, 10) + 1
+                : parseInt(likeCount.innerText, 10) - 1;
+        }
+        function toggleLikeFromStats(span) {
+            var card = span.closest('.announcement-card');
+            var likeBtn = card.querySelector('.action-btn:first-child');
+            toggleLike(likeBtn);
+        }
+        function toggleComments(btn) {
+            btn.closest('.announcement-card').querySelector('.comments-section').classList.toggle('show');
+        }
+        function scrollToComments(element) {
+            var card = element.closest('.announcement-card');
+            var comments = card.querySelector('.comments-section');
+            comments.classList.add('show');
+            comments.scrollIntoView({ behavior: 'smooth' });
+        }
+        function addComment(btn) {
+            var input = btn.parentElement.querySelector('input');
+            var comment = input.value.trim();
+            if (!comment) { showToast('Please enter a comment!'); return; }
+            var card = btn.closest('.announcement-card');
+            var list = card.querySelector('.comments-list');
+            var noComments = list.querySelector('.no-comments');
+            if (noComments) noComments.remove();
+            var newComment = document.createElement('div');
+            newComment.className = 'comment';
+            newComment.innerHTML =
+                '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                '<div class="comment-content">' +
+                '<span class="comment-author">You</span>' +
+                '<div class="comment-text">' + comment.replace(/</g, '&lt;') + '</div>' +
+                '<div class="comment-time">Just now</div>' +
+                '</div>';
+            list.appendChild(newComment);
+            var count = card.querySelector('.comment-count');
+            count.innerText = parseInt(count.innerText, 10) + 1;
+            input.value = '';
+            showToast('Comment posted!');
+        }
+        function sharePost() { showToast('Share feature coming soon!'); }
+        function togglePinTop(btn) {
+            btn.classList.toggle('pinned');
+            showToast(btn.classList.contains('pinned') ? 'Announcement pinned!' : 'Announcement unpinned!');
+        }
+        function markRead(item) {
+            item.classList.remove('unread');
+            var dot = item.querySelector('.notification-dot');
+            if (dot) dot.remove();
+            updateBadge();
+        }
+        function markAllRead() {
+            document.querySelectorAll('.notification-item.unread').forEach(markRead);
+        }
+        function updateBadge() {
+            var count = document.querySelectorAll('.notification-item.unread').length;
+            var badge = document.getElementById('notificationBadge');
+            badge.innerText = count;
+            badge.style.display = count > 0 ? 'inline-block' : 'none';
+        }
+        function showToast(message) {
+            var toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#1a3a5c;color:white;padding:12px 24px;border-radius:30px;font-size:14px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+            toast.innerHTML = message;
+            document.body.appendChild(toast);
+            setTimeout(function () {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(function () { toast.remove(); }, 300);
+            }, 2000);
+        }
+        function openCreatePostModal() { showToast('Create post feature coming soon!'); }
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = 'login.aspx';
+            }
+        }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     </script>
 </body>
 </html>

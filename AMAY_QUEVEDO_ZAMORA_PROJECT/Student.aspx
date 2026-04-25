@@ -1,11 +1,9 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
-
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
     {
-            Response.Redirect("SearchStudent.aspx");
-        
+        Response.Redirect("SearchStudent.aspx");
     }
 </script>
 
@@ -107,9 +105,9 @@
             display: flex;
             align-items: center;
             gap: 10px;
-
-            border: 2px solid #0F172A; 
+            border: 2px solid #0F172A;
         }
+
         .search-box input {
             background: none;
             border: none;
@@ -124,7 +122,7 @@
 
         .search-btn, .comment-input button, .modal-close {
             background: none;
-            border: 2px solid #0F172A; 
+            border: 2px solid #0F172A;
             border-radius: 30px;
             padding: 10px 22px;
             color: #0F172A;
@@ -132,13 +130,10 @@
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        
 
         .search-btn:hover, .comment-input button:hover, .modal-close:hover {
-             background: #e8f0fe;
-             border-color: rgba(26,58,92,0.4);
-             transform: translateY(-1px);
-             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 16px rgba(26, 58, 92, 0.18);
         }
 
         .header-actions {
@@ -661,10 +656,17 @@
 
         .sidebar.collapsed { width: 88px; }
         .sidebar.collapsed + .main-panel { margin-left: 0; }
-        .sidebar.collapsed .profile-name, .sidebar.collapsed .profile-email, .sidebar.collapsed .card-header,
-        .sidebar.collapsed .menu-text, .sidebar.collapsed .settings-text, .sidebar.collapsed .dropdown-content { display: none; }
-        .sidebar.collapsed .menu-item, .sidebar.collapsed .settings-item, .sidebar.collapsed .profile-section { justify-content: center; }
-        .sidebar.collapsed .dropdown-icon, .sidebar.collapsed .toggle-switch { display: none; }
+        .sidebar.collapsed .profile-name,
+        .sidebar.collapsed .profile-email,
+        .sidebar.collapsed .card-header,
+        .sidebar.collapsed .menu-text,
+        .sidebar.collapsed .settings-text,
+        .sidebar.collapsed .dropdown-content { display: none; }
+        .sidebar.collapsed .menu-item,
+        .sidebar.collapsed .settings-item,
+        .sidebar.collapsed .profile-section { justify-content: center; }
+        .sidebar.collapsed .dropdown-icon,
+        .sidebar.collapsed .toggle-switch { display: none; }
 
         .dark-mode {
             --bg-image: url('bg.jpg');
@@ -681,6 +683,7 @@
             --active-bg: rgba(99, 102, 241, 0.18);
         }
 
+<<<<<<< HEAD
         body.dark-mode {
             background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url('bg.jpg');
             background-color: #0F172A;
@@ -722,6 +725,12 @@
 
         .dark-mode .announcement-board { background: rgba(0, 0, 0, 0.15); }
 
+=======
+        .dark-mode .announcement-board { background: rgba(18, 22, 28, 0.28); }
+        .dark-mode .notification-item.unread,
+        .dark-mode .menu-item.active,
+        .dark-mode .settings-item.active { background: rgba(64, 96, 128, 0.36); }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dark-mode .logo,
         .dark-mode .logo i,
         .dark-mode .card-header,
@@ -729,9 +738,13 @@
         .dark-mode .profile-name,
         .dark-mode .post-author,
         .dark-mode .post-title,
+<<<<<<< HEAD
         .dark-mode .post-text,
         .dark-mode .modal-title,
         .dark-mode .modal-text,
+=======
+        .dark-mode .modal-title,
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dark-mode .user-name,
         .dark-mode .user-role,
         .dark-mode .profile-email,
@@ -745,7 +758,11 @@
         .dark-mode .post-stats span,
         .dark-mode .action-btn,
         .dark-mode .comment-author,
+<<<<<<< HEAD
         .dark-mode .comment-text,
+=======
+        .dark-mode .comment-avatar,
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         .dark-mode .bell-icon,
         .dark-mode .notification-header,
         .dark-mode .notification-header button,
@@ -753,6 +770,7 @@
         .dark-mode .sidebar-toggle,
         .dark-mode .dropdown-icon,
         .dark-mode .no-comments,
+<<<<<<< HEAD
         .dark-mode .footer,
         .dark-mode .notification-text,
         .dark-mode .notification-time { color: #e4e6eb; }
@@ -865,6 +883,18 @@
 
         .dark-mode .pin-btn-top { color: #64748b; }
         .dark-mode .pin-btn-top.pinned { color: #fb923c; }
+=======
+        .dark-mode .footer { color: #ffffff; }
+
+        .dark-mode .menu-item:hover,
+        .dark-mode .settings-item:hover,
+        .dark-mode .dropdown-item:hover,
+        .dark-mode .post-stats span:hover,
+        .dark-mode .action-btn:hover { color: #ffffff; }
+
+        .dark-mode .pin-btn-top:hover,
+        .dark-mode .action-btn:hover { background: rgba(255, 255, 255, 0.06); }
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
@@ -912,7 +942,11 @@
                 </div>
 
                 <div class="search-container">
+<<<<<<< HEAD
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text=" 🔎 Search........" OnClick="SearchButton_Click" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" ForeColor=" #0F172A" Font-Size="Medium" Height="54px" />
+=======
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClick="SearchButton_Click" Width="430px" Font-Bold="False" ForeColor="#0F172A" Font-Size="Large" Height="61px" />
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                 </div>
 
                 <div class="header-actions">
@@ -980,13 +1014,17 @@
                                 <i class="fas fa-cog"></i> Settings
                             </div>
 
+<<<<<<< HEAD
                             <button type="button" class="settings-item" onclick="toggleTheme(this)">
+=======
+                            <button type="button" class="settings-item" onclick="toggleTheme()">
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
                                 <i class="fas fa-moon"></i>
                                 <span class="settings-text">Dark / Light Mode</span>
                                 <div class="toggle-switch" id="themeToggle"></div>
                             </button>
 
-                            <button type="button" class="settings-item" onclick="openAboutModal()">
+                            <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=student'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
@@ -1011,20 +1049,6 @@
                 </main>
             </div>
         </div>
-
-        <div id="aboutModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-icon">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div class="modal-title">Campus Connect</div>
-                <div class="modal-text">
-                    Campus Connect is a centralized web-based announcement system for Cebu Technological University.
-                    It allows students to access official announcements, exam schedules, class suspensions, and campus events in one place.
-                </div>
-                <button type="button" class="modal-close" onclick="closeAboutModal()">Close</button>
-            </div>
-        </div>
     </form>
 
     <script>
@@ -1034,26 +1058,39 @@
             var isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== "0px";
             dropdown.style.maxHeight = isOpen ? "0px" : dropdown.scrollHeight + "px";
             if (trigger) {
+<<<<<<< HEAD
                 trigger.classList.toggle('open', !isOpen);
+=======
+                trigger.classList.toggle("open", !isOpen);
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
             }
         }
 
         function toggleSidebar() {
-            var sidebar = document.querySelector('.sidebar');
-            if (sidebar) sidebar.classList.toggle('collapsed');
+            var sidebar = document.querySelector(".sidebar");
+            if (sidebar) sidebar.classList.toggle("collapsed");
         }
 
         function toggleNotificationDropdown() {
-            var dropdown = document.getElementById('notificationDropdown');
-            if (dropdown) dropdown.classList.toggle('show');
+            var dropdown = document.getElementById("notificationDropdown");
+            if (dropdown) dropdown.classList.toggle("show");
         }
 
-        document.addEventListener('click', function (e) {
-            var bell = document.querySelector('.notification-bell');
-            var dropdown = document.getElementById('notificationDropdown');
-            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('show');
+        function toggleTheme() {
+            var body = document.body;
+            var toggle = document.getElementById("themeToggle");
+            var isDark = body.classList.toggle("dark-mode");
+            if (toggle) toggle.classList.toggle("active", isDark);
+            localStorage.setItem("campusTheme", isDark ? "dark" : "light");
+        }
+
+        function applySavedTheme() {
+            var savedTheme = localStorage.getItem("campusTheme");
+            var shouldUseDark = savedTheme === "dark";
+            if (shouldUseDark) {
+                document.body.classList.add("dark-mode");
             }
+<<<<<<< HEAD
         });
 
         // ════════════════════════════════════════════════════════
@@ -1358,14 +1395,17 @@
         function closeAboutModal() {
             var modal = document.getElementById('aboutModal');
             if (modal) modal.style.display = 'none';
+=======
+            var toggle = document.getElementById("themeToggle");
+            if (toggle) toggle.classList.toggle("active", shouldUseDark);
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         }
 
         function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.aspx';
-            }
+            window.location.href = "Login.aspx";
         }
 
+<<<<<<< HEAD
         // Restore theme on load
         if (localStorage.getItem('campus_theme') === 'dark') {
             document.body.classList.add('dark-mode');
@@ -1427,6 +1467,28 @@
                 document.head.appendChild(link);
             });
         })();
+=======
+        function markAllRead() {
+            var unreadItems = document.querySelectorAll(".notification-item.unread");
+            unreadItems.forEach(function (item) {
+                item.classList.remove("unread");
+            });
+            var badge = document.getElementById("notificationBadge");
+            if (badge) badge.textContent = "0";
+        }
+
+        document.addEventListener("click", function (e) {
+            var bell = document.querySelector(".notification-bell");
+            var dropdown = document.getElementById("notificationDropdown");
+            if (bell && dropdown && !bell.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove("show");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            applySavedTheme();
+        });
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     </script>
 </body>
 </html>

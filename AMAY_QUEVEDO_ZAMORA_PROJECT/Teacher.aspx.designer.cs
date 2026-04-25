@@ -25,14 +25,22 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         /// <summary>
 <<<<<<< HEAD
+<<<<<<< HEAD
         /// searchBtn control.
 =======
 >>>>>>> 4144f728d4d05ddea409e6a8d332f33e47bb3939
+=======
+        /// searchButton control.
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.Button searchBtn;
+=======
+        protected global::System.Web.UI.WebControls.Button searchButton;
+>>>>>>> a3d5788d47563c5f48e306c95c63e007ccec78b3
     }
 }
