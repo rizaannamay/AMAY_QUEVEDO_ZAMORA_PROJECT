@@ -1924,6 +1924,16 @@
             var toggle = document.getElementById('themeToggle');
             if (toggle) toggle.classList.toggle('active', isDark);
             
+            // Sync theme changes from other tabs/pages
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_theme') {
+                    var dark = e.newValue === 'dark';
+                    document.body.classList.toggle('dark-mode', dark);
+                    var t = document.getElementById('themeToggle');
+                    if (t) t.classList.toggle('active', dark);
+                }
+            });
+            
             renderAnnouncements();
             loadAnnouncementsFromDB();
 
