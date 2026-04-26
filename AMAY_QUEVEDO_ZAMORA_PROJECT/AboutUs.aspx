@@ -4,7 +4,7 @@
     {
         get
         {
-            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+               string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
         }
     }
@@ -13,7 +13,7 @@
     {
         get
         {
-            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Back to Teacher" : "Back to Student";
         }
     }
@@ -617,7 +617,7 @@
         </div>
     </div>
 
-     <script>
+    <script>
         function openImageModal(src, title, text) {
             var modal = document.getElementById('imageModal');
             var preview = document.getElementById('imageModalPreview');
