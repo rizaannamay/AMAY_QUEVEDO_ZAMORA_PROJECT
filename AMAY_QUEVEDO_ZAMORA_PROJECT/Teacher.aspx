@@ -1332,10 +1332,9 @@
                             likeCount: a.likeCount
                         };
                     });
-                    // Sync pins to localStorage for Student/Search pages
+                    // Update in-memory pins — no localStorage write needed
                     st_pins = {};
                     st_announcements.forEach(function(a) { if (a.pinned) st_pins[a.id] = true; });
-                    saveSharedState();
                     renderAnnouncements();
                 })
                 .catch(function() { showToast('Could not reach server'); });
@@ -1583,13 +1582,13 @@
                 return r.json();
             })
             .then(function(res) {
-                if (!res.ok) { showToast('Error: ' + res.error); return; }
+                if (!res.ok) { showToast('❌ ' + res.error); return; }
                 closeCreatePostModal();
                 showToast('✅ Announcement published!');
                 loadAnnouncementsFromDB();
             })
             .catch(function(err) {
-                showToast('Error: ' + (err.message || 'Could not save announcement'));
+                showToast('❌ ' + (err.message || 'Could not save announcement'));
                 console.error('publishAnnouncement error:', err);
             })
             .finally(function() {

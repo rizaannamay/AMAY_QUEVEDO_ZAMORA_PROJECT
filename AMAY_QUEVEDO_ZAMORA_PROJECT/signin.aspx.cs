@@ -1,16 +1,15 @@
 ﻿using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-    // Registered users are stored in Application state (in-memory, same process).
-    // Key: "CampusConnectUsers" → List of string[5] { username, password, fullName, email, role }
     public partial class signin : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Already logged in → go home
             if (!IsPostBack && Session["IsLoggedIn"] is bool b && b)
             {
                 string role = Session["Role"]?.ToString() ?? "";
@@ -28,6 +27,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string confirmPassword = txtConfirmPassword.Text;
             string role            = rbAdmin.Checked ? "Admin" : "Student";
 
+            // Validation
             if (string.IsNullOrWhiteSpace(fullName)  || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(username)  || string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(confirmPassword))
@@ -47,39 +47,60 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 ShowMessage("Passwords do not match.", false); return;
             }
 
-            // Store in Application state as string[5]
-            var users = GetUsers();
-            lock (users)
+            string connStr = ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
+
+            try
             {
-                foreach (string[] u in users)
+                using (var conn = new SqlConnection(connStr))
                 {
-                    if (string.Equals(u[0], username, StringComparison.OrdinalIgnoreCase))
-                    { ShowMessage("That username is already taken.", false); return; }
-                    if (string.Equals(u[3], email, StringComparison.OrdinalIgnoreCase))
-                    { ShowMessage("That email is already registered.", false); return; }
+                    conn.Open();
+
+                    // Check for duplicate username or email
+                    const string checkSql = @"
+                        SELECT COUNT(1) FROM Users
+                        WHERE Username = @Username OR Email = @Email";
+
+                    using (var check = new SqlCommand(checkSql, conn))
+                    {
+                        check.Parameters.AddWithValue("@Username", username);
+                        check.Parameters.AddWithValue("@Email",    email);
+                        int count = (int)check.ExecuteScalar();
+                        if (count > 0)
+                        {
+                            ShowMessage("That username or email is already registered.", false);
+                            return;
+                        }
+                    }
+
+                    // Insert new user into database
+                    const string insertSql = @"
+                        INSERT INTO Users (FullName, Email, Username, Password, Role)
+                        VALUES (@FullName, @Email, @Username, @Password, @Role)";
+
+                    using (var insert = new SqlCommand(insertSql, conn))
+                    {
+                        insert.Parameters.AddWithValue("@FullName", fullName);
+                        insert.Parameters.AddWithValue("@Email",    email);
+                        insert.Parameters.AddWithValue("@Username", username);
+                        insert.Parameters.AddWithValue("@Password", password);
+                        insert.Parameters.AddWithValue("@Role",     role);
+                        insert.ExecuteNonQuery();
+                    }
                 }
-                users.Add(new string[] { username, password, fullName, email, role });
+
+                ClearForm();
+                ShowMessage("Account created! You can now log in.", true);
             }
-
-            ClearForm();
-            ShowMessage("Account created! You can now log in.", true);
-        }
-
-        private System.Collections.Generic.List<string[]> GetUsers()
-        {
-            const string key = "CampusConnectUsers";
-            if (!(Application[key] is System.Collections.Generic.List<string[]> list))
+            catch (Exception ex)
             {
-                list = new System.Collections.Generic.List<string[]>();
-                Application[key] = list;
+                ShowMessage("Database error: " + ex.Message, false);
             }
-            return list;
         }
 
         private void ShowMessage(string msg, bool success)
         {
-            lblMessage.Text    = msg;
-            lblMessage.Visible = true;
+            lblMessage.Text     = msg;
+            lblMessage.Visible  = true;
             lblMessage.CssClass = success ? "success-message" : "error-message";
         }
 
