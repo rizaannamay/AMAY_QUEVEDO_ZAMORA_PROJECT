@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI;
+using System.Collections.Concurrent;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
-{
+{   
     public partial class Comments : Page
     {
-        private static string ConnStr =>
-            ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
+        // In-memory store (announcementId -> comments list)
+        private static readonly ConcurrentDictionary<int, List<CommentItem>> _comments = new ConcurrentDictionary<int, List<CommentItem>>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             string action = Request.QueryString["action"];
 
             if (action == "add")
+            {
                 AddComment();
+            }
             else if (action == "get")
+            {
                 GetComments();
+            }
             else
             {
                 Response.ContentType = "application/json";
@@ -29,7 +32,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // ── ADD COMMENT ──────────────────────────────────────
         private void AddComment()
         {
             if (Session["UserId"] == null)
@@ -42,11 +44,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             string json = "";
             using (var reader = new System.IO.StreamReader(Request.InputStream))
+            {
                 json = reader.ReadToEnd();
+            }
 
             var serializer = new JavaScriptSerializer();
-            Dictionary<string, object> data;
-            try { data = serializer.Deserialize<Dictionary<string, object>>(json); }
+            dynamic data;
+            try
+            {
+                data = serializer.Deserialize<dynamic>(json);
+            }
             catch
             {
                 Response.ContentType = "application/json";
@@ -55,60 +62,28 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            int    announcementId = Convert.ToInt32(data["postId"]);
-            string commentText    = data["comment"].ToString().Trim();
-            int    userId         = Convert.ToInt32(Session["UserId"]);
+            int announcementId = Convert.ToInt32(data["postId"]);
+            string commentText = data["comment"].ToString();
+            string userName = Session["FullName"]?.ToString() ?? Session["Username"]?.ToString() ?? "User";
 
-            if (string.IsNullOrEmpty(commentText))
+            var item = new CommentItem
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"Comment cannot be empty\"}");
-                Response.End();
-                return;
+                Author = userName,
+                Text = commentText,
+                Created = DateTime.Now
+            };
+
+            var list = _comments.GetOrAdd(announcementId, _ => new List<CommentItem>());
+            lock (list)
+            {
+                list.Add(item);
             }
 
-            try
-            {
-                using (var conn = new SqlConnection(ConnStr))
-                {
-                    conn.Open();
-
-                    // Insert comment
-                    const string insertSql = @"
-                        INSERT INTO Comments (AnnouncementId, UserId, CommentText)
-                        VALUES (@AnnId, @UserId, @Text)";
-                    using (var cmd = new SqlCommand(insertSql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId",  announcementId);
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@Text",   commentText);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    // Update CommentCount on the announcement
-                    const string updateSql = @"
-                        UPDATE Announcements
-                        SET    CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId = @AnnId)
-                        WHERE  AnnouncementId = @AnnId";
-                    using (var cmd = new SqlCommand(updateSql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId", announcementId);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":true}");
-            }
-            catch (Exception ex)
-            {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
-            }
+            Response.ContentType = "application/json";
+            Response.Write("{\"success\":true}");
             Response.End();
         }
 
-        // ── GET COMMENTS ─────────────────────────────────────
         private void GetComments()
         {
             if (!int.TryParse(Request.QueryString["postId"], out int announcementId))
@@ -119,66 +94,53 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
+            if (!_comments.TryGetValue(announcementId, out List<CommentItem> list))
+            {
+                Response.ContentType = "application/json";
+                Response.Write("[]");
+                Response.End();
+                return;
+            }
+
             var sb = new StringBuilder();
             sb.Append("[");
             bool first = true;
-
-            try
+            lock (list)
             {
-                using (var conn = new SqlConnection(ConnStr))
+                foreach (var c in list)
                 {
-                    conn.Open();
-                    const string sql = @"
-                        SELECT c.CommentText, c.CreatedDate, u.FullName
-                        FROM   Comments c
-                        JOIN   Users u ON u.UserId = c.UserId
-                        WHERE  c.AnnouncementId = @AnnId
-                        ORDER  BY c.CreatedDate ASC";
-
-                    using (var cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId", announcementId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            while (r.Read())
-                            {
-                                if (!first) sb.Append(",");
-                                first = false;
-                                string text    = EscapeJson(r.GetString(0));
-                                string date    = GetTimeAgo(r.GetDateTime(1));
-                                string author  = EscapeJson(r.GetString(2));
-                                sb.Append($"{{\"author\":\"{author}\",\"text\":\"{text}\",\"date\":\"{date}\"}}");
-                            }
-                        }
-                    }
+                    if (!first) sb.Append(",");
+                    first = false;
+                    sb.Append($"{{\"author\":\"{EscapeJson(c.Author)}\",\"text\":\"{EscapeJson(c.Text)}\",\"date\":\"{GetTimeAgo(c.Created)}\"}}");
                 }
             }
-            catch { /* return empty array on error */ }
-
             sb.Append("]");
             Response.ContentType = "application/json";
             Response.Write(sb.ToString());
             Response.End();
         }
 
-        // ── HELPERS ──────────────────────────────────────────
         private string GetTimeAgo(DateTime date)
         {
-            TimeSpan ts = DateTime.Now - date;
-            if (ts.TotalMinutes < 1)  return "Just now";
-            if (ts.TotalMinutes < 60) return $"{(int)ts.TotalMinutes}m ago";
-            if (ts.TotalHours   < 24) return $"{(int)ts.TotalHours}h ago";
-            if (ts.TotalDays    < 7)  return $"{(int)ts.TotalDays}d ago";
+            TimeSpan timeSpan = DateTime.Now - date;
+            if (timeSpan.TotalMinutes < 1) return "Just now";
+            if (timeSpan.TotalMinutes < 60) return $"{(int)timeSpan.TotalMinutes}m ago";
+            if (timeSpan.TotalHours < 24) return $"{(int)timeSpan.TotalHours}h ago";
+            if (timeSpan.TotalDays < 7) return $"{(int)timeSpan.TotalDays}d ago";
             return date.ToString("MMM dd");
         }
 
         private string EscapeJson(string text)
         {
             if (string.IsNullOrEmpty(text)) return "";
-            return text.Replace("\\", "\\\\")
-                       .Replace("\"", "\\\"")
-                       .Replace("\n", "\\n")
-                       .Replace("\r", "");
+            return text.Replace("\\", "\\\\").Replace("\"", "\\\"").Replace("\n", "\\n");
+        }
+
+        private class CommentItem
+        {
+            public string Author { get; set; }
+            public string Text { get; set; }
+            public DateTime Created { get; set; }
         }
     }
 }

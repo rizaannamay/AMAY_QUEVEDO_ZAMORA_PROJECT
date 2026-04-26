@@ -4,7 +4,7 @@
     {
         get
         {
-            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+               string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
         }
     }
@@ -13,7 +13,7 @@
     {
         get
         {
-            var source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Back to Teacher" : "Back to Student";
         }
     }
@@ -34,21 +34,6 @@
         }
 
         :root {
-            --bg-image: url('wbg.jpg');
-            --page-text: #1a2a3a;
-            --surface: rgba(255, 255, 255, 0.92);
-            --surface-strong: #ffffff;
-            --surface-soft: rgba(240, 245, 255, 0.9);
-            --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2563eb;
-            --accent: #d97706;
-            --muted: #6b7c8f;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        /* ── DARK MODE ── */
-        body.dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e8edf3;
             --surface: rgba(15, 20, 27, 0.88);
@@ -67,19 +52,10 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
             background:
-                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
-                var(--bg-image) center/cover fixed no-repeat;
-            padding: 28px;
-            transition: background 0.4s ease, color 0.3s ease;
-        }
-
-        body.dark-mode {
-            background:
                 linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
                 var(--bg-image) center/cover fixed no-repeat;
+            padding: 28px;
         }
-
-        /* All elements use CSS variables — dark-mode overrides vars above, light is the default */
 
         a {
             color: inherit;
@@ -215,36 +191,7 @@
             min-height: 100%;
             background:
                 linear-gradient(rgba(19, 39, 62, 0.2), rgba(19, 39, 62, 0.68)),
-                url('campus-main.jpg') center/cover no-repeat;
-            display: flex;
-            align-items: flex-end;
-            padding: 28px;
-        }
-
-        .hero-caption {
-            width: 100%;
-            background: rgba(6, 12, 18, 0.72);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 22px;
-            padding: 18px 20px;
-        }
-
-        .hero-caption h2 {
-            color: #ffffff;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .hero-caption p {
-            color: var(--muted);
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: 0.9fr 1.1fr;
-            gap: 22px;
+                url('School Campus View.jpg') center/cover no-repeat;
         }
 
         .section-card {
@@ -374,6 +321,14 @@
             border-radius: 24px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .creator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+            border-color: rgba(127, 200, 255, 0.2);
         }
 
         .creator-photo {
@@ -494,8 +449,7 @@
 
         @media (max-width: 980px) {
             body { padding: 16px; }
-            .hero,
-            .content-grid { grid-template-columns: 1fr; }
+            .hero { grid-template-columns: 1fr; }
             .hero-copy,
             .section-card { padding: 24px; }
             .hero-stats,
@@ -551,94 +505,51 @@
                     </div>
                 </div>
 
-                <div class="hero-visual">
-                    <div class="hero-caption">
-                        <h2>Showcase your campus</h2>
-                        <p>
-                            Replace `campus-main.jpg` with your best school photo, then add more images below for events,
-                            announcements, offices, or student activities.
-                        </p>
-                    </div>
+                <div class="hero-visual"></div>
+            </section>
+
+            <section class="section-card">
+                <div class="section-heading">
+                    <i class="fas fa-image"></i>
+                    <h3>Campus Gallery</h3>
+                </div>
+
+                <div class="gallery-grid">
+                    <article class="gallery-card" onclick="openImageModal('Students activities.jpg', 'Student Activities', 'Celebrating student life through meaningful activities, shared experiences, and campus program highlights.')">
+                        <img src="Students activities.jpg" alt="Campus event announcement" />
+                        <div class="gallery-copy">
+                            <h4>Student Activities</h4>
+                           
+                        </div>
+                    </article>
+
+                    <article class="gallery-card" onclick="openImageModal('Academic Updates.jpg', 'Academic Updates', 'A space for exam schedules, department notices, and registrar reminders that keep students informed.')">
+                        <img src="Academic Updates.jpg" alt="Academic announcement board" />
+                        <div class="gallery-copy">
+                            <h4>Academic Updates</h4>
+                           
+                        </div>
+                    </article>
+
+                    <article class="gallery-card" onclick="openImageModal('School Campus View.jpg', 'Campus Highlights', 'Showcasing the campus environment, learning spaces, and facilities that shape student identity.')">
+                        <img src="School Campus View.jpg" alt="School campus view" />
+                        <div class="gallery-copy">
+                            <h4>Campus Highlights</h4>
+                           
+                        </div>
+                    </article>
+
+                    <article class="gallery-card" onclick="openImageModal('School Announcent Campaign.jpg', 'Official Campaigns', 'Featuring school campaigns, bulletin reminders, awareness drives, and official event promotions.')">
+                        <img src="School Announcent Campaign.jpg" alt="School announcement campaign" />
+                        <div class="gallery-copy">
+                            <h4>Official Campaigns</h4>
+                           
+                        </div>
+                    </article>
                 </div>
             </section>
 
-            <div class="content-grid">
-                <section class="section-card">
-                    <div class="section-heading">
-                        <i class="fas fa-bullseye"></i>
-                        <h3>What This Page Does</h3>
-                    </div>
-
-                    <div class="mission-list">
-                        <div class="mission-item">
-                            <h4>Highlights your system</h4>
-                            <p>
-                                This separate About Us page gives your project a more professional presentation instead of
-                                keeping the introduction inside a small popup.
-                            </p>
-                        </div>
-                        <div class="mission-item">
-                            <h4>Supports more school photos</h4>
-                            <p>
-                                The gallery layout is ready for campus announcement images, event banners, registrar notices,
-                                organization activities, and other school visuals.
-                            </p>
-                        </div>
-                        <div class="mission-item">
-                            <h4>Matches your dark mode</h4>
-                            <p>
-                                The design follows the same dark portal style so it feels consistent with the Student page.
-                            </p>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="section-card">
-                    <div class="section-heading">
-                        <i class="fas fa-image"></i>
-                        <h3>Campus Gallery</h3>
-                    </div>
-
-                    <div class="gallery-grid">
-                        <article class="gallery-card" onclick="openImageModal('campus-event-1.jpg', 'Student Activities', 'Use this slot for announcement posters, student week photos, or campus program highlights.')">
-                            <img src="campus-event-1.jpg" alt="Campus event announcement" />
-                            <div class="gallery-copy">
-                                <h4>Student Activities</h4>
-                                <p>Use this slot for announcement posters, student week photos, or campus program highlights.</p>
-                            </div>
-                        </article>
-
-                        <article class="gallery-card" onclick="openImageModal('campus-event-2.jpg', 'Academic Updates', 'Perfect for exam schedules, departmental notices, and registrar announcement images.')">
-                            <img src="campus-event-2.jpg" alt="Academic announcement board" />
-                            <div class="gallery-copy">
-                                <h4>Academic Updates</h4>
-                                <p>Perfect for exam schedules, departmental notices, and registrar announcement images.</p>
-                            </div>
-                        </article>
-
-                        <article class="gallery-card" onclick="openImageModal('campus-event-3.jpg', 'Campus Highlights', 'Add a photo of your university grounds, buildings, or student facilities to build identity.')">
-                            <img src="campus-event-3.jpg" alt="School campus view" />
-                            <div class="gallery-copy">
-                                <h4>Campus Highlights</h4>
-                                <p>Add a photo of your university grounds, buildings, or student facilities to build identity.</p>
-                            </div>
-                        </article>
-
-                        <article class="gallery-card" onclick="openImageModal('campus-event-4.jpg', 'Official Campaigns', 'Use this area for orientation drives, reminders, safety announcements, or event promotions.')">
-                            <img src="campus-event-4.jpg" alt="School announcement campaign" />
-                            <div class="gallery-copy">
-                                <h4>Official Campaigns</h4>
-                                <p>Use this area for orientation drives, reminders, safety announcements, or event promotions.</p>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-            </div>
-
-            <div class="footer-note">
-                Replace the image files `campus-main.jpg`, `campus-event-1.jpg`, `campus-event-2.jpg`, `campus-event-3.jpg`, and `campus-event-4.jpg`
-                with your actual school photos in the same project folder.
-            </div>
+         
 
             <section class="section-card creators-section">
                 <div class="section-heading">
@@ -653,9 +564,9 @@
                 </p>
 
                 <div class="creators-grid">
-                    <article class="creator-card">
+                    <article class="creator-card" onclick="openImageModal('Amay Riza Ann.jpg', 'Amay Riza Ann', 'Creator - We built this platform to make every important school update easier to reach, understand, and trust.')">
                         <div class="creator-photo">
-                            <img src="creator-amay.jpg" alt="Amay Riza Ann" />
+                            <img src="Amay Riza Ann.jpg" alt="Amay Riza Ann" />
                         </div>
                         <div class="creator-info">
                             <h4>Amay Riza Ann</h4>
@@ -664,9 +575,9 @@
                         </div>
                     </article>
 
-                    <article class="creator-card">
+                    <article class="creator-card" onclick="openImageModal('Quevedo Mary Chris.jpg', 'Quevedo Mary Chris', 'Creator - Good communication creates a stronger campus community, and this portal was designed to support that every day.')">
                         <div class="creator-photo">
-                            <img src="creator-mary.jpg" alt="Quevedo Mary Chris" />
+                            <img src="Quevedo Mary Chris.jpg" alt="Quevedo Mary Chris" />
                         </div>
                         <div class="creator-info">
                             <h4>Quevedo Mary Chris</h4>
@@ -675,9 +586,9 @@
                         </div>
                     </article>
 
-                    <article class="creator-card">
+                    <article class="creator-card" onclick="openImageModal('Zamora Shaira Jane.jpg', 'Zamora Shaira Jane', 'Creator - Our vision was to create a space where announcements feel clear, official, and always within reach.')">
                         <div class="creator-photo">
-                            <img src="creator-shaira.jpg" alt="Zamora Shaira Jane" />
+                            <img src="Zamora Shaira Jane.jpg" alt="Zamora Shaira Jane" />
                         </div>
                         <div class="creator-info">
                             <h4>Zamora Shaira Jane</h4>
@@ -695,7 +606,7 @@
             <button type="button" class="image-modal-close" onclick="closeImageModal()">
                 <i class="fas fa-times"></i>
             </button>
-            <img id="imageModalPreview" class="image-preview" src="" alt="Gallery preview" />
+            <img id="imageModalPreview" class="image-preview" src="about:blank" alt="Gallery preview" />
             <div class="image-caption">
                 <h4 id="imageModalTitle"></h4>
                 <p id="imageModalText"></p>
@@ -735,18 +646,6 @@
                 closeImageModal();
             }
         });
-
-        // ── Apply campus_theme from localStorage ──────────────
-        (function () {
-            if (localStorage.getItem('campus_theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-            }
-            window.addEventListener('storage', function (e) {
-                if (e.key === 'campus_theme') {
-                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
-                }
-            });
-        })();
     </script>
 </body>
 </html>

@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : Page
     {
+        // Built-in hardcoded accounts
+        private static readonly string[,] BuiltIn =
+        {
+            { "admin",   "admin123",   "John Dela Cruz", "admin@ctu.edu.ph",   "Admin"   },
+            { "student", "student123", "Maria Santos",   "student@ctu.edu.ph", "Student" }
+        };
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 lblError.Text = string.Empty;
+                // Already logged in → redirect
                 if (Session["IsLoggedIn"] is bool b && b)
                 {
                     string role = Session["Role"]?.ToString() ?? "";
@@ -32,63 +38,64 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 ShowError("Please enter your username and password."); return;
             }
 
-            string connStr = ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
+            string fullName = null, email = null, matchedRole = null;
 
-            try
+            // 1. Check built-in accounts
+            for (int i = 0; i < BuiltIn.GetLength(0); i++)
             {
-                using (var conn = new SqlConnection(connStr))
+                if (string.Equals(BuiltIn[i, 0], username, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(BuiltIn[i, 1], password, StringComparison.Ordinal) &&
+                    string.Equals(BuiltIn[i, 4], role,     StringComparison.OrdinalIgnoreCase))
                 {
-                    conn.Open();
+                    fullName    = BuiltIn[i, 2];
+                    email       = BuiltIn[i, 3];
+                    matchedRole = BuiltIn[i, 4];
+                    break;
+                }
+            }
 
-                    // Query user by username, password and role
-                    const string sql = @"
-                        SELECT UserId, FullName, Email, Role
-                        FROM   Users
-                        WHERE  Username = @Username
-                          AND  Password = @Password
-                          AND  Role     = @Role";
-
-                    using (var cmd = new SqlCommand(sql, conn))
+            // 2. Check Application-state registered users (from signin.aspx)
+            if (matchedRole == null)
+            {
+                const string key = "CampusConnectUsers";
+                if (Application[key] is System.Collections.Generic.List<string[]> users)
+                {
+                    lock (users)
                     {
-                        cmd.Parameters.AddWithValue("@Username", username);
-                        cmd.Parameters.AddWithValue("@Password", password);
-                        cmd.Parameters.AddWithValue("@Role",     role);
-
-                        using (var reader = cmd.ExecuteReader())
+                        foreach (string[] u in users)
                         {
-                            if (!reader.Read())
+                            // u = { username, password, fullName, email, role }
+                            if (string.Equals(u[0], username, StringComparison.OrdinalIgnoreCase) &&
+                                string.Equals(u[1], password, StringComparison.Ordinal) &&
+                                string.Equals(u[4], role,     StringComparison.OrdinalIgnoreCase))
                             {
-                                ShowError("Invalid role, username, or password."); return;
+                                fullName    = u[2];
+                                email       = u[3];
+                                matchedRole = u[4];
+                                break;
                             }
-
-                            int    userId      = reader.GetInt32(0);
-                            string fullName    = reader.GetString(1);
-                            string email       = reader.GetString(2);
-                            string matchedRole = reader.GetString(3);
-
-                            reader.Close();
-
-                            Session["UserId"]     = userId;
-                            Session["Username"]   = username;
-                            Session["FullName"]   = fullName;
-                            Session["Email"]      = email;
-                            Session["Role"]       = matchedRole;
-                            Session["IsLoggedIn"] = true;
-
-                            if (string.Equals(matchedRole, "Admin", StringComparison.OrdinalIgnoreCase))
-                                Response.Redirect("Teacher.aspx", false);
-                            else
-                                Response.Redirect("Student.aspx", false);
-
-                            Context.ApplicationInstance.CompleteRequest();
                         }
                     }
                 }
             }
-            catch (Exception ex)
+
+            if (matchedRole == null)
             {
-                ShowError("Database error: " + ex.Message);
+                ShowError("Invalid role, username, or password."); return;
             }
+
+            Session["Username"]   = username;
+            Session["FullName"]   = fullName;
+            Session["Email"]      = email;
+            Session["Role"]       = matchedRole;
+            Session["IsLoggedIn"] = true;
+
+            if (string.Equals(matchedRole, "Admin", StringComparison.OrdinalIgnoreCase))
+                Response.Redirect("Teacher.aspx", false);
+            else
+                Response.Redirect("Student.aspx", false);
+
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         private void ShowError(string msg)
