@@ -1111,7 +1111,7 @@
                         <i class="fas fa-lock" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Password</div>
-                            <div style="font-weight:600;color:var(--page-text);">��������</div>
+                            <div style="font-weight:600;color:var(--page-text);">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</div>
                         </div>
                     </div>
                 </div>
@@ -1552,18 +1552,20 @@
 
         // ── Restore theme on load ──────────────────────────────
         (function() {
-            if (localStorage.getItem('campus_theme') === 'dark') {
+            var isDark = localStorage.getItem('campus_theme') === 'dark';
+            if (isDark) {
                 document.body.classList.add('dark-mode');
-                var toggle = document.getElementById('themeToggle');
-                if (toggle) toggle.classList.add('active');
             }
+            var toggle = document.getElementById('themeToggle');
+            if (toggle) toggle.classList.toggle('active', isDark);
+
             // Sync theme changes from other tabs
             window.addEventListener('storage', function(e) {
                 if (e.key === 'campus_theme') {
                     var dark = e.newValue === 'dark';
                     document.body.classList.toggle('dark-mode', dark);
-                    var toggle = document.getElementById('themeToggle');
-                    if (toggle) toggle.classList.toggle('active', dark);
+                    var t = document.getElementById('themeToggle');
+                    if (t) t.classList.toggle('active', dark);
                 }
             });
         })();

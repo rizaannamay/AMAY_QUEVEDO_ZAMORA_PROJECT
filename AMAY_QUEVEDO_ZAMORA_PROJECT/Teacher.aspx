@@ -1242,7 +1242,7 @@
             <div class="info-icon-wrapper"><i class="fas fa-lock"></i></div>
             <div class="info-text-container">
                 <span class="info-label-small">Password</span>
-                <span class="info-data-text">��������</span>
+                <span class="info-data-text">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</span>
             </div>
         </div>
 
@@ -1553,41 +1553,39 @@
         }
 
         function publishAnnouncement() {
-            var title = document.getElementById('announcementTitle').value.trim();
-            var content = document.getElementById('announcementContent').value.trim();
+            var title    = document.getElementById('announcementTitle').value.trim();
+            var content  = document.getElementById('announcementContent').value.trim();
             var category = document.getElementById('announcementCategory').value;
-            var imageUrl = document.getElementById('announcementImageUrl').value.trim();
+            var imageFileInput = document.getElementById('announcementImageFile');
 
-            if (!title)   { showToast('Please enter a title!');   return; }
-            if (!content) { showToast('Please enter content!');   return; }
+            if (!title)   { showToast('Please enter a title!'); return; }
+            if (!content) { showToast('Please enter content!'); return; }
 
-            // Disable button to prevent double-submit
             var publishBtn = document.querySelector('.btn-publish');
             if (publishBtn) { publishBtn.disabled = true; publishBtn.textContent = 'Publishing...'; }
+
+            // Use FormData so the server can read ctx.Request.Form and ctx.Request.Files
+            var formData = new FormData();
+            formData.append('title',    title);
+            formData.append('content',  content);
+            formData.append('category', category);
+            if (imageFileInput && imageFileInput.files && imageFileInput.files[0]) {
+                formData.append('imageFile', imageFileInput.files[0]);
+            }
 
             fetch('AnnouncementHandler.ashx?action=create', {
                 method: 'POST',
                 credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: title, content: content, category: category, imageUrl: imageUrl })
+                body: formData   // no Content-Type header — browser sets multipart boundary automatically
             })
             .then(function(r) {
-                if (!r.ok) {
-                    return r.text().then(function(t) { throw new Error('Server error ' + r.status + ': ' + t.substring(0, 200)); });
-                }
+                if (!r.ok) return r.text().then(function(t) { throw new Error('Server error ' + r.status + ': ' + t.substring(0, 200)); });
                 return r.json();
             })
             .then(function(res) {
                 if (!res.ok) { showToast('Error: ' + res.error); return; }
                 closeCreatePostModal();
-                showToast('? Announcement published!');
-                pushNotification('?? New announcement: "' + title + '"', 'fa-bullhorn');
-                // Clear form
-                document.getElementById('announcementTitle').value    = '';
-                document.getElementById('announcementContent').value  = '';
-                document.getElementById('announcementImageUrl').value = '';
-                document.getElementById('imagePreview').style.display = 'none';
-                // Reload from DB
+                showToast('✅ Announcement published!');
                 loadAnnouncementsFromDB();
             })
             .catch(function(err) {
@@ -1924,11 +1922,9 @@
         // Initialize on load
         document.addEventListener('DOMContentLoaded', function() {
             var isDark = localStorage.getItem('campus_theme') === 'dark';
-            if (isDark) {
-                document.body.classList.add('dark-mode');
-                var toggle = document.getElementById('themeToggle');
-                if (toggle) toggle.classList.add('active');
-            }
+            document.body.classList.toggle('dark-mode', isDark);
+            var toggle = document.getElementById('themeToggle');
+            if (toggle) toggle.classList.toggle('active', isDark);
             
             renderAnnouncements();
             loadAnnouncementsFromDB();
