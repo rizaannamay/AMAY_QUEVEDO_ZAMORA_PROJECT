@@ -1389,14 +1389,36 @@
             var isHidden = sec.style.display === 'none' || sec.style.display === '';
             sec.style.display = isHidden ? 'block' : 'none';
             if (isHidden) {
+                loadComments(postId);
                 var input = document.getElementById('commentInput_' + postId);
                 if (input) setTimeout(function() { input.focus(); }, 50);
             }
         }
 
         function loadComments(postId) {
-            var commentsList = document.getElementById('commentsList_' + postId);
-            if (commentsList) commentsList.innerHTML = renderCommentsList(postId);
+            fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(list) {
+                    var cl = document.getElementById('commentsList_' + postId);
+                    if (!cl) return;
+                    if (!list.length) {
+                        cl.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
+                        return;
+                    }
+                    cl.innerHTML = list.map(function(c) {
+                        return '<div class="comment">' +
+                            '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                            '<div class="comment-content">' +
+                                '<span class="comment-author">' + escapeHtml(c.author) + '</span>' +
+                                '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
+                                '<div class="comment-time">' + escapeHtml(c.date) + '</div>' +
+                            '</div></div>';
+                    }).join('');
+                    // Update comment count in stats bar
+                    var ccSpan = document.querySelector('.announcement-card[data-post-id="' + postId + '"] .comment-count');
+                    if (ccSpan) ccSpan.textContent = list.length;
+                })
+                .catch(function() {});
         }
 
         function addComment(btn, postId) {
