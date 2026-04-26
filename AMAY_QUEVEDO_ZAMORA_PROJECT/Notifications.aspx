@@ -80,7 +80,7 @@
         }
         .back-link:hover { background: var(--active-bg); }
 
-        /* -- Announcement card style -- */
+        /* ── Announcement card style ── */
         .announce-card {
             background: var(--surface-strong);
             border: 1px solid #3B82F6;
@@ -178,7 +178,7 @@
         .comment-time   { font-size:10px; color:var(--muted-light); margin-top:2px; }
         .no-comments    { padding:12px 0; text-align:center; color:var(--muted-light); font-size:12px; }
 
-        /* -- Toast -- */
+        /* ── Toast ── */
         .toast-msg {
             position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
             background:#1a3a5c; color:white; padding:10px 24px; border-radius:30px;
@@ -192,7 +192,7 @@
             100%{ opacity:0; }
         }
 
-        /* -- Dark mode -- */
+        /* ── Dark mode ── */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -282,6 +282,13 @@
             ST.set('sd_comments',   comments);
         }
 
+        function pushNotification(msg, icon) {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            notifs.unshift({ msg: msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+            if (notifs.length > 50) notifs = notifs.slice(0, 50);
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+        }
+
         function escapeHtml(s) {
             if (!s) return '';
             return String(s).replace(/[&<>"']/g, function(c) {
@@ -346,35 +353,14 @@
                     pins[id] = res.isPinned;
                     saveState();
                     renderAll();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
                 })
                 .catch(function() { showToast('Could not update pin'); });
         }
 
         function openComments(id) {
             var sec = document.getElementById('cs-' + id);
-            if (!sec) return;
-            var wasHidden = !sec.classList.contains('show');
-            sec.classList.toggle('show');
-            if (wasHidden) {
-                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                    .then(function(r) { return r.json(); })
-                    .then(function(list) {
-                        var cl = document.getElementById('cl-' + id);
-                        if (!cl) return;
-                        if (!list.length) { cl.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                        cl.innerHTML = list.map(function(c) {
-                            return '<div class="comment-item">'
-                                + '<div class="comment-avatar"><i class="fas fa-user"></i></div>'
-                                + '<div><div class="comment-author">' + escapeHtml(c.author) + '</div>'
-                                + '<div class="comment-text">' + escapeHtml(c.text) + '</div>'
-                                + '<div class="comment-time">' + escapeHtml(c.date) + '</div></div></div>';
-                        }).join('');
-                        var cc = document.getElementById('cc-' + id);
-                        if (cc) cc.textContent = list.length;
-                    })
-                    .catch(function() {});
-            }
+            if (sec) sec.classList.toggle('show');
         }
 
         function postComment(id) {
@@ -408,14 +394,14 @@
                         if (cc) cc.textContent = list.length;
                     })
                     .catch(function() {});
-                showToast('💬 Comment posted!');
+                showToast('?? Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
 
         function sharePost(id, title) {
             var url = window.location.href.split('?')[0] + '?post=' + id;
-            pushNotification('?? "' + title + '" was shared', 'fa-share-alt');
+            pushNotification('🔗 "' + title + '" was shared', 'fa-share-alt');
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
             } else { showToast('📤 Shared!'); }
@@ -425,93 +411,90 @@
             var container = document.getElementById('notifContainer');
             if (!container) return;
 
-            container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:10px;">Loading...</p></div>';
+            var announcements = ST.get('teacher_announcements') || [];
 
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok || !res.data.length) {
-                        container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)">'
-                            + '<i class="fas fa-bell-slash" style="font-size:48px;opacity:0.3;display:block;margin-bottom:16px"></i>'
-                            + '<p style="font-size:16px;font-weight:600">No announcements yet</p>'
-                            + '</div>';
-                        return;
-                    }
+            if (!announcements.length) {
+                container.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted)">'
+                    + '<i class="fas fa-bell-slash" style="font-size:48px;opacity:0.3;display:block;margin-bottom:16px"></i>'
+                    + '<p style="font-size:16px;font-weight:600">No announcements yet</p>'
+                    + '</div>';
+                return;
+            }
 
-                    var announcements = res.data;
+            // Sort: pinned first, then newest
+            announcements.sort(function(a, b) {
+                var ap = pins[a.id] ? 1 : 0, bp = pins[b.id] ? 1 : 0;
+                if (bp !== ap) return bp - ap;
+                return b.id - a.id;
+            });
 
-                    container.innerHTML = announcements.map(function(ann) {
-                        var liked   = !!likes[ann.id];
-                        var pinned  = ann.isPinned || !!pins[ann.id];
-                        var lc      = ann.likeCount || 0;
-                        var cc      = ann.commentCount || 0;
-                        var catCls  = getCatClass(ann.category);
-                        var banCls  = getBannerClass(ann.category);
-                        var catLabel = ann.category || 'General';
+            container.innerHTML = announcements.map(function(ann) {
+                var liked   = !!likes[ann.id];
+                var pinned  = !!pins[ann.id];
+                var lc      = likeCounts[ann.id] !== undefined ? likeCounts[ann.id] : (ann.likeCount || 0);
+                var cc      = (comments[ann.id] || []).length;
+                var catCls  = getCatClass(ann.category);
+                var banCls  = getBannerClass(ann.category);
+                var catLabel = ann.category || 'General';
 
-                        return '<div class="announce-card">'
-                            + '<div style="padding:18px 20px 12px">'
-                            +   '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">'
-                            +     '<div style="display:flex;align-items:center;gap:12px;flex:1">'
-                            +       '<div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
-                            +         '<i class="fas fa-user-tie" style="color:var(--primary);font-size:18px"></i>'
-                            +       '</div>'
-                            +       '<div>'
-                            +         '<div class="card-author-name">' + escapeHtml(ann.author) + '</div>'
-                            +         '<div class="card-meta"><i class="fas fa-calendar-alt" style="margin-right:4px"></i>' + escapeHtml(ann.date) + '</div>'
-                            +       '</div>'
-                            +     '</div>'
-                            +     '<div style="display:flex;align-items:center;gap:8px">'
-                            +       '<span class="card-banner ' + banCls + '">' + escapeHtml(catLabel.toUpperCase()) + '</span>'
-                            +       '<button onclick="togglePin(' + ann.id + ')" title="' + (pinned?'Unpin':'Pin') + '" style="background:none;border:none;cursor:pointer;font-size:18px;color:' + (pinned?'#e65100':'var(--muted-light)') + ';padding:4px;transition:color 0.2s">'
-                            +         '<i class="' + (pinned?'fas':'far') + ' fa-thumbtack"></i>'
-                            +       '</button>'
-                            +     '</div>'
-                            +   '</div>'
-                            +   '<div class="card-title">' + escapeHtml(ann.title) + '</div>'
-                            +   '<div class="card-desc">' + escapeHtml(ann.content) + '</div>'
-                            +   '<div style="margin-top:10px;display:flex;align-items:center;gap:8px">'
-                            +     '<span class="cat-badge ' + catCls + '">' + escapeHtml(catLabel) + '</span>'
-                            +     (pinned ? '<span style="font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack" style="margin-right:3px"></i>Pinned</span>' : '')
-                            +   '</div>'
-                            + '</div>'
-                            + '<div class="post-stats">'
-                            +   '<span onclick="toggleLike(' + ann.id + ')"><i class="' + (liked?'fas':'far') + ' fa-heart" style="' + (liked?'color:#dc2626':'') + '"></i> <span id="lc-' + ann.id + '">' + lc + '</span> Likes</span>'
-                            +   '<span onclick="openComments(' + ann.id + ')"><i class="far fa-comment"></i> <span id="cc-' + ann.id + '">' + cc + '</span> Comments</span>'
-                            +   '<span onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')"><i class="far fa-share-square"></i> Share</span>'
-                            + '</div>'
-                            + '<div class="action-buttons">'
-                            +   '<button class="action-btn' + (liked?' liked':'') + '" onclick="toggleLike(' + ann.id + ')"><i class="' + (liked?'fas':'far') + ' fa-heart"></i> ' + (liked?'Liked':'Like') + '</button>'
-                            +   '<button class="action-btn" onclick="openComments(' + ann.id + ')"><i class="far fa-comment"></i> Comment</button>'
-                            +   '<button class="action-btn" onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')"><i class="fas fa-share-alt"></i> Share</button>'
-                            + '</div>'
-                            + '<div class="comments-section" id="cs-' + ann.id + '">'
-                            +   '<div class="comment-input-row">'
-                            +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment...">'
-                            +     '<button onclick="postComment(' + ann.id + ')">Post</button>'
-                            +   '</div>'
-                            +   '<div id="cl-' + ann.id + '"><div class="no-comments">No comments yet.</div></div>'
-                            + '</div>'
-                            + '</div>';
-                    }).join('');
-
-                    // Sync pins
-                    pins = {};
-                    announcements.forEach(function(a) { if (a.isPinned) pins[a.id] = true; });
-                    saveState();
-                })
-                .catch(function() {
-                    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Could not load announcements.</div>';
-                });
+                return '<div class="announce-card">'
+                    + '<div style="padding:18px 20px 12px">'
+                    +   '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">'
+                    +     '<div style="display:flex;align-items:center;gap:12px;flex:1">'
+                    +       '<div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+                    +         '<i class="fas fa-user-tie" style="color:var(--primary);font-size:18px"></i>'
+                    +       '</div>'
+                    +       '<div>'
+                    +         '<div class="card-author-name">' + escapeHtml(ann.author) + '</div>'
+                    +         '<div class="card-meta"><i class="fas fa-calendar-alt" style="margin-right:4px"></i>' + escapeHtml(ann.date) + '</div>'
+                    +       '</div>'
+                    +     '</div>'
+                    +     '<div style="display:flex;align-items:center;gap:8px">'
+                    +       '<span class="card-banner ' + banCls + '">' + escapeHtml(catLabel.toUpperCase()) + '</span>'
+                    +       '<button onclick="togglePin(' + ann.id + ')" title="' + (pinned?'Unpin':'Pin') + '" style="background:none;border:none;cursor:pointer;font-size:18px;color:' + (pinned?'#e65100':'var(--muted-light)') + ';padding:4px;transition:color 0.2s">'
+                    +         '<i class="' + (pinned?'fas':'far') + ' fa-thumbtack"></i>'
+                    +       '</button>'
+                    +     '</div>'
+                    +   '</div>'
+                    +   '<div class="card-title">' + escapeHtml(ann.title) + '</div>'
+                    +   '<div class="card-desc">' + escapeHtml(ann.content) + '</div>'
+                    +   '<div style="margin-top:10px;display:flex;align-items:center;gap:8px">'
+                    +     '<span class="cat-badge ' + catCls + '">' + escapeHtml(catLabel) + '</span>'
+                    +     (pinned ? '<span style="font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack" style="margin-right:3px"></i>Pinned</span>' : '')
+                    +   '</div>'
+                    + '</div>'
+                    + '<div class="post-stats">'
+                    +   '<span onclick="toggleLike(' + ann.id + ')"><i class="' + (liked?'fas':'far') + ' fa-heart" style="' + (liked?'color:#dc2626':'') + '"></i> <span id="lc-' + ann.id + '">' + lc + '</span> Likes</span>'
+                    +   '<span onclick="openComments(' + ann.id + ')"><i class="far fa-comment"></i> <span id="cc-' + ann.id + '">' + cc + '</span> Comments</span>'
+                    +   '<span onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')"><i class="far fa-share-square"></i> Share</span>'
+                    + '</div>'
+                    + '<div class="action-buttons">'
+                    +   '<button class="action-btn' + (liked?' liked':'') + '" onclick="toggleLike(' + ann.id + ')"><i class="' + (liked?'fas':'far') + ' fa-heart"></i> ' + (liked?'Liked':'Like') + '</button>'
+                    +   '<button class="action-btn" onclick="openComments(' + ann.id + ')"><i class="far fa-comment"></i> Comment</button>'
+                    +   '<button class="action-btn" onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')"><i class="fas fa-share-alt"></i> Share</button>'
+                    + '</div>'
+                    + '<div class="comments-section" id="cs-' + ann.id + '">'
+                    +   '<div class="comment-input-row">'
+                    +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment...">'
+                    +     '<button onclick="postComment(' + ann.id + ')">Post</button>'
+                    +   '</div>'
+                    +   '<div id="cl-' + ann.id + '">' + renderComments(ann.id) + '</div>'
+                    + '</div>'
+                    + '</div>';
+            }).join('');
         }
 
-        // -- Theme ----------------------------------------------
+        // ── Theme ──────────────────────────────────────────────
         function applyStoredTheme() {
             document.body.classList.toggle('dark-mode', localStorage.getItem(THEME_KEY) === 'dark');
         }
 
         window.addEventListener('storage', function(e) {
             if (e.key === THEME_KEY) applyStoredTheme();
+            if (e.key === 'teacher_announcements' || e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                pins = loadPins();
+                renderAll();
+            }
         });
 
         applyStoredTheme();

@@ -1071,8 +1071,21 @@
                     </a>
                     <button type="button" onclick="markAllRead()">Mark all read</button>
                 </div>
-                <div class="notification-list" id="notificationList">
-                    <div style="padding:20px;text-align:center;color:var(--muted);font-size:13px;">No notifications yet.</div>
+                <div class="notification-list">
+                    <div class="notification-item unread" onclick="markNotificationRead(this)">
+                        <div class="notification-dot"></div>
+                        <div class="notification-text">New exam schedule announced</div>
+                        <div class="notification-time">2 hours ago</div>
+                    </div>
+                    <div class="notification-item unread" onclick="markNotificationRead(this)">
+                        <div class="notification-dot"></div>
+                        <div class="notification-text">Class suspension due to typhoon</div>
+                        <div class="notification-time">1 day ago</div>
+                    </div>
+                    <div class="notification-item" onclick="markNotificationRead(this)">
+                        <div class="notification-text">Foundation Week activities posted</div>
+                        <div class="notification-time">3 days ago</div>
+                    </div>
                 </div>
             </div>
 
@@ -1277,21 +1290,16 @@
         var st_announcements = [];
         var st_likes         = ST.get('teacher_likes')      || {};
         var st_likeCounts    = ST.get('teacher_likeCounts') || {};
-        var st_pins          = (function() {
-            var p = ST.get('teacher_pins') || {};
-            // Sanitize: remove any non-integer keys (e.g. "2:1" from corrupted state)
-            Object.keys(p).forEach(function(k) { if (!/^\d+$/.test(k)) delete p[k]; });
-            return p;
-        })();
+        var st_pins          = ST.get('teacher_pins')       || {};
         var st_comments      = ST.get('teacher_comments')   || {};
 
         function saveSharedState() {
             ST.set('teacher_announcements', st_announcements);
-            ST.set('teacher_likes',         st_likes);
-            ST.set('teacher_likeCounts',    st_likeCounts);
-            ST.set('teacher_pins',          st_pins);
-            ST.set('campus_pins',           st_pins);
-            ST.set('teacher_comments',      st_comments);
+            ST.set('teacher_likes', st_likes);
+            ST.set('teacher_likeCounts', st_likeCounts);
+            ST.set('teacher_pins', st_pins);
+            ST.set('campus_pins',  st_pins);   // shared with Student.aspx & Search pages
+            ST.set('teacher_comments', st_comments);
         }
 
         function pushNotification(msg, icon) {
@@ -1307,56 +1315,30 @@
             var container = document.getElementById('announcementsContainer');
             if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
-            // Load announcements first
             fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
-                .then(function(announcementsRes) {
-                    if (!announcementsRes.ok) { 
-                        showToast('Error loading announcements: ' + (announcementsRes.error || 'Unknown error')); 
-                        if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Failed to load announcements</div>';
-                        return; 
-                    }
-
-                    // Try to load user pins, but don't fail if it doesn't work
-                    fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' })
-                        .then(function(r) { return r.json(); })
-                        .then(function(pinsRes) {
-                            var pinnedIds = {};
-                            if (pinsRes.ok && pinsRes.pinnedIds) {
-                                pinsRes.pinnedIds.forEach(function(id) { pinnedIds[id] = true; });
-                            }
-                            processAnnouncements(announcementsRes.data, pinnedIds);
-                        })
-                        .catch(function(err) {
-                            console.warn('Could not load user pins, using defaults:', err);
-                            processAnnouncements(announcementsRes.data, {});
-                        });
+                .then(function(res) {
+                    if (!res.ok) { showToast('Error loading announcements'); return; }
+                    st_announcements = res.data.map(function(a) {
+                        return {
+                            id:       a.id,
+                            title:    a.title,
+                            content:  a.content,
+                            category: a.category,
+                            author:   a.author,
+                            date:     a.date,
+                            imageUrl: a.imageUrl,
+                            pinned:   a.isPinned,
+                            likeCount: a.likeCount
+                        };
+                    });
+                    // Sync pins to localStorage for Student/Search pages
+                    st_pins = {};
+                    st_announcements.forEach(function(a) { if (a.pinned) st_pins[a.id] = true; });
+                    saveSharedState();
+                    renderAnnouncements();
                 })
-                .catch(function(err) { 
-                    console.error('Error loading announcements:', err);
-                    showToast('Could not reach server'); 
-                    if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Could not connect to server</div>';
-                });
-        }
-
-        function processAnnouncements(data, pinnedIds) {
-            st_announcements = data.map(function(a) {
-                return {
-                    id:       a.id,
-                    title:    a.title,
-                    content:  a.content,
-                    category: a.category,
-                    author:   a.author,
-                    date:     a.date,
-                    imageUrl: a.imageUrl,
-                    pinned:   !!pinnedIds[a.id],
-                    likeCount: a.likeCount
-                };
-            });
-
-            st_pins = pinnedIds;
-            saveSharedState();
-            renderAnnouncements();
+                .catch(function() { showToast('Could not reach server'); });
         }
 
         function renderAnnouncements() {
@@ -1376,7 +1358,7 @@
             
             container.innerHTML = filtered.map(function(post) {
                 var isPinned = st_pins[post.id] || false;
-                var likeCount = post.likeCount || 0;
+                var likeCount = st_likeCounts[post.id] || post.likeCount || 0;
                 var commentCount = (st_comments[post.id] || []).length;
                 var categoryClass = post.category === 'Exam' ? 'post-category-exam' : 
                                    (post.category === 'Suspension' ? 'post-category-suspension' : 
@@ -1468,41 +1450,33 @@
                     st_likes[postId]      = res.liked;
                     st_likeCounts[postId] = res.likeCount;
                     var ann = st_announcements.find(function(a) { return a.id === postId; });
-                    if (res.liked && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
+                    if (res.liked && ann) pushNotification('?? Someone liked "' + ann.title + '"', 'fa-heart');
                     saveSharedState();
                     renderAnnouncements();
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                    showToast(res.liked ? '?? Liked!' : 'Like removed');
                 })
                 .catch(function() { showToast('Could not update like'); });
         }
 
         function togglePin(postId) {
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + postId, { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
-                    console.log('Pin response:', res); // Debug log
-                    if (!res.ok) { 
-                        console.error('Pin error:', res.error); // Debug log
-                        showToast('❌ Pin error: ' + res.error); 
-                        return; 
-                    }
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
                     var ann = st_announcements.find(function(a) { return a.id === postId; });
                     if (ann) {
                         ann.pinned = res.isPinned;
                         st_pins[postId] = res.isPinned;
                         if (!res.isPinned) delete st_pins[postId];
                         saveSharedState();
-                        pushNotification((res.isPinned ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
+                        pushNotification((res.isPinned ? '?? Pinned: ' : '?? Unpinned: ') + ann.title, 'fa-thumbtack');
                         window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(st_pins) }));
                         window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(st_pins) }));
                     }
                     renderAnnouncements();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
                 })
-                .catch(function(err) { 
-                    console.error('Pin request failed:', err); // Debug log
-                    showToast('❌ Could not update pin - check console'); 
-                });
+                .catch(function() { showToast('Could not update pin'); });
         }
 
         function toggleCommentSection(postId) {
@@ -1511,7 +1485,6 @@
             var isHidden = section.style.display === 'none' || section.style.display === '';
             section.style.display = isHidden ? 'block' : 'none';
             if (isHidden) {
-                loadComments(postId);
                 var input = document.getElementById('commentInput_' + postId);
                 if (input) setTimeout(function() { input.focus(); }, 50);
             }
@@ -1533,11 +1506,11 @@
             .then(function(res) {
                 if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
                 var ann = st_announcements.find(function(a) { return a.id === postId; });
-                if (ann) pushNotification('💬 Teacher commented on "' + ann.title + '": ' + text, 'fa-comment');
+                if (ann) pushNotification('?? Teacher commented on "' + ann.title + '": ' + text, 'fa-comment');
                 input.value = '';
                 // Reload comments from DB
                 loadComments(postId);
-                showToast('💬 Comment posted!');
+                showToast('?? Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
@@ -1571,7 +1544,7 @@
         function sharePost(postId) {
             var url = window.location.href.split('?')[0] + '?post=' + postId;
             var ann = st_announcements.find(function(a) { return a.id === postId; });
-            if (ann) pushNotification('?? "' + ann.title + '" was shared', 'fa-share-alt');
+            if (ann) pushNotification('🔗 "' + ann.title + '" was shared', 'fa-share-alt');
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
             } else {
@@ -1580,10 +1553,10 @@
         }
 
         function publishAnnouncement() {
-            var title    = document.getElementById('announcementTitle').value.trim();
-            var content  = document.getElementById('announcementContent').value.trim();
+            var title = document.getElementById('announcementTitle').value.trim();
+            var content = document.getElementById('announcementContent').value.trim();
             var category = document.getElementById('announcementCategory').value;
-            var imageFile = document.getElementById('announcementImageFile').files[0];
+            var imageUrl = document.getElementById('announcementImageUrl').value.trim();
 
             if (!title)   { showToast('Please enter a title!');   return; }
             if (!content) { showToast('Please enter content!');   return; }
@@ -1592,19 +1565,11 @@
             var publishBtn = document.querySelector('.btn-publish');
             if (publishBtn) { publishBtn.disabled = true; publishBtn.textContent = 'Publishing...'; }
 
-            // Use FormData to handle file upload
-            var formData = new FormData();
-            formData.append('title', title);
-            formData.append('content', content);
-            formData.append('category', category);
-            if (imageFile) {
-                formData.append('imageFile', imageFile);
-            }
-
             fetch('AnnouncementHandler.ashx?action=create', {
                 method: 'POST',
                 credentials: 'same-origin',
-                body: formData
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: title, content: content, category: category, imageUrl: imageUrl })
             })
             .then(function(r) {
                 if (!r.ok) {
@@ -1615,12 +1580,12 @@
             .then(function(res) {
                 if (!res.ok) { showToast('Error: ' + res.error); return; }
                 closeCreatePostModal();
-                showToast('✅ Announcement published!');
-                pushNotification('📢 New announcement: "' + title + '"', 'fa-bullhorn');
+                showToast('? Announcement published!');
+                pushNotification('?? New announcement: "' + title + '"', 'fa-bullhorn');
                 // Clear form
                 document.getElementById('announcementTitle').value    = '';
                 document.getElementById('announcementContent').value  = '';
-                document.getElementById('announcementImageFile').value = '';
+                document.getElementById('announcementImageUrl').value = '';
                 document.getElementById('imagePreview').style.display = 'none';
                 // Reload from DB
                 loadAnnouncementsFromDB();
@@ -1882,15 +1847,6 @@
         function openCreatePostModal() {
             var modal = document.getElementById('createPostModal');
             if (modal) modal.style.display = 'flex';
-            // Prevent Enter key in modal inputs from submitting the outer ASP.NET form
-            modal.querySelectorAll('input, textarea').forEach(function(el) {
-                el.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && el.tagName !== 'TEXTAREA') {
-                        e.preventDefault();
-                        publishAnnouncement();
-                    }
-                });
-            });
         }
 
         function closeCreatePostModal() {
@@ -1976,7 +1932,6 @@
             
             renderAnnouncements();
             loadAnnouncementsFromDB();
-            loadNotificationsFromDB(); // Load notifications from database
 
             var shell = document.querySelector('.app-shell') || document.body;
             shell.classList.add('page-flip-in');
@@ -2007,7 +1962,7 @@
                 });
         }
 
-        // -- Sync pins from Student/Search pages ---------------
+        // ── Sync pins from Student/Search pages ───────────────
         window.addEventListener('storage', function(e) {
             if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
                 var tp = ST.get('teacher_pins') || {};
@@ -2028,8 +1983,16 @@
             }
         });
 
-        // -- Init notification badge on load (REMOVED - using database instead) -------------------
-        // Badge is now loaded from database via loadNotificationsFromDB() called in window.onload
+        // -- Init notification badge on load -------------------
+        (function() {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            var count = notifs.filter(function(n) { return !n.read; }).length;
+            var badge = document.getElementById('notificationBadge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline-block' : 'none';
+            }
+        })();
     </script>
 </body>
 </html>

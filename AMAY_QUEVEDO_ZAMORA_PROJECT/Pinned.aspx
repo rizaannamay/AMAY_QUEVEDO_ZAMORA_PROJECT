@@ -58,6 +58,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
+            color: #000000;
             margin-bottom: 26px;
         }
 
@@ -380,27 +381,42 @@
             setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
         }
 
+        function renderComments(id) {
+            var list = comments[id] || [];
+            if (!list.length) return '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>';
+            return list.map(function(c) {
+                return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                    + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                    + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                    + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                    + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.time) + '</div></div></div>';
+            }).join('');
+        }
+
+        function pushNotification(msg, icon) {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            notifs.unshift({ msg: msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+            if (notifs.length > 50) notifs = notifs.slice(0, 50);
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+        }
+
         function toggleLike(id) {
-            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { showToast('Error: ' + res.error); return; }
-                    likes[id]      = res.liked;
-                    likeCounts[id] = res.likeCount;
-                    saveState();
-                    renderPinned();
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
-                })
-                .catch(function() { showToast('Could not update like'); });
+            var ann = loadDB().find(function(a) { return a.id === id; });
+            likes[id] = !likes[id];
+            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
+            if (likeCounts[id] < 0) likeCounts[id] = 0;
+            if (likes[id] && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
+            saveState();
+            renderPinned();
+            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
         }
 
         function togglePin(id) {
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
+            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
                     if (!res.ok) { showToast('Error: ' + res.error); return; }
                     pins[id] = res.isPinned;
-                    if (!res.isPinned) delete pins[id];
                     // Update the in-memory DB record too
                     var ann = pinnedDB.find(function(a) { return a.id === id; });
                     if (ann) ann.isPinned = res.isPinned;
@@ -413,26 +429,7 @@
 
         function openComments(id) {
             var sec = document.getElementById('cs-' + id);
-            if (!sec) return;
-            var wasHidden = sec.style.display === 'none' || sec.style.display === '';
-            sec.style.display = wasHidden ? 'block' : 'none';
-            if (wasHidden) {
-                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                    .then(function(r) { return r.json(); })
-                    .then(function(list) {
-                        var cl = document.getElementById('cl-' + id);
-                        if (!cl) return;
-                        if (!list.length) { cl.innerHTML = '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>'; return; }
-                        cl.innerHTML = list.map(function(c) {
-                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
-                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
-                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
-                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
-                                + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.date) + '</div></div></div>';
-                        }).join('');
-                    })
-                    .catch(function() {});
-            }
+            if (sec) sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
         }
 
         function postComment(id) {
@@ -440,33 +437,15 @@
             if (!input) return;
             var text = input.value.trim();
             if (!text) { showToast('Please write a comment first'); return; }
-
-            fetch('CommentHandler.ashx?action=add', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ postId: id, comment: text })
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
-                input.value = '';
-                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                    .then(function(r) { return r.json(); })
-                    .then(function(list) {
-                        var cl = document.getElementById('cl-' + id);
-                        if (cl) cl.innerHTML = list.map(function(c) {
-                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
-                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
-                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
-                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
-                                + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.date) + '</div></div></div>';
-                        }).join('');
-                    })
-                    .catch(function() {});
-                showToast('💬 Comment posted!');
-            })
-            .catch(function() { showToast('Could not post comment'); });
+            var ann = loadDB().find(function(a) { return a.id === id; });
+            if (!comments[id]) comments[id] = [];
+            comments[id].push({ author:'You', text:text, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
+            if (ann) pushNotification('💬 New comment on "' + ann.title + '": ' + text, 'fa-comment');
+            saveState();
+            input.value = '';
+            var cl = document.getElementById('cl-' + id);
+            if (cl) cl.innerHTML = renderComments(id);
+            showToast('💬 Comment posted!');
         }
 
         function sharePost(id, title) {
@@ -479,7 +458,8 @@
         }
 
         function renderPinned() {
-            var pinned = pinnedDB.filter(function(a) { return a.isPinned; });
+            var announcementsDB = loadDB();
+            var pinned = announcementsDB.filter(function(a) { return !!pins[a.id]; });
             var container = document.querySelector('.pinned-list');
             if (!container) return;
 
@@ -490,8 +470,8 @@
 
             container.innerHTML = pinned.map(function(ann) {
                 var liked   = !!likes[ann.id];
-                var lc      = ann.likeCount || 0;
-                var cc      = ann.commentCount || 0;
+                var lc      = likeCounts[ann.id] || 0;
+                var cc      = (comments[ann.id] || []).length;
                 var catCls  = getCatClass(ann.category);
                 var catIcon = ann.category === 'Exam Schedule' ? 'fas fa-file-alt' : ann.category === 'Class Suspension' ? 'fas fa-cloud-rain' : 'fas fa-calendar-alt';
 
@@ -529,7 +509,7 @@
                     +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment..." style="flex:1;padding:9px 14px;background:var(--surface-soft,#f8fafc);border:1px solid var(--border);border-radius:30px;outline:none;font-size:13px;color:var(--page-text)">'
                     +     '<button onclick="postComment(' + ann.id + ')" style="background:linear-gradient(135deg,#1a3a5c,#2c5a7a);border:none;padding:0 18px;border-radius:30px;color:#fff;font-weight:600;cursor:pointer;font-size:13px">Post</button>'
                     +   '</div>'
-                    +   '<div id="cl-' + ann.id + '"><div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div></div>'
+                    +   '<div id="cl-' + ann.id + '">' + renderComments(ann.id) + '</div>'
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -542,10 +522,17 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === THEME_KEY) applyStoredTheme();
+            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                pins = loadPins();
+                renderPinned();
+            }
+            if (e.key === 'teacher_announcements') {
+                renderPinned();
+            }
         });
 
         applyStoredTheme();
-        loadFromDB(function() { renderPinned(); });
+        renderPinned();
     </script>
 </body>
 </html>

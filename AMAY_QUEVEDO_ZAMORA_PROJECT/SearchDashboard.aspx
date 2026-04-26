@@ -16,7 +16,7 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        /* -- BACKGROUND � same as SearchStudent.aspx -- */
+        /* ── BACKGROUND — same as SearchStudent.aspx ── */
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -45,7 +45,7 @@
             transition: background 0.4s ease, color 0.4s ease;
         }
 
-        /* -- DARK MODE -- */
+        /* ── DARK MODE ── */
         body.dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -63,7 +63,7 @@
             background-color: #0F172A;
         }
 
-        /* -- NAVBAR � blue gradient header -- */
+        /* ── NAVBAR — blue gradient header ── */
         .glass-nav {
             background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
             border-bottom: none;
@@ -82,7 +82,7 @@
         .glass-nav button { color: #ffffff !important; }
         .glass-nav .text-muted { color: rgba(255,255,255,0.7) !important; }
 
-        /* -- GLASS SIDEBAR -- */
+        /* ── GLASS SIDEBAR ── */
         .glass-sidebar {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -91,7 +91,7 @@
             transition: background 0.4s ease, border-color 0.4s ease;
         }
 
-        /* -- GLASS CARD -- */
+        /* ── GLASS CARD ── */
         .glass-card {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -104,7 +104,7 @@
             transform: translateY(-2px);
         }
 
-        /* -- HERO -- */
+        /* ── HERO ── */
         .hero-section {
             background: linear-gradient(135deg, rgba(30,58,138,0.9), rgba(79,70,229,0.85));
             backdrop-filter: blur(4px);
@@ -122,7 +122,7 @@
             opacity: 0.5;
         }
 
-        /* -- ANNOUNCE CARD -- */
+        /* ── ANNOUNCE CARD ── */
         .announce-card {
             background: var(--surface-strong);
             border: 1px solid #3B82F6;
@@ -154,7 +154,7 @@
         .card-title       { color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .card-desc        { color: var(--page-text); font-size: 13px; line-height: 1.6; }
 
-        /* -- CARD BANNERS -- */
+        /* ── CARD BANNERS ── */
         .card-banner {
             background: linear-gradient(135deg,#1e3a8a,#4f46e5);
             border-radius: 12px;
@@ -169,7 +169,7 @@
         .banner-events     { background: linear-gradient(135deg,#064e3b,#0d9488,#14b8a6); }
         .banner-default    { background: linear-gradient(135deg,#1e1b4b,#4f46e5,#818cf8); }
 
-        /* -- POST STATS BAR -- */
+        /* ── POST STATS BAR ── */
         .post-stats {
             display: flex;
             gap: 16px;
@@ -182,7 +182,7 @@
         .post-stats span { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
         .post-stats span:hover { color: var(--primary); }
 
-        /* -- ACTION BUTTONS -- */
+        /* ── ACTION BUTTONS ── */
         .action-buttons {
             display: flex;
             gap: 4px;
@@ -210,7 +210,7 @@
         .action-btn.notif-active { color: #3B82F6; }
         body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
 
-        /* -- COMMENTS SECTION -- */
+        /* ── COMMENTS SECTION ── */
         .comments-section {
             padding: 0 20px 16px;
             border-top: 1px solid var(--border);
@@ -271,7 +271,7 @@
         .comment-time   { font-size: 10px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px 0; text-align: center; color: var(--muted-light); font-size: 12px; }
 
-        /* -- CATEGORY BADGE -- */
+        /* ── CATEGORY BADGE ── */
         .cat-badge {
             display: inline-block;
             padding: 2px 10px;
@@ -289,7 +289,7 @@
         body.dark-mode .cat-event      { background: rgba(22,101,52,0.25); color: #86efac; }
         body.dark-mode .cat-default    { background: rgba(91,33,182,0.2);  color: #c4b5fd; }
 
-        /* -- HISTORY ITEMS -- */
+        /* ── HISTORY ITEMS ── */
         .history-item {
             cursor: pointer;
             transition: all 0.2s ease;
@@ -307,7 +307,7 @@
             color: var(--primary);
         }
 
-        /* -- SEARCH INPUT -- */
+        /* ── SEARCH INPUT ── */
         .search-input {
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(4px);
@@ -325,7 +325,7 @@
         /* search icon always white on blue nav */
         .glass-nav .fa-search { color: rgba(255,255,255,0.85) !important; }
 
-        /* -- FILTER SELECTS -- */
+        /* ── FILTER SELECTS ── */
         .filter-select {
             background: var(--surface-soft);
             backdrop-filter: blur(4px);
@@ -336,16 +336,16 @@
         .filter-select:focus { border-color: #6366f1; outline: none; }
         .filter-select option { background: var(--surface-strong); color: var(--page-text); }
 
-        /* -- SCROLLBAR -- */
+        /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.5); border-radius: 10px; }
 
-        /* -- RESULTS CONTAINER -- */
+        /* ── RESULTS CONTAINER ── */
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
         .announce-card { will-change: transform; }
 
-        /* -- TOAST -- */
+        /* ── TOAST ── */
         .toast-msg {
             position: fixed;
             bottom: 28px;
@@ -369,14 +369,14 @@
             100% { opacity: 0; }
         }
 
-        /* -- FLIP TRANSITION -- */
+        /* ── FLIP TRANSITION ── */
         @keyframes flipIn {
             0%   { transform: perspective(1200px) rotateY(90deg); opacity: 0; }
             100% { transform: perspective(1200px) rotateY(0deg);  opacity: 1; }
         }
         .page-flip-in { animation: flipIn 0.18s ease-out forwards; transform-origin: center center; }
 
-        /* -- SMOOTH TRANSITIONS -- */
+        /* ── SMOOTH TRANSITIONS ── */
         *, *::before, *::after {
             transition: background-color 0.3s ease, border-color 0.3s ease,
                         color 0.3s ease, box-shadow 0.3s ease;
@@ -387,7 +387,7 @@
             .sidebar-hidden-mobile { position: fixed; left: -280px; transition: left 0.3s; z-index: 50; }
         }
 
-        /* -- RESPONSIVE -- */
+        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
             .action-buttons { padding: 6px 14px 10px; gap: 2px; }
@@ -413,7 +413,7 @@
 
         <div class="relative z-10">
 
-            <!-- ----------- NAVBAR ----------- -->
+            <!-- ═══════════ NAVBAR ═══════════ -->
             <header class="glass-nav sticky top-0 z-40 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
@@ -535,59 +535,45 @@
 
             <!-- Footer -->
             <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
-                <i class="far fa-copyright"></i> 2026 CampusConnect � Connecting Teachers to Campus Life
+                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Teachers to Campus Life
             </footer>
         </div>
     </form>
 
     <script>
-    // --------------------------------------------------------
-    // DATA � load live announcements from AnnouncementHandler
-    // --------------------------------------------------------
-    var announcementsDB = [];
-
-    function loadAnnouncementsFromDB(callback) {
-        fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-                if (!res.ok) { if (callback) callback([]); return; }
-                announcementsDB = res.data.map(function(a) {
-                    var cat = a.category || '';
-                    var bannerType = 'default';
-                    var bannerText = cat.toUpperCase();
-                    if (cat === 'Exam')       { bannerType = 'exam';       bannerText = 'EXAM SCHEDULE'; }
-                    if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
-                    if (cat === 'Event')      { bannerType = 'events';     bannerText = 'CAMPUS EVENT'; }
-                    var categoryLabel = cat === 'Exam' ? 'Exam Schedule'
-                                      : cat === 'Suspension' ? 'Class Suspension'
-                                      : cat === 'Event' ? 'Campus Events' : cat;
-                    return {
-                        id:            a.id,
-                        title:         a.title   || '',
-                        category:      categoryLabel,
-                        date:          a.date    || '',
-                        time:          '',
-                        professor:     a.author  || '',
-                        professorAvatar: '?????',
-                        description:   a.content || '',
-                        bannerText:    bannerText,
-                        bannerType:    bannerType,
-                        likeCount:     a.likeCount    || 0,
-                        commentCount:  a.commentCount || 0,
-                        isPinned:      a.isPinned     || false
-                    };
-                });
-                // Sync pins to localStorage for Pinned.aspx
-                var pins = {};
-                announcementsDB.forEach(function(a) { if (a.isPinned) pins[a.id] = true; });
-                localStorage.setItem('campus_pins',  JSON.stringify(pins));
-                localStorage.setItem('teacher_pins', JSON.stringify(pins));
-                if (callback) callback(announcementsDB);
-            })
-            .catch(function() { if (callback) callback([]); });
+    // ════════════════════════════════════════════════════════
+    // DATA — load live announcements from Teacher.aspx
+    // ════════════════════════════════════════════════════════
+    function loadAnnouncementsDB() {
+        const raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null');
+        if (!raw || !raw.length) return [];
+        return raw.map(a => {
+            const cat = a.category || '';
+            let bannerType = 'default';
+            let bannerText = cat.toUpperCase();
+            if (cat === 'Exam')       { bannerType = 'exam';       bannerText = 'EXAM SCHEDULE'; }
+            if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
+            if (cat === 'Event')      { bannerType = 'events';     bannerText = 'CAMPUS EVENT'; }
+            const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
+                                : cat === 'Suspension' ? 'Class Suspension'
+                                : cat === 'Event' ? 'Campus Events' : cat;
+            return {
+                id:            a.id,
+                title:         a.title   || '',
+                category:      categoryLabel,
+                date:          a.date    || '',
+                time:          '',
+                professor:     a.author  || '',
+                professorAvatar: '👨‍🏫',
+                description:   a.content || '',
+                bannerText,
+                bannerType
+            };
+        });
     }
+    let announcementsDB = loadAnnouncementsDB();
 
-    // -- Persistent state (localStorage) ----------------------
+    // ── Persistent state (localStorage) ──────────────────────
     const STORAGE = {
         get: k => JSON.parse(localStorage.getItem(k) || 'null'),
         set: (k,v) => localStorage.setItem(k, JSON.stringify(v))
@@ -618,7 +604,7 @@
 
     // Init like counts from DB
     announcementsDB.forEach(a => {
-        if (likeCounts[a.id] === undefined) likeCounts[a.id] = a.likeCount || 0;
+        if (likeCounts[a.id] === undefined) likeCounts[a.id] = Math.floor(Math.random()*30)+2;
     });
 
     function saveState() {
@@ -630,7 +616,7 @@
         STORAGE.set('sd_comments',   comments);
     }
 
-    // -- DOM refs ----------------------------------------------
+    // ── DOM refs ──────────────────────────────────────────────
     const searchInput      = document.getElementById('<%= searchInput.ClientID %>');
     const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
     const categoryFilter   = null; // removed
@@ -649,7 +635,7 @@
     let currentDate       = '';
     let currentSort       = 'latest';
 
-    // -- Helpers -----------------------------------------------
+    // ── Helpers ───────────────────────────────────────────────
     function escapeHtml(str) {
         if (!str) return '';
         return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -685,7 +671,7 @@
         notificationBadge.style.display = count > 0 ? 'flex' : 'none';
     }
 
-    // -- Search History ----------------------------------------
+    // ── Search History ────────────────────────────────────────
     function saveHistory() {
         STORAGE.set('campus_history', searchHistory.slice(0,15));
         renderHistory();
@@ -718,7 +704,7 @@
         });
     }
 
-    // -- Pinned sidebar ----------------------------------------
+    // ── Pinned sidebar ────────────────────────────────────────
     function renderPinnedSidebar() {
         const pinnedList = document.getElementById('pinnedList');
         const pinnedCountEl = document.getElementById('pinnedCount');
@@ -736,7 +722,7 @@
         `).join('');
     }
 
-    // -- Filter & Sort -----------------------------------------
+    // ── Filter & Sort ─────────────────────────────────────────
     function getFilteredAnnouncements() {
         let results = [...announcementsDB];
         if (currentSearchTerm.trim()) {
@@ -762,7 +748,7 @@
         return results;
     }
 
-    // -- Render Cards ------------------------------------------
+    // ── Render Cards ──────────────────────────────────────────
     function renderResults() {
         const filtered = getFilteredAnnouncements();
         const count = filtered.length;
@@ -872,7 +858,7 @@
         `).join('');
     }
 
-    // -- Interactions ------------------------------------------
+    // ── Interactions ──────────────────────────────────────────
     function toggleLike(id) {
         fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
             .then(r => r.json())
@@ -896,23 +882,15 @@
     }
 
     function togglePin(id) {
-        fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
-            .then(r => r.json())
-            .then(res => {
-                if (!res.ok) { showToast('Error: ' + res.error); return; }
-                if (res.isPinned) {
-                    pins[id] = true;
-                } else {
-                    delete pins[id];
-                }
-                // Update in-memory record
-                const ann = announcementsDB.find(a => a.id === id);
-                if (ann) ann.isPinned = res.isPinned;
-                saveState();
-                renderResults();
-                showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
-            })
-            .catch(() => showToast('Could not update pin'));
+        pins[id] = !pins[id];
+        saveState();
+        const ann = announcementsDB.find(a => a.id === id);
+        if (ann) pushNotification((pins[id] ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
+        // Notify all tabs — Student uses campus_pins, Teacher uses teacher_pins
+        window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
+        window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
+        renderResults();
+        showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
     }
 
     function toggleNotif(id) {
@@ -920,33 +898,14 @@
         saveState();
         updateNotifBadge();
         renderResults();
-        showToast(notifs[id] ? '?? Notifications on!' : '?? Notifications off');
+        showToast(notifs[id] ? '🔔 Notifications on!' : '🔕 Notifications off');
     }
 
     function openComments(id) {
         const sec = document.getElementById('cs-' + id);
         if (!sec) return;
-        const wasHidden = !sec.classList.contains('show');
         sec.classList.toggle('show');
-        if (wasHidden) {
-            // Load comments from DB
-            fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(list => {
-                    const cl = document.getElementById('cl-' + id);
-                    if (!cl) return;
-                    if (!list.length) { cl.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>'; return; }
-                    cl.innerHTML = list.map(c =>
-                        '<div class="comment-item">' +
-                        '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
-                        '<div><div class="comment-author">' + escapeHtml(c.author) + '</div>' +
-                        '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
-                        '<div class="comment-time">' + escapeHtml(c.date) + '</div></div></div>'
-                    ).join('');
-                    const cc = document.getElementById('cc-' + id);
-                    if (cc) cc.textContent = list.length;
-                })
-                .catch(() => {});
+        if (sec.classList.contains('show')) {
             const input = document.getElementById('ci-' + id);
             if (input) setTimeout(() => input.focus(), 50);
         }
@@ -983,22 +942,22 @@
                     if (cc) cc.textContent = list.length;
                 })
                 .catch(() => {});
-            showToast('💬 Comment posted!');
+            showToast('?? Comment posted!');
         })
         .catch(() => showToast('Could not post comment'));
     }
 
     function sharePost(id, title) {
         const url = window.location.href.split('?')[0] + '?post=' + id;
-        pushNotification('?? "' + title + '" was shared', 'fa-share-alt');
+        pushNotification('🔗 "' + title + '" was shared', 'fa-share-alt');
         if (navigator.clipboard) {
-            navigator.clipboard.writeText(url).then(() => showToast('?? Link copied: ' + title));
+            navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied: ' + title));
         } else {
-            showToast('?? Shared: ' + title);
+            showToast('📤 Shared: ' + title);
         }
     }
 
-    // -- Search & Filters --------------------------------------
+    // ── Search & Filters ──────────────────────────────────────
     function performSearch() {
         const term = searchInput.value;
         currentSearchTerm = term;
@@ -1022,9 +981,10 @@
         renderResults();
     }
 
-    // -- Init --------------------------------------------------
+    // ── Init ──────────────────────────────────────────────────
     function init() {
         renderHistory();
+        renderPinnedSidebar();
         updateNotifBadge();
 
         flatpickr(dateFilter, {
@@ -1044,24 +1004,14 @@
             navigateWithFlip('Notifications.aspx');
         });
 
-        // Load from DB, then render
-        loadAnnouncementsFromDB(function(data) {
-            announcementsDB = data;
-            // Init like counts from DB data
-            announcementsDB.forEach(a => {
-                if (likeCounts[a.id] === undefined) likeCounts[a.id] = a.likeCount || 0;
-                if (pins[a.id] === undefined && a.isPinned) pins[a.id] = true;
-            });
-            renderPinnedSidebar();
-            try {
-                if (lastSearchHidden && lastSearchHidden.value) {
-                    searchInput.value = lastSearchHidden.value;
-                    performSearch();
-                } else {
-                    renderResults();
-                }
-            } catch(e) { renderResults(); }
-        });
+        try {
+            if (lastSearchHidden && lastSearchHidden.value) {
+                searchInput.value = lastSearchHidden.value;
+                performSearch();
+            } else {
+                renderResults();
+            }
+        } catch(e) { renderResults(); }
     }
 
     init();
@@ -1072,9 +1022,9 @@
         setTimeout(() => { window.location.href = url; }, 160);
     }
 
-    // --------------------------------------------------------
-    // THEME � reads global campus_theme
-    // --------------------------------------------------------
+    // ════════════════════════════════════════════════════════
+    // THEME — reads global campus_theme
+    // ════════════════════════════════════════════════════════
     (function () {
         const KEY = 'campus_theme';
 
@@ -1093,6 +1043,10 @@
             if (e.key === 'sd_notifs') {
                 notifs = JSON.parse(e.newValue || '{}');
                 updateNotifBadge();
+                renderResults();
+            }
+            if (e.key === 'teacher_announcements') {
+                announcementsDB = loadAnnouncementsDB();
                 renderResults();
             }
             if (e.key === 'campus_notifications') {
