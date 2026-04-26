@@ -62,12 +62,13 @@ CREATE TABLE Notifications (
 );
 GO
 
--- ── 6. SEED DEFAULT ACCOUNTS ─────────────────────────────────
--- Admin account  (username: admin  / password: admin123)
-INSERT INTO Users (FullName, Email, Username, Password, Role)
-VALUES ('John Dela Cruz', 'admin@ctu.edu.ph', 'admin', 'admin123', 'Admin');
-
--- Student account (username: student / password: student123)
-INSERT INTO Users (FullName, Email, Username, Password, Role)
-VALUES ('Maria Santos', 'student@ctu.edu.ph', 'student', 'student123', 'Student');
+-- ── 6. PINNED ────────────────────────────────────────────────
+CREATE TABLE Pinned (
+    PinId          INT      PRIMARY KEY IDENTITY(1,1),
+    AnnouncementId INT      NOT NULL REFERENCES Announcements(AnnouncementId),
+    UserId         INT      NOT NULL REFERENCES Users(UserId),
+    CreatedDate    DATETIME NOT NULL DEFAULT GETDATE(),
+    UNIQUE (AnnouncementId, UserId)   -- one pin per user per post
+);
 GO
+

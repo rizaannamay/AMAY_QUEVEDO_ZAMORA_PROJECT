@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -981,7 +981,7 @@
                 </div>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="?? Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px" UseSubmitBehavior="false" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="ðŸ”Ž Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px" UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
@@ -1017,7 +1017,7 @@
                 <aside class="sidebar">
                     <div class="card">
                         <div class="sidebar-content">
-                            <!-- Profile removed — info shown in header user pill -->
+                            <!-- Profile removed ï¿½ info shown in header user pill -->
 
                             <div class="card-header">
                                 <i class="fas fa-filter"></i> Filters
@@ -1090,14 +1090,14 @@
                         <i class="fas fa-user" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Username</div>
-                            <div style="font-weight:600;color:var(--page-text);" id="pm-username"><%= Session["Username"] ?? "—" %></div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-username"><%= Session["Username"] ?? "ï¿½" %></div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
                         <i class="fas fa-envelope" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Email</div>
-                            <div style="font-weight:600;color:var(--page-text);" id="pm-email"><%= Session["Email"] ?? "—" %></div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-email"><%= Session["Email"] ?? "ï¿½" %></div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
@@ -1111,7 +1111,7 @@
                         <i class="fas fa-lock" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Password</div>
-                            <div style="font-weight:600;color:var(--page-text);">••••••••</div>
+                            <div style="font-weight:600;color:var(--page-text);">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</div>
                         </div>
                     </div>
                 </div>
@@ -1196,7 +1196,12 @@
         var st_pins       = (function() {
             var tp = ST.get('teacher_pins') || {};
             var cp = ST.get('campus_pins')  || {};
-            return Object.assign({}, cp, tp);
+            var merged = Object.assign({}, cp, tp);
+            // Sanitize: remove any keys that are not valid integers (e.g. "2:1" from old bad state)
+            Object.keys(merged).forEach(function(k) {
+                if (!/^\d+$/.test(k)) delete merged[k];
+            });
+            return merged;
         })();
         var st_notifs     = ST.get('sd_notifs')      || {};
         var st_comments   = ST.get('sd_comments')    || {};
@@ -1204,10 +1209,9 @@
         function saveSharedState() {
             ST.set('sd_likes',      st_likes);
             ST.set('sd_likeCounts', st_likeCounts);
-            ST.set('campus_pins',   st_pins);   // shared with Search pages
-            ST.set('teacher_pins',  st_pins);   // shared with Teacher.aspx
             ST.set('sd_notifs',     st_notifs);
             ST.set('sd_comments',   st_comments);
+            // Note: pins are now DB-backed via UserPinHandler â€” no longer stored in localStorage
         }
 
         function pushNotification(msg, icon) {
@@ -1347,23 +1351,33 @@
                     saveSharedState();
                     var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
                     if (card) applyCardState(card);
-                    showToast(res.liked ? '?? Liked!' : 'Like removed');
+                    showToast(res.liked ? 'â¤ï¸ Liked!' : 'Like removed');
                 })
                 .catch(function() { showToast('Could not update like'); });
         }
 
         function togglePin(postId) {
-            st_pins[postId] = !st_pins[postId];
-            saveSharedState();
-            var anns = ST.get('teacher_announcements') || [];
-            var ann = anns.find(function(a) { return a.id === postId; });
-            if (ann) pushNotification((st_pins[postId] ? '?? Student pinned: ' : '?? Student unpinned: ') + ann.title, 'fa-thumbtack');
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(st_pins) }));
-            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(st_pins) }));
-            var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
-            if (card) applyCardState(card);
-            sortCardsByPin();
-            showToast(st_pins[postId] ? '?? Pinned!' : 'Unpinned');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { 
+                        showToast('âŒ Pin error: ' + res.error); 
+                        return; 
+                    }
+                    // Update in-memory state only â€” no localStorage, no storage events
+                    if (res.isPinned) {
+                        st_pins[postId] = true;
+                    } else {
+                        delete st_pins[postId];
+                    }
+                    var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+                    if (card) applyCardState(card);
+                    sortCardsByPin();
+                    showToast(res.isPinned ? 'ðŸ“Œ Pinned!' : 'Unpinned');
+                })
+                .catch(function(err) { 
+                    showToast('âŒ Could not update pin'); 
+                });
         }
 
         function toggleNotif(postId) {
@@ -1429,7 +1443,7 @@
                 if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
                 input.value = '';
                 loadComments(postId);
-                showToast('?? Comment posted!');
+                showToast('ðŸ’¬ Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
@@ -1440,9 +1454,9 @@
             var ann = anns.find(function(a) { return a.id === postId; });
             if (ann) pushNotification('?? Student shared "' + ann.title + '"', 'fa-share-alt');
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(function() { showToast('?? Link copied!'); });
+                navigator.clipboard.writeText(url).then(function() { showToast('ðŸ”— Link copied!'); });
             } else {
-                showToast('?? Shared!');
+                showToast('ðŸ“¤ Shared!');
             }
         }
 
@@ -1459,26 +1473,31 @@
         }
 
         function updateNotifBadge() {
-            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
-            var count = notifs.filter(function(n) { return !n.read; }).length;
-            var badge = document.getElementById('notificationBadge');
-            if (badge) {
-                badge.textContent = count;
-                badge.style.display = count > 0 ? 'inline-block' : 'none';
-            }
+            // Load notification count from database
+            fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        var badge = document.getElementById('notificationBadge');
+                        if (badge) {
+                            if (res.count > 0) {
+                                badge.textContent = res.count;
+                                badge.style.display = 'inline-block';
+                            } else {
+                                badge.style.display = 'none';
+                            }
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Could not load notifications:', err);
+                });
         }
 
         // -- Sync pins from other tabs -------------------------
+        // Pins are now DB-backed â€” no localStorage sync needed for pins
         window.addEventListener('storage', function(e) {
-            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
-                var tp = ST.get('teacher_pins') || {};
-                var cp = ST.get('campus_pins')  || {};
-                st_pins = Object.assign({}, cp, tp);
-                document.querySelectorAll('.announcement-card').forEach(function(card) {
-                    applyCardState(card);
-                });
-                sortCardsByPin();
-            }
+            // Only react to theme changes, not pin changes (pins come from DB now)
         });
 
         // -- Category filter -----------------------------------
@@ -1500,13 +1519,25 @@
         }
 
         function markAllRead() {
-            document.querySelectorAll('.notification-item.unread').forEach(function(item) {
-                item.classList.remove('unread');
-                var dot = item.querySelector('.notification-dot');
-                if (dot) dot.remove();
-            });
-            var badge = document.getElementById('notificationBadge');
-            if (badge) badge.style.display = 'none';
+            // Update database first
+            fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        // Update UI
+                        document.querySelectorAll('.notification-item.unread').forEach(function(item) {
+                            item.classList.remove('unread');
+                            var dot = item.querySelector('.notification-dot');
+                            if (dot) dot.remove();
+                        });
+                        var badge = document.getElementById('notificationBadge');
+                        if (badge) badge.style.display = 'none';
+                        showToast('âœ… All notifications marked as read');
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Could not mark notifications as read:', err);
+                });
         }
 
         // -- Theme ---------------------------------------------
@@ -1569,84 +1600,112 @@
             var container = document.getElementById('announcementsContainer');
             if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
+            // Load announcements first
             fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { showToast('Error loading announcements'); return; }
-                    var announcements = res.data;
+                .then(function(announcementsRes) {
+                    if (!announcementsRes.ok) { 
+                        showToast('Error loading announcements'); 
+                        if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Failed to load announcements</div>';
+                        return; 
+                    }
+
+                    var announcements = announcementsRes.data;
                     if (!announcements.length) {
                         container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">No announcements yet.</div>';
                         updateNotifBadge();
                         return;
                     }
 
-                    var categoryClass = function(cat) {
-                        return cat === 'Exam' ? 'post-category-exam'
-                             : cat === 'Suspension' ? 'post-category-suspension'
-                             : cat === 'Event' ? 'post-category-event'
-                             : 'post-category-general';
-                    };
-
-                    container.innerHTML = announcements.map(function(post) {
-                        var isPinned     = !!post.isPinned;
-                        var liked        = !!st_likes[post.id];
-                        var likeCount    = post.likeCount || 0;
-                        var commentCount = post.commentCount || 0;
-
-                        if (st_likeCounts[post.id] === undefined) st_likeCounts[post.id] = post.likeCount || 0;
-
-                        return '<div class="announcement-card" data-post-id="' + post.id + '" data-category="' + escapeHtml(post.category) + '">' +
-                            '<div class="post-header">' +
-                                '<div class="post-header-left">' +
-                                    '<div class="post-avatar"><i class="fas fa-user-tie"></i></div>' +
-                                    '<div>' +
-                                        '<div class="post-author">' + escapeHtml(post.author) + '</div>' +
-                                        '<div class="post-meta">' +
-                                            '<span><i class="far fa-calendar-alt"></i> ' + escapeHtml(post.date) + '</span>' +
-                                            '<span class="post-category ' + categoryClass(post.category) + '">' + escapeHtml(post.category) + '</span>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>' +
-                                '<button type="button" class="pin-btn-top ' + (isPinned ? 'pinned' : '') + '" onclick="togglePin(' + post.id + ')" title="' + (isPinned ? 'Unpin' : 'Pin') + '">' +
-                                    '<i class="' + (isPinned ? 'fas' : 'far') + ' fa-thumbtack"></i>' +
-                                '</button>' +
-                            '</div>' +
-                            '<div class="post-content">' +
-                                '<div class="post-title">' + escapeHtml(post.title) + '</div>' +
-                                '<div class="post-text">' + escapeHtml(post.content) + '</div>' +
-                                (post.imageUrl ? '<div class="post-image"><img src="' + escapeHtml(post.imageUrl) + '" alt="Announcement image" onerror="this.style.display=\'none\'" /></div>' : '') +
-                            '</div>' +
-                            '<div class="post-stats">' +
-                                '<span onclick="toggleLike(' + post.id + ')"><i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span class="like-count">' + likeCount + '</span> Likes</span>' +
-                                '<span onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> <span class="comment-count">' + commentCount + '</span> Comments</span>' +
-                                '<span onclick="sharePost(' + post.id + ', null)"><i class="far fa-share-square"></i> Share</span>' +
-                            '</div>' +
-                            '<div class="action-buttons">' +
-                                '<button type="button" class="action-btn like-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + post.id + ')">' +
-                                    '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like') +
-                                '</button>' +
-                                '<button type="button" class="action-btn" onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> Comment</button>' +
-                                '<button type="button" class="action-btn" onclick="sharePost(' + post.id + ', null)"><i class="fas fa-share-alt"></i> Share</button>' +
-                            '</div>' +
-                            '<div class="comments-section" id="commentsSection_' + post.id + '" style="display:none;">' +
-                                '<div class="comment-input">' +
-                                    '<input type="text" id="commentInput_' + post.id + '" placeholder="Write a comment..." />' +
-                                    '<button type="button" onclick="addComment(this, ' + post.id + ')">Post</button>' +
-                                '</div>' +
-                                '<div class="comments-list" id="commentsList_' + post.id + '">' +
-                                    '<div class="no-comments">No comments yet. Be the first!</div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>';
-                    }).join('');
-
-                    // Sync pins to localStorage for Pinned.aspx / Search pages
-                    st_pins = {};
-                    announcements.forEach(function(a) { if (a.isPinned) st_pins[a.id] = true; });
-                    saveSharedState();
-                    updateNotifBadge();
+                    // Try to load user pins, but don't fail if it doesn't work
+                    fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' })
+                        .then(function(r) { return r.json(); })
+                        .then(function(pinsRes) {
+                            var pinnedIds = {};
+                            if (pinsRes.ok && pinsRes.pinnedIds) {
+                                pinsRes.pinnedIds.forEach(function(id) { pinnedIds[id] = true; });
+                            }
+                            renderAnnouncementsList(announcements, pinnedIds);
+                        })
+                        .catch(function(err) {
+                            console.warn('Could not load user pins, using defaults:', err);
+                            renderAnnouncementsList(announcements, {});
+                        });
                 })
-                .catch(function() { showToast('Could not load announcements'); });
+                .catch(function(err) { 
+                    console.error('Error:', err);
+                    showToast('Could not load announcements'); 
+                    if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Could not connect to server</div>';
+                });
+        }
+
+        function renderAnnouncementsList(announcements, pinnedIds) {
+            var container = document.getElementById('announcementsContainer');
+            if (!container) return;
+
+            var categoryClass = function(cat) {
+                return cat === 'Exam' ? 'post-category-exam'
+                     : cat === 'Suspension' ? 'post-category-suspension'
+                     : cat === 'Event' ? 'post-category-event'
+                     : 'post-category-general';
+            };
+
+            container.innerHTML = announcements.map(function(post) {
+                var isPinned     = !!pinnedIds[post.id];
+                var liked        = !!st_likes[post.id];
+                var likeCount    = post.likeCount || 0;
+                var commentCount = post.commentCount || 0;
+
+                if (st_likeCounts[post.id] === undefined) st_likeCounts[post.id] = post.likeCount || 0;
+
+                return '<div class="announcement-card" data-post-id="' + post.id + '" data-category="' + escapeHtml(post.category) + '">' +
+                    '<div class="post-header">' +
+                        '<div class="post-header-left">' +
+                            '<div class="post-avatar"><i class="fas fa-user-tie"></i></div>' +
+                            '<div>' +
+                                '<div class="post-author">' + escapeHtml(post.author) + '</div>' +
+                                '<div class="post-meta">' +
+                                    '<span><i class="far fa-calendar-alt"></i> ' + escapeHtml(post.date) + '</span>' +
+                                    '<span class="post-category ' + categoryClass(post.category) + '">' + escapeHtml(post.category) + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<button type="button" class="pin-btn-top ' + (isPinned ? 'pinned' : '') + '" onclick="togglePin(' + post.id + ')" title="' + (isPinned ? 'Unpin' : 'Pin') + '">' +
+                            '<i class="' + (isPinned ? 'fas' : 'far') + ' fa-thumbtack"></i>' +
+                        '</button>' +
+                    '</div>' +
+                    '<div class="post-content">' +
+                        '<div class="post-title">' + escapeHtml(post.title) + '</div>' +
+                        '<div class="post-text">' + escapeHtml(post.content) + '</div>' +
+                        (post.imageUrl ? '<div class="post-image"><img src="' + escapeHtml(post.imageUrl) + '" alt="Announcement image" onerror="this.style.display=\'none\'" /></div>' : '') +
+                    '</div>' +
+                    '<div class="post-stats">' +
+                        '<span onclick="toggleLike(' + post.id + ')"><i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span class="like-count">' + likeCount + '</span> Likes</span>' +
+                        '<span onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> <span class="comment-count">' + commentCount + '</span> Comments</span>' +
+                        '<span onclick="sharePost(' + post.id + ', null)"><i class="far fa-share-square"></i> Share</span>' +
+                    '</div>' +
+                    '<div class="action-buttons">' +
+                        '<button type="button" class="action-btn like-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + post.id + ')">' +
+                            '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like') +
+                        '</button>' +
+                        '<button type="button" class="action-btn" onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> Comment</button>' +
+                        '<button type="button" class="action-btn" onclick="sharePost(' + post.id + ', null)"><i class="fas fa-share-alt"></i> Share</button>' +
+                    '</div>' +
+                    '<div class="comments-section" id="commentsSection_' + post.id + '" style="display:none;">' +
+                        '<div class="comment-input">' +
+                            '<input type="text" id="commentInput_' + post.id + '" placeholder="Write a comment..." />' +
+                            '<button type="button" onclick="addComment(this, ' + post.id + ')">Post</button>' +
+                        '</div>' +
+                        '<div class="comments-list" id="commentsList_' + post.id + '">' +
+                            '<div class="no-comments">No comments yet. Be the first!</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+            // Keep in-memory pin state in sync with DB result (no localStorage write needed)
+            st_pins = pinnedIds;
+            updateNotifBadge();
         }
 
         function deletePost(postId) {

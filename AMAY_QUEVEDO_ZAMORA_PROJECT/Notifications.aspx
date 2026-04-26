@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Notifications" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Notifications" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -333,7 +333,7 @@
                     saveState();
                     var lcEl = document.getElementById('lc-' + id);
                     if (lcEl) lcEl.textContent = res.likeCount;
-                    showToast(res.liked ? '?? Liked!' : 'Like removed');
+                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
                 })
                 .catch(function() { showToast('Could not update like'); });
         }
@@ -346,7 +346,7 @@
                     pins[id] = res.isPinned;
                     saveState();
                     renderAll();
-                    showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 })
                 .catch(function() { showToast('Could not update pin'); });
         }
@@ -408,7 +408,7 @@
                         if (cc) cc.textContent = list.length;
                     })
                     .catch(function() {});
-                showToast('?? Comment posted!');
+                showToast('💬 Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
@@ -417,8 +417,8 @@
             var url = window.location.href.split('?')[0] + '?post=' + id;
             pushNotification('?? "' + title + '" was shared', 'fa-share-alt');
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(function() { showToast('?? Link copied!'); });
-            } else { showToast('?? Shared!'); }
+                navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
+            } else { showToast('📤 Shared!'); }
         }
 
         function renderAll() {

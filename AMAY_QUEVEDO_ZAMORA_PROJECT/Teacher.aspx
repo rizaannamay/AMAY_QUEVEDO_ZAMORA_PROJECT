@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <script runat="server">
     protected void SearchButton_Click(object sender, EventArgs e)
@@ -474,6 +474,29 @@
         .pin-btn-top:hover { background: var(--surface-soft); }
         .pin-btn-top.pinned { color: #e65100; }
 
+        .edit-btn-top, .delete-btn-top {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--muted-light);
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            width: 36px;
+            height: 36px;
+        }
+
+        .edit-btn-top:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .delete-btn-top:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
         .post-content { padding: 0 22px 16px; }
         .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
         .post-text { color: var(--page-text); line-height: 1.5; }
@@ -848,6 +871,29 @@
             min-height: 100px;
         }
 
+        .form-group input[type="file"] {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .form-group input[type="file"]::file-selector-button {
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 12px;
+            transition: all 0.2s;
+        }
+
+        .form-group input[type="file"]::file-selector-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 58, 92, 0.3);
+        }
+
         .image-preview {
             margin-top: 12px;
             border-radius: 16px;
@@ -947,6 +993,10 @@
         .dark-mode .form-group select { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); color: #e4e6eb; }
         .dark-mode .form-group input:focus,
         .dark-mode .form-group textarea:focus { border-color: #818cf8; }
+
+        .dark-mode .form-group input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #6366f1, #818cf8);
+        }
         .dark-mode .btn-cancel { border-color: rgba(255,255,255,0.2); color: #e4e6eb; }
         .dark-mode .btn-cancel:hover { background: rgba(255,255,255,0.07); }
         .dark-mode .info-grid { background: rgba(255,255,255,0.05); }
@@ -992,13 +1042,13 @@
 
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
-                        Text="?? Search Announcements..." OnClick="SearchButton_Click"
+                        Text="🔎 Search Announcements..." OnClick="SearchButton_Click"
                         Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px"
                         UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
-                    <div class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')">
+                    <div class="notification-bell" onclick="openNotificationDropdown()">
                         <i class="fas fa-bell bell-icon"></i>
                         <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
                     </div>
@@ -1115,10 +1165,10 @@
                     <div class="form-group">
                         <label><i class="fas fa-tag"></i> Category</label>
                         <select id="announcementCategory">
-                            <option value="General">?? General</option>
-                            <option value="Exam">?? Exam Schedule</option>
-                            <option value="Suspension">?? Class Suspension</option>
-                            <option value="Event">?? Campus Events</option>
+                            <option value="General">📢 General</option>
+                            <option value="Exam">📝 Exam Schedule</option>
+                            <option value="Suspension">⚠️ Class Suspension</option>
+                            <option value="Event">🎉 Campus Events</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -1126,8 +1176,8 @@
                         <textarea id="announcementContent" placeholder="Write your announcement here..."></textarea>
                     </div>
                     <div class="form-group">
-                        <label><i class="fas fa-image"></i> Image URL (optional)</label>
-                        <input type="text" id="announcementImageUrl" placeholder="https://example.com/image.jpg" oninput="previewImage()" />
+                        <label><i class="fas fa-image"></i> Image Upload (optional)</label>
+                        <input type="file" id="announcementImageFile" accept="image/*" onchange="previewImageFile()" />
                         <div id="imagePreview" class="image-preview">
                             <img id="previewImg" src="" alt="Preview" />
                         </div>
@@ -1155,7 +1205,7 @@
             <div class="info-icon-wrapper"><i class="fas fa-user"></i></div>
             <div class="info-text-container">
                 <span class="info-label-small">Username</span>
-                <span class="info-data-text"><%= Session["Username"] ?? "�" %></span>
+                <span class="info-data-text"><%= Session["Username"] ?? "�" %></span>
             </div>
         </div>
 
@@ -1163,7 +1213,7 @@
             <div class="info-icon-wrapper"><i class="fas fa-envelope"></i></div>
             <div class="info-text-container">
                 <span class="info-label-small">Email</span>
-                <span class="info-data-text"><%= Session["Email"] ?? "�" %></span>
+                <span class="info-data-text"><%= Session["Email"] ?? "�" %></span>
             </div>
         </div>
 
@@ -1179,7 +1229,7 @@
             <div class="info-icon-wrapper"><i class="fas fa-lock"></i></div>
             <div class="info-text-container">
                 <span class="info-label-small">Password</span>
-                <span class="info-data-text">��������</span>
+                <span class="info-data-text">��������</span>
             </div>
         </div>
 
@@ -1204,7 +1254,7 @@
                         <i class="fas fa-university"></i>
                     </div>
                     <p style="margin-bottom: 16px; line-height: 1.6;">Campus Connect is a centralized web-based announcement system for Cebu Technological University. It allows teachers to post announcements, manage exam schedules, class suspensions, and campus events.</p>
-                    <p style="color: var(--muted); font-size: 12px;">Version 2.0 | � 2024 Campus Connect</p>
+                    <p style="color: var(--muted); font-size: 12px;">Version 2.0 | � 2024 Campus Connect</p>
                 </div>
                 <div class="modal-footer-buttons" style="justify-content: center;">
                     <button type="button" class="btn-publish" onclick="closeAboutModal()">Got it</button>
@@ -1213,7 +1263,7 @@
         </div>
 
         <div class="footer">
-            <i class="fas fa-shield-alt"></i> Secure Portal | Cebu Technological University | � 2024 Campus Connect
+            <i class="fas fa-shield-alt"></i> Secure Portal | Cebu Technological University | � 2024 Campus Connect
         </div>
     </form>
 
@@ -1227,7 +1277,12 @@
         var st_announcements = [];
         var st_likes         = ST.get('teacher_likes')      || {};
         var st_likeCounts    = ST.get('teacher_likeCounts') || {};
-        var st_pins          = ST.get('teacher_pins')       || {};
+        var st_pins          = (function() {
+            var p = ST.get('teacher_pins') || {};
+            // Sanitize: remove any non-integer keys (e.g. "2:1" from corrupted state)
+            Object.keys(p).forEach(function(k) { if (!/^\d+$/.test(k)) delete p[k]; });
+            return p;
+        })();
         var st_comments      = ST.get('teacher_comments')   || {};
 
         function saveSharedState() {
@@ -1252,30 +1307,56 @@
             var container = document.getElementById('announcementsContainer');
             if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
 
+            // Load announcements first
             fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { showToast('Error loading announcements'); return; }
-                    st_announcements = res.data.map(function(a) {
-                        return {
-                            id:       a.id,
-                            title:    a.title,
-                            content:  a.content,
-                            category: a.category,
-                            author:   a.author,
-                            date:     a.date,
-                            imageUrl: a.imageUrl,
-                            pinned:   a.isPinned,
-                            likeCount: a.likeCount
-                        };
-                    });
-                    // Sync pins to localStorage for Student/Search pages
-                    st_pins = {};
-                    st_announcements.forEach(function(a) { if (a.pinned) st_pins[a.id] = true; });
-                    saveSharedState();
-                    renderAnnouncements();
+                .then(function(announcementsRes) {
+                    if (!announcementsRes.ok) { 
+                        showToast('Error loading announcements: ' + (announcementsRes.error || 'Unknown error')); 
+                        if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Failed to load announcements</div>';
+                        return; 
+                    }
+
+                    // Try to load user pins, but don't fail if it doesn't work
+                    fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' })
+                        .then(function(r) { return r.json(); })
+                        .then(function(pinsRes) {
+                            var pinnedIds = {};
+                            if (pinsRes.ok && pinsRes.pinnedIds) {
+                                pinsRes.pinnedIds.forEach(function(id) { pinnedIds[id] = true; });
+                            }
+                            processAnnouncements(announcementsRes.data, pinnedIds);
+                        })
+                        .catch(function(err) {
+                            console.warn('Could not load user pins, using defaults:', err);
+                            processAnnouncements(announcementsRes.data, {});
+                        });
                 })
-                .catch(function() { showToast('Could not reach server'); });
+                .catch(function(err) { 
+                    console.error('Error loading announcements:', err);
+                    showToast('Could not reach server'); 
+                    if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">Could not connect to server</div>';
+                });
+        }
+
+        function processAnnouncements(data, pinnedIds) {
+            st_announcements = data.map(function(a) {
+                return {
+                    id:       a.id,
+                    title:    a.title,
+                    content:  a.content,
+                    category: a.category,
+                    author:   a.author,
+                    date:     a.date,
+                    imageUrl: a.imageUrl,
+                    pinned:   !!pinnedIds[a.id],
+                    likeCount: a.likeCount
+                };
+            });
+
+            st_pins = pinnedIds;
+            saveSharedState();
+            renderAnnouncements();
         }
 
         function renderAnnouncements() {
@@ -1313,9 +1394,17 @@
                                 '</div>' +
                             '</div>' +
                         '</div>' +
-                        '<button type="button" class="pin-btn-top ' + (isPinned ? 'pinned' : '') + '" onclick="togglePin(' + post.id + ')">' +
-                            '<i class="' + (isPinned ? 'fas' : 'far') + ' fa-thumbtack"></i>' +
-                        '</button>' +
+                        '<div style="display:flex;gap:8px;align-items:center;">' +
+                            '<button type="button" class="edit-btn-top" onclick="openEditModal(' + post.id + ')" title="Edit">' +
+                                '<i class="fas fa-edit"></i>' +
+                            '</button>' +
+                            '<button type="button" class="delete-btn-top" onclick="deletePost(' + post.id + ')" title="Delete">' +
+                                '<i class="fas fa-trash"></i>' +
+                            '</button>' +
+                            '<button type="button" class="pin-btn-top ' + (isPinned ? 'pinned' : '') + '" onclick="togglePin(' + post.id + ')" title="' + (isPinned ? 'Unpin' : 'Pin') + '">' +
+                                '<i class="' + (isPinned ? 'fas' : 'far') + ' fa-thumbtack"></i>' +
+                            '</button>' +
+                        '</div>' +
                     '</div>' +
                     '<div class="post-content">' +
                         '<div class="post-title">' + escapeHtml(post.title) + '</div>' +
@@ -1379,33 +1468,41 @@
                     st_likes[postId]      = res.liked;
                     st_likeCounts[postId] = res.likeCount;
                     var ann = st_announcements.find(function(a) { return a.id === postId; });
-                    if (res.liked && ann) pushNotification('?? Someone liked "' + ann.title + '"', 'fa-heart');
+                    if (res.liked && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
                     saveSharedState();
                     renderAnnouncements();
-                    showToast(res.liked ? '?? Liked!' : 'Like removed');
+                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
                 })
                 .catch(function() { showToast('Could not update like'); });
         }
 
         function togglePin(postId) {
-            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + postId, { credentials: 'same-origin' })
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
-                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    console.log('Pin response:', res); // Debug log
+                    if (!res.ok) { 
+                        console.error('Pin error:', res.error); // Debug log
+                        showToast('❌ Pin error: ' + res.error); 
+                        return; 
+                    }
                     var ann = st_announcements.find(function(a) { return a.id === postId; });
                     if (ann) {
                         ann.pinned = res.isPinned;
                         st_pins[postId] = res.isPinned;
                         if (!res.isPinned) delete st_pins[postId];
                         saveSharedState();
-                        pushNotification((res.isPinned ? '?? Pinned: ' : '?? Unpinned: ') + ann.title, 'fa-thumbtack');
+                        pushNotification((res.isPinned ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
                         window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(st_pins) }));
                         window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(st_pins) }));
                     }
                     renderAnnouncements();
-                    showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 })
-                .catch(function() { showToast('Could not update pin'); });
+                .catch(function(err) { 
+                    console.error('Pin request failed:', err); // Debug log
+                    showToast('❌ Could not update pin - check console'); 
+                });
         }
 
         function toggleCommentSection(postId) {
@@ -1436,11 +1533,11 @@
             .then(function(res) {
                 if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
                 var ann = st_announcements.find(function(a) { return a.id === postId; });
-                if (ann) pushNotification('?? Teacher commented on "' + ann.title + '": ' + text, 'fa-comment');
+                if (ann) pushNotification('💬 Teacher commented on "' + ann.title + '": ' + text, 'fa-comment');
                 input.value = '';
                 // Reload comments from DB
                 loadComments(postId);
-                showToast('?? Comment posted!');
+                showToast('💬 Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
@@ -1476,9 +1573,9 @@
             var ann = st_announcements.find(function(a) { return a.id === postId; });
             if (ann) pushNotification('?? "' + ann.title + '" was shared', 'fa-share-alt');
             if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(function() { showToast('?? Link copied!'); });
+                navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
             } else {
-                showToast('?? Shared!');
+                showToast('📤 Shared!');
             }
         }
 
@@ -1486,7 +1583,7 @@
             var title    = document.getElementById('announcementTitle').value.trim();
             var content  = document.getElementById('announcementContent').value.trim();
             var category = document.getElementById('announcementCategory').value;
-            var imageUrl = document.getElementById('announcementImageUrl').value.trim();
+            var imageFile = document.getElementById('announcementImageFile').files[0];
 
             if (!title)   { showToast('Please enter a title!');   return; }
             if (!content) { showToast('Please enter content!');   return; }
@@ -1495,11 +1592,19 @@
             var publishBtn = document.querySelector('.btn-publish');
             if (publishBtn) { publishBtn.disabled = true; publishBtn.textContent = 'Publishing...'; }
 
+            // Use FormData to handle file upload
+            var formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('category', category);
+            if (imageFile) {
+                formData.append('imageFile', imageFile);
+            }
+
             fetch('AnnouncementHandler.ashx?action=create', {
                 method: 'POST',
                 credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title: title, content: content, category: category, imageUrl: imageUrl })
+                body: formData
             })
             .then(function(r) {
                 if (!r.ok) {
@@ -1510,12 +1615,12 @@
             .then(function(res) {
                 if (!res.ok) { showToast('Error: ' + res.error); return; }
                 closeCreatePostModal();
-                showToast('? Announcement published!');
-                pushNotification('?? New announcement: "' + title + '"', 'fa-bullhorn');
+                showToast('✅ Announcement published!');
+                pushNotification('📢 New announcement: "' + title + '"', 'fa-bullhorn');
                 // Clear form
                 document.getElementById('announcementTitle').value    = '';
                 document.getElementById('announcementContent').value  = '';
-                document.getElementById('announcementImageUrl').value = '';
+                document.getElementById('announcementImageFile').value = '';
                 document.getElementById('imagePreview').style.display = 'none';
                 // Reload from DB
                 loadAnnouncementsFromDB();
@@ -1529,17 +1634,117 @@
             });
         }
 
-        function previewImage() {
-            var url = document.getElementById('announcementImageUrl').value;
+        function previewImageFile() {
+            var fileInput = document.getElementById('announcementImageFile');
             var preview = document.getElementById('imagePreview');
             var img = document.getElementById('previewImg');
-            if (url) {
-                img.src = url;
-                preview.style.display = 'block';
+            
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    img.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
             } else {
                 preview.style.display = 'none';
                 img.src = '';
             }
+        }
+
+        // ====================== EDIT POST ======================
+        function openEditModal(postId) {
+            var post = st_announcements.find(function(a) { return a.id === postId; });
+            if (!post) { showToast('Post not found'); return; }
+
+            // Populate the create post modal with existing data
+            document.getElementById('announcementTitle').value = post.title;
+            document.getElementById('announcementContent').value = post.content;
+            document.getElementById('announcementCategory').value = post.category;
+            
+            // Change modal title and button
+            var modalTitle = document.querySelector('#createPostModal .modal-title');
+            if (modalTitle) modalTitle.textContent = 'Edit Announcement';
+            
+            var publishBtn = document.querySelector('.btn-publish');
+            if (publishBtn) {
+                publishBtn.innerHTML = '<i class="fas fa-save"></i> Update';
+                publishBtn.onclick = function() { updateAnnouncement(postId); };
+            }
+            
+            openCreatePostModal();
+        }
+
+        function updateAnnouncement(postId) {
+            var title    = document.getElementById('announcementTitle').value.trim();
+            var content  = document.getElementById('announcementContent').value.trim();
+            var category = document.getElementById('announcementCategory').value;
+            var imageFile = document.getElementById('announcementImageFile').files[0];
+
+            if (!title)   { showToast('Please enter a title!');   return; }
+            if (!content) { showToast('Please enter content!');   return; }
+
+            var publishBtn = document.querySelector('.btn-publish');
+            if (publishBtn) { publishBtn.disabled = true; publishBtn.textContent = 'Updating...'; }
+
+            var formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('category', category);
+            if (imageFile) {
+                formData.append('imageFile', imageFile);
+            }
+
+            fetch('AnnouncementHandler.ashx?action=update&id=' + postId, {
+                method: 'POST',
+                credentials: 'same-origin',
+                body: formData
+            })
+            .then(function(r) {
+                if (!r.ok) {
+                    return r.text().then(function(t) { throw new Error('Server error ' + r.status); });
+                }
+                return r.json();
+            })
+            .then(function(res) {
+                if (!res.ok) { showToast('Error: ' + res.error); return; }
+                closeCreatePostModal();
+                showToast('✅ Announcement updated!');
+                loadAnnouncementsFromDB();
+            })
+            .catch(function(err) {
+                showToast('Error: ' + (err.message || 'Could not update announcement'));
+                console.error('updateAnnouncement error:', err);
+            })
+            .finally(function() {
+                if (publishBtn) { 
+                    publishBtn.disabled = false; 
+                    publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish';
+                    publishBtn.onclick = publishAnnouncement;
+                }
+            });
+        }
+
+        // ====================== DELETE POST ======================
+        function deletePost(postId) {
+            var post = st_announcements.find(function(a) { return a.id === postId; });
+            if (!post) return;
+
+            if (!confirm('Are you sure you want to delete "' + post.title + '"?\n\nThis action cannot be undone.')) {
+                return;
+            }
+
+            fetch('AnnouncementHandler.ashx?action=delete&id=' + postId, {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(res) {
+                if (!res.ok) { showToast('Error: ' + res.error); return; }
+                showToast('🗑️ Announcement deleted');
+                loadAnnouncementsFromDB();
+            })
+            .catch(function() { showToast('Could not delete announcement'); });
         }
 
         // ====================== UI HELPERS ======================
@@ -1581,10 +1786,90 @@
             item.classList.remove('unread');
             var dot = item.querySelector('.notification-dot');
             if (dot) dot.remove();
+            
+            // Update localStorage
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            var index = Array.from(document.querySelectorAll('.notification-item')).indexOf(item);
+            if (notifs[index]) {
+                notifs[index].read = true;
+            }
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+            
+            // Update badge
+            updateNotificationBadge();
         }
 
         function markAllRead() {
-            document.querySelectorAll('.notification-item.unread').forEach(markNotificationRead);
+            // Update database first
+            fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        // Update UI
+                        document.querySelectorAll('.notification-item.unread').forEach(function(item) {
+                            item.classList.remove('unread');
+                            var dot = item.querySelector('.notification-dot');
+                            if (dot) dot.remove();
+                        });
+                        
+                        // Clear localStorage
+                        var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+                        notifs.forEach(function(n) { n.read = true; });
+                        localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+                        
+                        // Update badge to 0
+                        var badge = document.getElementById('notificationBadge');
+                        if (badge) badge.style.display = 'none';
+                        
+                        showToast('✅ All notifications marked as read');
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Error marking notifications as read:', err);
+                    showToast('Could not mark notifications as read');
+                });
+        }
+
+        function updateNotificationBadge() {
+            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            var unreadCount = notifs.filter(function(n) { return !n.read; }).length;
+            var badge = document.getElementById('notificationBadge');
+            
+            if (badge) {
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        function openNotificationDropdown() {
+            // Mark all as read in database
+            markAllRead();
+            // Navigate to notifications page
+            setTimeout(function() {
+                navigateWithFlip('Notifications.aspx');
+            }, 300);
+        }
+
+        function clearAllNotifications() {
+            if (!confirm('Clear all notifications?')) return;
+            
+            // Clear localStorage
+            localStorage.removeItem('campus_notifications');
+            
+            // Clear database
+            fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        showToast('✅ All notifications cleared');
+                        updateNotificationBadge();
+                    }
+                })
+                .catch(function() {});
         }
 
         function toggleTheme() {
@@ -1611,6 +1896,23 @@
         function closeCreatePostModal() {
             var modal = document.getElementById('createPostModal');
             if (modal) modal.style.display = 'none';
+            
+            // Reset form
+            document.getElementById('announcementTitle').value = '';
+            document.getElementById('announcementContent').value = '';
+            document.getElementById('announcementCategory').value = 'General';
+            document.getElementById('announcementImageFile').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            
+            // Reset modal title and button
+            var modalTitle = document.querySelector('#createPostModal .modal-title');
+            if (modalTitle) modalTitle.textContent = 'Create New Announcement';
+            
+            var publishBtn = document.querySelector('.btn-publish');
+            if (publishBtn) {
+                publishBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish';
+                publishBtn.onclick = publishAnnouncement;
+            }
         }
 
         function openProfileModal() {
@@ -1674,6 +1976,7 @@
             
             renderAnnouncements();
             loadAnnouncementsFromDB();
+            loadNotificationsFromDB(); // Load notifications from database
 
             var shell = document.querySelector('.app-shell') || document.body;
             shell.classList.add('page-flip-in');
@@ -1682,12 +1985,36 @@
             }, { once: true });
         });
 
+        // ── Load Notifications from Database ──────────────────
+        function loadNotificationsFromDB() {
+            fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        var badge = document.getElementById('notificationBadge');
+                        if (badge) {
+                            if (res.count > 0) {
+                                badge.textContent = res.count;
+                                badge.style.display = 'flex';
+                            } else {
+                                badge.style.display = 'none';
+                            }
+                        }
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Could not load notifications:', err);
+                });
+        }
+
         // -- Sync pins from Student/Search pages ---------------
         window.addEventListener('storage', function(e) {
             if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
                 var tp = ST.get('teacher_pins') || {};
                 var cp = ST.get('campus_pins')  || {};
-                st_pins = Object.assign({}, cp, tp);
+                var merged = Object.assign({}, cp, tp);
+                Object.keys(merged).forEach(function(k) { if (!/^\d+$/.test(k)) delete merged[k]; });
+                st_pins = merged;
                 renderAnnouncements();
             }
             if (e.key === 'campus_notifications') {
@@ -1701,16 +2028,8 @@
             }
         });
 
-        // -- Init notification badge on load -------------------
-        (function() {
-            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
-            var count = notifs.filter(function(n) { return !n.read; }).length;
-            var badge = document.getElementById('notificationBadge');
-            if (badge) {
-                badge.textContent = count;
-                badge.style.display = count > 0 ? 'inline-block' : 'none';
-            }
-        })();
+        // -- Init notification badge on load (REMOVED - using database instead) -------------------
+        // Badge is now loaded from database via loadNotificationsFromDB() called in window.onload
     </script>
 </body>
 </html>

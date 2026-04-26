@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -94,6 +94,33 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     {
                         cmd.Parameters.AddWithValue("@AnnId", announcementId);
                         cmd.ExecuteNonQuery();
+                    }
+
+                    // Notify the announcement author (if different from commenter)
+                    const string authorSql = @"
+                        SELECT a.UserId, a.Title, u.FullName
+                        FROM   Announcements a
+                        JOIN   Users u ON u.UserId = @CommenterUid
+                        WHERE  a.AnnouncementId = @AnnId";
+                    using (var cmd = new SqlCommand(authorSql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@AnnId",        announcementId);
+                        cmd.Parameters.AddWithValue("@CommenterUid", userId);
+                        using (var r = cmd.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                int    authorId      = r.GetInt32(0);
+                                string annTitle      = r.GetString(1);
+                                string commenterName = r.GetString(2);
+                                r.Close();
+                                if (authorId != userId)
+                                {
+                                    string msg = $"💬 {commenterName} commented on \"{annTitle}\"";
+                                    NotificationHandler.Insert(conn, authorId, msg);
+                                }
+                            }
+                        }
                     }
                 }
 

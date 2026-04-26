@@ -27,6 +27,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 {
                     case "getAll":    GetAll(ctx, js);    break;
                     case "create":    Create(ctx, js);    break;
+                    case "update":    Update(ctx, js);    break;
                     case "delete":    Delete(ctx, js);    break;
                     case "togglePin": TogglePin(ctx, js); break;
                     default:
@@ -97,13 +98,39 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            string body    = new System.IO.StreamReader(ctx.Request.InputStream).ReadToEnd();
-            var    data    = js.Deserialize<Dictionary<string, string>>(body);
-            int    uid     = Convert.ToInt32(ctx.Session["UserId"]);
-            string title   = data.ContainsKey("title")    ? data["title"].Trim()    : "";
-            string content = data.ContainsKey("content")  ? data["content"].Trim()  : "";
-            string cat     = data.ContainsKey("category") ? data["category"].Trim() : "General";
-            string imgUrl  = data.ContainsKey("imageUrl") ? data["imageUrl"].Trim() : "";
+            // Handle FormData (file upload)
+            string title = ctx.Request.Form["title"] != null ? ctx.Request.Form["title"].Trim() : "";
+            string content = ctx.Request.Form["content"] != null ? ctx.Request.Form["content"].Trim() : "";
+            string cat = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
+            string imgUrl = "";
+
+            // Handle file upload
+            if (ctx.Request.Files.Count > 0 && ctx.Request.Files["imageFile"] != null)
+            {
+                var file = ctx.Request.Files["imageFile"];
+                if (file.ContentLength > 0)
+                {
+                    // Create uploads directory if it doesn't exist
+                    string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
+                    if (!System.IO.Directory.Exists(uploadsDir))
+                    {
+                        System.IO.Directory.CreateDirectory(uploadsDir);
+                    }
+
+                    // Generate unique filename
+                    string fileExt = System.IO.Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString() + fileExt;
+                    string filePath = System.IO.Path.Combine(uploadsDir, fileName);
+
+                    // Save file
+                    file.SaveAs(filePath);
+
+                    // Store relative URL in database
+                    imgUrl = "uploads/announcements/" + fileName;
+                }
+            }
+
+            int uid = Convert.ToInt32(ctx.Session["UserId"]);
 
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
             {
@@ -129,8 +156,93 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     cmd.Parameters.AddWithValue("@ImageUrl", string.IsNullOrEmpty(imgUrl) ? (object)DBNull.Value : imgUrl);
                     newId = (int)cmd.ExecuteScalar();
                 }
+
+                // Notify all students about the new announcement
+                string notifMsg = $"📢 New announcement: \"{title}\"";
+                NotificationHandler.NotifyAllStudents(conn, notifMsg);
             }
             ctx.Response.Write(js.Serialize(new { ok = true, id = newId }));
+        }
+
+        // ── UPDATE ───────────────────────────────────────────────
+        private void Update(HttpContext ctx, JavaScriptSerializer js)
+        {
+            bool isLoggedIn = ctx.Session["IsLoggedIn"] is bool b && b;
+            string role = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "(null)";
+
+            if (!isLoggedIn || !string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
+                return;
+            }
+
+            int announcementId = Convert.ToInt32(ctx.Request["id"]);
+            string title = ctx.Request.Form["title"] != null ? ctx.Request.Form["title"].Trim() : "";
+            string content = ctx.Request.Form["content"] != null ? ctx.Request.Form["content"].Trim() : "";
+            string cat = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
+            string imgUrl = null;
+
+            // Handle file upload
+            if (ctx.Request.Files.Count > 0 && ctx.Request.Files["imageFile"] != null)
+            {
+                var file = ctx.Request.Files["imageFile"];
+                if (file.ContentLength > 0)
+                {
+                    string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
+                    if (!System.IO.Directory.Exists(uploadsDir))
+                    {
+                        System.IO.Directory.CreateDirectory(uploadsDir);
+                    }
+
+                    string fileExt = System.IO.Path.GetExtension(file.FileName);
+                    string fileName = Guid.NewGuid().ToString() + fileExt;
+                    string filePath = System.IO.Path.Combine(uploadsDir, fileName);
+
+                    file.SaveAs(filePath);
+                    imgUrl = "uploads/announcements/" + fileName;
+                }
+            }
+
+            if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Title and content are required" }));
+                return;
+            }
+
+            using (var conn = new SqlConnection(ConnStr))
+            {
+                conn.Open();
+                
+                string sql;
+                if (imgUrl != null)
+                {
+                    // Update with new image
+                    sql = @"UPDATE Announcements 
+                            SET Title = @Title, Content = @Content, Category = @Category, ImageUrl = @ImageUrl
+                            WHERE AnnouncementId = @Id";
+                }
+                else
+                {
+                    // Update without changing image
+                    sql = @"UPDATE Announcements 
+                            SET Title = @Title, Content = @Content, Category = @Category
+                            WHERE AnnouncementId = @Id";
+                }
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", announcementId);
+                    cmd.Parameters.AddWithValue("@Title", title);
+                    cmd.Parameters.AddWithValue("@Content", content);
+                    cmd.Parameters.AddWithValue("@Category", cat);
+                    if (imgUrl != null)
+                    {
+                        cmd.Parameters.AddWithValue("@ImageUrl", imgUrl);
+                    }
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
         // ── DELETE ───────────────────────────────────────────────

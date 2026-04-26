@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchDashboard.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchDashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchDashboard.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchDashboard" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -597,7 +597,10 @@
     function loadPins() {
         const tp = STORAGE.get('teacher_pins') || {};
         const cp = STORAGE.get('campus_pins')  || {};
-        return Object.assign({}, cp, tp);
+        const merged = Object.assign({}, cp, tp);
+        // Sanitize: remove any non-integer keys (e.g. "2:1" from corrupted state)
+        Object.keys(merged).forEach(k => { if (!/^\d+$/.test(k)) delete merged[k]; });
+        return merged;
     }
     // Merge likeCounts from teacher_likeCounts + sd_likeCounts
     function loadLikeCounts() {
@@ -879,7 +882,7 @@
                 likeCounts[id] = res.likeCount;
                 saveState();
                 renderResults();
-                showToast(res.liked ? '?? Liked!' : 'Like removed');
+                showToast(res.liked ? '❤️ Liked!' : 'Like removed');
             })
             .catch(() => showToast('Could not update like'));
     }
@@ -980,7 +983,7 @@
                     if (cc) cc.textContent = list.length;
                 })
                 .catch(() => {});
-            showToast('?? Comment posted!');
+            showToast('💬 Comment posted!');
         })
         .catch(() => showToast('Could not post comment'));
     }

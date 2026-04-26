@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -282,23 +282,47 @@
         var pinnedDB = [];
 
         function loadFromDB(callback) {
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { if (callback) callback([]); return; }
-                    pinnedDB = res.data.map(function(a) {
-                        var cat = a.category || '';
-                        var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
-                        return { id: a.id, title: a.title||'', category: catLabel, date: a.date||'', time: '', professor: a.author||'', description: a.content||'', isPinned: a.isPinned||false, likeCount: a.likeCount||0, commentCount: a.commentCount||0 };
-                    });
-                    // Sync pins
-                    pins = {};
-                    pinnedDB.forEach(function(a) { if (a.isPinned) pins[a.id] = true; });
-                    localStorage.setItem('campus_pins',  JSON.stringify(pins));
-                    localStorage.setItem('teacher_pins', JSON.stringify(pins));
-                    if (callback) callback(pinnedDB);
-                })
-                .catch(function() { if (callback) callback([]); });
+            // Load announcements and user pins in parallel
+            Promise.all([
+                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); }),
+                fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(function(r) { return r.json(); })
+            ])
+            .then(function(results) {
+                var announcementsRes = results[0];
+                var pinsRes = results[1];
+
+                if (!announcementsRes.ok) { if (callback) callback([]); return; }
+
+                // Create a set of pinned IDs for quick lookup
+                var pinnedIds = {};
+                if (pinsRes.ok && pinsRes.pinnedIds) {
+                    pinsRes.pinnedIds.forEach(function(id) { pinnedIds[id] = true; });
+                }
+
+                pinnedDB = announcementsRes.data.map(function(a) {
+                    var cat = a.category || '';
+                    var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
+                    return { 
+                        id: a.id, 
+                        title: a.title||'', 
+                        category: catLabel, 
+                        date: a.date||'', 
+                        time: '', 
+                        professor: a.author||'', 
+                        description: a.content||'', 
+                        isPinned: !!pinnedIds[a.id],  // Use user-specific pin status
+                        likeCount: a.likeCount||0, 
+                        commentCount: a.commentCount||0 
+                    };
+                });
+
+                // Sync pins
+                pins = pinnedIds;
+                localStorage.setItem('campus_pins',  JSON.stringify(pins));
+                localStorage.setItem('teacher_pins', JSON.stringify(pins));
+                if (callback) callback(pinnedDB);
+            })
+            .catch(function() { if (callback) callback([]); });
         }
 
         var THEME_KEY = 'campus_theme';
@@ -306,7 +330,12 @@
         function loadPins() {
             var tp = JSON.parse(localStorage.getItem('teacher_pins') || '{}');
             var cp = JSON.parse(localStorage.getItem('campus_pins')  || '{}');
-            return Object.assign({}, cp, tp);
+            var merged = Object.assign({}, cp, tp);
+            // Sanitize: remove any non-integer keys (e.g. "2:1" from corrupted state)
+            Object.keys(merged).forEach(function(k) {
+                if (!/^\d+$/.test(k)) delete merged[k];
+            });
+            return merged;
         }
 
         var pins      = loadPins();
@@ -366,11 +395,12 @@
         }
 
         function togglePin(id) {
-            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
                     if (!res.ok) { showToast('Error: ' + res.error); return; }
                     pins[id] = res.isPinned;
+                    if (!res.isPinned) delete pins[id];
                     // Update the in-memory DB record too
                     var ann = pinnedDB.find(function(a) { return a.id === id; });
                     if (ann) ann.isPinned = res.isPinned;

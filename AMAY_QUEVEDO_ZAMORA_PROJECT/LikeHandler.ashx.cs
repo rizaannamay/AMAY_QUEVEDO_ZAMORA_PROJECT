@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
@@ -101,6 +101,36 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 {
                     cmd.Parameters.AddWithValue("@Aid", postId);
                     newCount = (int)cmd.ExecuteScalar();
+                }
+
+                // Notify the announcement author when liked (not when unliked)
+                if (!alreadyLiked)
+                {
+                    const string notifSql = @"
+                        SELECT a.UserId, a.Title, u.FullName
+                        FROM   Announcements a
+                        JOIN   Users u ON u.UserId = @LikerUid
+                        WHERE  a.AnnouncementId = @Aid";
+                    using (var cmd = new SqlCommand(notifSql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Aid",      postId);
+                        cmd.Parameters.AddWithValue("@LikerUid", userId);
+                        using (var r = cmd.ExecuteReader())
+                        {
+                            if (r.Read())
+                            {
+                                int    authorId   = r.GetInt32(0);
+                                string annTitle   = r.GetString(1);
+                                string likerName  = r.GetString(2);
+                                r.Close();
+                                if (authorId != userId)
+                                {
+                                    string msg = $"❤️ {likerName} liked \"{annTitle}\"";
+                                    NotificationHandler.Insert(conn, authorId, msg);
+                                }
+                            }
+                        }
+                    }
                 }
 
                 ctx.Response.Write(js.Serialize(new
