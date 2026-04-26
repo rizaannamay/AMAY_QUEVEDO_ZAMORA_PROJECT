@@ -519,7 +519,7 @@
                         <img src="Students activities.jpg" alt="Campus event announcement" />
                         <div class="gallery-copy">
                             <h4>Student Activities</h4>
-                            <p>Use this slot for announcement posters, student week photos, or campus program highlights.</p>
+                           
                         </div>
                     </article>
 
@@ -527,7 +527,7 @@
                         <img src="Academic Updates.jpg" alt="Academic announcement board" />
                         <div class="gallery-copy">
                             <h4>Academic Updates</h4>
-                            <p>Perfect for exam schedules, departmental notices, and registrar announcement images.</p>
+                           
                         </div>
                     </article>
 
@@ -535,7 +535,7 @@
                         <img src="School Campus View.jpg" alt="School campus view" />
                         <div class="gallery-copy">
                             <h4>Campus Highlights</h4>
-                            <p>Add a photo of your university grounds, buildings, or student facilities to build identity.</p>
+                           
                         </div>
                     </article>
 
@@ -543,16 +543,13 @@
                         <img src="School Announcent Campaign.jpg" alt="School announcement campaign" />
                         <div class="gallery-copy">
                             <h4>Official Campaigns</h4>
-                            <p>Use this area for orientation drives, reminders, safety announcements, or event promotions.</p>
+                           
                         </div>
                     </article>
                 </div>
             </section>
 
-            <div class="footer-note">
-                Make sure `Students activities.jpg`, `Academic Updates.jpg`, `School Campus View.jpg`, `School Announcent Campaign.jpg`,
-                `Amay Riza Ann.jpg`, `Quevedo Mary Chris.jpg`, and `Zamora Shaira Jane.jpg` are inside the same project folder as this page.
-            </div>
+         
 
             <section class="section-card creators-section">
                 <div class="section-heading">
