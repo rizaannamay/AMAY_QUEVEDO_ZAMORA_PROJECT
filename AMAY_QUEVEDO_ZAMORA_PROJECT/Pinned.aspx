@@ -401,18 +401,21 @@
         }
 
         function toggleLike(id) {
-            var ann = loadDB().find(function(a) { return a.id === id; });
-            likes[id] = !likes[id];
-            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
-            if (likeCounts[id] < 0) likeCounts[id] = 0;
-            if (likes[id] && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
-            saveState();
-            renderPinned();
-            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
+            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    likes[id]      = res.liked;
+                    likeCounts[id] = res.likeCount;
+                    saveState();
+                    renderPinned();
+                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                })
+                .catch(function() { showToast('Could not update like'); });
         }
 
         function togglePin(id) {
-            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
                     if (!res.ok) { showToast('Error: ' + res.error); return; }
@@ -422,14 +425,37 @@
                     if (ann) ann.isPinned = res.isPinned;
                     saveState();
                     renderPinned();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? '📌 Pinned!' : '📌 Unpinned');
                 })
                 .catch(function() { showToast('Could not update pin'); });
         }
 
         function openComments(id) {
             var sec = document.getElementById('cs-' + id);
-            if (sec) sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+            if (!sec) return;
+            var isHidden = sec.style.display === 'none' || sec.style.display === '';
+            sec.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) {
+                // Load comments from DB
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(list) {
+                        var cl = document.getElementById('cl-' + id);
+                        if (!cl) return;
+                        if (!list.length) {
+                            cl.innerHTML = '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>';
+                            return;
+                        }
+                        cl.innerHTML = list.map(function(c) {
+                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg,#e8f0fe);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                                + '<div style="font-size:10px;color:var(--muted)">' + escapeHtml(c.date) + '</div></div></div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+            }
         }
 
         function postComment(id) {
@@ -437,15 +463,38 @@
             if (!input) return;
             var text = input.value.trim();
             if (!text) { showToast('Please write a comment first'); return; }
-            var ann = loadDB().find(function(a) { return a.id === id; });
-            if (!comments[id]) comments[id] = [];
-            comments[id].push({ author:'You', text:text, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
-            if (ann) pushNotification('💬 New comment on "' + ann.title + '": ' + text, 'fa-comment');
-            saveState();
-            input.value = '';
-            var cl = document.getElementById('cl-' + id);
-            if (cl) cl.innerHTML = renderComments(id);
-            showToast('💬 Comment posted!');
+
+            fetch('CommentHandler.ashx?action=add', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: id, comment: text })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(res) {
+                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
+                input.value = '';
+                // Reload comments from DB
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(list) {
+                        var cl = document.getElementById('cl-' + id);
+                        if (!cl) return;
+                        if (!list.length) {
+                            cl.innerHTML = '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>';
+                            return;
+                        }
+                        cl.innerHTML = list.map(function(c) {
+                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg,#e8f0fe);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                                + '<div style="font-size:10px;color:var(--muted)">' + escapeHtml(c.date) + '</div></div></div>';
+                        }).join('');
+                    });
+                showToast('💬 Comment posted!');
+            })
+            .catch(function() { showToast('Could not post comment'); });
         }
 
         function sharePost(id, title) {
@@ -532,7 +581,8 @@
         });
 
         applyStoredTheme();
-        renderPinned();
+        // Load data from DB first, then render
+        loadFromDB(function() { renderPinned(); });
     </script>
 </body>
 </html>
