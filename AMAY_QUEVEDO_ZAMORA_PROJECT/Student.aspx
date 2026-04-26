@@ -1202,8 +1202,7 @@
                 if (!/^\d+$/.test(k)) delete merged[k];
             });
             return merged;
-        })();
-        var st_notifs     = ST.get('sd_notifs')      || {};
+        })();        var st_notifs     = ST.get('sd_notifs')      || {};
         var st_comments   = ST.get('sd_comments')    || {};
 
         function saveSharedState() {
@@ -1597,11 +1596,24 @@
             var container = document.getElementById('announcementsContainer');
             if (!container) return;
 
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+            // Fetch announcements and user's personal pins in parallel
+            Promise.all([
+                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); }),
+                fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(function(r) { return r.json(); })
+            ])
+                .then(function(results) {
+                    var res     = results[0];
+                    var pinsRes = results[1];
+
                     if (!res.ok) { showToast('Error loading announcements'); return; }
                     var announcements = res.data;
+
+                    // Build per-user pin map from DB
+                    st_pins = {};
+                    if (pinsRes.ok && pinsRes.pinnedIds) {
+                        pinsRes.pinnedIds.forEach(function(id) { st_pins[id] = true; });
+                    }
+
                     if (!announcements.length) {
                         container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted)">No announcements yet.</div>';
                         updateNotifBadge();
@@ -1616,7 +1628,7 @@
                     };
 
                     container.innerHTML = announcements.map(function(post) {
-                        var isPinned     = !!post.isPinned;
+                        var isPinned     = !!st_pins[post.id];
                         var liked        = !!st_likes[post.id];
                         var likeCount    = post.likeCount || 0;
                         var commentCount = post.commentCount || 0;
@@ -1668,9 +1680,6 @@
                         '</div>';
                     }).join('');
 
-                    // Update in-memory pin state from DB response — no localStorage write
-                    st_pins = {};
-                    announcements.forEach(function(a) { if (a.isPinned) st_pins[a.id] = true; });
                     updateNotifBadge();
                 })
                 .catch(function() { showToast('Could not load announcements'); });
