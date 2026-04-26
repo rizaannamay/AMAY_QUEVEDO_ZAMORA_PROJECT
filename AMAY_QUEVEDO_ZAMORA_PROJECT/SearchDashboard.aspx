@@ -662,7 +662,8 @@
     }
 
     function updateNotifBadge() {
-        const count = Object.values(notifs).filter(Boolean).length;
+        const stored = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+        const count = stored.filter(n => !n.read).length;
         notificationBadge.textContent = count;
         notificationBadge.style.display = count > 0 ? 'flex' : 'none';
     }
@@ -859,14 +860,26 @@
         likes[id] = !likes[id];
         likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
         if (likeCounts[id] < 0) likeCounts[id] = 0;
+        const ann = announcementsDB.find(a => a.id === id);
+        if (likes[id] && ann) pushNotification('❤️ Liked "' + ann.title + '"', 'fa-heart');
         saveState();
         renderResults();
         showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
     }
 
+    function pushNotification(msg, icon) {
+        const notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+        notifs.unshift({ msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+        if (notifs.length > 50) notifs.length = 50;
+        localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+        window.dispatchEvent(new StorageEvent('storage', { key: 'campus_notifications', newValue: JSON.stringify(notifs) }));
+    }
+
     function togglePin(id) {
         pins[id] = !pins[id];
         saveState();
+        const ann = announcementsDB.find(a => a.id === id);
+        if (ann) pushNotification((pins[id] ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
         // Notify all tabs — Student uses campus_pins, Teacher uses teacher_pins
         window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
         window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
@@ -904,6 +917,8 @@
             text: text,
             time: new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' })
         });
+        const ann = announcementsDB.find(a => a.id === id);
+        if (ann) pushNotification('💬 Comment on "' + ann.title + '": ' + text, 'fa-comment');
         saveState();
         input.value = '';
 
@@ -917,6 +932,7 @@
 
     function sharePost(id, title) {
         const url = window.location.href.split('?')[0] + '?post=' + id;
+        pushNotification('🔗 "' + title + '" was shared', 'fa-share-alt');
         if (navigator.clipboard) {
             navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied: ' + title));
         } else {
@@ -1015,6 +1031,9 @@
             if (e.key === 'teacher_announcements') {
                 announcementsDB = loadAnnouncementsDB();
                 renderResults();
+            }
+            if (e.key === 'campus_notifications') {
+                updateNotifBadge();
             }
         });
 

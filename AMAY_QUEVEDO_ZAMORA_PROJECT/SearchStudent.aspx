@@ -12,11 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+      
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        /* ── BACKGROUND — same as SearchDashboard.aspx ── */
+        /* ── BACKGROUND ── */
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
@@ -49,7 +49,7 @@
         body.dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
-            --surface: rgba(15,25,55,0.75);
+            --surface: rgba(15,25,55,0.85);
             --surface-strong: rgba(15,25,55,0.92);
             --surface-soft: rgba(255,255,255,0.07);
             --border: rgba(255,255,255,0.1);
@@ -104,24 +104,6 @@
             transform: translateY(-2px);
         }
 
-        /* ── HERO ── */
-        .hero-section {
-            background: linear-gradient(135deg, rgba(30,58,138,0.9), rgba(79,70,229,0.85));
-            backdrop-filter: blur(4px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 60px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' fill='rgba(255,255,255,0.05)'/%3E%3C/svg%3E") repeat-x;
-            background-size: 1200px 60px;
-            opacity: 0.5;
-        }
-
         /* ── ANNOUNCE CARD ── */
         .announce-card {
             background: var(--surface-strong);
@@ -154,6 +136,7 @@
         .card-title       { color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .card-desc        { color: var(--page-text); font-size: 13px; line-height: 1.6; }
 
+        /* ── CARD BANNERS ── */
         .card-banner {
             background: linear-gradient(135deg,#1e3a8a,#4f46e5);
             border-radius: 12px;
@@ -182,7 +165,11 @@
         .post-stats span:hover { color: var(--primary); }
 
         /* ── ACTION BUTTONS ── */
-        .action-buttons { display: flex; gap: 4px; padding: 6px 20px 10px; }
+        .action-buttons {
+            display: flex;
+            gap: 4px;
+            padding: 6px 20px 10px;
+        }
         .action-btn {
             flex: 1;
             background: none;
@@ -202,13 +189,20 @@
         .action-btn:hover { background: #DBEAFE; color: #1E3A8A; }
         .action-btn.liked { color: #dc2626; }
         .action-btn.pinned-active { color: #e65100; }
-        .action-btn.notif-active { color: #3B82F6; }
         body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
 
         /* ── COMMENTS SECTION ── */
-        .comments-section { padding: 0 20px 16px; border-top: 1px solid var(--border); display: none; }
+        .comments-section {
+            padding: 0 20px 16px;
+            border-top: 1px solid var(--border);
+            display: none;
+        }
         .comments-section.show { display: block; }
-        .comment-input-row { display: flex; gap: 8px; margin: 12px 0; }
+        .comment-input-row {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0;
+        }
         .comment-input-row input {
             flex: 1;
             padding: 9px 14px;
@@ -236,7 +230,13 @@
             transition: opacity 0.2s;
         }
         .comment-input-row button:hover { opacity: 0.88; }
-        .comment-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .comment-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
         .comment-item:last-child { border-bottom: none; }
         .comment-avatar {
             width: 30px; height: 30px;
@@ -303,7 +303,6 @@
             outline: none;
         }
         .search-input::placeholder { color: rgba(255,255,255,0.65); }
-        /* search icon always white on blue nav */
         .glass-nav .fa-search { color: rgba(255,255,255,0.85) !important; }
 
         /* ── FILTER SELECTS ── */
@@ -317,9 +316,6 @@
         .filter-select:focus { border-color: #6366f1; outline: none; }
         .filter-select option { background: var(--surface-strong); color: var(--page-text); }
 
-        /* flatpickr alt-input inherits icon spacing */
-        .flatpickr-input.form-control.input { padding-left: 2.25rem !important; }
-
         /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
@@ -327,7 +323,6 @@
 
         /* ── RESULTS CONTAINER ── */
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
-        .announce-card { will-change: transform; }
 
         /* ── TOAST ── */
         .toast-msg {
@@ -360,18 +355,6 @@
         }
         .page-flip-in { animation: flipIn 0.18s ease-out forwards; transform-origin: center center; }
 
-        /* ── SMOOTH TRANSITIONS ── */
-        *, *::before, *::after {
-            transition: background-color 0.3s ease, border-color 0.3s ease,
-                        color 0.3s ease, box-shadow 0.3s ease;
-        }
-        .page-flip-in { transition: none !important; }
-
-        @media (max-width: 1024px) {
-            .sidebar-hidden-mobile { position: fixed; left: -280px; transition: left 0.3s; z-index: 50; }
-        }
-
-        /* ── RESPONSIVE ── */
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
             .action-buttons { padding: 6px 14px 10px; gap: 2px; }
@@ -381,12 +364,6 @@
             .card-banner { display: none !important; }
             .comment-input-row { flex-direction: column; }
             .comment-input-row button { padding: 10px; border-radius: 12px; }
-        }
-
-        @media (max-width: 480px) {
-            .post-stats span { font-size: 11px; }
-            .action-btn { font-size: 11px; gap: 4px; }
-            .card-author-name { font-size: 13px; }
         }
     </style>
 </head>
@@ -402,7 +379,6 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
 
-                        <!-- Logo -->
                         <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateWithFlip('Student.aspx')">
                             <div class="bg-white/20 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
                                 <i class="fas fa-university text-white text-xl"></i>
@@ -413,7 +389,6 @@
                             </div>
                         </div>
 
-                        <!-- Search Bar -->
                         <div class="flex-1 max-w-md mx-4">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/80"></i>
@@ -421,7 +396,6 @@
                             </div>
                         </div>
 
-                        <!-- Right controls -->
                         <div class="flex items-center gap-3 md:gap-4">
                             <div class="relative">
                                 <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
@@ -441,7 +415,6 @@
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
 
-                <!-- TWO COLUMN LAYOUT -->
                 <div class="flex flex-col lg:flex-row gap-6">
 
                     <!-- Sidebar -->
@@ -452,7 +425,7 @@
                                     <i class="fas fa-history text-lg" style="color:var(--primary)"></i>
                                     <h3 class="font-bold text-base" style="color:var(--primary)">Search History</h3>
                                 </div>
-                                <button type="button" id="clearHistoryBtn" class="text-xs transition px-3 py-1 rounded-lg" style="color:#ef4444">
+                                <button type="button" id="clearHistoryBtn" class="text-xs transition px-2 py-1 rounded-lg hover:bg-white/10" style="color:#ef4444">
                                     <i class="fas fa-trash-alt mr-1"></i>Clear
                                 </button>
                             </div>
@@ -460,8 +433,7 @@
                                 <div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>
                             </div>
 
-                            <!-- Pinned section -->
-                            <div class="mt-5 pt-4" style="border-top:2px solid var(--border)">
+                            <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
                                 <div class="flex items-center gap-2 mb-3">
                                     <i class="fas fa-thumbtack text-sm" style="color:#e65100"></i>
                                     <h3 class="font-bold text-sm" style="color:var(--primary)">Pinned (<span id="pinnedCount">0</span>)</h3>
@@ -476,7 +448,6 @@
                     <!-- Main content -->
                     <div class="flex-1">
 
-                        <!-- Filters -->
                         <div class="glass-card rounded-2xl p-4 mb-6">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div class="relative">
@@ -490,7 +461,6 @@
                             </div>
                         </div>
 
-                        <!-- Results Header -->
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-newspaper text-xl" style="color:var(--primary)"></i>
@@ -499,15 +469,13 @@
                             <span id="resultCount" class="glass-card px-3 py-1 rounded-full text-xs" style="color:var(--primary)">0 items</span>
                         </div>
 
-                        <!-- Results -->
                         <div id="resultsContainer" class="space-y-5">
-                            <div class="text-center py-12" style="color:var(--muted)">
+                            <div class="text-center py-12" style="color:#3B82F6">
                                 <i class="fas fa-spinner fa-spin text-3xl"></i>
-                                <p class="mt-2">Loading announcements...</p>
+                                <p class="mt-2" style="color:#1E3A8A">Loading announcements...</p>
                             </div>
                         </div>
 
-                        <!-- Empty State -->
                         <div id="emptyState" class="glass-card rounded-2xl p-12 text-center hidden">
                             <i class="fas fa-inbox text-5xl mb-3" style="color:var(--muted-light)"></i>
                             <p style="color:var(--muted)">No announcements match your criteria</p>
@@ -517,215 +485,213 @@
                 </div>
             </div>
 
-            <!-- Footer -->
-            <footer class="border-t-2 mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
+            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
                 <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Students to Campus Life
             </footer>
         </div>
     </form>
 
     <script>
-    // ── Load live announcements from Teacher.aspx (teacher_announcements) ──
-    function loadAnnouncementsDB() {
-        const raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null');
-        if (!raw || !raw.length) return [];
-        return raw.map(a => {
-            const cat = a.category || '';
-            let bannerType = 'default';
-            let bannerText = cat.toUpperCase();
-            if (cat === 'Exam')       { bannerType = 'exam';       bannerText = 'EXAM SCHEDULE'; }
-            if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
-            if (cat === 'Event')      { bannerType = 'events';     bannerText = 'CAMPUS EVENT'; }
-            // Normalise category label for display
-            const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
-                                : cat === 'Suspension' ? 'Class Suspension'
-                                : cat === 'Event' ? 'Campus Events' : cat;
-            return {
-                id:            a.id,
-                title:         a.title        || '',
-                category:      categoryLabel,
-                date:          a.date         || '',
-                time:          '',
-                professor:     a.author       || '',
-                professorAvatar: '👨‍🏫',
-                description:   a.content      || '',
-                bannerText,
-                bannerType
-            };
-        });
-    }
-    let announcementsDB = loadAnnouncementsDB();
-
-    // ── Persistent state (localStorage) ──────────────────────
-    const STORAGE = {
-        get: k => JSON.parse(localStorage.getItem(k) || 'null'),
-        set: (k,v) => localStorage.setItem(k, JSON.stringify(v))
-    };
-
-    // Merge pins from both teacher_pins and campus_pins
-    function loadPins() {
-        const tp = STORAGE.get('teacher_pins') || {};
-        const cp = STORAGE.get('campus_pins')  || {};
-        return Object.assign({}, cp, tp);
-    }
-    // Merge likeCounts from teacher_likeCounts + sd_likeCounts
-    function loadLikeCounts() {
-        const tl = STORAGE.get('teacher_likeCounts') || {};
-        const sl = STORAGE.get('sd_likeCounts')      || {};
-        return Object.assign({}, sl, tl);
-    }
-
-    let likes      = STORAGE.get('sd_likes')     || {};
-    let likeCounts = loadLikeCounts();
-    let pins       = loadPins();
-    let notifs     = STORAGE.get('sd_notifs')    || {};
-    let comments   = STORAGE.get('sd_comments')  || {};
-    let searchHistory = STORAGE.get('campus_history') || [];
-
-    announcementsDB.forEach(a => {
-        if (likeCounts[a.id] === undefined) likeCounts[a.id] = Math.floor(Math.random()*30)+2;
-    });
-
-    function saveState() {
-        STORAGE.set('sd_likes',      likes);
-        STORAGE.set('sd_likeCounts', likeCounts);
-        STORAGE.set('campus_pins',   pins);   // shared with Student.aspx
-        STORAGE.set('teacher_pins',  pins);   // shared with Teacher.aspx
-        STORAGE.set('sd_notifs',     notifs);
-        STORAGE.set('sd_comments',   comments);
-    }
-
-    const searchInput      = document.getElementById('<%= searchInput.ClientID %>');
-    const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
-    const dateFilter       = document.getElementById('dateFilter');
-    const sortFilter       = document.getElementById('sortFilter');
-    const resultsContainer = document.getElementById('resultsContainer');
-    const resultCount      = document.getElementById('resultCount');
-    const emptyState       = document.getElementById('emptyState');
-    const resetFiltersBtn  = document.getElementById('resetFiltersBtn');
-    const historyListDiv   = document.getElementById('historyList');
-    const clearHistoryBtn  = document.getElementById('clearHistoryBtn');
-    const notificationBtn  = document.getElementById('notificationBtn');
-    const notificationBadge= document.getElementById('notificationBadge');
-
-    let currentSearchTerm = '';
-    let currentDate       = '';
-    let currentSort       = 'latest';
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-    }
-
-    function formatDate(dateStr) {
-        return new Date(dateStr).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-    }
-
-    function getBannerClass(type) {
-        return { exam:'banner-exam', suspension:'banner-suspension', events:'banner-events' }[type] || 'banner-default';
-    }
-
-    function getCatClass(cat) {
-        if (cat === 'Exam Schedule')    return 'cat-exam';
-        if (cat === 'Class Suspension') return 'cat-suspension';
-        if (cat === 'Campus Events')    return 'cat-event';
-        return 'cat-default';
-    }
-
-    function showToast(msg) {
-        const t = document.createElement('div');
-        t.className = 'toast-msg';
-        t.textContent = msg;
-        document.body.appendChild(t);
-        setTimeout(() => t.remove(), 2700);
-    }
-
-    function saveHistory() {
-        STORAGE.set('campus_history', searchHistory.slice(0,15));
-        renderHistory();
-    }
-
-    function addToHistory(term) {
-        if (!term.trim()) return;
-        term = term.trim();
-        searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0,15);
-        saveHistory();
-    }
-
-    function renderHistory() {
-        if (!historyListDiv) return;
-        if (!searchHistory.length) {
-            historyListDiv.innerHTML = '<div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>';
-            return;
+        // Load live announcements from teacher_announcements
+        function loadAnnouncementsDB() {
+            const raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null');
+            if (!raw || !raw.length) return [];
+            return raw.map(a => {
+                const cat = a.category || '';
+                let bannerType = 'default';
+                let bannerText = cat.toUpperCase();
+                if (cat === 'Exam') { bannerType = 'exam'; bannerText = 'EXAM SCHEDULE'; }
+                if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
+                if (cat === 'Event') { bannerType = 'events'; bannerText = 'CAMPUS EVENT'; }
+                const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
+                    : cat === 'Suspension' ? 'Class Suspension'
+                        : cat === 'Event' ? 'Campus Events' : (cat || 'General');
+                return {
+                    id: a.id,
+                    title: a.title || '',
+                    category: categoryLabel,
+                    date: a.date || new Date().toLocaleDateString(),
+                    time: '',
+                    professor: a.author || 'Admin',
+                    professorAvatar: null,
+                    description: a.content || '',
+                    bannerText,
+                    bannerType
+                };
+            });
         }
-        historyListDiv.innerHTML = searchHistory.map(term => `
+
+        let announcementsDB = loadAnnouncementsDB();
+        const STORAGE = { get: k => JSON.parse(localStorage.getItem(k) || 'null'), set: (k, v) => localStorage.setItem(k, JSON.stringify(v)) };
+
+        function loadPins() {
+            const tp = STORAGE.get('teacher_pins') || {};
+            const cp = STORAGE.get('campus_pins') || {};
+            return Object.assign({}, cp, tp);
+        }
+
+        function loadLikeCounts() {
+            const tl = STORAGE.get('teacher_likeCounts') || {};
+            const sl = STORAGE.get('sd_likeCounts') || {};
+            return Object.assign({}, sl, tl);
+        }
+
+        let likes = STORAGE.get('sd_likes') || {};
+        let likeCounts = loadLikeCounts();
+        let pins = loadPins();
+        let comments = STORAGE.get('sd_comments') || {};
+        let searchHistory = STORAGE.get('campus_history') || [];
+
+        announcementsDB.forEach(a => {
+            if (likeCounts[a.id] === undefined) likeCounts[a.id] = Math.floor(Math.random() * 30) + 2;
+            if (comments[a.id] === undefined) comments[a.id] = [];
+        });
+
+        function saveState() {
+            STORAGE.set('sd_likes', likes);
+            STORAGE.set('sd_likeCounts', likeCounts);
+            STORAGE.set('campus_pins', pins);
+            STORAGE.set('teacher_pins', pins);
+            STORAGE.set('sd_comments', comments);
+        }
+
+        // DOM Elements
+        const searchInput = document.getElementById('<%= searchInput.ClientID %>');
+        const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultCount = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const historyListDiv = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        let currentSearchTerm = '';
+        let currentDate = '';
+        let currentSort = 'latest';
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+        }
+
+        function formatDate(dateStr) {
+            try {
+                return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            } catch (e) { return dateStr; }
+        }
+
+        function getBannerClass(type) {
+            return { exam: 'banner-exam', suspension: 'banner-suspension', events: 'banner-events' }[type] || 'banner-default';
+        }
+
+        function getCatClass(cat) {
+            if (cat === 'Exam Schedule') return 'cat-exam';
+            if (cat === 'Class Suspension') return 'cat-suspension';
+            if (cat === 'Campus Events') return 'cat-event';
+            return 'cat-default';
+        }
+
+        function showToast(msg) {
+            const t = document.createElement('div');
+            t.className = 'toast-msg';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 2700);
+        }
+
+        function updateNotifBadge() {
+            const stored = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            const count = stored.filter(n => !n.read).length;
+            notificationBadge.textContent = count;
+            notificationBadge.style.display = count > 0 ? 'flex' : 'none';
+        }
+
+        function pushNotification(msg, icon) {
+            const notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
+            notifs.unshift({ msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
+            if (notifs.length > 50) notifs.length = 50;
+            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_notifications', newValue: JSON.stringify(notifs) }));
+        }
+
+        function saveHistory() {
+            STORAGE.set('campus_history', searchHistory.slice(0, 15));
+            renderHistory();
+        }
+
+        function addToHistory(term) {
+            if (!term.trim()) return;
+            term = term.trim();
+            searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0, 15);
+            saveHistory();
+        }
+
+        function renderHistory() {
+            if (!historyListDiv) return;
+            if (!searchHistory.length) {
+                historyListDiv.innerHTML = '<div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>';
+                return;
+            }
+            historyListDiv.innerHTML = searchHistory.map(term => `
             <div class="history-item flex items-center justify-between group" data-term="${escapeHtml(term)}">
-                <span><i class="fas fa-search text-xs mr-2"></i>${escapeHtml(term)}</span>
+                <span><i class="fas fa-search text-xs mr-2 opacity-50"></i>${escapeHtml(term)}</span>
                 <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
             </div>
         `).join('');
-        historyListDiv.querySelectorAll('.history-item').forEach(item => {
-            item.addEventListener('click', () => {
-                searchInput.value = item.dataset.term;
-                performSearch();
+            historyListDiv.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.dataset.term;
+                    performSearch();
+                });
             });
-        });
-    }
-
-    function renderPinnedSidebar() {
-        const pinnedList    = document.getElementById('pinnedList');
-        const pinnedCountEl = document.getElementById('pinnedCount');
-        const pinned = announcementsDB.filter(a => pins[a.id]);
-        pinnedCountEl.textContent = pinned.length;
-        if (!pinned.length) {
-            pinnedList.innerHTML = '<div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>';
-            return;
         }
-        pinnedList.innerHTML = pinned.map(a => `
+
+        function renderPinnedSidebar() {
+            const pinnedList = document.getElementById('pinnedList');
+            const pinnedCountEl = document.getElementById('pinnedCount');
+            const pinned = announcementsDB.filter(a => pins[a.id]);
+            pinnedCountEl.textContent = pinned.length;
+            if (!pinned.length) {
+                pinnedList.innerHTML = '<div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>';
+                return;
+            }
+            pinnedList.innerHTML = pinned.map(a => `
             <div class="history-item flex items-center gap-2 text-xs" style="color:var(--primary)">
                 <i class="fas fa-thumbtack text-orange-500 flex-shrink-0"></i>
                 <span class="truncate">${escapeHtml(a.title)}</span>
             </div>
         `).join('');
-    }
-
-    function getFilteredAnnouncements() {
-        let results = [...announcementsDB];
-        if (currentSearchTerm.trim()) {
-            const kw = currentSearchTerm.toLowerCase().trim();
-            results = results.filter(a =>
-                a.title.toLowerCase().includes(kw) ||
-                a.description.toLowerCase().includes(kw) ||
-                a.professor.toLowerCase().includes(kw)
-            );
         }
-        if (currentDate) results = results.filter(a => a.date === currentDate);
 
-        if (currentSort === 'pinned') {
-            results.sort((a,b) => (pins[b.id]?1:0) - (pins[a.id]?1:0));
-        } else if (currentSort === 'latest') {
-            results.sort((a,b) => new Date(b.date) - new Date(a.date));
-        } else {
-            results.sort((a,b) => new Date(a.date) - new Date(b.date));
-        }
-        if (currentSort !== 'pinned') {
-            results.sort((a,b) => (pins[b.id]?1:0) - (pins[a.id]?1:0));
-        }
-        return results;
-    }
+        function getFilteredAnnouncements() {
+            let results = [...announcementsDB];
+            if (currentSearchTerm.trim()) {
+                const kw = currentSearchTerm.toLowerCase().trim();
+                results = results.filter(a =>
+                    a.title.toLowerCase().includes(kw) ||
+                    a.description.toLowerCase().includes(kw) ||
+                    a.professor.toLowerCase().includes(kw)
+                );
+            }
+            if (currentDate) results = results.filter(a => a.date === currentDate);
 
-    function updateNotifBadge() {
-        const count = Object.values(notifs).filter(Boolean).length;
-        if (notificationBadge) {
-            notificationBadge.textContent = count;
-            notificationBadge.style.display = count > 0 ? 'flex' : 'none';
+            if (currentSort === 'latest') {
+                results.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } else if (currentSort === 'oldest') {
+                results.sort((a, b) => new Date(a.date) - new Date(b.date));
+            }
+            results.sort((a, b) => (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0));
+            return results;
         }
-    }
 
-    function renderCommentsList(id) {
-        const list = comments[id] || [];
-        if (!list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
-        return list.map(c => `
+        function renderCommentsList(id) {
+            const list = comments[id] || [];
+            if (!list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
+            return list.map(c => `
             <div class="comment-item">
                 <div class="comment-avatar"><i class="fas fa-user"></i></div>
                 <div>
@@ -735,50 +701,44 @@
                 </div>
             </div>
         `).join('');
-    }
-
-    function renderResults() {
-        const filtered = getFilteredAnnouncements();
-        const count = filtered.length;
-        resultCount.textContent = `${count} item${count !== 1 ? 's' : ''}`;
-
-        if (!count) {
-            resultsContainer.innerHTML = '';
-            emptyState.classList.remove('hidden');
-            return;
         }
-        emptyState.classList.add('hidden');
 
-        resultsContainer.innerHTML = filtered.map(ann => {
-            const liked   = !!likes[ann.id];
-            const pinned  = !!pins[ann.id];
-            const notifOn = !!notifs[ann.id];
-            const lc      = likeCounts[ann.id] || 0;
-            const cc      = (comments[ann.id] || []).length;
-            const catClass = getCatClass(ann.category);
-            const catIcon  = ann.category === 'Exam Schedule' ? '📅' : ann.category === 'Class Suspension' ? '⚠️' : '🎉';
+        function renderResults() {
+            const filtered = getFilteredAnnouncements();
+            const count = filtered.length;
+            resultCount.textContent = `${count} item${count !== 1 ? 's' : ''}`;
 
-            return `
+            if (!count) {
+                resultsContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            emptyState.classList.add('hidden');
+
+            resultsContainer.innerHTML = filtered.map(ann => {
+                const liked = !!likes[ann.id];
+                const pinned = !!pins[ann.id];
+                const lc = likeCounts[ann.id] || 0;
+                const cc = (comments[ann.id] || []).length;
+                const catClass = getCatClass(ann.category);
+                const catIcon = ann.category === 'Exam Schedule' ? '📅' : ann.category === 'Class Suspension' ? '⚠️' : ann.category === 'Campus Events' ? '🎉' : '📢';
+
+                return `
             <div class="announce-card" data-id="${ann.id}">
                 <div style="padding:18px 20px 12px">
                     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
                         <div style="display:flex;align-items:center;gap:12px;flex:1">
-                            <div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                                            <i class="fas fa-user" style="color:var(--primary);font-size:18px"></i>
-                                        </div>
+                            <div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0"><i class="fas fa-user-tie" style="color:var(--primary)"></i></div>
                             <div>
                                 <div class="card-author-name">${escapeHtml(ann.professor)}</div>
-                                <div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)} at ${ann.time}</div>
+                                <div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)}</div>
                             </div>
                         </div>
                         <div style="display:flex;align-items:center;gap:8px">
                             <div class="card-banner ${getBannerClass(ann.bannerType)} px-3 py-1 hidden sm:block">
                                 <p class="text-white text-xs font-bold tracking-wide">${ann.bannerText}</p>
                             </div>
-                            <button type="button"
-                                onclick="togglePin(${ann.id})"
-                                title="${pinned ? 'Unpin' : 'Pin this announcement'}"
-                                style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'var(--muted-light)'}">
+                            <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}" style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'var(--muted-light)'}">
                                 <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
                             </button>
                         </div>
@@ -790,10 +750,10 @@
                         ${pinned ? '<span style="margin-left:6px;font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack mr-1"></i>Pinned</span>' : ''}
                     </div>
                 </div>
-
+                
                 <div class="post-stats">
                     <span onclick="toggleLike(${ann.id})">
-                        <i class="${liked?'fas':'far'} fa-heart" style="${liked?'color:#dc2626':''}"></i>
+                        <i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i>
                         <span id="lc-${ann.id}">${lc}</span> Likes
                     </span>
                     <span onclick="openComments(${ann.id})">
@@ -804,10 +764,10 @@
                         <i class="far fa-share-square"></i> Share
                     </span>
                 </div>
-
+                
                 <div class="action-buttons">
-                    <button type="button" class="action-btn ${liked?'liked':''}" onclick="toggleLike(${ann.id})">
-                        <i class="${liked?'fas':'far'} fa-heart"></i> ${liked?'Liked':'Like'}
+                    <button type="button" class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${ann.id})">
+                        <i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${liked ? 'Liked' : 'Like'}
                     </button>
                     <button type="button" class="action-btn" onclick="openComments(${ann.id})">
                         <i class="far fa-comment"></i> Comment
@@ -816,7 +776,7 @@
                         <i class="fas fa-share-alt"></i> Share
                     </button>
                 </div>
-
+                
                 <div class="comments-section" id="cs-${ann.id}">
                     <div class="comment-input-row">
                         <input type="text" id="ci-${ann.id}" placeholder="Write a comment..." />
@@ -825,179 +785,169 @@
                     <div id="cl-${ann.id}">${renderCommentsList(ann.id)}</div>
                 </div>
             </div>`;
-        }).join('');
+            }).join('');
 
-        renderPinnedSidebar();
-    }
+            renderPinnedSidebar();
+        }
 
-    function toggleLike(id) {
-        likes[id] = !likes[id];
-        likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
-        if (likeCounts[id] < 0) likeCounts[id] = 0;
-        saveState();
-        renderResults();
-        showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
-    }
+        function toggleLike(id) {
+            likes[id] = !likes[id];
+            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
+            if (likeCounts[id] < 0) likeCounts[id] = 0;
+            const ann = announcementsDB.find(a => a.id === id);
+            if (likes[id] && ann) pushNotification('❤️ Liked "' + ann.title + '"', 'fa-heart');
+            saveState();
+            renderResults();
+            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
+        }
 
-    function togglePin(id) {
-        pins[id] = !pins[id];
-        saveState();
-        // Notify all tabs — Student uses campus_pins, Teacher uses teacher_pins
-        window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
-        window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
-        renderResults();
-        showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
-    }
+        function togglePin(id) {
+            pins[id] = !pins[id];
+            saveState();
+            const ann = announcementsDB.find(a => a.id === id);
+            if (ann) pushNotification((pins[id] ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
+            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
+            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
+            renderResults();
+            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
+        }
 
-    function toggleNotif(id) {
-        notifs[id] = !notifs[id];
-        saveState();
-        updateNotifBadge();
-        renderResults();
-        showToast(notifs[id] ? '🔔 Notifications on!' : '🔕 Notifications off');
-    }
+        function openComments(id) {
+            const sec = document.getElementById('cs-' + id);
+            if (!sec) return;
+            sec.classList.toggle('show');
+            if (sec.classList.contains('show')) {
+                const input = document.getElementById('ci-' + id);
+                if (input) setTimeout(() => input.focus(), 50);
+            }
+        }
 
-    function openComments(id) {
-        const sec = document.getElementById('cs-' + id);
-        if (!sec) return;
-        sec.classList.toggle('show');
-        if (sec.classList.contains('show')) {
+        function postComment(id) {
             const input = document.getElementById('ci-' + id);
-            if (input) setTimeout(() => input.focus(), 50);
-        }
-    }
+            if (!input) return;
+            const text = input.value.trim();
+            if (!text) { showToast('Please write a comment first'); return; }
 
-    function postComment(id) {
-        const input = document.getElementById('ci-' + id);
-        if (!input) return;
-        const text = input.value.trim();
-        if (!text) { showToast('Please write a comment first'); return; }
-        if (!comments[id]) comments[id] = [];
-        comments[id].push({
-            author: 'You',
-            text: text,
-            time: new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' })
-        });
-        saveState();
-        input.value = '';
-        const cl = document.getElementById('cl-' + id);
-        if (cl) cl.innerHTML = renderCommentsList(id);
-        const cc = document.getElementById('cc-' + id);
-        if (cc) cc.textContent = comments[id].length;
-        showToast('💬 Comment posted!');
-    }
-
-    function sharePost(id, title) {
-        const url = window.location.href.split('?')[0] + '?post=' + id;
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied: ' + title));
-        } else {
-            showToast('📤 Shared: ' + title);
-        }
-    }
-
-    function performSearch() {
-        const term = searchInput.value;
-        currentSearchTerm = term;
-        if (lastSearchHidden) lastSearchHidden.value = term;
-        if (term.trim()) addToHistory(term);
-        renderResults();
-    }
-
-    function applyFilters() {
-        currentDate     = dateFilter.value || '';
-        currentSort     = sortFilter.value;
-        renderResults();
-    }
-
-    function resetEverything() {
-        searchInput.value    = '';
-        dateFilter.value     = '';
-        sortFilter.value     = 'latest';
-        currentSearchTerm = ''; currentDate = ''; currentSort = 'latest';
-        if (lastSearchHidden) lastSearchHidden.value = '';
-        renderResults();
-    }
-
-    function init() {
-        renderHistory();
-        renderPinnedSidebar();
-        updateNotifBadge();
-
-        flatpickr(dateFilter, {
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "F j, Y",
-            allowInput: true,
-            wrap: false,
-            onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
-        });
-        // Add calendar icon to the flatpickr input after init
-        const fpInput = dateFilter.nextElementSibling || dateFilter;
-        if (fpInput && fpInput.classList.contains('flatpickr-input')) {
-            fpInput.style.paddingLeft = '2rem';
+            if (!comments[id]) comments[id] = [];
+            comments[id].push({
+                author: 'You (Student)',
+                text: text,
+                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+            });
+            const ann = announcementsDB.find(a => a.id === id);
+            if (ann) pushNotification('💬 Comment on "' + ann.title + '": ' + text, 'fa-comment');
+            saveState();
+            input.value = '';
+            const cl = document.getElementById('cl-' + id);
+            if (cl) cl.innerHTML = renderCommentsList(id);
+            const cc = document.getElementById('cc-' + id);
+            if (cc) cc.textContent = comments[id].length;
+            showToast('💬 Comment posted!');
         }
 
-        searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
-        sortFilter.addEventListener('change', applyFilters);
-        if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
-        if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => {
-            if (confirm('Clear all search history?')) { searchHistory = []; saveHistory(); }
-        });
-        if (notificationBtn) notificationBtn.addEventListener('click', () => {
-            navigateWithFlip('Notifications.aspx');
-        });
-
-        try {
-            if (lastSearchHidden && lastSearchHidden.value) {
-                searchInput.value = lastSearchHidden.value;
-                performSearch();
+        function sharePost(id, title) {
+            const url = window.location.href.split('?')[0] + '?post=' + id;
+            pushNotification('🔗 "' + title + '" was shared', 'fa-share-alt');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied: ' + title));
             } else {
-                renderResults();
+                showToast('📤 Shared: ' + title);
             }
-        } catch(e) { renderResults(); }
-    }
-
-    init();
-
-    function navigateWithFlip(url) {
-        var shell = document.querySelector('.relative.z-10') || document.body;
-        shell.style.opacity = '0';
-        shell.style.transition = 'opacity 0.15s ease';
-        setTimeout(function() { window.location.href = url; }, 150);
-    }
-
-    // ── Theme + flip-in ──────────────────────────────────────
-    (function () {
-        const KEY = 'campus_theme';
-
-        function applyTheme(mode) {
-            document.body.classList.toggle('dark-mode', mode === 'dark');
         }
 
-        applyTheme(localStorage.getItem(KEY) || 'light');
+        function performSearch() {
+            const term = searchInput.value;
+            currentSearchTerm = term;
+            if (lastSearchHidden) lastSearchHidden.value = term;
+            if (term.trim()) addToHistory(term);
+            renderResults();
+        }
 
-        window.addEventListener('storage', e => {
-            if (e.key === KEY) applyTheme(e.newValue || 'light');
-            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
-                pins = loadPins();
-                renderResults();
-            }
-            if (e.key === 'sd_notifs') {
-                notifs = JSON.parse(e.newValue || '{}');
-                updateNotifBadge();
-                renderResults();
-            }
-            if (e.key === 'teacher_announcements') {
-                announcementsDB = loadAnnouncementsDB();
-                renderResults();
-            }
-        });
+        function applyFilters() {
+            currentDate = dateFilter.value || '';
+            currentSort = sortFilter.value;
+            renderResults();
+        }
 
-        const shell = document.querySelector('.relative.z-10') || document.body;
-        shell.classList.add('page-flip-in');
-        shell.addEventListener('animationend', () => shell.classList.remove('page-flip-in'), { once: true });
-    })();
+        function resetEverything() {
+            searchInput.value = '';
+            dateFilter.value = '';
+            sortFilter.value = 'latest';
+            currentSearchTerm = '';
+            currentDate = '';
+            currentSort = 'latest';
+            if (lastSearchHidden) lastSearchHidden.value = '';
+            renderResults();
+        }
+
+        function init() {
+            renderHistory();
+            renderPinnedSidebar();
+            updateNotifBadge();
+
+            flatpickr(dateFilter, {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "F j, Y",
+                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
+            });
+
+            searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
+            sortFilter.addEventListener('change', applyFilters);
+            if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
+            if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => {
+                if (confirm('Clear all search history?')) { searchHistory = []; saveHistory(); }
+            });
+            if (notificationBtn) notificationBtn.addEventListener('click', () => {
+                navigateWithFlip('Notifications.aspx');
+            });
+
+            try {
+                if (lastSearchHidden && lastSearchHidden.value) {
+                    searchInput.value = lastSearchHidden.value;
+                    performSearch();
+                } else {
+                    renderResults();
+                }
+            } catch (e) { renderResults(); }
+        }
+
+        init();
+
+        function navigateWithFlip(url) {
+            const shell = document.querySelector('.relative.z-10') || document.body;
+            shell.style.opacity = '0';
+            shell.style.transition = 'opacity 0.15s ease';
+            setTimeout(() => { window.location.href = url; }, 150);
+        }
+
+        // Theme and storage sync
+        (function () {
+            const KEY = 'campus_theme';
+            function applyTheme(mode) {
+                document.body.classList.toggle('dark-mode', mode === 'dark');
+            }
+            applyTheme(localStorage.getItem(KEY) || 'light');
+
+            window.addEventListener('storage', e => {
+                if (e.key === KEY) applyTheme(e.newValue || 'light');
+                if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
+                    pins = loadPins();
+                    renderResults();
+                }
+                if (e.key === 'teacher_announcements') {
+                    announcementsDB = loadAnnouncementsDB();
+                    renderResults();
+                }
+                if (e.key === 'campus_notifications') {
+                    updateNotifBadge();
+                }
+            });
+
+            const shell = document.querySelector('.relative.z-10') || document.body;
+            shell.classList.add('page-flip-in');
+            shell.addEventListener('animationend', () => shell.classList.remove('page-flip-in'), { once: true });
+        })();
     </script>
 </body>
 </html>

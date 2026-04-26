@@ -47,6 +47,21 @@
             --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
         }
 
+        /* ── LIGHT MODE ── */
+        body.light-mode {
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: rgba(240, 245, 255, 0.9);
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a3a5c;
+            --primary-2: #2563eb;
+            --accent: #d97706;
+            --muted: #6b7c8f;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -55,7 +70,32 @@
                 linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
                 var(--bg-image) center/cover fixed no-repeat;
             padding: 28px;
+            transition: background 0.4s ease, color 0.3s ease;
         }
+
+        body.light-mode {
+            background:
+                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
+                var(--bg-image) center/cover fixed no-repeat;
+        }
+
+        body.light-mode h1,
+        body.light-mode h2,
+        body.light-mode h3,
+        body.light-mode h4,
+        body.light-mode .brand { color: var(--primary); }
+
+        body.light-mode .topbar,
+        body.light-mode .hero,
+        body.light-mode .section-card { background: var(--surface); border-color: var(--border); }
+
+        body.light-mode .mission-item,
+        body.light-mode .gallery-card,
+        body.light-mode .creator-card,
+        body.light-mode .stat { background: var(--surface-soft); border-color: var(--border); }
+
+        body.light-mode .hero-caption { background: rgba(255,255,255,0.85); border-color: var(--border); }
+        body.light-mode .action-link { background: var(--surface-soft); border-color: var(--border); color: var(--primary); }
 
         a {
             color: inherit;
@@ -711,6 +751,19 @@
                 closeImageModal();
             }
         });
+
+        // ── Apply campus_theme from localStorage ──────────────
+        (function () {
+            var theme = localStorage.getItem('campus_theme') || 'dark';
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme') {
+                    document.body.classList.toggle('light-mode', e.newValue === 'light');
+                }
+            });
+        })();
     </script>
 </body>
 </html>

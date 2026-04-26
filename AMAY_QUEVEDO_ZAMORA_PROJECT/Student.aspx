@@ -172,15 +172,15 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.85);
             padding: 6px 18px;
             border-radius: 40px;
-            border: 1.5px solid rgba(255,255,255,0.4);
+            border: 1.5px solid rgba(26,58,92,0.18);
             cursor: pointer;
             position: relative;
             transition: background 0.2s;
         }
-        .user-info:hover { background: rgba(255,255,255,0.25); }
+        .user-info:hover { background: rgba(255,255,255,1); }
 
         /* User dropdown */
         .user-dropdown {
@@ -993,8 +993,8 @@
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="user-details">
-                            <div class="user-name" id="userName" style="color:#ffffff;">Loading...</div>
-                            <div class="user-role" id="userRole" style="color:rgba(255,255,255,0.75);">Student</div>
+                            <div class="user-name" id="userName"><%= Session["FullName"] ?? "User" %></div>
+                            <div class="user-role" id="userRole"><%= Session["Role"] ?? "Student" %></div>
                         </div>
                     </div>
                 </div>
@@ -1048,7 +1048,7 @@
                                 <div class="toggle-switch" id="themeToggle" role="switch" aria-checked="false"></div>
                             </button>
 
-                            <button type="button" class="settings-item" onclick="openAboutModal()">
+                            <button type="button" class="settings-item" onclick="window.location.href='AboutUs.aspx?source=student'">
                                 <i class="fas fa-info-circle"></i>
                                 <span class="settings-text">About Us</span>
                             </button>
@@ -1081,29 +1081,29 @@
                     <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
                         <i class="fas fa-user"></i>
                     </div>
-                    <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname">Loading...</div>
-                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role">Student</span>
+                    <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname"><%= Session["FullName"] ?? "User" %></div>
+                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role"><%= Session["Role"] ?? "Student" %></span>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
                         <i class="fas fa-user" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Username</div>
-                            <div style="font-weight:600;color:var(--page-text);" id="pm-username">—</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-username"><%= Session["Username"] ?? "—" %></div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
                         <i class="fas fa-envelope" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Email</div>
-                            <div style="font-weight:600;color:var(--page-text);" id="pm-email">—</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-email"><%= Session["Email"] ?? "—" %></div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
                         <i class="fas fa-shield-alt" style="color:var(--primary);width:18px;text-align:center;"></i>
                         <div>
                             <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;">Role</div>
-                            <div style="font-weight:600;color:var(--page-text);" id="pm-role2">Student</div>
+                            <div style="font-weight:600;color:var(--page-text);" id="pm-role2"><%= Session["Role"] ?? "Student" %></div>
                         </div>
                     </div>
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);">
@@ -1620,7 +1620,6 @@
                             '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (liked ? 'Liked' : 'Like') +
                         '</button>' +
                         '<button type="button" class="action-btn" onclick="toggleCommentSection(' + post.id + ')"><i class="far fa-comment"></i> Comment</button>' +
-                        '<button type="button" class="action-btn' + (notifOn ? ' notif-active' : '') + '" onclick="toggleNotif(' + post.id + ')"><i class="' + (notifOn ? 'fas' : 'far') + ' fa-bell"></i> ' + (notifOn ? 'Notif On' : 'Notify') + '</button>' +
                         '<button type="button" class="action-btn" onclick="sharePost(' + post.id + ', null)"><i class="fas fa-share-alt"></i> Share</button>' +
                     '</div>' +
                     '<div class="comments-section" id="commentsSection_' + post.id + '" style="display:none;">' +
