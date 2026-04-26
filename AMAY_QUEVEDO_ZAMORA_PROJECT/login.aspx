@@ -170,6 +170,38 @@
             font-size: 12px;
             color: #b0c4de;
         }
+
+        /* ── Dark Mode ── */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+        body.dark-mode .neon-card {
+            background: rgba(15, 25, 55, 0.97);
+            border-color: rgba(255,255,255,0.1);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+        }
+        body.dark-mode .neon-logo h1 { color: #818cf8; }
+        body.dark-mode .neon-logo p  { color: #94a3b8; }
+        body.dark-mode .card-header h2 { color: #e4e6eb; }
+        body.dark-mode .card-header span { color: #94a3b8; }
+        /* input-group label covers both <label> and ASP.NET <span> labels */
+        body.dark-mode .input-group label,
+        body.dark-mode .input-group span,
+        body.dark-mode .input-group .aspNetLabel { color: #94a3b8; }
+        body.dark-mode .input-field {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+            color: #e4e6eb;
+        }
+        body.dark-mode .input-field::placeholder { color: #64748b; }
+        body.dark-mode .input-field option { background: #0f172a; color: #e4e6eb; }
+        body.dark-mode .btn-login { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+        body.dark-mode .btn-login:hover { background: linear-gradient(135deg, #4338ca, #4f46e5); }
+        body.dark-mode .footer { color: #94a3b8; }
+        body.dark-mode .footer p { color: #94a3b8; }
+        body.dark-mode .footer a { color: #818cf8; }
+        body.dark-mode #lblError { color: #fca5a5; background: rgba(220,38,38,0.15); }
+        body.dark-mode .divider { color: #4b5563; }
     </style>
 </head>
 <body>
@@ -216,5 +248,17 @@
             </div>
         </form>
     </div>
+    <script>
+        (function () {
+            if (localStorage.getItem('campus_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme') {
+                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

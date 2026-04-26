@@ -34,21 +34,6 @@
         }
 
         :root {
-            --bg-image: url('bg.jpg');
-            --page-text: #e8edf3;
-            --surface: rgba(15, 20, 27, 0.88);
-            --surface-strong: rgba(22, 28, 36, 0.96);
-            --surface-soft: rgba(40, 49, 61, 0.72);
-            --border: rgba(255, 255, 255, 0.08);
-            --primary: #7fc8ff;
-            --primary-2: #2f80ed;
-            --accent: #f7b267;
-            --muted: #a9b7c8;
-            --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
-        }
-
-        /* ── LIGHT MODE ── */
-        body.light-mode {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.92);
@@ -62,40 +47,39 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
+        /* ── DARK MODE ── */
+        body.dark-mode {
+            --bg-image: url('bg.jpg');
+            --page-text: #e8edf3;
+            --surface: rgba(15, 20, 27, 0.88);
+            --surface-strong: rgba(22, 28, 36, 0.96);
+            --surface-soft: rgba(40, 49, 61, 0.72);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #7fc8ff;
+            --primary-2: #2f80ed;
+            --accent: #f7b267;
+            --muted: #a9b7c8;
+            --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
+        }
+
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
             background:
-                linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
+                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
                 var(--bg-image) center/cover fixed no-repeat;
             padding: 28px;
             transition: background 0.4s ease, color 0.3s ease;
         }
 
-        body.light-mode {
+        body.dark-mode {
             background:
-                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
+                linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
                 var(--bg-image) center/cover fixed no-repeat;
         }
 
-        body.light-mode h1,
-        body.light-mode h2,
-        body.light-mode h3,
-        body.light-mode h4,
-        body.light-mode .brand { color: var(--primary); }
-
-        body.light-mode .topbar,
-        body.light-mode .hero,
-        body.light-mode .section-card { background: var(--surface); border-color: var(--border); }
-
-        body.light-mode .mission-item,
-        body.light-mode .gallery-card,
-        body.light-mode .creator-card,
-        body.light-mode .stat { background: var(--surface-soft); border-color: var(--border); }
-
-        body.light-mode .hero-caption { background: rgba(255,255,255,0.85); border-color: var(--border); }
-        body.light-mode .action-link { background: var(--surface-soft); border-color: var(--border); color: var(--primary); }
+        /* All elements use CSS variables — dark-mode overrides vars above, light is the default */
 
         a {
             color: inherit;
@@ -754,13 +738,12 @@
 
         // ── Apply campus_theme from localStorage ──────────────
         (function () {
-            var theme = localStorage.getItem('campus_theme') || 'dark';
-            if (theme === 'light') {
-                document.body.classList.add('light-mode');
+            if (localStorage.getItem('campus_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
             }
             window.addEventListener('storage', function (e) {
                 if (e.key === 'campus_theme') {
-                    document.body.classList.toggle('light-mode', e.newValue === 'light');
+                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
                 }
             });
         })();

@@ -1,69 +1,71 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Text;
+using System.Web;
 using System.Web.Script.Serialization;
-using System.Web.UI;
+using System.Web.SessionState;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-    public partial class Comments : Page
+    public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        private static string ConnStr =>
+        private string ConnStr =>
             ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
 
-        protected void Page_Load(object sender, EventArgs e)
+        public void ProcessRequest(HttpContext ctx)
         {
-            string action = Request.QueryString["action"];
+            string action = ctx.Request.QueryString["action"] ?? "";
 
-            if (action == "add")
-                AddComment();
-            else if (action == "get")
-                GetComments();
-            else
+            switch (action)
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"error\":\"Invalid action\"}");
-                Response.End();
+                case "add": AddComment(ctx); break;
+                case "get": GetComments(ctx); break;
+                default:
+                    ctx.Response.ContentType = "application/json";
+                    ctx.Response.Write("{\"error\":\"Invalid action\"}");
+                    break;
             }
         }
 
         // ── ADD COMMENT ──────────────────────────────────────
-        private void AddComment()
+        private void AddComment(HttpContext ctx)
         {
-            if (Session["UserId"] == null)
+            ctx.Response.ContentType = "application/json";
+
+            if (ctx.Session["UserId"] == null)
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"Not logged in\"}");
-                Response.End();
+                ctx.Response.Write("{\"success\":false,\"error\":\"Not logged in\"}");
                 return;
             }
 
             string json = "";
-            using (var reader = new System.IO.StreamReader(Request.InputStream))
+            using (var reader = new System.IO.StreamReader(ctx.Request.InputStream))
                 json = reader.ReadToEnd();
 
-            var serializer = new JavaScriptSerializer();
+            var js = new JavaScriptSerializer();
             Dictionary<string, object> data;
-            try { data = serializer.Deserialize<Dictionary<string, object>>(json); }
+            try { data = js.Deserialize<Dictionary<string, object>>(json); }
             catch
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"Invalid JSON\"}");
-                Response.End();
+                ctx.Response.Write("{\"success\":false,\"error\":\"Invalid JSON\"}");
+                return;
+            }
+
+            if (!data.ContainsKey("postId") || !data.ContainsKey("comment"))
+            {
+                ctx.Response.Write("{\"success\":false,\"error\":\"Missing fields\"}");
                 return;
             }
 
             int    announcementId = Convert.ToInt32(data["postId"]);
             string commentText    = data["comment"].ToString().Trim();
-            int    userId         = Convert.ToInt32(Session["UserId"]);
+            int    userId         = Convert.ToInt32(ctx.Session["UserId"]);
 
             if (string.IsNullOrEmpty(commentText))
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"Comment cannot be empty\"}");
-                Response.End();
+                ctx.Response.Write("{\"success\":false,\"error\":\"Comment cannot be empty\"}");
                 return;
             }
 
@@ -73,7 +75,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 {
                     conn.Open();
 
-                    // Insert comment
                     const string insertSql = @"
                         INSERT INTO Comments (AnnouncementId, UserId, CommentText)
                         VALUES (@AnnId, @UserId, @Text)";
@@ -85,7 +86,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         cmd.ExecuteNonQuery();
                     }
 
-                    // Update CommentCount on the announcement
                     const string updateSql = @"
                         UPDATE Announcements
                         SET    CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId = @AnnId)
@@ -97,25 +97,22 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
                 }
 
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":true}");
+                ctx.Response.Write("{\"success\":true}");
             }
             catch (Exception ex)
             {
-                Response.ContentType = "application/json";
-                Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
+                ctx.Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
             }
-            Response.End();
         }
 
         // ── GET COMMENTS ─────────────────────────────────────
-        private void GetComments()
+        private void GetComments(HttpContext ctx)
         {
-            if (!int.TryParse(Request.QueryString["postId"], out int announcementId))
+            ctx.Response.ContentType = "application/json";
+
+            if (!int.TryParse(ctx.Request.QueryString["postId"], out int announcementId))
             {
-                Response.ContentType = "application/json";
-                Response.Write("[]");
-                Response.End();
+                ctx.Response.Write("[]");
                 return;
             }
 
@@ -144,9 +141,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                             {
                                 if (!first) sb.Append(",");
                                 first = false;
-                                string text    = EscapeJson(r.GetString(0));
-                                string date    = GetTimeAgo(r.GetDateTime(1));
-                                string author  = EscapeJson(r.GetString(2));
+                                string text   = EscapeJson(r.GetString(0));
+                                string date   = GetTimeAgo(r.GetDateTime(1));
+                                string author = EscapeJson(r.GetString(2));
                                 sb.Append($"{{\"author\":\"{author}\",\"text\":\"{text}\",\"date\":\"{date}\"}}");
                             }
                         }
@@ -156,9 +153,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             catch { /* return empty array on error */ }
 
             sb.Append("]");
-            Response.ContentType = "application/json";
-            Response.Write(sb.ToString());
-            Response.End();
+            ctx.Response.Write(sb.ToString());
         }
 
         // ── HELPERS ──────────────────────────────────────────
@@ -180,5 +175,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                        .Replace("\n", "\\n")
                        .Replace("\r", "");
         }
+
+        public bool IsReusable => false;
     }
 }

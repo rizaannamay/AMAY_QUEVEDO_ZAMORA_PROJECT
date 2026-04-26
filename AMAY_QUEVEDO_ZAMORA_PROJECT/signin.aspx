@@ -244,6 +244,44 @@
             gap: 12px;
         }
     }
+
+    /* ── Dark Mode ── */
+    body.dark-mode {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+    body.dark-mode .signup-card {
+        background: rgba(15, 25, 55, 0.97);
+        border-color: rgba(255,255,255,0.1);
+        box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+    }
+    body.dark-mode .logo h1 { color: #818cf8; }
+    body.dark-mode .logo p  { color: #94a3b8; }
+    body.dark-mode .card-header h2 { color: #e4e6eb; }
+    body.dark-mode .card-header span { color: #94a3b8; }
+    body.dark-mode .input-group label,
+    body.dark-mode .input-group span,
+    body.dark-mode .role-group label,
+    body.dark-mode .role-group span { color: #94a3b8; }
+    body.dark-mode .input-group label i { color: #818cf8; }
+    body.dark-mode .input-field {
+        background: rgba(255,255,255,0.07);
+        border-color: rgba(255,255,255,0.12);
+        color: #e4e6eb;
+    }
+    body.dark-mode .input-field::placeholder { color: #64748b; }
+    body.dark-mode .role-options {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.1);
+    }
+    body.dark-mode .role-option span { color: #e4e6eb; }
+    body.dark-mode .btn-signup { background: linear-gradient(135deg, #4f46e5, #6366f1); }
+    body.dark-mode .btn-signup:hover { background: linear-gradient(135deg, #4338ca, #4f46e5); }
+    body.dark-mode .footer-links { border-top-color: rgba(255,255,255,0.08); }
+    body.dark-mode .footer-links p { color: #94a3b8; }
+    body.dark-mode .footer-links a { color: #818cf8; }
+    body.dark-mode .password-requirements { color: #64748b; }
+    body.dark-mode .error-message { background: rgba(220,38,38,0.15); color: #fca5a5; border-left-color: #ef4444; }
+    body.dark-mode .success-message { background: rgba(22,163,74,0.15); color: #86efac; border-left-color: #22c55e; }
 </style>
 </head>
 <body>
@@ -316,6 +354,17 @@
     </form>
 
     <script>
+        (function () {
+            if (localStorage.getItem('campus_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme') {
+                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+                }
+            });
+        })();
+
         document.addEventListener('DOMContentLoaded', function () {
             var passwordField = document.getElementById('<%= txtPassword.ClientID %>');
             var confirmField  = document.getElementById('<%= txtConfirmPassword.ClientID %>');

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -58,7 +58,6 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            color: #000000;
             margin-bottom: 26px;
         }
 
@@ -279,14 +278,27 @@
     </form>
 
     <script>
-        // ── Load live data from teacher_announcements ──────────
-        function loadDB() {
-            var raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null') || [];
-            return raw.map(function(a) {
-                var cat = a.category || '';
-                var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
-                return { id: a.id, title: a.title||'', category: catLabel, date: a.date||'', time: '', professor: a.author||'', description: a.content||'' };
-            });
+        // ── Load live data from AnnouncementHandler ──────────
+        var pinnedDB = [];
+
+        function loadFromDB(callback) {
+            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { if (callback) callback([]); return; }
+                    pinnedDB = res.data.map(function(a) {
+                        var cat = a.category || '';
+                        var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
+                        return { id: a.id, title: a.title||'', category: catLabel, date: a.date||'', time: '', professor: a.author||'', description: a.content||'', isPinned: a.isPinned||false, likeCount: a.likeCount||0, commentCount: a.commentCount||0 };
+                    });
+                    // Sync pins
+                    pins = {};
+                    pinnedDB.forEach(function(a) { if (a.isPinned) pins[a.id] = true; });
+                    localStorage.setItem('campus_pins',  JSON.stringify(pins));
+                    localStorage.setItem('teacher_pins', JSON.stringify(pins));
+                    if (callback) callback(pinnedDB);
+                })
+                .catch(function() { if (callback) callback([]); });
         }
 
         var THEME_KEY = 'campus_theme';
@@ -339,48 +351,58 @@
             setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
         }
 
-        function renderComments(id) {
-            var list = comments[id] || [];
-            if (!list.length) return '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>';
-            return list.map(function(c) {
-                return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
-                    + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
-                    + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
-                    + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
-                    + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.time) + '</div></div></div>';
-            }).join('');
-        }
-
-        function pushNotification(msg, icon) {
-            var notifs = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
-            notifs.unshift({ msg: msg, icon: icon || 'fa-bell', time: new Date().toISOString(), read: false });
-            if (notifs.length > 50) notifs = notifs.slice(0, 50);
-            localStorage.setItem('campus_notifications', JSON.stringify(notifs));
-        }
-
         function toggleLike(id) {
-            var ann = loadDB().find(function(a) { return a.id === id; });
-            likes[id] = !likes[id];
-            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
-            if (likeCounts[id] < 0) likeCounts[id] = 0;
-            if (likes[id] && ann) pushNotification('❤️ Someone liked "' + ann.title + '"', 'fa-heart');
-            saveState();
-            renderPinned();
-            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
+            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    likes[id]      = res.liked;
+                    likeCounts[id] = res.likeCount;
+                    saveState();
+                    renderPinned();
+                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                })
+                .catch(function() { showToast('Could not update like'); });
         }
 
         function togglePin(id) {
-            pins[id] = !pins[id];
-            saveState();
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(pins) }));
-            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
-            renderPinned();
-            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
+            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    pins[id] = res.isPinned;
+                    // Update the in-memory DB record too
+                    var ann = pinnedDB.find(function(a) { return a.id === id; });
+                    if (ann) ann.isPinned = res.isPinned;
+                    saveState();
+                    renderPinned();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(function() { showToast('Could not update pin'); });
         }
 
         function openComments(id) {
             var sec = document.getElementById('cs-' + id);
-            if (sec) sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+            if (!sec) return;
+            var wasHidden = sec.style.display === 'none' || sec.style.display === '';
+            sec.style.display = wasHidden ? 'block' : 'none';
+            if (wasHidden) {
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(list) {
+                        var cl = document.getElementById('cl-' + id);
+                        if (!cl) return;
+                        if (!list.length) { cl.innerHTML = '<div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div>'; return; }
+                        cl.innerHTML = list.map(function(c) {
+                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                                + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.date) + '</div></div></div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+            }
         }
 
         function postComment(id) {
@@ -388,15 +410,33 @@
             if (!input) return;
             var text = input.value.trim();
             if (!text) { showToast('Please write a comment first'); return; }
-            var ann = loadDB().find(function(a) { return a.id === id; });
-            if (!comments[id]) comments[id] = [];
-            comments[id].push({ author:'You', text:text, time: new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) });
-            if (ann) pushNotification('💬 New comment on "' + ann.title + '": ' + text, 'fa-comment');
-            saveState();
-            input.value = '';
-            var cl = document.getElementById('cl-' + id);
-            if (cl) cl.innerHTML = renderComments(id);
-            showToast('💬 Comment posted!');
+
+            fetch('CommentHandler.ashx?action=add', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: id, comment: text })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(res) {
+                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
+                input.value = '';
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(list) {
+                        var cl = document.getElementById('cl-' + id);
+                        if (cl) cl.innerHTML = list.map(function(c) {
+                            return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">'
+                                + '<div style="width:28px;height:28px;border-radius:50%;background:var(--active-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--primary);font-size:11px"><i class="fas fa-user"></i></div>'
+                                + '<div><div style="font-weight:700;color:var(--primary)">' + escapeHtml(c.author) + '</div>'
+                                + '<div style="color:var(--page-text)">' + escapeHtml(c.text) + '</div>'
+                                + '<div style="font-size:10px;color:var(--muted-light)">' + escapeHtml(c.date) + '</div></div></div>';
+                        }).join('');
+                    })
+                    .catch(function() {});
+                showToast('💬 Comment posted!');
+            })
+            .catch(function() { showToast('Could not post comment'); });
         }
 
         function sharePost(id, title) {
@@ -409,8 +449,7 @@
         }
 
         function renderPinned() {
-            var announcementsDB = loadDB();
-            var pinned = announcementsDB.filter(function(a) { return !!pins[a.id]; });
+            var pinned = pinnedDB.filter(function(a) { return a.isPinned; });
             var container = document.querySelector('.pinned-list');
             if (!container) return;
 
@@ -421,8 +460,8 @@
 
             container.innerHTML = pinned.map(function(ann) {
                 var liked   = !!likes[ann.id];
-                var lc      = likeCounts[ann.id] || 0;
-                var cc      = (comments[ann.id] || []).length;
+                var lc      = ann.likeCount || 0;
+                var cc      = ann.commentCount || 0;
                 var catCls  = getCatClass(ann.category);
                 var catIcon = ann.category === 'Exam Schedule' ? 'fas fa-file-alt' : ann.category === 'Class Suspension' ? 'fas fa-cloud-rain' : 'fas fa-calendar-alt';
 
@@ -460,7 +499,7 @@
                     +     '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment..." style="flex:1;padding:9px 14px;background:var(--surface-soft,#f8fafc);border:1px solid var(--border);border-radius:30px;outline:none;font-size:13px;color:var(--page-text)">'
                     +     '<button onclick="postComment(' + ann.id + ')" style="background:linear-gradient(135deg,#1a3a5c,#2c5a7a);border:none;padding:0 18px;border-radius:30px;color:#fff;font-weight:600;cursor:pointer;font-size:13px">Post</button>'
                     +   '</div>'
-                    +   '<div id="cl-' + ann.id + '">' + renderComments(ann.id) + '</div>'
+                    +   '<div id="cl-' + ann.id + '"><div style="padding:10px 0;text-align:center;font-size:12px;color:var(--muted)">No comments yet.</div></div>'
                     + '</div>'
                     + '</div>';
             }).join('');
@@ -473,17 +512,10 @@
 
         window.addEventListener('storage', function(e) {
             if (e.key === THEME_KEY) applyStoredTheme();
-            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
-                pins = loadPins();
-                renderPinned();
-            }
-            if (e.key === 'teacher_announcements') {
-                renderPinned();
-            }
         });
 
         applyStoredTheme();
-        renderPinned();
+        loadFromDB(function() { renderPinned(); });
     </script>
 </body>
 </html>

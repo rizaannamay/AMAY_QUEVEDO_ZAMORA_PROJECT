@@ -492,36 +492,49 @@
     </form>
 
     <script>
-        // Load live announcements from teacher_announcements
-        function loadAnnouncementsDB() {
-            const raw = JSON.parse(localStorage.getItem('teacher_announcements') || 'null');
-            if (!raw || !raw.length) return [];
-            return raw.map(a => {
-                const cat = a.category || '';
-                let bannerType = 'default';
-                let bannerText = cat.toUpperCase();
-                if (cat === 'Exam') { bannerType = 'exam'; bannerText = 'EXAM SCHEDULE'; }
-                if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
-                if (cat === 'Event') { bannerType = 'events'; bannerText = 'CAMPUS EVENT'; }
-                const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
-                    : cat === 'Suspension' ? 'Class Suspension'
-                        : cat === 'Event' ? 'Campus Events' : (cat || 'General');
-                return {
-                    id: a.id,
-                    title: a.title || '',
-                    category: categoryLabel,
-                    date: a.date || new Date().toLocaleDateString(),
-                    time: '',
-                    professor: a.author || 'Admin',
-                    professorAvatar: null,
-                    description: a.content || '',
-                    bannerText,
-                    bannerType
-                };
-            });
-        }
+        // Load live announcements from AnnouncementHandler
+        var announcementsDB = [];
 
-        let announcementsDB = loadAnnouncementsDB();
+        function loadAnnouncementsFromDB(callback) {
+            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { if (callback) callback([]); return; }
+                    announcementsDB = res.data.map(a => {
+                        const cat = a.category || '';
+                        let bannerType = 'default';
+                        let bannerText = cat.toUpperCase();
+                        if (cat === 'Exam')       { bannerType = 'exam';       bannerText = 'EXAM SCHEDULE'; }
+                        if (cat === 'Suspension') { bannerType = 'suspension'; bannerText = 'CLASS SUSPENSION'; }
+                        if (cat === 'Event')      { bannerType = 'events';     bannerText = 'CAMPUS EVENT'; }
+                        const categoryLabel = cat === 'Exam' ? 'Exam Schedule'
+                            : cat === 'Suspension' ? 'Class Suspension'
+                            : cat === 'Event' ? 'Campus Events' : (cat || 'General');
+                        return {
+                            id:           a.id,
+                            title:        a.title   || '',
+                            category:     categoryLabel,
+                            date:         a.date    || '',
+                            time:         '',
+                            professor:    a.author  || 'Admin',
+                            professorAvatar: null,
+                            description:  a.content || '',
+                            bannerText,
+                            bannerType,
+                            likeCount:    a.likeCount    || 0,
+                            commentCount: a.commentCount || 0,
+                            isPinned:     a.isPinned     || false
+                        };
+                    });
+                    // Sync pins to localStorage for Pinned.aspx
+                    const syncPins = {};
+                    announcementsDB.forEach(a => { if (a.isPinned) syncPins[a.id] = true; });
+                    localStorage.setItem('campus_pins',  JSON.stringify(syncPins));
+                    localStorage.setItem('teacher_pins', JSON.stringify(syncPins));
+                    if (callback) callback(announcementsDB);
+                })
+                .catch(() => { if (callback) callback([]); });
+        }
         const STORAGE = { get: k => JSON.parse(localStorage.getItem(k) || 'null'), set: (k, v) => localStorage.setItem(k, JSON.stringify(v)) };
 
         function loadPins() {
@@ -543,7 +556,7 @@
         let searchHistory = STORAGE.get('campus_history') || [];
 
         announcementsDB.forEach(a => {
-            if (likeCounts[a.id] === undefined) likeCounts[a.id] = Math.floor(Math.random() * 30) + 2;
+            if (likeCounts[a.id] === undefined) likeCounts[a.id] = a.likeCount || 0;
             if (comments[a.id] === undefined) comments[a.id] = [];
         });
 
@@ -791,32 +804,61 @@
         }
 
         function toggleLike(id) {
-            likes[id] = !likes[id];
-            likeCounts[id] = (likeCounts[id] || 0) + (likes[id] ? 1 : -1);
-            if (likeCounts[id] < 0) likeCounts[id] = 0;
-            const ann = announcementsDB.find(a => a.id === id);
-            if (likes[id] && ann) pushNotification('❤️ Liked "' + ann.title + '"', 'fa-heart');
-            saveState();
-            renderResults();
-            showToast(likes[id] ? '❤️ Liked!' : 'Like removed');
+            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    likes[id]      = res.liked;
+                    likeCounts[id] = res.likeCount;
+                    saveState();
+                    renderResults();
+                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                })
+                .catch(() => showToast('Could not update like'));
         }
 
         function togglePin(id) {
-            pins[id] = !pins[id];
-            saveState();
-            const ann = announcementsDB.find(a => a.id === id);
-            if (ann) pushNotification((pins[id] ? '📌 Pinned: ' : '📌 Unpinned: ') + ann.title, 'fa-thumbtack');
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins', newValue: JSON.stringify(pins) }));
-            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(pins) }));
-            renderResults();
-            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
+            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { showToast('Error: ' + res.error); return; }
+                    if (res.isPinned) {
+                        pins[id] = true;
+                    } else {
+                        delete pins[id];
+                    }
+                    const ann = announcementsDB.find(a => a.id === id);
+                    if (ann) ann.isPinned = res.isPinned;
+                    saveState();
+                    renderResults();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(() => showToast('Could not update pin'));
         }
 
         function openComments(id) {
             const sec = document.getElementById('cs-' + id);
             if (!sec) return;
+            const wasHidden = !sec.classList.contains('show');
             sec.classList.toggle('show');
-            if (sec.classList.contains('show')) {
+            if (wasHidden) {
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(r => r.json())
+                    .then(list => {
+                        const cl = document.getElementById('cl-' + id);
+                        if (!cl) return;
+                        if (!list.length) { cl.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>'; return; }
+                        cl.innerHTML = list.map(c =>
+                            '<div class="comment-item">' +
+                            '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                            '<div><div class="comment-author">' + escapeHtml(c.author) + '</div>' +
+                            '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
+                            '<div class="comment-time">' + escapeHtml(c.date) + '</div></div></div>'
+                        ).join('');
+                        const cc = document.getElementById('cc-' + id);
+                        if (cc) cc.textContent = list.length;
+                    })
+                    .catch(() => {});
                 const input = document.getElementById('ci-' + id);
                 if (input) setTimeout(() => input.focus(), 50);
             }
@@ -828,21 +870,33 @@
             const text = input.value.trim();
             if (!text) { showToast('Please write a comment first'); return; }
 
-            if (!comments[id]) comments[id] = [];
-            comments[id].push({
-                author: 'You (Student)',
-                text: text,
-                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-            });
-            const ann = announcementsDB.find(a => a.id === id);
-            if (ann) pushNotification('💬 Comment on "' + ann.title + '": ' + text, 'fa-comment');
-            saveState();
-            input.value = '';
-            const cl = document.getElementById('cl-' + id);
-            if (cl) cl.innerHTML = renderCommentsList(id);
-            const cc = document.getElementById('cc-' + id);
-            if (cc) cc.textContent = comments[id].length;
-            showToast('💬 Comment posted!');
+            fetch('CommentHandler.ashx?action=add', { credentials: 'same-origin',
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: id, comment: text })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
+                input.value = '';
+                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
+                    .then(r => r.json())
+                    .then(list => {
+                        const cl = document.getElementById('cl-' + id);
+                        if (cl) cl.innerHTML = list.map(c =>
+                            '<div class="comment-item">' +
+                            '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                            '<div><div class="comment-author">' + escapeHtml(c.author) + '</div>' +
+                            '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
+                            '<div class="comment-time">' + escapeHtml(c.date) + '</div></div></div>'
+                        ).join('');
+                        const cc = document.getElementById('cc-' + id);
+                        if (cc) cc.textContent = list.length;
+                    })
+                    .catch(() => {});
+                showToast('💬 Comment posted!');
+            })
+            .catch(() => showToast('Could not post comment'));
         }
 
         function sharePost(id, title) {
@@ -882,7 +936,6 @@
 
         function init() {
             renderHistory();
-            renderPinnedSidebar();
             updateNotifBadge();
 
             flatpickr(dateFilter, {
@@ -902,14 +955,23 @@
                 navigateWithFlip('Notifications.aspx');
             });
 
-            try {
-                if (lastSearchHidden && lastSearchHidden.value) {
-                    searchInput.value = lastSearchHidden.value;
-                    performSearch();
-                } else {
-                    renderResults();
-                }
-            } catch (e) { renderResults(); }
+            // Load from DB, then render
+            loadAnnouncementsFromDB(function(data) {
+                announcementsDB = data;
+                announcementsDB.forEach(a => {
+                    if (likeCounts[a.id] === undefined) likeCounts[a.id] = a.likeCount || 0;
+                    if (pins[a.id] === undefined && a.isPinned) pins[a.id] = true;
+                });
+                renderPinnedSidebar();
+                try {
+                    if (lastSearchHidden && lastSearchHidden.value) {
+                        searchInput.value = lastSearchHidden.value;
+                        performSearch();
+                    } else {
+                        renderResults();
+                    }
+                } catch (e) { renderResults(); }
+            });
         }
 
         init();
@@ -933,10 +995,6 @@
                 if (e.key === KEY) applyTheme(e.newValue || 'light');
                 if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
                     pins = loadPins();
-                    renderResults();
-                }
-                if (e.key === 'teacher_announcements') {
-                    announcementsDB = loadAnnouncementsDB();
                     renderResults();
                 }
                 if (e.key === 'campus_notifications') {

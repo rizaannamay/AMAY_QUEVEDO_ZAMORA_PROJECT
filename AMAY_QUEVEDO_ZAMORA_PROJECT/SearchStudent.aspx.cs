@@ -15,6 +15,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
+            // Only Students may use the student search — redirect Admin to their dashboard
+            if (string.Equals(
+                    Session["Role"] != null ? Session["Role"].ToString() : "",
+                    "Admin", StringComparison.OrdinalIgnoreCase))
+            {
+                Response.Redirect("SearchDashboard.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+
             if (!IsPostBack)
             {
                 // If a query string term was passed (e.g. from Student.aspx search),
