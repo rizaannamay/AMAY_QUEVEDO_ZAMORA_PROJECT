@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Text;
 using System.Web;
@@ -11,8 +9,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        private string ConnStr =>
-            ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -29,7 +26,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // ── ADD COMMENT ──────────────────────────────────────
         private void AddComment(HttpContext ctx)
         {
             ctx.Response.ContentType = "application/json";
@@ -45,8 +41,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 json = reader.ReadToEnd();
 
             var js = new JavaScriptSerializer();
-            Dictionary<string, object> data;
-            try { data = js.Deserialize<Dictionary<string, object>>(json); }
+            System.Collections.Generic.Dictionary<string, object> data;
+            try { data = js.Deserialize<System.Collections.Generic.Dictionary<string, object>>(json); }
             catch
             {
                 ctx.Response.Write("{\"success\":false,\"error\":\"Invalid JSON\"}");
@@ -71,68 +67,46 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                using (var conn = new SqlConnection(ConnStr))
+                con.Open();
+
+                SqlCommand cmd1 = new SqlCommand("INSERT INTO Comments (AnnouncementId, UserId, CommentText) VALUES (" + announcementId + "," + userId + ",'" + commentText + "')", con);
+                cmd1.ExecuteNonQuery();
+
+                SqlCommand cmd2 = new SqlCommand("UPDATE Announcements SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=" + announcementId + ") WHERE AnnouncementId=" + announcementId, con);
+                cmd2.ExecuteNonQuery();
+
+                // Notify announcement author
+                string notifSql = "SELECT a.UserId, a.Title, u.FullName FROM Announcements a JOIN Users u ON u.UserId=" + userId + " WHERE a.AnnouncementId=" + announcementId;
+                SqlCommand notifCmd = new SqlCommand(notifSql, con);
+                SqlDataReader dr = notifCmd.ExecuteReader();
+                if (dr.Read())
                 {
-                    conn.Open();
+                    int    authorId      = Convert.ToInt32(dr["UserId"]);
+                    string annTitle      = dr["Title"].ToString();
+                    string commenterName = dr["FullName"].ToString();
+                    dr.Close();
 
-                    const string insertSql = @"
-                        INSERT INTO Comments (AnnouncementId, UserId, CommentText)
-                        VALUES (@AnnId, @UserId, @Text)";
-                    using (var cmd = new SqlCommand(insertSql, conn))
+                    if (authorId != userId)
                     {
-                        cmd.Parameters.AddWithValue("@AnnId",  announcementId);
-                        cmd.Parameters.AddWithValue("@UserId", userId);
-                        cmd.Parameters.AddWithValue("@Text",   commentText);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    const string updateSql = @"
-                        UPDATE Announcements
-                        SET    CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId = @AnnId)
-                        WHERE  AnnouncementId = @AnnId";
-                    using (var cmd = new SqlCommand(updateSql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId", announcementId);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    // Notify the announcement author (if different from commenter)
-                    const string authorSql = @"
-                        SELECT a.UserId, a.Title, u.FullName
-                        FROM   Announcements a
-                        JOIN   Users u ON u.UserId = @CommenterUid
-                        WHERE  a.AnnouncementId = @AnnId";
-                    using (var cmd = new SqlCommand(authorSql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId",        announcementId);
-                        cmd.Parameters.AddWithValue("@CommenterUid", userId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            if (r.Read())
-                            {
-                                int    authorId      = r.GetInt32(0);
-                                string annTitle      = r.GetString(1);
-                                string commenterName = r.GetString(2);
-                                r.Close();
-                                if (authorId != userId)
-                                {
-                                    string msg = $"💬 {commenterName} commented on \"{annTitle}\"";
-                                    NotificationHandler.Insert(conn, authorId, msg);
-                                }
-                            }
-                        }
+                        SqlCommand insertNotif = new SqlCommand("INSERT INTO Notifications (UserId, Message) VALUES (" + authorId + ",'" + commenterName + " commented on " + annTitle + "')", con);
+                        insertNotif.ExecuteNonQuery();
                     }
                 }
+                else
+                {
+                    dr.Close();
+                }
 
+                con.Close();
                 ctx.Response.Write("{\"success\":true}");
             }
             catch (Exception ex)
             {
-                ctx.Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
+                if (con.State == System.Data.ConnectionState.Open) con.Close();
+                ctx.Response.Write("{\"success\":false,\"error\":\"" + ex.Message.Replace("\"", "") + "\"}");
             }
         }
 
-        // ── GET COMMENTS ─────────────────────────────────────
         private void GetComments(HttpContext ctx)
         {
             ctx.Response.ContentType = "application/json";
@@ -143,66 +117,53 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.Append("[");
             bool first = true;
 
             try
             {
-                using (var conn = new SqlConnection(ConnStr))
-                {
-                    conn.Open();
-                    const string sql = @"
-                        SELECT c.CommentText, c.CreatedDate, u.FullName
-                        FROM   Comments c
-                        JOIN   Users u ON u.UserId = c.UserId
-                        WHERE  c.AnnouncementId = @AnnId
-                        ORDER  BY c.CreatedDate ASC";
+                con.Open();
 
-                    using (var cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@AnnId", announcementId);
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            while (r.Read())
-                            {
-                                if (!first) sb.Append(",");
-                                first = false;
-                                string text   = EscapeJson(r.GetString(0));
-                                string date   = GetTimeAgo(r.GetDateTime(1));
-                                string author = EscapeJson(r.GetString(2));
-                                sb.Append($"{{\"author\":\"{author}\",\"text\":\"{text}\",\"date\":\"{date}\"}}");
-                            }
-                        }
-                    }
+                string sql = "SELECT c.CommentText, c.CreatedDate, u.FullName FROM Comments c " +
+                             "JOIN Users u ON u.UserId = c.UserId " +
+                             "WHERE c.AnnouncementId = " + announcementId + " ORDER BY c.CreatedDate ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    if (!first) sb.Append(",");
+                    first = false;
+                    string text   = dr["CommentText"].ToString().Replace("\"", "").Replace("\\", "");
+                    string date   = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"]));
+                    string author = dr["FullName"].ToString().Replace("\"", "");
+                    sb.Append("{\"author\":\"" + author + "\",\"text\":\"" + text + "\",\"date\":\"" + date + "\"}");
                 }
+
+                dr.Close();
+                con.Close();
             }
-            catch { /* return empty array on error */ }
+            catch
+            {
+                if (con.State == System.Data.ConnectionState.Open) con.Close();
+            }
 
             sb.Append("]");
             ctx.Response.Write(sb.ToString());
         }
 
-        // ── HELPERS ──────────────────────────────────────────
         private string GetTimeAgo(DateTime date)
         {
             TimeSpan ts = DateTime.Now - date;
             if (ts.TotalMinutes < 1)  return "Just now";
-            if (ts.TotalMinutes < 60) return $"{(int)ts.TotalMinutes}m ago";
-            if (ts.TotalHours   < 24) return $"{(int)ts.TotalHours}h ago";
-            if (ts.TotalDays    < 7)  return $"{(int)ts.TotalDays}d ago";
+            if (ts.TotalMinutes < 60) return (int)ts.TotalMinutes + "m ago";
+            if (ts.TotalHours   < 24) return (int)ts.TotalHours   + "h ago";
+            if (ts.TotalDays    < 7)  return (int)ts.TotalDays    + "d ago";
             return date.ToString("MMM dd");
         }
 
-        private string EscapeJson(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return "";
-            return text.Replace("\\", "\\\\")
-                       .Replace("\"", "\\\"")
-                       .Replace("\n", "\\n")
-                       .Replace("\r", "");
-        }
-
-        public bool IsReusable => false;
+        public bool IsReusable { get { return false; } }
     }
 }

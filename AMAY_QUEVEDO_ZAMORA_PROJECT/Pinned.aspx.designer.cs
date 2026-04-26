@@ -9,11 +9,8 @@
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
-
-
     public partial class Pinned
     {
-
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -22,5 +19,23 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+
+        /// <summary>
+        /// rptPinned control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptPinned;
+
+        /// <summary>
+        /// pnlEmpty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlEmpty;
     }
 }

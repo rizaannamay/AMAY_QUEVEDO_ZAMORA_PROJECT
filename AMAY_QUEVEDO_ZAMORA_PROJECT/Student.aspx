@@ -1389,14 +1389,43 @@
             var isHidden = sec.style.display === 'none' || sec.style.display === '';
             sec.style.display = isHidden ? 'block' : 'none';
             if (isHidden) {
+                loadCommentsFromDB(postId);
                 var input = document.getElementById('commentInput_' + postId);
                 if (input) setTimeout(function() { input.focus(); }, 50);
             }
         }
 
-        function loadComments(postId) {
+        function loadCommentsFromDB(postId) {
             var commentsList = document.getElementById('commentsList_' + postId);
-            if (commentsList) commentsList.innerHTML = renderCommentsList(postId);
+            if (!commentsList) return;
+            
+            commentsList.innerHTML = '<div style="text-align:center;padding:10px;color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+            
+            fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(comments) {
+                    if (!comments || !comments.length) {
+                        commentsList.innerHTML = '<div class="no-comments">No comments yet. Be the first!</div>';
+                        return;
+                    }
+                    commentsList.innerHTML = comments.map(function(c) {
+                        return '<div class="comment">' +
+                            '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
+                            '<div class="comment-content">' +
+                                '<span class="comment-author">' + escapeHtml(c.author) + '</span>' +
+                                '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
+                                '<div class="comment-time">' + escapeHtml(c.date) + '</div>' +
+                            '</div>' +
+                        '</div>';
+                    }).join('');
+                })
+                .catch(function() {
+                    commentsList.innerHTML = '<div class="no-comments">Error loading comments</div>';
+                });
+        }
+
+        function loadComments(postId) {
+            loadCommentsFromDB(postId);
         }
 
         function addComment(btn, postId) {
@@ -1415,8 +1444,17 @@
             .then(function(res) {
                 if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
                 input.value = '';
-                loadComments(postId);
-                showToast('?? Comment posted!');
+                loadCommentsFromDB(postId);
+                // Update comment count in UI
+                var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+                if (card) {
+                    var commentCountSpan = card.querySelector('.comment-count');
+                    if (commentCountSpan) {
+                        var currentCount = parseInt(commentCountSpan.textContent) || 0;
+                        commentCountSpan.textContent = currentCount + 1;
+                    }
+                }
+                showToast('💬 Comment posted!');
             })
             .catch(function() { showToast('Could not post comment'); });
         }
