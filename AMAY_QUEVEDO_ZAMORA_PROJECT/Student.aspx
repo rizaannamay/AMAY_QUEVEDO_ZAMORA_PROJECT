@@ -14,6 +14,7 @@
             box-sizing: border-box;
         }
 
+
         :root {
             --bg-image: url('wbg.jpg');
             --page-text: #1a2a3a;
