@@ -1,18 +1,13 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 <script runat="server">
-    protected string BackUrl
-    {
-        get
-        {
-               string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+    protected string BackUrl {
+        get {
+            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
         }
     }
-
-    protected string BackLabel
-    {
-        get
-        {
+    protected string BackLabel {
+        get {
             string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Back to Teacher" : "Back to Student";
         }
@@ -458,6 +453,33 @@
             .creator-card { grid-template-columns: 1fr; text-align: center; }
             .creator-photo { margin: 0 auto; }
         }
+
+        /* ── Light mode overrides ── */
+        body:not(.dark-mode) {
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: rgba(240, 245, 255, 0.9);
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a3a5c;
+            --primary-2: #2c5a7a;
+            --accent: #d97706;
+            --muted: #6b7c8f;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image) center/cover fixed no-repeat;
+            color: var(--page-text);
+        }
+        body:not(.dark-mode) h1,
+        body:not(.dark-mode) .section-heading h3,
+        body:not(.dark-mode) .mission-item h4,
+        body:not(.dark-mode) .gallery-copy h4,
+        body:not(.dark-mode) .creator-info h4,
+        body:not(.dark-mode) .stat strong,
+        body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
+        body:not(.dark-mode) .brand { color: var(--primary); }
+        body:not(.dark-mode) .eyebrow { color: var(--accent); }
+        body:not(.dark-mode) .creator-role { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -615,18 +637,27 @@
     </div>
 
     <script>
+        // ── Theme sync ────────────────────────────────────────
+        (function() {
+            var isDark = localStorage.getItem('campus_theme') === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_theme') {
+                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+                }
+            });
+        })();
+
         function openImageModal(src, title, text) {
-            var modal = document.getElementById('imageModal');
-            var preview = document.getElementById('imageModalPreview');
-            var modalTitle = document.getElementById('imageModalTitle');
-            var modalText = document.getElementById('imageModalText');
-
-            if (!modal || !preview || !modalTitle || !modalText) return;
-
-            preview.src = src;
-            preview.alt = title;
-            modalTitle.textContent = title;
-            modalText.textContent = text;
+            var modal    = document.getElementById('imageModal');
+            var preview  = document.getElementById('imageModalPreview');
+            var titleEl  = document.getElementById('imageModalTitle');
+            var textEl   = document.getElementById('imageModalText');
+            if (!modal) return;
+            preview.src        = src;
+            preview.alt        = title;
+            titleEl.textContent = title;
+            textEl.textContent  = text;
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
         }
@@ -634,16 +665,25 @@
         function closeImageModal(event) {
             var modal = document.getElementById('imageModal');
             if (!modal) return;
-
+            // close when clicking the backdrop or the close button (no event = button click)
             if (event && event.target !== modal) return;
-
             modal.classList.remove('show');
             document.body.style.overflow = '';
         }
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                closeImageModal();
+        // close button click (no event argument)
+        document.getElementById('imageModal')
+            .querySelector('.image-modal-close')
+            .addEventListener('click', function() {
+                var modal = document.getElementById('imageModal');
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                var modal = document.getElementById('imageModal');
+                if (modal) { modal.classList.remove('show'); document.body.style.overflow = ''; }
             }
         });
     </script>
