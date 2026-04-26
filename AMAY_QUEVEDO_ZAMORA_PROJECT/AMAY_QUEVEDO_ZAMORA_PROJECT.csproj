@@ -71,19 +71,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AboutUs.aspx" />
+    <Content Include="Academic Updates.jpg" />
+    <Content Include="Amay Riza Ann.jpg" />
     <Content Include="bg.jpg" />
     <Content Include="Comments.aspx" />
     <Content Include="ctu-logo.png" />
     <Content Include="login.aspx" />
+    <Content Include="Quevedo Mary Chris.jpg" />
+    <Content Include="School Announcent Campaign.jpg" />
+    <Content Include="School Campus View.jpg" />
     <Content Include="SearchDashboard.aspx" />
     <Content Include="Notifications.aspx" />
     <Content Include="Pinned.aspx" />
     <Content Include="SearchStudent.aspx" />
     <Content Include="Student.aspx" />
+    <Content Include="Students activities.jpg" />
     <Content Include="wbg.jpg" />
     <Content Include="signin.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
+    <Content Include="Zamora Shaira Jane.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutUs.aspx.cs">
