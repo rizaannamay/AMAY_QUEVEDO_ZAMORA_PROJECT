@@ -1357,17 +1357,21 @@
         }
 
         function togglePin(postId) {
-            st_pins[postId] = !st_pins[postId];
-            saveSharedState();
-            var anns = ST.get('teacher_announcements') || [];
-            var ann = anns.find(function(a) { return a.id === postId; });
-            if (ann) pushNotification((st_pins[postId] ? '?? Student pinned: ' : '?? Student unpinned: ') + ann.title, 'fa-thumbtack');
-            window.dispatchEvent(new StorageEvent('storage', { key: 'campus_pins',  newValue: JSON.stringify(st_pins) }));
-            window.dispatchEvent(new StorageEvent('storage', { key: 'teacher_pins', newValue: JSON.stringify(st_pins) }));
-            var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
-            if (card) applyCardState(card);
-            sortCardsByPin();
-            showToast(st_pins[postId] ? '?? Pinned!' : 'Unpinned');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (!res.ok) { showToast('❌ ' + res.error); return; }
+                    if (res.isPinned) {
+                        st_pins[postId] = true;
+                    } else {
+                        delete st_pins[postId];
+                    }
+                    var card = document.querySelector('.announcement-card[data-post-id="' + postId + '"]');
+                    if (card) applyCardState(card);
+                    sortCardsByPin();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(function() { showToast('❌ Could not update pin'); });
         }
 
         function toggleNotif(postId) {
@@ -1464,16 +1468,9 @@
         }
 
         // -- Sync pins from other tabs -------------------------
+        // Pins are DB-backed — no localStorage sync needed
         window.addEventListener('storage', function(e) {
-            if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
-                var tp = ST.get('teacher_pins') || {};
-                var cp = ST.get('campus_pins')  || {};
-                st_pins = Object.assign({}, cp, tp);
-                document.querySelectorAll('.announcement-card').forEach(function(card) {
-                    applyCardState(card);
-                });
-                sortCardsByPin();
-            }
+            // intentionally empty for pins — they come from the DB
         });
 
         // ── Category filter ───────────────────────────────────
@@ -1647,10 +1644,9 @@
                         '</div>';
                     }).join('');
 
-                    // Sync pins to localStorage for Pinned.aspx / Search pages
+                    // Update in-memory pin state from DB response — no localStorage write
                     st_pins = {};
                     announcements.forEach(function(a) { if (a.isPinned) st_pins[a.id] = true; });
-                    saveSharedState();
                     updateNotifBadge();
                 })
                 .catch(function() { showToast('Could not load announcements'); });
