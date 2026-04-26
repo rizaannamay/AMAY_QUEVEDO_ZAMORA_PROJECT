@@ -47,40 +47,12 @@
             --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
         }
 
-            --bg-image: url('wbg.jpg');
-            --page-text: #1a2a3a;
-            --surface: rgba(255, 255, 255, 0.92);
-            --surface-strong: #ffffff;
-            --surface-soft: rgba(240, 245, 255, 0.9);
-            --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2563eb;
-            --accent: #d97706;
-            --muted: #6b7c8f;
-            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-        }
-
-        /* ── DARK MODE ── */
-        body.dark-mode {
-            --bg-image: url('bg.jpg');
-            --page-text: #e8edf3;
-            --surface: rgba(15, 20, 27, 0.88);
-            --surface-strong: rgba(22, 28, 36, 0.96);
-            --surface-soft: rgba(40, 49, 61, 0.72);
-            --border: rgba(255, 255, 255, 0.08);
-            --primary: #7fc8ff;
-            --primary-2: #2f80ed;
-            --accent: #f7b267;
-            --muted: #a9b7c8;
-            --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
-        }
-
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
             background:
-                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
+                linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
                 var(--bg-image) center/cover fixed no-repeat;
             padding: 28px;
         }
@@ -547,7 +519,7 @@
                         <img src="Students activities.jpg" alt="Campus event announcement" />
                         <div class="gallery-copy">
                             <h4>Student Activities</h4>
-                           
+                            <p>Use this slot for announcement posters, student week photos, or campus program highlights.</p>
                         </div>
                     </article>
 
@@ -555,7 +527,7 @@
                         <img src="Academic Updates.jpg" alt="Academic announcement board" />
                         <div class="gallery-copy">
                             <h4>Academic Updates</h4>
-                            
+                            <p>Perfect for exam schedules, departmental notices, and registrar announcement images.</p>
                         </div>
                     </article>
 
@@ -563,7 +535,7 @@
                         <img src="School Campus View.jpg" alt="School campus view" />
                         <div class="gallery-copy">
                             <h4>Campus Highlights</h4>
-                            
+                            <p>Add a photo of your university grounds, buildings, or student facilities to build identity.</p>
                         </div>
                     </article>
 
@@ -571,13 +543,16 @@
                         <img src="School Announcent Campaign.jpg" alt="School announcement campaign" />
                         <div class="gallery-copy">
                             <h4>Official Campaigns</h4>
-                          
+                            <p>Use this area for orientation drives, reminders, safety announcements, or event promotions.</p>
                         </div>
                     </article>
                 </div>
             </section>
 
-           
+            <div class="footer-note">
+                Make sure `Students activities.jpg`, `Academic Updates.jpg`, `School Campus View.jpg`, `School Announcent Campaign.jpg`,
+                `Amay Riza Ann.jpg`, `Quevedo Mary Chris.jpg`, and `Zamora Shaira Jane.jpg` are inside the same project folder as this page.
+            </div>
 
             <section class="section-card creators-section">
                 <div class="section-heading">
@@ -634,7 +609,7 @@
             <button type="button" class="image-modal-close" onclick="closeImageModal()">
                 <i class="fas fa-times"></i>
             </button>
-            <img id="imageModalPreview" class="image-preview" src="" alt="Gallery preview" />
+            <img id="imageModalPreview" class="image-preview" src="about:blank" alt="Gallery preview" />
             <div class="image-caption">
                 <h4 id="imageModalTitle"></h4>
                 <p id="imageModalText"></p>
@@ -642,7 +617,7 @@
         </div>
     </div>
 
-    <script>
+     <script>
         function openImageModal(src, title, text) {
             var modal = document.getElementById('imageModal');
             var preview = document.getElementById('imageModalPreview');
