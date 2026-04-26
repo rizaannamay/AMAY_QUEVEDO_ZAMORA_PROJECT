@@ -47,12 +47,40 @@
             --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
         }
 
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: rgba(240, 245, 255, 0.9);
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a3a5c;
+            --primary-2: #2563eb;
+            --accent: #d97706;
+            --muted: #6b7c8f;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ── DARK MODE ── */
+        body.dark-mode {
+            --bg-image: url('bg.jpg');
+            --page-text: #e8edf3;
+            --surface: rgba(15, 20, 27, 0.88);
+            --surface-strong: rgba(22, 28, 36, 0.96);
+            --surface-soft: rgba(40, 49, 61, 0.72);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #7fc8ff;
+            --primary-2: #2f80ed;
+            --accent: #f7b267;
+            --muted: #a9b7c8;
+            --shadow: 0 22px 55px rgba(0, 0, 0, 0.35);
+        }
+
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
             background:
-                linear-gradient(rgba(6, 10, 15, 0.72), rgba(6, 10, 15, 0.88)),
+                linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
                 var(--bg-image) center/cover fixed no-repeat;
             padding: 28px;
         }

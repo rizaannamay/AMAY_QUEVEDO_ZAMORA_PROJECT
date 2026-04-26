@@ -76,6 +76,8 @@
     <Content Include="bg.jpg" />
     <Content Include="Comments.aspx" />
     <Content Include="ctu-logo.png" />
+    <Content Include="LikeHandler.ashx" />
+    <Content Include="CommentHandler.ashx" />
     <Content Include="login.aspx" />
     <Content Include="Quevedo Mary Chris.jpg" />
     <Content Include="School Announcent Campaign.jpg" />
@@ -99,6 +101,15 @@
     </Compile>
     <Compile Include="AboutUs.aspx.designer.cs">
       <DependentUpon>AboutUs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AnnouncementHandler.ashx.cs">
+      <DependentUpon>AnnouncementHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="LikeHandler.ashx.cs">
+      <DependentUpon>LikeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CommentHandler.ashx.cs">
+      <DependentUpon>CommentHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Comments.aspx.cs">
       <DependentUpon>Comments.aspx</DependentUpon>
