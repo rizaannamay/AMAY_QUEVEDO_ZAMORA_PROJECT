@@ -109,18 +109,22 @@
         }
 
         .action-link {
-            padding: 12px 20px;
-            border-radius: 999px;
-            border: 1px solid rgba(127, 200, 255, 0.22);
-            background: var(--surface-soft);
-            color: var(--page-text);
-            font-weight: 600;
-            transition: transform 0.2s ease, background 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a3a5c, #2563eb);
+            color: #ffffff;
+            border: none;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .action-link:hover {
-            transform: translateY(-1px);
-            background: rgba(127, 200, 255, 0.12);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37,99,235,0.35);
         }
 
         .hero {
@@ -480,6 +484,11 @@
         body:not(.dark-mode) .brand { color: var(--primary); }
         body:not(.dark-mode) .eyebrow { color: var(--accent); }
         body:not(.dark-mode) .creator-role { color: var(--accent); }
+        
+        /* Dark mode home button */
+        body.dark-mode .action-link {
+            background: linear-gradient(135deg, #818cf8, #6366f1);
+        }
     </style>
 </head>
 <body>
@@ -497,7 +506,9 @@
                 </div>
 
                 <div class="top-actions">
-                    <a class="action-link" href="<%= BackUrl %>"><i class="fas fa-arrow-left"></i> <%= BackLabel %></a>
+                    <a class="action-link" href="<%= BackUrl %>" title="Back to Portal">
+                        <i class="fas fa-home" style="font-size:18px;"></i>
+                    </a>
                 </div>
             </div>
 

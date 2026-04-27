@@ -78,15 +78,17 @@
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            border-radius: 999px;
-            background: var(--surface);
-            color: var(--primary);
-            border: 1px solid var(--border);
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a3a5c, #2563eb);
+            color: #ffffff;
+            border: none;
             box-shadow: var(--shadow);
-            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
+        .back-link:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,99,235,0.35); }
 
         .pinned-list {
             display: grid;
@@ -97,9 +99,16 @@
             background: var(--surface);
             backdrop-filter: blur(12px);
             border-radius: 28px;
-            border: 1px solid var(--border);
+            border: 1px solid #3B82F6;
             box-shadow: var(--shadow);
             padding: 28px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        
+        .pinned-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+            border-color: #1E3A8A;
         }
 
         .card-top {
@@ -203,33 +212,94 @@
 
         .dark-mode {
             --bg-image: url('bg.jpg');
-            --page-text: #f2f6fb;
-            --surface: rgba(33, 38, 45, 0.9);
-            --surface-strong: rgba(39, 44, 52, 0.96);
-            --border: rgba(255, 255, 255, 0.08);
-            --primary: #ffffff;
-            --primary-2: #7fa6d1;
-            --muted: #c4cfdb;
-            --shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+            --page-text: #e4e6eb;
+            --surface: rgba(30, 41, 59, 0.95);
+            --surface-strong: rgba(30, 41, 59, 0.98);
+            --border: rgba(148, 163, 184, 0.2);
+            --primary: #93c5fd;
+            --primary-2: #60a5fa;
+            --muted: #cbd5e1;
+            --shadow: 0 14px 34px rgba(0, 0, 0, 0.6);
         }
 
         body.dark-mode {
-            background-image: linear-gradient(rgba(18, 22, 28, 0.42), rgba(18, 22, 28, 0.42)), var(--bg-image);
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), var(--bg-image);
         }
 
-        .dark-mode .back-link,
+        body.dark-mode .back-link,
         .dark-mode .pinned-card,
         .dark-mode .empty-state {
             color: #ffffff;
         }
+        
+        body.dark-mode .pinned-card {
+            background: rgba(30, 41, 59, 0.95);
+            border-color: #3B82F6;
+        }
+        
+        body.dark-mode .pinned-card:hover {
+            border-color: #60a5fa;
+            background: rgba(30, 41, 59, 1);
+        }
 
         .dark-mode .status-pill {
-            background: rgba(234, 88, 12, 0.18);
-            color: #ffd3b0;
+            background: rgba(251, 146, 60, 0.25);
+            color: #fdba74;
         }
 
         .dark-mode .pin-icon {
-            color: #ff8a3d;
+            color: #fb923c;
+        }
+        
+        body.dark-mode .card-title,
+        body.dark-mode .author-name,
+        body.dark-mode .page-title {
+            color: #e0e7ff;
+        }
+        
+        body.dark-mode .page-title i {
+            color: #93c5fd;
+        }
+        
+        body.dark-mode .card-text {
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .meta {
+            color: #cbd5e1;
+        }
+        
+        body.dark-mode .cat-exam       { background: rgba(59, 130, 246, 0.25);  color: #93c5fd; }
+        body.dark-mode .cat-suspension { background: rgba(239, 68, 68, 0.25);   color: #fca5a5; }
+        body.dark-mode .cat-event      { background: rgba(34, 197, 94, 0.25);   color: #86efac; }
+        body.dark-mode .cat-default    { background: rgba(139, 92, 246, 0.25);  color: #c4b5fd; }
+        
+        body.dark-mode .comment-avatar {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+        
+        body.dark-mode .comment-author {
+            color: #c7d2fe;
+        }
+        
+        body.dark-mode .comment-text {
+            color: #e2e8f0;
+        }
+        
+        body.dark-mode .comment-input input {
+            background: rgba(51, 65, 85, 0.6);
+            border-color: rgba(148, 163, 184, 0.3);
+            color: #f1f5f9;
+        }
+        
+        body.dark-mode .comment-input button {
+            background: linear-gradient(135deg, #3B82F6, #60a5fa);
+        }
+        
+        body.dark-mode .action-btn:hover {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
         }
 
         @media (max-width: 768px) {
@@ -265,9 +335,8 @@
                         <i class="fas fa-thumbtack"></i>
                         <span>Pinned Announcements</span>
                     </div>
-                    <a class="back-link" href="<%= BackUrl %>">
-                        <i class="fas fa-arrow-left"></i>
-                        <span><%= BackLabel %></span>
+                    <a class="back-link" href="<%= BackUrl %>" title="Back to Portal">
+                        <i class="fas fa-home" style="font-size:18px;"></i>
                     </a>
                 </div>
 
@@ -507,8 +576,7 @@
         }
 
         function renderPinned() {
-            var announcementsDB = loadDB();
-            var pinned = announcementsDB.filter(function(a) { return !!pins[a.id]; });
+            var pinned = pinnedDB.filter(function(a) { return !!pins[a.id]; });
             var container = document.querySelector('.pinned-list');
             if (!container) return;
 

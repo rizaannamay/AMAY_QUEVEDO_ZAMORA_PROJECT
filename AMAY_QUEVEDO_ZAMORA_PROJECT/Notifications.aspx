@@ -67,18 +67,17 @@
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 10px 18px;
-            border-radius: 999px;
-            background: var(--surface);
-            color: var(--primary);
-            border: 1px solid var(--border);
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a3a5c, #2563eb);
+            color: #ffffff;
+            border: none;
             box-shadow: var(--shadow);
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .back-link:hover { background: var(--active-bg); }
+        .back-link:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,99,235,0.35); }
 
         /* ── Announcement card style ── */
         .announce-card {
@@ -88,7 +87,7 @@
             margin-bottom: 16px;
             box-shadow: var(--shadow);
             overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
         }
         .announce-card:hover {
             transform: translateY(-2px);
@@ -196,30 +195,58 @@
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
-            --surface: rgba(15,25,55,0.75);
-            --surface-strong: rgba(15,25,55,0.92);
-            --surface-soft: rgba(255,255,255,0.07);
-            --border: rgba(255,255,255,0.1);
-            --primary: #818cf8;
-            --primary-2: #6366f1;
-            --muted: #94a3b8;
-            --muted-light: #64748b;
-            --shadow: 0 8px 32px rgba(0,0,0,0.5);
-            --active-bg: rgba(99,102,241,0.18);
+            --surface: rgba(30, 41, 59, 0.95);
+            --surface-strong: rgba(30, 41, 59, 0.98);
+            --surface-soft: rgba(51, 65, 85, 0.6);
+            --border: rgba(148, 163, 184, 0.2);
+            --primary: #93c5fd;
+            --primary-2: #60a5fa;
+            --muted: #cbd5e1;
+            --muted-light: #94a3b8;
+            --shadow: 0 8px 32px rgba(0,0,0,0.6);
+            --active-bg: rgba(59, 130, 246, 0.2);
         }
         body.dark-mode {
-            background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), var(--bg-image);
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), var(--bg-image);
         }
         body.dark-mode .announce-card {
-            background: rgba(15,25,55,0.92);
+            background: rgba(30, 41, 59, 0.95);
             border-color: #3B82F6;
         }
-        body.dark-mode .announce-card:hover { border-color: #93C5FD; }
-        body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
-        body.dark-mode .cat-exam       { background:rgba(30,58,138,0.3);  color:#93C5FD; }
-        body.dark-mode .cat-suspension { background:rgba(198,40,40,0.2);  color:#ef9a9a; }
-        body.dark-mode .cat-event      { background:rgba(22,101,52,0.25); color:#86efac; }
-        body.dark-mode .toast-msg      { background:#6366f1; }
+        body.dark-mode .announce-card:hover { 
+            border-color: #60a5fa;
+            background: rgba(30, 41, 59, 1);
+        }
+        body.dark-mode .action-btn:hover { 
+            background: rgba(59, 130, 246, 0.15); 
+            color: #93c5fd; 
+        }
+        body.dark-mode .cat-exam       { background: rgba(59, 130, 246, 0.25);  color: #93c5fd; }
+        body.dark-mode .cat-suspension { background: rgba(239, 68, 68, 0.25);   color: #fca5a5; }
+        body.dark-mode .cat-event      { background: rgba(34, 197, 94, 0.25);   color: #86efac; }
+        body.dark-mode .toast-msg      { background: #3B82F6; }
+        body.dark-mode .card-author-name { color: #e0e7ff; }
+        body.dark-mode .card-title { color: #e0e7ff; }
+        body.dark-mode .card-desc { color: #e2e8f0; }
+        body.dark-mode .page-title { color: #e0e7ff; }
+        body.dark-mode .page-title i { color: #93c5fd; }
+        body.dark-mode .comment-author { color: #c7d2fe; }
+        body.dark-mode .comment-text { color: #e2e8f0; }
+        body.dark-mode .comment-avatar {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+        body.dark-mode .comment-input input {
+            background: rgba(51, 65, 85, 0.6);
+            border-color: rgba(148, 163, 184, 0.3);
+            color: #f1f5f9;
+        }
+        body.dark-mode .comment-input input::placeholder {
+            color: #94a3b8;
+        }
+        body.dark-mode .comment-input button {
+            background: linear-gradient(135deg, #3B82F6, #60a5fa);
+        }
 
         @media (max-width: 768px) {
             .page-shell { padding: 24px 16px; }
@@ -239,9 +266,8 @@
                         <i class="fas fa-bell"></i>
                         <span>Notifications</span>
                     </div>
-                    <a class="back-link" href="<%= BackUrl %>">
-                        <i class="fas fa-arrow-left"></i>
-                        <span><%= BackLabel %></span>
+                    <a class="back-link" href="<%= BackUrl %>" title="Back to Portal">
+                        <i class="fas fa-home" style="font-size:18px;"></i>
                     </a>
                 </div>
 

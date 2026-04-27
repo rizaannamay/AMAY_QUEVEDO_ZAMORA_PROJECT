@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Pin Test</title>
+    <style>
+        body { font-family: Arial; padding: 40px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        button { padding: 12px 24px; margin: 10px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .result { margin: 20px 0; padding: 15px; border-radius: 5px; font-family: monospace; white-space: pre-wrap; }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Quick Pin Test</h1>
+        <p>Open Console (F12) to see detailed logs</p>
+        
+        <button onclick="testPin()">Test Pin Announcement ID 1</button>
+        <button onclick="testGetPins()">Get My Pins</button>
+        
+        <div id="results"></div>
+        
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Make sure you're logged in first</li>
+            <li>Click "Test Pin Announcement ID 1"</li>
+            <li>Check the console for errors</li>
+            <li>Click "Get My Pins" to see if it worked</li>
+        </ol>
+    </div>
+
+    <script>
+        function showResult(title, data, isError = false) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = 'result ' + (isError ? 'error' : 'success');
+            div.innerHTML = '<strong>' + title + '</strong>\n' + JSON.stringify(data, null, 2);
+            results.appendChild(div);
+        }
+
+        function testPin() {
+            console.log('Testing pin...');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=1', { credentials: 'same-origin' })
+                .then(r => {
+                    console.log('Response status:', r.status);
+                    console.log('Response headers:', r.headers);
+                    return r.text();
+                })
+                .then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        const data = JSON.parse(text);
+                        console.log('Parsed response:', data);
+                        showResult('Pin Test Result', data, !data.ok);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        showResult('Pin Test ERROR - Invalid JSON', { rawResponse: text }, true);
+                    }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    showResult('Pin Test ERROR', { error: err.message }, true);
+                });
+        }
+
+        function testGetPins() {
+            console.log('Getting pins...');
+            fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' })
+                .then(r => {
+                    console.log('Response status:', r.status);
+                    return r.text();
+                })
+                .then(text => {
+                    console.log('Raw response:', text);
+                    try {
+                        const data = JSON.parse(text);
+                        console.log('Parsed response:', data);
+                        showResult('Get Pins Result', data, !data.ok);
+                    } catch (e) {
+                        console.error('JSON parse error:', e);
+                        showResult('Get Pins ERROR - Invalid JSON', { rawResponse: text }, true);
+                    }
+                })
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    showResult('Get Pins ERROR', { error: err.message }, true);
+                });
+        }
+    </script>
+</body>
+</html>

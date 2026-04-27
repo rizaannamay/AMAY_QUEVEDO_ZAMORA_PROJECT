@@ -63,7 +63,7 @@
             background-color: #0F172A;
         }
 
-        /* -- NAVBAR � blue gradient header -- */
+        /* -- NAVBAR -- */
         .glass-nav {
             background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
             border-bottom: none;
@@ -75,14 +75,12 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
-        /* Force nav text/icons white on the blue header */
         .glass-nav h1,
         .glass-nav p,
         .glass-nav a,
         .glass-nav button { color: #ffffff !important; }
         .glass-nav .text-muted { color: rgba(255,255,255,0.7) !important; }
 
-        /* -- GLASS SIDEBAR -- */
         .glass-sidebar {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -91,7 +89,6 @@
             transition: background 0.4s ease, border-color 0.4s ease;
         }
 
-        /* -- GLASS CARD -- */
         .glass-card {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -104,7 +101,6 @@
             transform: translateY(-2px);
         }
 
-        /* -- ANNOUNCE CARD -- */
         .announce-card {
             background: var(--surface-strong);
             border: 1px solid #3B82F6;
@@ -130,13 +126,11 @@
             box-shadow: 0 12px 32px rgba(0,0,0,0.5);
         }
 
-        /* Card text colors */
         .card-author-name { color: var(--primary); font-weight: 700; font-size: 15px; }
         .card-meta        { color: var(--muted); font-size: 12px; }
         .card-title       { color: var(--primary); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .card-desc        { color: var(--page-text); font-size: 13px; line-height: 1.6; }
 
-        /* -- CARD BANNERS -- */
         .card-banner {
             background: linear-gradient(135deg,#1e3a8a,#4f46e5);
             border-radius: 12px;
@@ -151,7 +145,6 @@
         .banner-events     { background: linear-gradient(135deg,#064e3b,#0d9488,#14b8a6); }
         .banner-default    { background: linear-gradient(135deg,#1e1b4b,#4f46e5,#818cf8); }
 
-        /* -- POST STATS BAR -- */
         .post-stats {
             display: flex;
             gap: 16px;
@@ -164,7 +157,6 @@
         .post-stats span { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
         .post-stats span:hover { color: var(--primary); }
 
-        /* -- ACTION BUTTONS -- */
         .action-buttons {
             display: flex;
             gap: 4px;
@@ -188,10 +180,8 @@
         }
         .action-btn:hover { background: #DBEAFE; color: #1E3A8A; }
         .action-btn.liked { color: #dc2626; }
-        .action-btn.pinned-active { color: #e65100; }
         body.dark-mode .action-btn:hover { background: rgba(255,255,255,0.06); color: #93C5FD; }
 
-        /* -- COMMENTS SECTION -- */
         .comments-section {
             padding: 0 20px 16px;
             border-top: 1px solid var(--border);
@@ -213,7 +203,6 @@
             font-size: 13px;
             color: var(--page-text);
             font-family: inherit;
-            transition: border-color 0.2s;
         }
         .comment-input-row input:focus { border-color: #6366f1; }
         .comment-input-row input::placeholder { color: var(--muted-light); }
@@ -227,7 +216,6 @@
             cursor: pointer;
             font-family: inherit;
             font-size: 13px;
-            transition: opacity 0.2s;
         }
         .comment-input-row button:hover { opacity: 0.88; }
         .comment-item {
@@ -252,7 +240,6 @@
         .comment-time   { font-size: 10px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px 0; text-align: center; color: var(--muted-light); font-size: 12px; }
 
-        /* -- CATEGORY BADGE -- */
         .cat-badge {
             display: inline-block;
             padding: 2px 10px;
@@ -270,7 +257,6 @@
         body.dark-mode .cat-event      { background: rgba(22,101,52,0.25); color: #86efac; }
         body.dark-mode .cat-default    { background: rgba(91,33,182,0.2);  color: #c4b5fd; }
 
-        /* -- HISTORY ITEMS -- */
         .history-item {
             cursor: pointer;
             transition: all 0.2s ease;
@@ -288,7 +274,6 @@
             color: var(--primary);
         }
 
-        /* -- SEARCH INPUT -- */
         .search-input {
             background: rgba(255,255,255,0.15);
             backdrop-filter: blur(4px);
@@ -303,28 +288,21 @@
             outline: none;
         }
         .search-input::placeholder { color: rgba(255,255,255,0.65); }
-        .glass-nav .fa-search { color: rgba(255,255,255,0.85) !important; }
 
-        /* -- FILTER SELECTS -- */
         .filter-select {
             background: var(--surface-soft);
             backdrop-filter: blur(4px);
             border: 1px solid var(--border);
             color: var(--page-text);
-            transition: border-color 0.2s;
         }
         .filter-select:focus { border-color: #6366f1; outline: none; }
-        .filter-select option { background: var(--surface-strong); color: var(--page-text); }
 
-        /* -- SCROLLBAR -- */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.1); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.5); border-radius: 10px; }
 
-        /* -- RESULTS CONTAINER -- */
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
 
-        /* -- TOAST -- */
         .toast-msg {
             position: fixed;
             bottom: 28px;
@@ -348,12 +326,132 @@
             100% { opacity: 0; }
         }
 
-        /* -- FLIP TRANSITION -- */
-        @keyframes flipIn {
-            0%   { transform: perspective(1200px) rotateY(90deg); opacity: 0; }
-            100% { transform: perspective(1200px) rotateY(0deg);  opacity: 1; }
+        /* ========== CONFIRMATION DIALOG - CENTERED CARD STYLE ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
-        .page-flip-in { animation: flipIn 0.18s ease-out forwards; transform-origin: center center; }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .confirm-card {
+            max-width: 420px;
+            width: 90%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            padding: 2rem 1.75rem;
+            text-align: center;
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.active .confirm-card {
+            transform: scale(1);
+        }
+        body.dark-mode .confirm-card {
+            background: #1e293b;
+        }
+        .icon-wrapper {
+            background: #fee2e2;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+        .icon-wrapper i {
+            font-size: 2rem;
+            color: #dc2626;
+        }
+        .info-icon-wrapper {
+            background: #dbeafe;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+        }
+        .info-icon-wrapper i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+        .confirm-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        body.dark-mode .confirm-title {
+            color: #f1f5f9;
+        }
+        .confirm-message {
+            font-size: 1rem;
+            color: #475569;
+            margin-bottom: 1.75rem;
+            line-height: 1.5;
+        }
+        body.dark-mode .confirm-message {
+            color: #cbd5e1;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            flex: 1;
+            padding: 12px 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #334155;
+        }
+        .btn-cancel:hover {
+            background: #e2e8f0;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-info {
+            background: #3b82f6;
+            color: white;
+        }
+        .btn-info:hover {
+            background: #2563eb;
+        }
+        @media (max-width: 480px) {
+            .confirm-card { padding: 1.5rem; }
+            .icon-wrapper { width: 52px; height: 52px; }
+            .icon-wrapper i { font-size: 1.6rem; }
+            .confirm-title { font-size: 1.3rem; }
+        }
 
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
@@ -373,13 +471,10 @@
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
 
         <div class="relative z-10">
-
-            <!-- NAVBAR -->
             <header class="glass-nav sticky top-0 z-40 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
-
-                        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateWithFlip('Student.aspx')">
+                        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('Student.aspx')">
                             <div class="bg-white/20 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
@@ -388,14 +483,12 @@
                                 <p class="text-xs font-medium hidden sm:block text-white/70">Student Portal</p>
                             </div>
                         </div>
-
                         <div class="flex-1 max-w-md mx-4">
                             <div class="relative">
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-sm text-white/80"></i>
                                 <asp:TextBox ID="searchInput" runat="server" CssClass="search-input w-full pl-10 pr-4 py-2 rounded-xl" placeholder="Search announcements..."></asp:TextBox>
                             </div>
                         </div>
-
                         <div class="flex items-center gap-3 md:gap-4">
                             <div class="relative">
                                 <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
@@ -403,7 +496,6 @@
                                 </button>
                                 <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-400 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
                             </div>
-
                             <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx"
                                 CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
                                 <i class="fas fa-home text-xl"></i>
@@ -414,10 +506,7 @@
             </header>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
-
                 <div class="flex flex-col lg:flex-row gap-6">
-
-                    <!-- Sidebar -->
                     <div class="lg:w-72 flex-shrink-0">
                         <div class="glass-sidebar rounded-2xl p-5 sticky top-24">
                             <div class="flex justify-between items-center mb-4">
@@ -432,7 +521,6 @@
                             <div id="historyList" class="space-y-2 max-h-[400px] overflow-y-auto">
                                 <div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>
                             </div>
-
                             <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
                                 <div class="flex items-center gap-2 mb-3">
                                     <i class="fas fa-thumbtack text-sm" style="color:#e65100"></i>
@@ -445,9 +533,7 @@
                         </div>
                     </div>
 
-                    <!-- Main content -->
                     <div class="flex-1">
-
                         <div class="glass-card rounded-2xl p-4 mb-6">
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div class="relative">
@@ -460,7 +546,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-newspaper text-xl" style="color:var(--primary)"></i>
@@ -468,14 +553,12 @@
                             </div>
                             <span id="resultCount" class="glass-card px-3 py-1 rounded-full text-xs" style="color:var(--primary)">0 items</span>
                         </div>
-
                         <div id="resultsContainer" class="space-y-5">
                             <div class="text-center py-12" style="color:#3B82F6">
                                 <i class="fas fa-spinner fa-spin text-3xl"></i>
                                 <p class="mt-2" style="color:#1E3A8A">Loading announcements...</p>
                             </div>
                         </div>
-
                         <div id="emptyState" class="glass-card rounded-2xl p-12 text-center hidden">
                             <i class="fas fa-inbox text-5xl mb-3" style="color:var(--muted-light)"></i>
                             <p style="color:var(--muted)">No announcements match your criteria</p>
@@ -484,438 +567,186 @@
                     </div>
                 </div>
             </div>
-
             <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm" style="border-color:var(--border);color:var(--muted);background:rgba(255,255,255,0.05)">
-                <i class="far fa-copyright"></i> 2026 CampusConnect � Connecting Students to Campus Life
+                <i class="far fa-copyright"></i> 2026 CampusConnect · Connecting Students to Campus Life
             </footer>
+        </div>
+
+        <!-- CONFIRMATION DIALOG - CENTERED CARD STYLE BOX -->
+        <div id="confirmModal" class="modal-overlay">
+            <div class="confirm-card">
+                <div class="icon-wrapper">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2 class="confirm-title">Clear search history?</h2>
+                <p class="confirm-message">Are you sure you want to clear all search history?</p>
+                <div class="button-group">
+                    <button id="modalCancelBtn" class="btn btn-cancel">Cancel</button>
+                    <button id="modalConfirmBtn" class="btn btn-danger">Clear History</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO DIALOG - for empty search history (same design style) -->
+        <div id="infoModal" class="modal-overlay">
+            <div class="confirm-card">
+                <div class="info-icon-wrapper">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <h2 class="confirm-title">Search History Empty</h2>
+                <p class="confirm-message">No search history found. Your search history is currently empty.</p>
+                <div class="button-group">
+                    <button id="infoOkBtn" class="btn btn-info">Got it</button>
+                </div>
+            </div>
         </div>
     </form>
 
-    
-
     <script>
-        // ── State (all from DB, not localStorage) ─────────────
         let announcementsDB = [];
-        let pins       = {};   // from UserPinHandler
-        let likes      = {};   // in-memory (LikeHandler tracks per-user in DB)
+        let pins = {};
+        let likes = {};
         let likeCounts = {};
         let searchHistory = JSON.parse(localStorage.getItem('campus_history') || '[]');
 
-        // ── DOM refs ──────────────────────────────────────────
-        const searchInput       = document.getElementById('<%= searchInput.ClientID %>');
-        const lastSearchHidden  = document.getElementById('<%= lastSearchTerm.ClientID %>');
-        const dateFilter        = document.getElementById('dateFilter');
-        const sortFilter        = document.getElementById('sortFilter');
-        const resultsContainer  = document.getElementById('resultsContainer');
-        const resultCount       = document.getElementById('resultCount');
-        const emptyState        = document.getElementById('emptyState');
-        const resetFiltersBtn   = document.getElementById('resetFiltersBtn');
-        const historyListDiv    = document.getElementById('historyList');
-        const clearHistoryBtn   = document.getElementById('clearHistoryBtn');
-        const notificationBtn   = document.getElementById('notificationBtn');
+        const searchInput = document.getElementById('<%= searchInput.ClientID %>');
+        const lastSearchHidden = document.getElementById('<%= lastSearchTerm.ClientID %>');
+        const dateFilter = document.getElementById('dateFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultCount = document.getElementById('resultCount');
+        const emptyState = document.getElementById('emptyState');
+        const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+        const historyListDiv = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
         const notificationBadge = document.getElementById('notificationBadge');
 
+        // Modal elements
+        const confirmModal = document.getElementById('confirmModal');
+        const infoModal = document.getElementById('infoModal');
+        const modalCancel = document.getElementById('modalCancelBtn');
+        const modalConfirm = document.getElementById('modalConfirmBtn');
+        const infoOkBtn = document.getElementById('infoOkBtn');
+
         let currentSearchTerm = '';
-        let currentDate       = '';
-        let currentSort       = 'latest';
+        let currentDate = '';
+        let currentSort = 'latest';
 
-        // ── Helpers ───────────────────────────────────────────
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-        }
-        function formatDate(d) {
-            try { return new Date(d).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }); }
-            catch(e) { return d; }
-        }
-        function getBannerClass(cat) {
-            if (cat === 'Exam Schedule')    return 'banner-exam';
-            if (cat === 'Class Suspension') return 'banner-suspension';
-            if (cat === 'Campus Events')    return 'banner-events';
-            return 'banner-default';
-        }
-        function getBannerText(cat) {
-            if (cat === 'Exam Schedule')    return 'EXAM SCHEDULE';
-            if (cat === 'Class Suspension') return 'CLASS SUSPENSION';
-            if (cat === 'Campus Events')    return 'CAMPUS EVENT';
-            return (cat || 'GENERAL').toUpperCase();
-        }
-        function getCatClass(cat) {
-            if (cat === 'Exam Schedule')    return 'cat-exam';
-            if (cat === 'Class Suspension') return 'cat-suspension';
-            if (cat === 'Campus Events')    return 'cat-event';
-            return 'cat-default';
-        }
-        function getCatIcon(cat) {
-            if (cat === 'Exam Schedule')    return '📅';
-            if (cat === 'Class Suspension') return '⚠️';
-            if (cat === 'Campus Events')    return '🎉';
-            return '📢';
-        }
-        function showToast(msg) {
-            const t = document.createElement('div');
-            t.className = 'toast-msg';
-            t.textContent = msg;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), 2700);
-        }
-        function updateNotifBadge() {
-            fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(res => {
-                    const count = res.ok ? (res.notifications || []).length : 0;
-                    notificationBadge.textContent = count;
-                    notificationBadge.style.display = count > 0 ? 'flex' : 'none';
-                })
-                .catch(() => { notificationBadge.style.display = 'none'; });
-        }
+        function showConfirmModal() { if (confirmModal) confirmModal.classList.add('active'); }
+        function closeConfirmModal() { if (confirmModal) confirmModal.classList.remove('active'); }
+        function showInfoModal() { if (infoModal) infoModal.classList.add('active'); }
+        function closeInfoModal() { if (infoModal) infoModal.classList.remove('active'); }
 
-        // ── Search history (localStorage is fine for UI history) ──
-        function saveHistory() {
-            localStorage.setItem('campus_history', JSON.stringify(searchHistory.slice(0, 15)));
-            renderHistory();
-        }
-        function addToHistory(term) {
-            if (!term.trim()) return;
-            term = term.trim();
-            searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0, 15);
-            saveHistory();
-        }
-        function renderHistory() {
-            if (!historyListDiv) return;
-            if (!searchHistory.length) {
-                historyListDiv.innerHTML = '<div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>';
+        function clearHistory() {
+            if (searchHistory.length === 0) {
+                showInfoModal();
                 return;
             }
-            historyListDiv.innerHTML = searchHistory.map(term => `
-                <div class="history-item flex items-center justify-between group" data-term="${escapeHtml(term)}">
-                    <span><i class="fas fa-search text-xs mr-2 opacity-50"></i>${escapeHtml(term)}</span>
-                    <i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i>
-                </div>
-            `).join('');
-            historyListDiv.querySelectorAll('.history-item').forEach(item => {
-                item.addEventListener('click', () => { searchInput.value = item.dataset.term; performSearch(); });
-            });
+            searchHistory = [];
+            saveHistory();
+            showToast('Search history cleared');
+            closeConfirmModal();
+        }
+
+        function checkAndClearHistory() {
+            if (searchHistory.length === 0) {
+                showInfoModal();
+            } else {
+                showConfirmModal();
+            }
+        }
+
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
+        function formatDate(d) { try { return new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch (e) { return d; } }
+        function getBannerClass(cat) { if (cat === 'Exam Schedule') return 'banner-exam'; if (cat === 'Class Suspension') return 'banner-suspension'; if (cat === 'Campus Events') return 'banner-events'; return 'banner-default'; }
+        function getBannerText(cat) { if (cat === 'Exam Schedule') return 'EXAM SCHEDULE'; if (cat === 'Class Suspension') return 'CLASS SUSPENSION'; if (cat === 'Campus Events') return 'CAMPUS EVENT'; return (cat || 'GENERAL').toUpperCase(); }
+        function getCatClass(cat) { if (cat === 'Exam Schedule') return 'cat-exam'; if (cat === 'Class Suspension') return 'cat-suspension'; if (cat === 'Campus Events') return 'cat-event'; return 'cat-default'; }
+        function getCatIcon(cat) { if (cat === 'Exam Schedule') return '📅'; if (cat === 'Class Suspension') return '⚠️'; if (cat === 'Campus Events') return '🎉'; return '📢'; }
+        function showToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2700); }
+        function updateNotifBadge() { fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' }).then(r => r.json()).then(res => { const count = res.ok ? (res.notifications || []).length : 0; notificationBadge.textContent = count; notificationBadge.style.display = count > 0 ? 'flex' : 'none'; }).catch(() => { notificationBadge.style.display = 'none'; }); }
+
+        function saveHistory() { localStorage.setItem('campus_history', JSON.stringify(searchHistory.slice(0, 15))); renderHistory(); }
+        function addToHistory(term) { if (!term.trim()) return; term = term.trim(); searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0, 15); saveHistory(); }
+        function renderHistory() {
+            if (!historyListDiv) return;
+            if (!searchHistory.length) { historyListDiv.innerHTML = '<div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>'; return; }
+            historyListDiv.innerHTML = searchHistory.map(term => `<div class="history-item flex items-center justify-between group" data-term="${escapeHtml(term)}"><span><i class="fas fa-search text-xs mr-2 opacity-50"></i>${escapeHtml(term)}</span><i class="fas fa-chevron-right text-xs opacity-0 group-hover:opacity-100 transition"></i></div>`).join('');
+            historyListDiv.querySelectorAll('.history-item').forEach(item => { item.addEventListener('click', () => { searchInput.value = item.dataset.term; performSearch(); }); });
         }
         function renderPinnedSidebar() {
-            const pinnedList    = document.getElementById('pinnedList');
+            const pinnedList = document.getElementById('pinnedList');
             const pinnedCountEl = document.getElementById('pinnedCount');
             const pinned = announcementsDB.filter(a => pins[a.id]);
             pinnedCountEl.textContent = pinned.length;
-            if (!pinned.length) {
-                pinnedList.innerHTML = '<div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>';
-                return;
-            }
-            pinnedList.innerHTML = pinned.map(a => `
-                <div class="history-item flex items-center gap-2 text-xs" style="color:var(--primary)">
-                    <i class="fas fa-thumbtack text-orange-500 flex-shrink-0"></i>
-                    <span class="truncate">${escapeHtml(a.title)}</span>
-                </div>
-            `).join('');
+            if (!pinned.length) { pinnedList.innerHTML = '<div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>'; return; }
+            pinnedList.innerHTML = pinned.map(a => `<div class="history-item flex items-center gap-2 text-xs" style="color:var(--primary)"><i class="fas fa-thumbtack text-orange-500 flex-shrink-0"></i><span class="truncate">${escapeHtml(a.title)}</span></div>`).join('');
         }
 
-        // ── Filter + render ───────────────────────────────────
         function getFilteredAnnouncements() {
             let results = [...announcementsDB];
-            if (currentSearchTerm.trim()) {
-                const kw = currentSearchTerm.toLowerCase().trim();
-                results = results.filter(a =>
-                    a.title.toLowerCase().includes(kw) ||
-                    a.description.toLowerCase().includes(kw) ||
-                    a.professor.toLowerCase().includes(kw)
-                );
-            }
+            if (currentSearchTerm.trim()) { const kw = currentSearchTerm.toLowerCase().trim(); results = results.filter(a => a.title.toLowerCase().includes(kw) || a.description.toLowerCase().includes(kw) || a.professor.toLowerCase().includes(kw)); }
             if (currentDate) results = results.filter(a => a.date && a.date.startsWith(currentDate));
             if (currentSort === 'latest') results.sort((a, b) => new Date(b.date) - new Date(a.date));
-            else                          results.sort((a, b) => new Date(a.date) - new Date(b.date));
+            else results.sort((a, b) => new Date(a.date) - new Date(b.date));
             results.sort((a, b) => (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0));
             return results;
         }
 
-        function renderCommentsList(list) {
-            if (!list || !list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
-            return list.map(c => `
-                <div class="comment-item">
-                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                    <div>
-                        <div class="comment-author">${escapeHtml(c.author)}</div>
-                        <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div class="comment-time">${escapeHtml(c.date || '')}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
+        function renderCommentsList(list) { if (!list || !list.length) return '<div class="no-comments">No comments yet. Be the first!</div>'; return list.map(c => `<div class="comment-item"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><div class="comment-author">${escapeHtml(c.author)}</div><div class="comment-text">${escapeHtml(c.text)}</div><div class="comment-time">${escapeHtml(c.date || '')}</div></div></div>`).join(''); }
 
         function renderResults() {
             const filtered = getFilteredAnnouncements();
             resultCount.textContent = `${filtered.length} item${filtered.length !== 1 ? 's' : ''}`;
-            if (!filtered.length) {
-                resultsContainer.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            }
+            if (!filtered.length) { resultsContainer.innerHTML = ''; emptyState.classList.remove('hidden'); return; }
             emptyState.classList.add('hidden');
             resultsContainer.innerHTML = filtered.map(ann => {
-                const liked  = !!likes[ann.id];
+                const liked = !!likes[ann.id];
                 const pinned = !!pins[ann.id];
-                const lc     = likeCounts[ann.id] || 0;
-                const cc     = ann.commentCount   || 0;
-                return `
-                <div class="announce-card" data-id="${ann.id}">
-                    <div style="padding:18px 20px 12px">
-                        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
-                            <div style="display:flex;align-items:center;gap:12px;flex:1">
-                                <div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">
-                                    <i class="fas fa-user-tie" style="color:var(--primary)"></i>
-                                </div>
-                                <div>
-                                    <div class="card-author-name">${escapeHtml(ann.professor)}</div>
-                                    <div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)}</div>
-                                </div>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:8px">
-                                <div class="card-banner ${getBannerClass(ann.category)} px-3 py-1 hidden sm:block">
-                                    <p class="text-white text-xs font-bold tracking-wide">${getBannerText(ann.category)}</p>
-                                </div>
-                                <button type="button" onclick="togglePin(${ann.id})"
-                                    title="${pinned ? 'Unpin' : 'Pin this announcement'}"
-                                    style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'var(--muted-light)'}">
-                                    <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-title">${escapeHtml(ann.title)}</div>
-                        <div class="card-desc">${escapeHtml(ann.description)}</div>
-                        ${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:260px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}
-                        <div style="margin-top:10px">
-                            <span class="cat-badge ${getCatClass(ann.category)}">${getCatIcon(ann.category)} ${ann.category}</span>
-                            ${pinned ? '<span style="margin-left:6px;font-size:10px;color:#e65100;font-weight:700"><i class="fas fa-thumbtack mr-1"></i>Pinned</span>' : ''}
-                        </div>
-                    </div>
-                    <div class="post-stats">
-                        <span onclick="toggleLike(${ann.id})">
-                            <i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i>
-                            <span id="lc-${ann.id}">${lc}</span> Likes
-                        </span>
-                        <span onclick="openComments(${ann.id})">
-                            <i class="far fa-comment"></i>
-                            <span id="cc-${ann.id}">${cc}</span> Comments
-                        </span>
-                        <span onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
-                            <i class="far fa-share-square"></i> Share
-                        </span>
-                    </div>
-                    <div class="action-buttons">
-                        <button type="button" class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${ann.id})">
-                            <i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${liked ? 'Liked' : 'Like'}
-                        </button>
-                        <button type="button" class="action-btn" onclick="openComments(${ann.id})">
-                            <i class="far fa-comment"></i> Comment
-                        </button>
-                        <button type="button" class="action-btn" onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')">
-                            <i class="fas fa-share-alt"></i> Share
-                        </button>
-                    </div>
-                    <div class="comments-section" id="cs-${ann.id}">
-                        <div class="comment-input-row">
-                            <input type="text" id="ci-${ann.id}" placeholder="Write a comment..." />
-                            <button type="button" onclick="postComment(${ann.id})">Post</button>
-                        </div>
-                        <div id="cl-${ann.id}"><div class="no-comments">No comments yet. Be the first!</div></div>
-                    </div>
-                </div>`;
+                const lc = likeCounts[ann.id] || 0;
+                const cc = ann.commentCount || 0;
+                return `<div class="announce-card" data-id="${ann.id}"><div style="padding:18px 20px 12px"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px"><div style="display:flex;align-items:center;gap:12px;flex:1"><div style="width:44px;height:44px;background:var(--active-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0"><i class="fas fa-user-tie" style="color:var(--primary)"></i></div><div><div class="card-author-name">${escapeHtml(ann.professor)}</div><div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)}</div></div></div><div style="display:flex;align-items:center;gap:8px"><div class="card-banner ${getBannerClass(ann.category)} px-3 py-1 hidden sm:block"><p class="text-white text-xs font-bold tracking-wide">${getBannerText(ann.category)}</p></div><button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}" style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#e65100' : 'var(--muted-light)'}"><i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i></button></div></div><div class="card-title">${escapeHtml(ann.title)}</div><div class="card-desc">${escapeHtml(ann.description)}</div>${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:260px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}<div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${getCatIcon(ann.category)} ${ann.category}</span></div></div><div class="post-stats"><span onclick="toggleLike(${ann.id})"><i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i><span id="lc-${ann.id}">${lc}</span> Likes</span><span onclick="openComments(${ann.id})"><i class="far fa-comment"></i><span id="cc-${ann.id}">${cc}</span> Comments</span><span onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')"><i class="far fa-share-square"></i> Share</span></div><div class="action-buttons"><button type="button" class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${ann.id})"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${liked ? 'Liked' : 'Like'}</button><button type="button" class="action-btn" onclick="openComments(${ann.id})"><i class="far fa-comment"></i> Comment</button><button type="button" class="action-btn" onclick="sharePost(${ann.id}, '${escapeHtml(ann.title)}')"><i class="fas fa-share-alt"></i> Share</button></div><div class="comments-section" id="cs-${ann.id}"><div class="comment-input-row"><input type="text" id="ci-${ann.id}" placeholder="Write a comment..." /><button type="button" onclick="postComment(${ann.id})">Post</button></div><div id="cl-${ann.id}"><div class="no-comments">No comments yet. Be the first!</div></div></div></div>`;
             }).join('');
             renderPinnedSidebar();
         }
 
-        // ── DB interactions ───────────────────────────────────
-        function toggleLike(id) {
-            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(res => {
-                    if (!res.ok) { showToast('Error: ' + res.error); return; }
-                    likes[id]      = res.liked;
-                    likeCounts[id] = res.likeCount;
-                    const lcEl = document.getElementById('lc-' + id);
-                    if (lcEl) lcEl.textContent = res.likeCount;
-                    const card = document.querySelector(`.announce-card[data-id="${id}"]`);
-                    if (card) {
-                        const btn = card.querySelector('.action-btn');
-                        if (btn) {
-                            btn.className = 'action-btn' + (res.liked ? ' liked' : '');
-                            btn.innerHTML = `<i class="${res.liked ? 'fas' : 'far'} fa-heart"></i> ${res.liked ? 'Liked' : 'Like'}`;
-                        }
-                    }
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
-                })
-                .catch(() => showToast('Could not update like'));
-        }
+        function toggleLike(id) { fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' }).then(r => r.json()).then(res => { if (!res.ok) { showToast('Error: ' + res.error); return; } likes[id] = res.liked; likeCounts[id] = res.likeCount; const lcEl = document.getElementById('lc-' + id); if (lcEl) lcEl.textContent = res.likeCount; showToast(res.liked ? 'Liked!' : 'Like removed'); }).catch(() => showToast('Could not update like')); }
+        function togglePin(id) { fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' }).then(r => r.json()).then(res => { if (!res.ok) { showToast('Error: ' + res.error); return; } if (res.isPinned) pins[id] = true; else delete pins[id]; renderResults(); showToast(res.isPinned ? 'Pinned!' : 'Unpinned'); }).catch(() => showToast('Could not update pin')); }
+        function openComments(id) { const sec = document.getElementById('cs-' + id); if (!sec) return; sec.classList.toggle('show'); if (sec.classList.contains('show')) { fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' }).then(r => r.json()).then(list => { const cl = document.getElementById('cl-' + id); if (cl) cl.innerHTML = renderCommentsList(list); const cc = document.getElementById('cc-' + id); if (cc) cc.textContent = list.length; }).catch(() => { }); setTimeout(() => { const inp = document.getElementById('ci-' + id); if (inp) inp.focus(); }, 50); } }
+        function postComment(id) { const input = document.getElementById('ci-' + id); if (!input) return; const text = input.value.trim(); if (!text) { showToast('Please write a comment first'); return; } fetch('CommentHandler.ashx?action=add', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId: id, comment: text }) }).then(r => r.json()).then(res => { if (!res.success) { showToast('Error: ' + (res.error || 'Could not post')); return; } input.value = ''; fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' }).then(r => r.json()).then(list => { const cl = document.getElementById('cl-' + id); if (cl) cl.innerHTML = renderCommentsList(list); const cc = document.getElementById('cc-' + id); if (cc) cc.textContent = list.length; }); showToast('Comment posted!'); }).catch(() => showToast('Could not post comment')); }
+        function sharePost(id, title) { const url = window.location.href.split('?')[0] + '?post=' + id; if (navigator.clipboard) { navigator.clipboard.writeText(url).then(() => showToast('Link copied: ' + title)); } else { showToast('Shared: ' + title); } }
+        function performSearch() { const term = searchInput.value; currentSearchTerm = term; if (lastSearchHidden) lastSearchHidden.value = term; if (term.trim()) addToHistory(term); renderResults(); }
+        function applyFilters() { currentDate = dateFilter.value || ''; currentSort = sortFilter.value; renderResults(); }
+        function resetEverything() { searchInput.value = ''; dateFilter.value = ''; sortFilter.value = 'latest'; currentSearchTerm = ''; currentDate = ''; currentSort = 'latest'; if (lastSearchHidden) lastSearchHidden.value = ''; renderResults(); }
+        function navigateTo(url) { window.location.href = url; }
 
-        function togglePin(id) {
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(res => {
-                    if (!res.ok) { showToast('❌ ' + res.error); return; }
-                    if (res.isPinned) pins[id] = true;
-                    else              delete pins[id];
-                    renderResults();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
-                })
-                .catch(() => showToast('❌ Could not update pin'));
-        }
-
-        function openComments(id) {
-            const sec = document.getElementById('cs-' + id);
-            if (!sec) return;
-            const isOpen = sec.classList.toggle('show');
-            if (isOpen) {
-                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                    .then(r => r.json())
-                    .then(list => {
-                        const cl = document.getElementById('cl-' + id);
-                        if (cl) cl.innerHTML = renderCommentsList(list);
-                        const cc = document.getElementById('cc-' + id);
-                        if (cc) cc.textContent = list.length;
-                    })
-                    .catch(() => {});
-                setTimeout(() => { const inp = document.getElementById('ci-' + id); if (inp) inp.focus(); }, 50);
-            }
-        }
-
-        function postComment(id) {
-            const input = document.getElementById('ci-' + id);
-            if (!input) return;
-            const text = input.value.trim();
-            if (!text) { showToast('Please write a comment first'); return; }
-            fetch('CommentHandler.ashx?action=add', {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ postId: id, comment: text })
-            })
-            .then(r => r.json())
-            .then(res => {
-                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post')); return; }
-                input.value = '';
-                fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                    .then(r => r.json())
-                    .then(list => {
-                        const cl = document.getElementById('cl-' + id);
-                        if (cl) cl.innerHTML = renderCommentsList(list);
-                        const cc = document.getElementById('cc-' + id);
-                        if (cc) cc.textContent = list.length;
-                    });
-                showToast('💬 Comment posted!');
-            })
-            .catch(() => showToast('Could not post comment'));
-        }
-
-        function sharePost(id, title) {
-            const url = window.location.href.split('?')[0] + '?post=' + id;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copied: ' + title));
-            } else {
-                showToast('📤 Shared: ' + title);
-            }
-        }
-
-        // ── Search / filter ───────────────────────────────────
-        function performSearch() {
-            const term = searchInput.value;
-            currentSearchTerm = term;
-            if (lastSearchHidden) lastSearchHidden.value = term;
-            if (term.trim()) addToHistory(term);
-            renderResults();
-        }
-        function applyFilters() {
-            currentDate = dateFilter.value || '';
-            currentSort = sortFilter.value;
-            renderResults();
-        }
-        function resetEverything() {
-            searchInput.value = '';
-            dateFilter.value  = '';
-            sortFilter.value  = 'latest';
-            currentSearchTerm = '';
-            currentDate       = '';
-            currentSort       = 'latest';
-            if (lastSearchHidden) lastSearchHidden.value = '';
-            renderResults();
-        }
-
-        // ── Bootstrap: load from DB ───────────────────────────
         function init() {
             renderHistory();
             updateNotifBadge();
-
-            flatpickr(dateFilter, {
-                dateFormat: 'Y-m-d',
-                altInput: true,
-                altFormat: 'F j, Y',
-                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
-            });
-
+            flatpickr(dateFilter, { dateFormat: 'Y-m-d', altInput: true, altFormat: 'F j, Y', onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); } });
             searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
             sortFilter.addEventListener('change', applyFilters);
             if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
-            if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', () => {
-                if (confirm('Clear all search history?')) { searchHistory = []; saveHistory(); }
+            if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', checkAndClearHistory);
+            if (notificationBtn) notificationBtn.addEventListener('click', () => navigateTo('Notifications.aspx'));
+            if (modalCancel) modalCancel.addEventListener('click', closeConfirmModal);
+            if (modalConfirm) modalConfirm.addEventListener('click', clearHistory);
+            if (infoOkBtn) infoOkBtn.addEventListener('click', closeInfoModal);
+            if (confirmModal) confirmModal.addEventListener('click', (e) => { if (e.target === confirmModal) closeConfirmModal(); });
+            if (infoModal) infoModal.addEventListener('click', (e) => { if (e.target === infoModal) closeInfoModal(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (confirmModal && confirmModal.classList.contains('active')) closeConfirmModal();
+                    if (infoModal && infoModal.classList.contains('active')) closeInfoModal();
+                }
             });
-            if (notificationBtn) notificationBtn.addEventListener('click', () => navigateWithFlip('Notifications.aspx'));
 
             resultsContainer.innerHTML = '<div class="text-center py-12" style="color:#3B82F6"><i class="fas fa-spinner fa-spin text-3xl"></i><p class="mt-2" style="color:#1E3A8A">Loading announcements...</p></div>';
-
-            Promise.all([
-                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(r => r.json()),
-                fetch('UserPinHandler.ashx?action=getUserPins',  { credentials: 'same-origin' }).then(r => r.json())
-            ])
-            .then(([annRes, pinRes]) => {
-                if (!annRes.ok) {
-                    resultsContainer.innerHTML = '<div class="text-center py-12" style="color:var(--muted)">Failed to load announcements.</div>';
-                    return;
-                }
-                announcementsDB = annRes.data.map(a => ({
-                    id:           a.id,
-                    title:        a.title        || '',
-                    category:     a.category === 'Exam'       ? 'Exam Schedule'
-                                : a.category === 'Suspension' ? 'Class Suspension'
-                                : a.category === 'Event'      ? 'Campus Events'
-                                : (a.category || 'General'),
-                    date:         a.date         || '',
-                    professor:    a.author       || 'Admin',
-                    description:  a.content      || '',
-                    imageUrl:     a.imageUrl     || '',
-                    likeCount:    a.likeCount    || 0,
-                    commentCount: a.commentCount || 0
-                }));
-                announcementsDB.forEach(a => { likeCounts[a.id] = a.likeCount; });
-                pins = {};
-                if (pinRes.ok && pinRes.pinnedIds) {
-                    pinRes.pinnedIds.forEach(id => { pins[id] = true; });
-                }
-                try {
-                    if (lastSearchHidden && lastSearchHidden.value) {
-                        searchInput.value = lastSearchHidden.value;
-                        currentSearchTerm = lastSearchHidden.value;
-                    }
-                } catch(e) {}
-                renderResults();
-            })
-            .catch(() => {
-                resultsContainer.innerHTML = '<div class="text-center py-12" style="color:var(--muted)">Could not connect to server.</div>';
-            });
+            Promise.all([fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(r => r.json()), fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(r => r.json())]).then(([annRes, pinRes]) => { if (!annRes.ok) { resultsContainer.innerHTML = '<div class="text-center py-12" style="color:var(--muted)">Failed to load announcements.</div>'; return; } announcementsDB = annRes.data.map(a => ({ id: a.id, title: a.title || '', category: a.category === 'Exam' ? 'Exam Schedule' : a.category === 'Suspension' ? 'Class Suspension' : a.category === 'Event' ? 'Campus Events' : (a.category || 'General'), date: a.date || '', professor: a.author || 'Admin', description: a.content || '', imageUrl: a.imageUrl || '', likeCount: a.likeCount || 0, commentCount: a.commentCount || 0 })); announcementsDB.forEach(a => { likeCounts[a.id] = a.likeCount; }); pins = {}; if (pinRes.ok && pinRes.pinnedIds) pinRes.pinnedIds.forEach(id => { pins[id] = true; }); try { if (lastSearchHidden && lastSearchHidden.value) { searchInput.value = lastSearchHidden.value; currentSearchTerm = lastSearchHidden.value; } } catch (e) { } renderResults(); }).catch(() => { resultsContainer.innerHTML = '<div class="text-center py-12" style="color:var(--muted)">Could not connect to server.</div>'; });
         }
-
         init();
 
-        function navigateWithFlip(url) {
-            const shell = document.querySelector('.relative.z-10') || document.body;
-            shell.style.opacity = '0';
-            shell.style.transition = 'opacity 0.15s ease';
-            setTimeout(() => { window.location.href = url; }, 150);
-        }
-
-        // ── Theme ─────────────────────────────────────────────
+        // Theme - no flip transition
         (function () {
             const KEY = 'campus_theme';
             function applyTheme(mode) { document.body.classList.toggle('dark-mode', mode === 'dark'); }
@@ -924,9 +755,6 @@
                 if (e.key === KEY) applyTheme(e.newValue || 'light');
                 if (e.key === 'campus_notifications') updateNotifBadge();
             });
-            const shell = document.querySelector('.relative.z-10') || document.body;
-            shell.classList.add('page-flip-in');
-            shell.addEventListener('animationend', () => shell.classList.remove('page-flip-in'), { once: true });
         })();
     </script>
 </body>
