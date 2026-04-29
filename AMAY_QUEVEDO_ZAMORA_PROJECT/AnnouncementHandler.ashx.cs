@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -9,7 +10,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class AnnouncementHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString);
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -34,22 +35,20 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             catch (Exception ex)
             {
                 ctx.Response.Write(js.Serialize(new { ok = false, error = ex.Message }));
+                if (con.State == System.Data.ConnectionState.Open) con.Close();
             }
         }
 
         private void GetAll(HttpContext ctx, JavaScriptSerializer js)
         {
             var list = new List<object>();
-
             con.Open();
             string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
                          "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.FullName " +
                          "FROM Announcements a JOIN Users u ON u.UserId = a.UserId " +
                          "ORDER BY a.IsPinned DESC, a.Date_Posted DESC";
-
             SqlCommand cmd = new SqlCommand(sql, con);
             SqlDataReader dr = cmd.ExecuteReader();
-
             while (dr.Read())
             {
                 list.Add(new
@@ -67,7 +66,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     author       = dr["FullName"].ToString()
                 });
             }
-
             dr.Close();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
@@ -96,7 +94,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
                     if (!System.IO.Directory.Exists(uploadsDir))
                         System.IO.Directory.CreateDirectory(uploadsDir);
-
                     string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
                     file.SaveAs(System.IO.Path.Combine(uploadsDir, fileName));
                     imgUrl = "uploads/announcements/" + fileName;
@@ -110,16 +107,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             con.Open();
-
             string sql = "INSERT INTO Announcements (UserId, Title, Content, Category, ImageUrl) " +
-                         "OUTPUT INSERTED.AnnouncementId " +
-                         "VALUES (" + uid + ",'" + title + "','" + content + "','" + cat + "','" + imgUrl + "')";
+                         "OUTPUT INSERTED.AnnouncementId VALUES (@uid, @title, @content, @cat, @img)";
             SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@uid",     uid);
+            cmd.Parameters.AddWithValue("@title",   title);
+            cmd.Parameters.AddWithValue("@content", content);
+            cmd.Parameters.AddWithValue("@cat",     cat);
+            cmd.Parameters.AddWithValue("@img",     imgUrl);
             int newId = (int)cmd.ExecuteScalar();
 
-            string notifMsg = "New announcement: " + title;
-            string notifSql = "INSERT INTO Notifications (UserId, Message) SELECT UserId, '" + notifMsg + "' FROM Users WHERE Role = 'Student'";
+            string notifSql = "INSERT INTO Notifications (UserId, Message) SELECT UserId, @msg FROM Users WHERE Role = 'Student'";
             SqlCommand notifCmd = new SqlCommand(notifSql, con);
+            notifCmd.Parameters.AddWithValue("@msg", "New announcement: " + title);
             notifCmd.ExecuteNonQuery();
 
             con.Close();
@@ -149,7 +149,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
                     if (!System.IO.Directory.Exists(uploadsDir))
                         System.IO.Directory.CreateDirectory(uploadsDir);
-
                     string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
                     file.SaveAs(System.IO.Path.Combine(uploadsDir, fileName));
                     imgUrl = "uploads/announcements/" + fileName;
@@ -163,15 +162,17 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             con.Open();
-
             string sql = imgUrl != null
-                ? "UPDATE Announcements SET Title='" + title + "', Content='" + content + "', Category='" + cat + "', ImageUrl='" + imgUrl + "' WHERE AnnouncementId=" + id
-                : "UPDATE Announcements SET Title='" + title + "', Content='" + content + "', Category='" + cat + "' WHERE AnnouncementId=" + id;
-
+                ? "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img WHERE AnnouncementId=@id"
+                : "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat WHERE AnnouncementId=@id";
             SqlCommand cmd = new SqlCommand(sql, con);
+            cmd.Parameters.AddWithValue("@title",   title);
+            cmd.Parameters.AddWithValue("@content", content);
+            cmd.Parameters.AddWithValue("@cat",     cat);
+            cmd.Parameters.AddWithValue("@id",      id);
+            if (imgUrl != null) cmd.Parameters.AddWithValue("@img", imgUrl);
             cmd.ExecuteNonQuery();
             con.Close();
-
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
@@ -185,17 +186,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             int id = Convert.ToInt32(ctx.Request["id"]);
-
             con.Open();
 
-            SqlCommand cmd1 = new SqlCommand("DELETE FROM Comments  WHERE AnnouncementId=" + id, con);
-            cmd1.ExecuteNonQuery();
+            SqlCommand c1 = new SqlCommand("DELETE FROM Comments   WHERE AnnouncementId=@id", con);
+            c1.Parameters.AddWithValue("@id", id); c1.ExecuteNonQuery();
 
-            SqlCommand cmd2 = new SqlCommand("DELETE FROM UserLikes WHERE AnnouncementId=" + id, con);
-            cmd2.ExecuteNonQuery();
+            SqlCommand c2 = new SqlCommand("DELETE FROM UserLikes  WHERE AnnouncementId=@id", con);
+            c2.Parameters.AddWithValue("@id", id); c2.ExecuteNonQuery();
 
-            SqlCommand cmd3 = new SqlCommand("DELETE FROM Announcements WHERE AnnouncementId=" + id, con);
-            cmd3.ExecuteNonQuery();
+            SqlCommand c4 = new SqlCommand("DELETE FROM Announcements WHERE AnnouncementId=@id", con);
+            c4.Parameters.AddWithValue("@id", id); c4.ExecuteNonQuery();
 
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true }));
@@ -203,22 +203,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void TogglePin(HttpContext ctx, JavaScriptSerializer js)
         {
-            if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
-                ctx.Session["Role"].ToString() != "Admin")
-            {
-                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
-                return;
-            }
-
-            int id = Convert.ToInt32(ctx.Request["id"]);
-
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand("UPDATE Announcements SET IsPinned = ~IsPinned WHERE AnnouncementId=" + id + "; SELECT IsPinned FROM Announcements WHERE AnnouncementId=" + id, con);
-            bool newPinState = (bool)cmd.ExecuteScalar();
-
-            con.Close();
-            ctx.Response.Write(js.Serialize(new { ok = true, isPinned = newPinState }));
+            ctx.Response.Write(js.Serialize(new { ok = false, error = "Pin/unpin is now handled client-side only." }));
         }
 
         public bool IsReusable { get { return false; } }

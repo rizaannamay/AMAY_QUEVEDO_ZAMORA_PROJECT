@@ -490,12 +490,6 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 md:gap-4">
-                            <div class="relative">
-                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
-                                    <i class="fas fa-bell text-xl"></i>
-                                </button>
-                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-400 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
-                            </div>
                             <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx"
                                 CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
                                 <i class="fas fa-home text-xl"></i>
@@ -520,15 +514,6 @@
                             </div>
                             <div id="historyList" class="space-y-2 max-h-[400px] overflow-y-auto">
                                 <div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>
-                            </div>
-                            <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <i class="fas fa-thumbtack text-sm" style="color:#e65100"></i>
-                                    <h3 class="font-bold text-sm" style="color:var(--primary)">Pinned (<span id="pinnedCount">0</span>)</h3>
-                                </div>
-                                <div id="pinnedList" class="space-y-2 max-h-[200px] overflow-y-auto">
-                                    <div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -619,8 +604,6 @@
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
         const historyListDiv = document.getElementById('historyList');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const notificationBtn = document.getElementById('notificationBtn');
-        const notificationBadge = document.getElementById('notificationBadge');
 
         // Modal elements
         const confirmModal = document.getElementById('confirmModal');
@@ -664,7 +647,7 @@
         function getCatClass(cat) { if (cat === 'Exam Schedule') return 'cat-exam'; if (cat === 'Class Suspension') return 'cat-suspension'; if (cat === 'Campus Events') return 'cat-event'; return 'cat-default'; }
         function getCatIcon(cat) { if (cat === 'Exam Schedule') return '📅'; if (cat === 'Class Suspension') return '⚠️'; if (cat === 'Campus Events') return '🎉'; return '📢'; }
         function showToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2700); }
-        function updateNotifBadge() { fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' }).then(r => r.json()).then(res => { const count = res.ok ? (res.notifications || []).length : 0; notificationBadge.textContent = count; notificationBadge.style.display = count > 0 ? 'flex' : 'none'; }).catch(() => { notificationBadge.style.display = 'none'; }); }
+        function updateNotifBadge() { /* bell removed */ }
 
         function saveHistory() { localStorage.setItem('campus_history', JSON.stringify(searchHistory.slice(0, 15))); renderHistory(); }
         function addToHistory(term) { if (!term.trim()) return; term = term.trim(); searchHistory = [term, ...searchHistory.filter(t => t !== term)].slice(0, 15); saveHistory(); }
@@ -677,6 +660,7 @@
         function renderPinnedSidebar() {
             const pinnedList = document.getElementById('pinnedList');
             const pinnedCountEl = document.getElementById('pinnedCount');
+            if (!pinnedList || !pinnedCountEl) return;
             const pinned = announcementsDB.filter(a => pins[a.id]);
             pinnedCountEl.textContent = pinned.length;
             if (!pinned.length) { pinnedList.innerHTML = '<div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>'; return; }
@@ -728,7 +712,6 @@
             sortFilter.addEventListener('change', applyFilters);
             if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);
             if (clearHistoryBtn) clearHistoryBtn.addEventListener('click', checkAndClearHistory);
-            if (notificationBtn) notificationBtn.addEventListener('click', () => navigateTo('Notifications.aspx'));
             if (modalCancel) modalCancel.addEventListener('click', closeConfirmModal);
             if (modalConfirm) modalConfirm.addEventListener('click', clearHistory);
             if (infoOkBtn) infoOkBtn.addEventListener('click', closeInfoModal);

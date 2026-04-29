@@ -517,12 +517,6 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 md:gap-4">
-                            <div class="relative">
-                                <button type="button" id="notificationBtn" class="p-2 hover:bg-white/20 rounded-full transition text-white">
-                                    <i class="fas fa-bell text-xl"></i>
-                                </button>
-                                <span id="notificationBadge" class="absolute -top-1 -right-1 bg-red-400 text-white text-[10px] font-bold rounded-full min-w-[20px] h-5 px-1 flex items-center justify-center shadow-lg">0</span>
-                            </div>
                             <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Teacher.aspx"
                                 CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
                                 <i class="fas fa-home text-xl"></i>
@@ -547,15 +541,6 @@
                             </div>
                             <div id="historyList" class="space-y-2 max-h-[400px] overflow-y-auto">
                                 <div class="text-sm text-center py-4" style="color:var(--muted)">No searches yet</div>
-                            </div>
-                            <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
-                                <div class="flex items-center gap-2 mb-3">
-                                    <i class="fas fa-thumbtack text-sm" style="color:#e65100"></i>
-                                    <h3 class="font-bold text-sm" style="color:var(--primary)">Pinned (<span id="pinnedCount">0</span>)</h3>
-                                </div>
-                                <div id="pinnedList" class="space-y-2 max-h-[200px] overflow-y-auto">
-                                    <div class="text-xs text-center py-2" style="color:var(--muted)">No pinned items</div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -740,8 +725,6 @@
         const resetFiltersBtn = document.getElementById('resetFiltersBtn');
         const historyListDiv = document.getElementById('historyList');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-        const notificationBtn = document.getElementById('notificationBtn');
-        const notificationBadge = document.getElementById('notificationBadge');
 
         let currentSearchTerm = '';
         let currentDate = '';
@@ -776,12 +759,7 @@
             setTimeout(() => t.remove(), 2700);
         }
 
-        function updateNotifBadge() {
-            const stored = JSON.parse(localStorage.getItem('campus_notifications') || '[]');
-            const count = stored.filter(n => !n.read).length;
-            notificationBadge.textContent = count;
-            notificationBadge.style.display = count > 0 ? 'flex' : 'none';
-        }
+        function updateNotifBadge() { /* bell removed */ }
 
         // ── Search History ──
         function saveHistory() {
@@ -820,6 +798,7 @@
         function renderPinnedSidebar() {
             const pinnedList = document.getElementById('pinnedList');
             const pinnedCountEl = document.getElementById('pinnedCount');
+            if (!pinnedList || !pinnedCountEl) return;
             const pinned = announcementsDB.filter(a => pins[a.id]);
             pinnedCountEl.textContent = pinned.length;
             if (!pinned.length) {
@@ -1110,7 +1089,6 @@
             if (notificationBtn) notificationBtn.addEventListener('click', () => {
                 window.location.href = 'Notifications.aspx';
             });
-
             try {
                 if (lastSearchHidden && lastSearchHidden.value) {
                     searchInput.value = lastSearchHidden.value;

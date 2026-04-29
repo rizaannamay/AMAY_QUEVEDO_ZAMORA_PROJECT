@@ -12,7 +12,7 @@ CREATE TABLE Users (
     Password     NVARCHAR(255) NOT NULL,
     Role         NVARCHAR(20)  NOT NULL CHECK (Role IN ('Student', 'Admin')),
     CreatedDate  DATETIME      NOT NULL DEFAULT GETDATE(),
-    ProfileImage NVARCHAR(500) NULL
+    ProfileImage NVARCHAR(MAX) NULL
 );
 GO
 
@@ -62,13 +62,5 @@ CREATE TABLE Notifications (
 );
 GO
 
--- ── 6. PINNED ────────────────────────────────────────────────
-CREATE TABLE Pinned (
-    PinId          INT      PRIMARY KEY IDENTITY(1,1),
-    AnnouncementId INT      NOT NULL REFERENCES Announcements(AnnouncementId),
-    UserId         INT      NOT NULL REFERENCES Users(UserId),
-    CreatedDate    DATETIME NOT NULL DEFAULT GETDATE(),
-    UNIQUE (AnnouncementId, UserId)   -- one pin per user per post
-);
-GO
+
 

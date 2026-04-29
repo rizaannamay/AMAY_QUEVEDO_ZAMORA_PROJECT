@@ -352,47 +352,31 @@
         var pinnedDB = [];
 
         function loadFromDB(callback) {
-            // Load announcements and user pins in parallel
-            Promise.all([
-                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); }),
-                fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(function(r) { return r.json(); })
-            ])
-            .then(function(results) {
-                var announcementsRes = results[0];
-                var pinsRes = results[1];
+            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(announcementsRes) {
+                    if (!announcementsRes.ok) { if (callback) callback([]); return; }
 
-                if (!announcementsRes.ok) { if (callback) callback([]); return; }
+                    pinnedDB = announcementsRes.data.map(function(a) {
+                        var cat = a.category || '';
+                        var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
+                        return {
+                            id: a.id,
+                            title: a.title||'',
+                            category: catLabel,
+                            date: a.date||'',
+                            time: '',
+                            professor: a.author||'',
+                            description: a.content||'',
+                            isPinned: !!pins[a.id],
+                            likeCount: a.likeCount||0,
+                            commentCount: a.commentCount||0
+                        };
+                    });
 
-                // Create a set of pinned IDs for quick lookup
-                var pinnedIds = {};
-                if (pinsRes.ok && pinsRes.pinnedIds) {
-                    pinsRes.pinnedIds.forEach(function(id) { pinnedIds[id] = true; });
-                }
-
-                pinnedDB = announcementsRes.data.map(function(a) {
-                    var cat = a.category || '';
-                    var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
-                    return { 
-                        id: a.id, 
-                        title: a.title||'', 
-                        category: catLabel, 
-                        date: a.date||'', 
-                        time: '', 
-                        professor: a.author||'', 
-                        description: a.content||'', 
-                        isPinned: !!pinnedIds[a.id],  // Use user-specific pin status
-                        likeCount: a.likeCount||0, 
-                        commentCount: a.commentCount||0 
-                    };
-                });
-
-                // Sync pins
-                pins = pinnedIds;
-                localStorage.setItem('campus_pins',  JSON.stringify(pins));
-                localStorage.setItem('teacher_pins', JSON.stringify(pins));
-                if (callback) callback(pinnedDB);
-            })
-            .catch(function() { if (callback) callback([]); });
+                    if (callback) callback(pinnedDB);
+                })
+                .catch(function() { if (callback) callback([]); });
         }
 
         var THEME_KEY = 'campus_theme';
@@ -484,19 +468,13 @@
         }
 
         function togglePin(id) {
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { showToast('Error: ' + res.error); return; }
-                    pins[id] = res.isPinned;
-                    // Update the in-memory DB record too
-                    var ann = pinnedDB.find(function(a) { return a.id === id; });
-                    if (ann) ann.isPinned = res.isPinned;
-                    saveState();
-                    renderPinned();
-                    showToast(res.isPinned ? '📌 Pinned!' : '📌 Unpinned');
-                })
-                .catch(function() { showToast('Could not update pin'); });
+            pins[id] = !pins[id];
+            if (!pins[id]) delete pins[id];
+            saveState();
+            var ann = pinnedDB.find(function(a) { return a.id === id; });
+            if (ann) ann.isPinned = !!pins[id];
+            renderPinned();
+            showToast(pins[id] ? '📌 Pinned!' : '📌 Unpinned');
         }
 
         function openComments(id) {

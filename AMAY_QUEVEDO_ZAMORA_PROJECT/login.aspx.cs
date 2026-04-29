@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.UI;
 
@@ -6,7 +7,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : Page
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        private readonly string connectionString =
+            "Data Source=DESKTOP-O39NPLV\\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -34,45 +36,51 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                con.Open();
-
-                string sql = "SELECT UserId, FullName, Email, Role FROM Users WHERE Username = '" + username + "' AND Password = '" + password + "' AND Role = '" + role + "'";
-                SqlCommand cmd = new SqlCommand(sql, con);
-                SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                using (var con = new SqlConnection(connectionString))
                 {
-                    int    userId      = Convert.ToInt32(dr["UserId"]);
-                    string fullName    = dr["FullName"].ToString();
-                    string email       = dr["Email"].ToString();
-                    string matchedRole = dr["Role"].ToString();
+                    con.Open();
 
-                    dr.Close();
-                    con.Close();
+                    string sql = "SELECT UserId, FullName, Email, Role, Username, ProfileImage FROM Users WHERE Username = @u AND Password = @p AND Role = @r";
+                    using (var cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@u", username);
+                        cmd.Parameters.AddWithValue("@p", password);
+                        cmd.Parameters.AddWithValue("@r", role);
 
-                    Session["UserId"]     = userId;
-                    Session["Username"]   = username;
-                    Session["FullName"]   = fullName;
-                    Session["Email"]      = email;
-                    Session["Role"]       = matchedRole;
-                    Session["IsLoggedIn"] = true;
+                        using (var dr = cmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                int    userId      = Convert.ToInt32(dr["UserId"]);
+                                string fullName    = dr["FullName"].ToString();
+                                string email       = dr["Email"].ToString();
+                                string matchedRole = dr["Role"].ToString();
+                                string profileImg   = dr["ProfileImage"] != DBNull.Value ? dr["ProfileImage"].ToString() : string.Empty;
 
-                    if (matchedRole == "Admin")
-                        Response.Redirect("Teacher.aspx");
-                    else
-                        Response.Redirect("Student.aspx");
-                }
-                else
-                {
-                    dr.Close();
-                    con.Close();
-                    ShowError("Invalid role, username, or password.");
+                                Session["UserId"]       = userId;
+                                Session["Username"]     = username;
+                                Session["FullName"]     = fullName;
+                                Session["Email"]        = email;
+                                Session["Role"]         = matchedRole;
+                                Session["ProfileImage"] = profileImg;
+                                Session["IsLoggedIn"]   = true;
+
+                                if (matchedRole == "Admin")
+                                    Response.Redirect("Teacher.aspx");
+                                else
+                                    Response.Redirect("Student.aspx");
+                            }
+                            else
+                            {
+                                ShowError("Invalid role, username, or password.");
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 ShowError("Database error: " + ex.Message);
-                if (con.State == System.Data.ConnectionState.Open) con.Close();
             }
         }
 

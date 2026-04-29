@@ -40,8 +40,8 @@
             --success-hover: #059669;
         }
 
-        html, body, form { height: 100%; }
-        html, body { overflow: hidden; }
+        html, body, form { height: auto; min-height: 100%; }
+        html, body { overflow: auto; }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -58,12 +58,11 @@
         button, input, textarea, select { font: inherit; }
 
         .app-shell {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            padding: 16px 20px 0;
-            overflow: hidden;
+            padding: 16px 20px 20px;
         }
 
         .header {
@@ -339,13 +338,12 @@
         .user-role, .post-meta, .comment-time, .footer { color: var(--muted); }
 
         .content-shell {
-            flex: 1 1 0;
-            min-height: 0;
+            flex: 1;
             display: grid;
             grid-template-columns: 1fr;
             gap: 25px;
-            overflow: hidden;
             align-items: stretch;
+            margin-bottom: 20px;
         }
 
         .card {
@@ -354,20 +352,17 @@
             border-radius: 24px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow: visible;
         }
 
         .main-panel.card {
-            height: 100%;
-            min-height: 100%;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
         }
 
         .announcement-board {
             flex: 1 1 auto;
-            min-height: 0;
-            overflow-y: auto;
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
         }
@@ -692,8 +687,15 @@
                         <i class="fas fa-bell bell-icon"></i>
                         <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
                     </div>
-                    <div class="user-info" onclick="openProfileModal()">
-                        <div class="avatar"><i class="fas fa-user"></i></div>
+                    <div class="user-info" onclick="window.location.href='Profile.aspx'">
+                        <div class="avatar" id="headerAvatar" style="overflow:hidden;">
+                            <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
+                                <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
+                                     style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+                            <% } else { %>
+                                <i class="fas fa-user"></i>
+                            <% } %>
+                        </div>
                         <div class="user-details">
                             <div class="user-name"><%= Session["FullName"] ?? "User" %></div>
                             <div class="user-role"><%= Session["Role"] ?? "Teacher" %></div>
@@ -735,9 +737,6 @@
                     <button type="button" class="panel-menu-item" onclick="navigateWithFlip('AboutUs.aspx');">
                         <i class="fas fa-info-circle"></i> About Us
                     </button>
-                    <button type="button" class="panel-menu-item" onclick="logout();">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
                 </div>
             </div>
             <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
@@ -762,7 +761,49 @@
         </div>
 
         <!-- Modals -->
-        <div id="createPostModal" class="modal"><div class="modal-content"><div class="modal-header"><h2><i class="fas fa-plus-circle"></i> New Announcement</h2><button type="button" class="modal-close-btn" onclick="closeCreatePostModal()">&times;</button></div><div class="modal-body"><div class="form-group"><label>Title</label><input type="text" id="announcementTitle" /></div><div class="form-group"><label>Category</label><select id="announcementCategory"><option>General</option><option>Exam</option><option>Suspension</option><option>Event</option></select></div><div class="form-group"><label>Content</label><textarea id="announcementContent" rows="4"></textarea></div><div class="form-group"><label>Image</label><input type="file" id="announcementImageFile" accept="image/*" onchange="previewImageFile()" /><div id="imagePreview" class="image-preview" style="display:none;"><img id="previewImg" style="max-width:100%" /></div></div></div><div class="modal-footer-buttons" style="padding:16px 24px; display:flex; gap:12px; justify-content:flex-end;"><button class="btn-cancel" onclick="closeCreatePostModal()">Cancel</button><button class="btn-publish" onclick="publishAnnouncement()">Publish</button></div></div></div>
+        <div id="createPostModal" class="modal">
+            <div class="modal-content" style="max-width:520px;width:100%;">
+                <div class="modal-header" style="padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                    <h2 class="modal-title"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>New Announcement</h2>
+                    <button type="button" class="modal-close-btn" onclick="closeCreatePostModal()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);line-height:1;">&times;</button>
+                </div>
+                <div class="modal-body" style="padding:20px 24px;">
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Title</label>
+                        <input type="text" id="announcementTitle" placeholder="Announcement title..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);font-size:14px;outline:none;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Category</label>
+                        <select id="announcementCategory" style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);font-size:14px;outline:none;">
+                            <option>General</option>
+                            <option>Exam</option>
+                            <option>Suspension</option>
+                            <option>Event</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:16px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Content</label>
+                        <textarea id="announcementContent" rows="4" placeholder="Write your announcement here..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);font-size:14px;outline:none;resize:vertical;"></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Photo <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            <i class="fas fa-image" style="color:var(--primary);font-size:18px;"></i>
+                            <span style="font-size:13px;color:var(--muted);">Click to choose an image</span>
+                            <input type="file" id="announcementImageFile" accept="image/*" onchange="previewImageFile()" style="display:none;" />
+                        </label>
+                        <div id="imagePreview" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;">
+                            <img id="previewImg" style="width:100%;max-height:200px;object-fit:cover;display:block;" />
+                            <button type="button" onclick="clearImagePreview()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding:14px 24px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border);">
+                    <button type="button" class="btn-cancel" onclick="closeCreatePostModal()" style="padding:10px 22px;border-radius:40px;border:1px solid var(--border);background:none;cursor:pointer;font-size:14px;">Cancel</button>
+                    <button type="button" id="postBtn" class="btn-publish" onclick="publishAnnouncement()" style="padding:10px 28px;border-radius:40px;border:none;background:var(--success);color:#fff;cursor:pointer;font-size:14px;font-weight:600;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post</button>
+                </div>
+            </div>
+        </div>
         <div id="profileModal" class="modal" style="display:none;">
             <div class="modal-content" style="max-width:420px;text-align:left;">
                 <div style="text-align:center;margin-bottom:20px;">
@@ -789,19 +830,21 @@
         // Global state
         let st_announcements = [], st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
         function saveSharedState() { localStorage.setItem('teacher_data', JSON.stringify({ likes: st_likes, likeCounts: st_likeCounts, pins: st_pins, comments: st_comments })); }
-        
+        function loadSharedState() { try { var data = JSON.parse(localStorage.getItem('teacher_data') || '{}'); st_likes = data.likes || {}; st_likeCounts = data.likeCounts || {}; st_pins = data.pins || {}; st_comments = data.comments || {}; } catch (e) { st_likes = {}; st_likeCounts = {}; st_pins = {}; st_comments = {}; } }
+        loadSharedState();
+
         function loadAnnouncementsFromDB() {
             fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(r => r.json()).then(res => { if(res.ok) { st_announcements = res.data.map(a => ({ ...a, pinned: a.isPinned })); renderAnnouncements(); } });
+                .then(r => r.json()).then(res => { if (res.ok) { st_announcements = res.data.map(a => ({ ...a, pinned: a.isPinned })); renderAnnouncements(); } });
         }
-        
+
         function renderAnnouncements() {
             let container = document.getElementById('announcementsContainer');
-            if(!container) return;
+            if (!container) return;
             let filter = localStorage.getItem('teacher_filter') || 'All';
             document.getElementById('activeFilterLabel').innerText = filter;
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
-            filtered.sort((a,b) => (st_pins[a.id] && !st_pins[b.id]) ? -1 : (!st_pins[a.id] && st_pins[b.id]) ? 1 : b.id - a.id);
+            filtered.sort((a, b) => (st_pins[a.id] && !st_pins[b.id]) ? -1 : (!st_pins[a.id] && st_pins[b.id]) ? 1 : b.id - a.id);
             container.innerHTML = filtered.map(post => {
                 let pinned = st_pins[post.id];
                 let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
@@ -810,17 +853,17 @@
                 return `<div class="announcement-card" data-id="${post.id}"><div class="post-header"><div class="post-header-left"><div class="post-avatar"><i class="fas fa-user-tie"></i></div><div><div class="post-author">${escapeHtml(post.author)}</div><div class="post-meta"><span>${post.date}</span><span class="post-category ${catClass}">${post.category}</span></div></div></div><div><button type="button" class="edit-btn-top" onclick="openEditModal(${post.id})"><i class="fas fa-edit"></i></button><button type="button" class="delete-btn-top" onclick="deletePost(${post.id})"><i class="fas fa-trash"></i></button><button type="button" class="pin-btn-top ${pinned ? 'pinned' : ''}" onclick="togglePin(${post.id})"><i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i></button></div></div><div class="post-content"><div class="post-title">${escapeHtml(post.title)}</div><div class="post-text">${escapeHtml(post.content)}</div>${post.imageUrl ? `<div class="post-image"><img src="${post.imageUrl}" /></div>` : ''}</div><div class="post-stats"><span onclick="toggleLike(${post.id})"><i class="${st_likes[post.id] ? 'fas' : 'far'} fa-heart"></i> <span class="like-count">${likeCount}</span> Likes</span><span onclick="toggleCommentSection(${post.id})"><i class="far fa-comment"></i> <span class="comment-count">${commentsCount}</span> Comments</span><span onclick="sharePost(${post.id})"><i class="far fa-share-square"></i> Share</span></div><div class="action-buttons"><button type="button" class="action-btn" onclick="toggleLike(${post.id})"><i class="${st_likes[post.id] ? 'fas' : 'far'} fa-heart"></i> Like</button><button type="button" class="action-btn" onclick="toggleCommentSection(${post.id})">Comment</button><button type="button" class="action-btn" onclick="sharePost(${post.id})">Share</button></div><div class="comments-section" id="commentsSection_${post.id}" style="display:none;"><div class="comment-input"><input id="commentInput_${post.id}" placeholder="Write a comment..."/><button type="button" onclick="addComment(${post.id})">Post</button></div><div id="commentsList_${post.id}">${renderCommentsList(post.id)}</div></div></div>`;
             }).join('');
         }
-        
-        function renderCommentsList(postId) { let comments = st_comments[postId] || []; if(!comments.length) return '<div class="no-comments">No comments yet.</div>'; return comments.map(c => `<div class="comment"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.time}</small></div></div>`).join(''); }
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' })[m]); }
+
+        function renderCommentsList(postId) { let comments = st_comments[postId] || []; if (!comments.length) return '<div class="no-comments">No comments yet.</div>'; return comments.map(c => `<div class="comment"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.time}</small></div></div>`).join(''); }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]); }
         function showToast(msg) { let t = document.createElement('div'); t.innerText = msg; t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999'; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
-        function toggleLike(id) { fetch(`LikeHandler.ashx?action=toggle&postId=${id}`, { credentials: 'same-origin' }).then(r=>r.json()).then(res=>{ if(res.ok){ st_likes[id]=res.liked; st_likeCounts[id]=res.likeCount; saveSharedState(); renderAnnouncements(); } }); }
-        function togglePin(id) { fetch(`AnnouncementHandler.ashx?action=togglePin&id=${id}`, { credentials: 'same-origin' }).then(r=>r.json()).then(res=>{ if(res.ok){ st_pins[id]=res.isPinned; if(!res.isPinned) delete st_pins[id]; saveSharedState(); renderAnnouncements(); } }); }
-        function addComment(postId) { let input = document.getElementById(`commentInput_${postId}`); let text = input.value.trim(); if(!text) return; fetch('CommentHandler.ashx?action=add', { method:'POST', credentials:'same-origin', headers:{'Content-Type':'application/json'}, body:JSON.stringify({postId, comment:text}) }).then(()=>{ input.value=''; loadComments(postId); }); }
-        function loadComments(postId) { fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials:'same-origin' }).then(r=>r.json()).then(list=>{ st_comments[postId] = list; let listDiv = document.getElementById(`commentsList_${postId}`); if(listDiv) listDiv.innerHTML = renderCommentsList(postId); let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`); if(countSpan) countSpan.textContent = list.length; }); }
-        function toggleCommentSection(id) { let sec = document.getElementById(`commentsSection_${id}`); if(sec){ let open = sec.style.display !== 'none' && sec.style.display !== ''; sec.style.display = open ? 'none' : 'block'; if(!open) loadComments(id); } }
+        function toggleLike(id) { fetch(`LikeHandler.ashx?action=toggle&postId=${id}`, { credentials: 'same-origin' }).then(r => r.json()).then(res => { if (res.ok) { st_likes[id] = res.liked; st_likeCounts[id] = res.likeCount; saveSharedState(); renderAnnouncements(); } }); }
+        function togglePin(id) { st_pins[id] = !st_pins[id]; if (!st_pins[id]) delete st_pins[id]; saveSharedState(); renderAnnouncements(); }
+        function addComment(postId) { let input = document.getElementById(`commentInput_${postId}`); let text = input.value.trim(); if (!text) return; fetch('CommentHandler.ashx?action=add', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId, comment: text }) }).then(() => { input.value = ''; loadComments(postId); }); }
+        function loadComments(postId) { fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials: 'same-origin' }).then(r => r.json()).then(list => { st_comments[postId] = list; let listDiv = document.getElementById(`commentsList_${postId}`); if (listDiv) listDiv.innerHTML = renderCommentsList(postId); let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`); if (countSpan) countSpan.textContent = list.length; }); }
+        function toggleCommentSection(id) { let sec = document.getElementById(`commentsSection_${id}`); if (sec) { let open = sec.style.display !== 'none' && sec.style.display !== ''; sec.style.display = open ? 'none' : 'block'; if (!open) loadComments(id); } }
         function sharePost(id) { navigator.clipboard?.writeText(window.location.href); showToast('Link copied!'); }
-        
+
         // Fixed filterCategory - persists selection, no auto-close of dropdown
         function filterCategory(cat) {
             localStorage.setItem('teacher_filter', cat);
@@ -831,13 +874,13 @@
                 btn.style.color = btn.style.fontWeight === '700' ? 'var(--primary)' : '';
             });
         }
-        
+
         // Slide-out controls
         function openSlideout() { document.getElementById('slideoutPanel').classList.add('open'); }
         function closeSlideout() { document.getElementById('slideoutPanel').classList.remove('open'); }
 
         // Hamburger toggles the panel open/closed
-        document.getElementById('hamburgerBtn').addEventListener('click', function(e) {
+        document.getElementById('hamburgerBtn').addEventListener('click', function (e) {
             e.stopPropagation();
             let panel = document.getElementById('slideoutPanel');
             if (panel.classList.contains('open')) closeSlideout();
@@ -848,33 +891,72 @@
         document.getElementById('closePanelBtn').addEventListener('click', closeSlideout);
 
         // Category dropdown toggle
-        document.getElementById('filterCategoryBtn').addEventListener('click', function(e) {
+        document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
             e.stopPropagation();
             let panel = document.getElementById('categoryDropdownPanel');
             panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
-        });        
-        function openCreatePostModal() { document.getElementById('createPostModal').style.display='flex'; }
-        function closeCreatePostModal() { document.getElementById('createPostModal').style.display='none'; document.getElementById('announcementTitle').value=''; document.getElementById('announcementContent').value=''; document.getElementById('announcementImageFile').value=''; document.getElementById('imagePreview').style.display='none'; }
-        function publishAnnouncement() { let title = document.getElementById('announcementTitle').value; let content = document.getElementById('announcementContent').value; let category = document.getElementById('announcementCategory').value; if(!title || !content) return showToast('Fill all fields'); let form = new FormData(); form.append('title',title); form.append('content',content); form.append('category',category); let file = document.getElementById('announcementImageFile').files[0]; if(file) form.append('imageFile',file); fetch('AnnouncementHandler.ashx?action=create', { method:'POST', credentials:'same-origin', body:form }).then(()=>{ closeCreatePostModal(); loadAnnouncementsFromDB(); showToast('Published!'); }); }
-        function openEditModal(id) { let post = st_announcements.find(p=>p.id===id); if(post){ document.getElementById('announcementTitle').value=post.title; document.getElementById('announcementContent').value=post.content; document.getElementById('announcementCategory').value=post.category; openCreatePostModal(); let btn = document.querySelector('.btn-publish'); btn.innerText='Update'; btn.onclick = () => updateAnnouncement(id); } }
-        function updateAnnouncement(id) { let title = document.getElementById('announcementTitle').value; let content = document.getElementById('announcementContent').value; let category = document.getElementById('announcementCategory').value; let form = new FormData(); form.append('title',title); form.append('content',content); form.append('category',category); let file = document.getElementById('announcementImageFile').files[0]; if(file) form.append('imageFile',file); fetch(`AnnouncementHandler.ashx?action=update&id=${id}`, { method:'POST', body:form, credentials:'same-origin' }).then(()=>{ closeCreatePostModal(); loadAnnouncementsFromDB(); showToast('Updated'); }); }
-        function deletePost(id) { if(confirm('Delete?')) fetch(`AnnouncementHandler.ashx?action=delete&id=${id}`, { credentials:'same-origin' }).then(()=> loadAnnouncementsFromDB()); }
-        function openProfileModal() { document.getElementById('profileModal').style.display='flex'; }
-        function closeProfileModal() { document.getElementById('profileModal').style.display='none'; }
-        function openAboutModal() { document.getElementById('aboutModal').style.display='flex'; }
-        function closeAboutModal() { document.getElementById('aboutModal').style.display='none'; }
-        function logout() { window.location.href='Logout.aspx'; }
+        });
+        function openCreatePostModal() {
+            document.getElementById('createPostModal').style.display = 'flex';
+            let btn = document.getElementById('postBtn');
+            btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
+            btn.onclick = publishAnnouncement;
+        }
+        function closeCreatePostModal() {
+            document.getElementById('createPostModal').style.display = 'none';
+            document.getElementById('announcementTitle').value = '';
+            document.getElementById('announcementContent').value = '';
+            document.getElementById('announcementImageFile').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+        function clearImagePreview() {
+            document.getElementById('announcementImageFile').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+        function publishAnnouncement() {
+            let title = document.getElementById('announcementTitle').value.trim();
+            let content = document.getElementById('announcementContent').value.trim();
+            let category = document.getElementById('announcementCategory').value;
+            if (!title || !content) return showToast('Please fill in title and content');
+            let form = new FormData();
+            form.append('title', title);
+            form.append('content', content);
+            form.append('category', category);
+            let file = document.getElementById('announcementImageFile').files[0];
+            if (file) form.append('imageFile', file);
+            fetch('AnnouncementHandler.ashx?action=create', { method: 'POST', credentials: 'same-origin', body: form })
+                .then(() => { closeCreatePostModal(); loadAnnouncementsFromDB(); showToast('Posted!'); });
+        }
+        function openEditModal(id) {
+            let post = st_announcements.find(p => p.id === id);
+            if (post) {
+                document.getElementById('announcementTitle').value = post.title;
+                document.getElementById('announcementContent').value = post.content;
+                document.getElementById('announcementCategory').value = post.category;
+                openCreatePostModal();
+                let btn = document.getElementById('postBtn');
+                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+                btn.onclick = () => updateAnnouncement(id);
+            }
+        }
+        function updateAnnouncement(id) { let title = document.getElementById('announcementTitle').value; let content = document.getElementById('announcementContent').value; let category = document.getElementById('announcementCategory').value; let form = new FormData(); form.append('title', title); form.append('content', content); form.append('category', category); let file = document.getElementById('announcementImageFile').files[0]; if (file) form.append('imageFile', file); fetch(`AnnouncementHandler.ashx?action=update&id=${id}`, { method: 'POST', body: form, credentials: 'same-origin' }).then(() => { closeCreatePostModal(); loadAnnouncementsFromDB(); showToast('Updated'); }); }
+        function deletePost(id) { if (confirm('Delete?')) fetch(`AnnouncementHandler.ashx?action=delete&id=${id}`, { credentials: 'same-origin' }).then(() => loadAnnouncementsFromDB()); }
+        function openProfileModal() { document.getElementById('profileModal').style.display = 'flex'; }
+        function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+        function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
+        function closeAboutModal() { document.getElementById('aboutModal').style.display = 'none'; }
+        function logout() { window.location.href = 'Logout.aspx'; }
         function navigateWithFlip(url) { window.location.href = url; }
-        function toggleTheme() { let isDark = !document.body.classList.contains('dark-mode'); localStorage.setItem('campus_theme', isDark ? 'dark' : 'light'); document.body.classList.toggle('dark-mode', isDark); document.querySelectorAll('.toggle-switch-panel').forEach(el=>el.classList.toggle('active', isDark)); }        function openNotificationDropdown() { navigateWithFlip('Notifications.aspx'); }
-        function previewImageFile() { let file = document.getElementById('announcementImageFile').files[0]; if(file){ let reader = new FileReader(); reader.onload = e=>{ document.getElementById('previewImg').src=e.target.result; document.getElementById('imagePreview').style.display='block'; }; reader.readAsDataURL(file); } }
-        
+        function toggleTheme() { let isDark = !document.body.classList.contains('dark-mode'); localStorage.setItem('campus_theme', isDark ? 'dark' : 'light'); document.body.classList.toggle('dark-mode', isDark); document.querySelectorAll('.toggle-switch-panel').forEach(el => el.classList.toggle('active', isDark)); } function openNotificationDropdown() { navigateWithFlip('Notifications.aspx'); }
+        function previewImageFile() { let file = document.getElementById('announcementImageFile').files[0]; if (file) { let reader = new FileReader(); reader.onload = e => { document.getElementById('previewImg').src = e.target.result; document.getElementById('imagePreview').style.display = 'block'; }; reader.readAsDataURL(file); } }
+
         document.getElementById('settingsThemeBtn').addEventListener('click', (e) => { e.stopPropagation(); toggleTheme(); });
-        
-        let savedTheme = localStorage.getItem('campus_theme'); if(savedTheme==='dark') document.body.classList.add('dark-mode');
-        let panelToggle = document.getElementById('panelThemeToggle'); if(panelToggle) panelToggle.classList.toggle('active', savedTheme==='dark');
+
+        let savedTheme = localStorage.getItem('campus_theme'); if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+        let panelToggle = document.getElementById('panelThemeToggle'); if (panelToggle) panelToggle.classList.toggle('active', savedTheme === 'dark');
 
         // Single storage listener — theme sync + announcements reload (skip theme key for reload)
-        window.addEventListener('storage', function(e) {
+        window.addEventListener('storage', function (e) {
             if (e.key === 'campus_theme') {
                 let isDark = e.newValue === 'dark';
                 document.body.classList.toggle('dark-mode', isDark);

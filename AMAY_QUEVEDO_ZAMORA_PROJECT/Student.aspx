@@ -817,32 +817,37 @@
     <form id="form1" runat="server">
         <div class="app-shell">
             <div class="header">
-                <div class="logo" onclick="navigateWithFlip('Student.aspx')">
+                <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
                     <i class="fas fa-university"></i> CampusAnnouncement
-                </div>
+                </button>
 
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px" UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
-                    <div class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')">
+                    <button type="button" class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')">
                         <i class="fas fa-bell bell-icon"></i>
                         <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
-                    </div>
-                    <div class="user-info" onclick="openProfileModal(event)">
-                        <div class="avatar">
-                            <i class="fas fa-user"></i>
+                    </button>
+                    <button type="button" class="user-info" onclick="window.location.href='Profile.aspx'">
+                        <div class="avatar" id="headerAvatar" style="overflow:hidden;">
+                            <% if (!string.IsNullOrEmpty(Session["ProfileImage"]?.ToString())) { %>
+                                <img src="<%= Session["ProfileImage"] %>" alt="Profile"
+                                     style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+                            <% } else { %>
+                                <i class="fas fa-user"></i>
+                            <% } %>
                         </div>
                         <div class="user-details">
                             <div class="user-name" id="userName"><%= Session["FullName"] ?? "User" %></div>
                             <div class="user-role" id="userRole"><%= Session["Role"] ?? "Student" %></div>
                         </div>
-                    </div>
+                    </button>
                     <!-- HAMBURGER MENU ICON - right side of profile -->
-                    <div class="hamburger-menu-btn" id="hamburgerBtn">
+                    <button type="button" class="hamburger-menu-btn" id="hamburgerBtn">
                         <i class="fas fa-bars"></i>
-                    </div>
+                    </button>
                 </div>
             </div>
 
@@ -875,9 +880,6 @@
                     </button>
                     <button type="button" class="panel-menu-item" onclick="navigateWithFlip('AboutUs.aspx');">
                         <i class="fas fa-info-circle"></i> About Us
-                    </button>
-                    <button type="button" class="panel-menu-item" onclick="logout();">
-                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
             </div>
@@ -951,7 +953,7 @@
         }
 
         // Hamburger toggles the panel open/closed
-        document.getElementById('hamburgerBtn').addEventListener('click', function(e) {
+        document.getElementById('hamburgerBtn').addEventListener('click', function (e) {
             e.stopPropagation();
             let panel = document.getElementById('slideoutPanel');
             if (panel.classList.contains('open')) closeSlideout();
@@ -1037,9 +1039,9 @@
             fetch('LikeHandler.ashx?action=toggle&postId=' + postId, { credentials: 'same-origin' })
                 .then(r => r.json())
                 .then(res => {
-                    if (!res.ok) { 
-                        showToast('Error: ' + (res.error || 'Could not update like')); 
-                        return; 
+                    if (!res.ok) {
+                        showToast('Error: ' + (res.error || 'Could not update like'));
+                        return;
                     }
                     st_likes[postId] = res.liked;
                     st_likeCounts[postId] = res.likeCount;
@@ -1064,59 +1066,48 @@
         }
 
         function togglePin(postId) {
-            console.log('togglePin called for postId:', postId);
-            console.log('Fetching UserPinHandler...');
-            
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
-                .then(r => {
-                    console.log('Pin response status:', r.status);
-                    if (!r.ok) {
-                        console.error('Response not OK:', r.status, r.statusText);
-                    }
-                    return r.json();
+            st_pins[postId] = !st_pins[postId];
+            if (!st_pins[postId]) delete st_pins[postId];
+            localStorage.setItem('student_pins', JSON.stringify(st_pins));
+            renderAnnouncements();
+            showToast(st_pins[postId] ? '📌 Pinned!' : '📌 Unpinned');
+
+        }
+
+        console.log('Pin successful! isPinned:', res.isPinned);
+
+        if (res.isPinned) st_pins[postId] = true;
+        else delete st_pins[postId];
+
+        // Update localStorage to trigger storage event for other tabs/pages
+        localStorage.setItem('campus_pins', JSON.stringify(st_pins));
+        localStorage.setItem('teacher_pins', JSON.stringify(st_pins));
+        console.log('Updated localStorage pins:', st_pins);
+
+        let card = document.querySelector(`.announcement-card[data-post-id="${postId}"]`);
+        if (card) {
+            let pinBtn = card.querySelector('.pin-btn-top');
+            if (pinBtn) {
+                pinBtn.style.color = res.isPinned ? '#e65100' : 'var(--muted-light)';
+                pinBtn.innerHTML = `<i class="${res.isPinned ? 'fas' : 'far'} fa-thumbtack"></i>`;
+                pinBtn.title = res.isPinned ? 'Unpin' : 'Pin';
+                console.log('Updated pin button UI');
+            } else {
+                console.warn('Pin button not found in card');
+            }
+        } else {
+            console.warn('Card not found for postId:', postId);
+        }
+
+        // Re-apply current filter so Pinned view updates immediately
+        let currentFilter = localStorage.getItem('student_filter') || 'All';
+        filterCategory(currentFilter);
+        showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 })
-                .then(res => {
-                    console.log('Pin response data:', res);
-                    if (!res.ok) { 
-                        console.error('Handler returned error:', res.error);
-                        showToast('Error: ' + (res.error || 'Could not update pin')); 
-                        return; 
-                    }
-                    
-                    console.log('Pin successful! isPinned:', res.isPinned);
-                    
-                    if (res.isPinned) st_pins[postId] = true;
-                    else delete st_pins[postId];
-                    
-                    // Update localStorage to trigger storage event for other tabs/pages
-                    localStorage.setItem('campus_pins', JSON.stringify(st_pins));
-                    localStorage.setItem('teacher_pins', JSON.stringify(st_pins));
-                    console.log('Updated localStorage pins:', st_pins);
-                    
-                    let card = document.querySelector(`.announcement-card[data-post-id="${postId}"]`);
-                    if (card) {
-                        let pinBtn = card.querySelector('.pin-btn-top');
-                        if (pinBtn) {
-                            pinBtn.style.color = res.isPinned ? '#e65100' : 'var(--muted-light)';
-                            pinBtn.innerHTML = `<i class="${res.isPinned ? 'fas' : 'far'} fa-thumbtack"></i>`;
-                            pinBtn.title = res.isPinned ? 'Unpin' : 'Pin';
-                            console.log('Updated pin button UI');
-                        } else {
-                            console.warn('Pin button not found in card');
-                        }
-                    } else {
-                        console.warn('Card not found for postId:', postId);
-                    }
-                    
-                    // Re-apply current filter so Pinned view updates immediately
-                    let currentFilter = localStorage.getItem('student_filter') || 'All';
-                    filterCategory(currentFilter);
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
-                })
-                .catch(err => {
-                    console.error('Pin error:', err);
-                    showToast('Could not update pin: ' + err.message);
-                });
+                .catch (err => {
+            console.error('Pin error:', err);
+            showToast('Could not update pin: ' + err.message);
+        });
         }
 
         function toggleCommentSection(postId) {
@@ -1193,29 +1184,28 @@
                     let announcements = res.data;
                     if (!announcements.length) { container.innerHTML = '<div style="padding:40px;text-align:center;">No announcements</div>'; return; }
 
-                    // Load pins first, then build + filter in one shot — zero flicker
-                    fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' })
-                        .then(r => r.json())
-                        .then(pinRes => {
-                            st_pins = {};
-                            if (pinRes.ok && pinRes.pinnedIds) pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
-                        })
-                        .catch(() => {})
-                        .finally(() => {
-                            let savedFilter = localStorage.getItem('student_filter') || 'All';
+                    // Load pins from localStorage first, then build + filter in one shot — zero flicker
+                    try {
+                        var savedPins = JSON.parse(localStorage.getItem('student_pins') || '{}');
+                        st_pins = savedPins || {};
+                    } catch (e) {
+                        st_pins = {};
+                    }
+                    setTimeout(function () {
+                        let savedFilter = localStorage.getItem('student_filter') || 'All';
 
-                            container.innerHTML = announcements.map(post => {
-                                let isPinned = !!st_pins[post.id];
-                                let likeCount = post.likeCount || 0;
-                                let catClass = post.category === 'Exam' ? 'post-category-exam'
-                                    : post.category === 'Suspension' ? 'post-category-suspension'
+                        container.innerHTML = announcements.map(post => {
+                            let isPinned = !!st_pins[post.id];
+                            let likeCount = post.likeCount || 0;
+                            let catClass = post.category === 'Exam' ? 'post-category-exam'
+                                : post.category === 'Suspension' ? 'post-category-suspension'
                                     : post.category === 'Event' ? 'post-category-event'
-                                    : 'post-category-general';
+                                        : 'post-category-general';
 
-                                // Determine visibility before rendering — no flicker
-                                let visible = savedFilter === 'All' || post.category === savedFilter;
+                            // Determine visibility before rendering — no flicker
+                            let visible = savedFilter === 'All' || post.category === savedFilter;
 
-                                return `<div class="announcement-card" data-post-id="${post.id}" data-category="${post.category}" style="${visible ? '' : 'display:none'}">
+                            return `<div class="announcement-card" data-post-id="${post.id}" data-category="${post.category}" style="${visible ? '' : 'display:none'}">
                                     <div class="post-header">
                                         <div class="post-header-left">
                                             <div class="post-avatar"><i class="fas fa-user-tie"></i></div>
@@ -1249,19 +1239,19 @@
                                         <div class="comments-list" id="commentsList_${post.id}"><div class="no-comments">No comments yet.</div></div>
                                     </div>
                                 </div>`;
-                            }).join('');
+                        }).join('');
 
-                            // Update filter label and highlight active button
-                            let label = document.getElementById('activeFilterLabel');
-                            if (label) label.innerText = savedFilter;
-                            document.querySelectorAll('.dropdown-item-panel').forEach(btn => {
-                                let val = btn.getAttribute('data-filter');
-                                btn.style.fontWeight = val === savedFilter ? '700' : '';
-                                btn.style.color = val === savedFilter ? 'var(--primary)' : '';
-                            });
-
-                            updateNotifBadge();
+                        // Update filter label and highlight active button
+                        let label = document.getElementById('activeFilterLabel');
+                        if (label) label.innerText = savedFilter;
+                        document.querySelectorAll('.dropdown-item-panel').forEach(btn => {
+                            let val = btn.getAttribute('data-filter');
+                            btn.style.fontWeight = val === savedFilter ? '700' : '';
+                            btn.style.color = val === savedFilter ? 'var(--primary)' : '';
                         });
+
+                        updateNotifBadge();
+                    });
                 });
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -9,7 +10,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class NotificationHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString);
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -48,12 +49,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void GetAll(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
             var list = new List<object>();
-
             con.Open();
-            string sql = "SELECT TOP 50 NotificationId, Message, IsRead, CreatedDate FROM Notifications WHERE UserId=" + userId + " ORDER BY CreatedDate DESC";
-            SqlCommand cmd = new SqlCommand(sql, con);
+            SqlCommand cmd = new SqlCommand(
+                "SELECT TOP 50 NotificationId, Message, IsRead, CreatedDate " +
+                "FROM Notifications WHERE UserId=@uid ORDER BY CreatedDate DESC", con);
+            cmd.Parameters.AddWithValue("@uid", userId);
             SqlDataReader dr = cmd.ExecuteReader();
-
             while (dr.Read())
             {
                 list.Add(new
@@ -64,7 +65,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     time    = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"]))
                 });
             }
-
             dr.Close();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
@@ -73,7 +73,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void GetUnreadCount(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
             con.Open();
-            SqlCommand cmd = new SqlCommand("SELECT COUNT(1) FROM Notifications WHERE UserId=" + userId + " AND IsRead=0", con);
+            SqlCommand cmd = new SqlCommand(
+                "SELECT COUNT(1) FROM Notifications WHERE UserId=@uid AND IsRead=0", con);
+            cmd.Parameters.AddWithValue("@uid", userId);
             int count = (int)cmd.ExecuteScalar();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true, count = count }));
@@ -83,7 +85,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             int notifId = Convert.ToInt32(ctx.Request["id"]);
             con.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Notifications SET IsRead=1 WHERE NotificationId=" + notifId + " AND UserId=" + userId, con);
+            SqlCommand cmd = new SqlCommand(
+                "UPDATE Notifications SET IsRead=1 WHERE NotificationId=@nid AND UserId=@uid", con);
+            cmd.Parameters.AddWithValue("@nid", notifId);
+            cmd.Parameters.AddWithValue("@uid", userId);
             cmd.ExecuteNonQuery();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true }));
@@ -92,23 +97,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void MarkAllRead(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
             con.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE Notifications SET IsRead=1 WHERE UserId=" + userId + " AND IsRead=0", con);
+            SqlCommand cmd = new SqlCommand(
+                "UPDATE Notifications SET IsRead=1 WHERE UserId=@uid AND IsRead=0", con);
+            cmd.Parameters.AddWithValue("@uid", userId);
             cmd.ExecuteNonQuery();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true }));
-        }
-
-        // Static helpers used by other handlers
-        public static void Insert(SqlConnection conn, int userId, string message)
-        {
-            SqlCommand cmd = new SqlCommand("INSERT INTO Notifications (UserId, Message) VALUES (" + userId + ",'" + message + "')", conn);
-            cmd.ExecuteNonQuery();
-        }
-
-        public static void NotifyAllStudents(SqlConnection conn, string message)
-        {
-            SqlCommand cmd = new SqlCommand("INSERT INTO Notifications (UserId, Message) SELECT UserId, '" + message + "' FROM Users WHERE Role = 'Student'", conn);
-            cmd.ExecuteNonQuery();
         }
 
         private string GetTimeAgo(DateTime date)

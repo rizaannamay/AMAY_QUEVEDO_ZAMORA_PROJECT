@@ -45,52 +45,54 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void Toggle(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
             int postId = Convert.ToInt32(ctx.Request["postId"]);
-
             con.Open();
 
-            SqlCommand checkCmd = new SqlCommand("SELECT COUNT(1) FROM UserLikes WHERE AnnouncementId=" + postId + " AND UserId=" + userId, con);
+            SqlCommand checkCmd = new SqlCommand(
+                "SELECT COUNT(1) FROM UserLikes WHERE AnnouncementId=@pid AND UserId=@uid", con);
+            checkCmd.Parameters.AddWithValue("@pid", postId);
+            checkCmd.Parameters.AddWithValue("@uid", userId);
             bool alreadyLiked = (int)checkCmd.ExecuteScalar() > 0;
 
             if (alreadyLiked)
             {
-                SqlCommand delCmd = new SqlCommand("DELETE FROM UserLikes WHERE AnnouncementId=" + postId + " AND UserId=" + userId, con);
+                SqlCommand delCmd = new SqlCommand(
+                    "DELETE FROM UserLikes WHERE AnnouncementId=@pid AND UserId=@uid", con);
+                delCmd.Parameters.AddWithValue("@pid", postId);
+                delCmd.Parameters.AddWithValue("@uid", userId);
                 delCmd.ExecuteNonQuery();
 
-                SqlCommand updCmd = new SqlCommand("UPDATE Announcements SET LikeCount = LikeCount - 1 WHERE AnnouncementId=" + postId + " AND LikeCount > 0", con);
+                SqlCommand updCmd = new SqlCommand(
+                    "UPDATE Announcements SET LikeCount = LikeCount - 1 WHERE AnnouncementId=@pid AND LikeCount > 0", con);
+                updCmd.Parameters.AddWithValue("@pid", postId);
                 updCmd.ExecuteNonQuery();
             }
             else
             {
-                SqlCommand insCmd = new SqlCommand("INSERT INTO UserLikes (AnnouncementId, UserId) VALUES (" + postId + "," + userId + ")", con);
+                SqlCommand insCmd = new SqlCommand(
+                    "INSERT INTO UserLikes (AnnouncementId, UserId) VALUES (@pid, @uid)", con);
+                insCmd.Parameters.AddWithValue("@pid", postId);
+                insCmd.Parameters.AddWithValue("@uid", userId);
                 insCmd.ExecuteNonQuery();
 
-                SqlCommand updCmd = new SqlCommand("UPDATE Announcements SET LikeCount = LikeCount + 1 WHERE AnnouncementId=" + postId, con);
+                SqlCommand updCmd = new SqlCommand(
+                    "UPDATE Announcements SET LikeCount = LikeCount + 1 WHERE AnnouncementId=@pid", con);
+                updCmd.Parameters.AddWithValue("@pid", postId);
                 updCmd.ExecuteNonQuery();
 
                 // Notify author
-                string notifSql = "SELECT a.UserId, a.Title, u.FullName FROM Announcements a JOIN Users u ON u.UserId=" + userId + " WHERE a.AnnouncementId=" + postId;
-                SqlCommand notifCmd = new SqlCommand(notifSql, con);
-                SqlDataReader dr = notifCmd.ExecuteReader();
-                if (dr.Read())
-                {
-                    int    authorId  = Convert.ToInt32(dr["UserId"]);
-                    string annTitle  = dr["Title"].ToString();
-                    string likerName = dr["FullName"].ToString();
-                    dr.Close();
-
-                    if (authorId != userId)
-                    {
-                        SqlCommand insertNotif = new SqlCommand("INSERT INTO Notifications (UserId, Message) VALUES (" + authorId + ",'" + likerName + " liked " + annTitle + "')", con);
-                        insertNotif.ExecuteNonQuery();
-                    }
-                }
-                else
-                {
-                    dr.Close();
-                }
+                SqlCommand notifCmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, Message) " +
+                    "SELECT a.UserId, u.FullName + ' liked your announcement: ' + a.Title " +
+                    "FROM Announcements a JOIN Users u ON u.UserId=@uid " +
+                    "WHERE a.AnnouncementId=@pid AND a.UserId <> @uid", con);
+                notifCmd.Parameters.AddWithValue("@pid", postId);
+                notifCmd.Parameters.AddWithValue("@uid", userId);
+                notifCmd.ExecuteNonQuery();
             }
 
-            SqlCommand countCmd = new SqlCommand("SELECT LikeCount FROM Announcements WHERE AnnouncementId=" + postId, con);
+            SqlCommand countCmd = new SqlCommand(
+                "SELECT LikeCount FROM Announcements WHERE AnnouncementId=@pid", con);
+            countCmd.Parameters.AddWithValue("@pid", postId);
             int newCount = (int)countCmd.ExecuteScalar();
 
             con.Close();
@@ -100,13 +102,17 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private void Status(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
             int postId = Convert.ToInt32(ctx.Request["postId"]);
-
             con.Open();
 
-            SqlCommand likedCmd = new SqlCommand("SELECT COUNT(1) FROM UserLikes WHERE AnnouncementId=" + postId + " AND UserId=" + userId, con);
+            SqlCommand likedCmd = new SqlCommand(
+                "SELECT COUNT(1) FROM UserLikes WHERE AnnouncementId=@pid AND UserId=@uid", con);
+            likedCmd.Parameters.AddWithValue("@pid", postId);
+            likedCmd.Parameters.AddWithValue("@uid", userId);
             bool liked = (int)likedCmd.ExecuteScalar() > 0;
 
-            SqlCommand countCmd = new SqlCommand("SELECT LikeCount FROM Announcements WHERE AnnouncementId=" + postId, con);
+            SqlCommand countCmd = new SqlCommand(
+                "SELECT LikeCount FROM Announcements WHERE AnnouncementId=@pid", con);
+            countCmd.Parameters.AddWithValue("@pid", postId);
             int count = (int)countCmd.ExecuteScalar();
 
             con.Close();
