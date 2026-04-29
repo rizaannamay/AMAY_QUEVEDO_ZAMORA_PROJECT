@@ -39,15 +39,31 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
+        // ── Query #2 SELECT + #5 SEARCH (WHERE) + #6 FILTER (category/date) + #7 JOIN + #9 ORDER BY ──
         private void GetAll(HttpContext ctx, JavaScriptSerializer js)
         {
             var list = new List<object>();
+
+            string category = ctx.Request["category"];
+            string date     = ctx.Request["date"];
+            bool filterCat  = !string.IsNullOrEmpty(category) && category != "All";
+            bool filterDate = !string.IsNullOrEmpty(date);
+
             con.Open();
             string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
                          "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.FullName " +
-                         "FROM Announcements a JOIN Users u ON u.UserId = a.UserId " +
-                         "ORDER BY a.IsPinned DESC, a.Date_Posted DESC";
+                         "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";  // Query #7 JOIN
+
+            if (filterCat)  sql += " WHERE a.Category = @cat";                        // Query #6 FILTER
+            if (filterDate) sql += (filterCat ? " AND" : " WHERE") +
+                                   " CAST(a.Date_Posted AS DATE) = @date";             // Query #5 SEARCH
+
+            sql += " ORDER BY a.IsPinned DESC, a.Date_Posted DESC";                   // Query #9 ORDER BY
+
             SqlCommand cmd = new SqlCommand(sql, con);
+            if (filterCat)  cmd.Parameters.AddWithValue("@cat",  category);
+            if (filterDate) cmd.Parameters.AddWithValue("@date", date);
+
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
@@ -71,6 +87,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
         }
 
+        // ── Query #1 INSERT ──────────────────────────────────────────────────────────────────────────
         private void Create(HttpContext ctx, JavaScriptSerializer js)
         {
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
@@ -126,6 +143,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.Write(js.Serialize(new { ok = true, id = newId }));
         }
 
+        // ── Query #3 UPDATE ──────────────────────────────────────────────────────────────────────────
         private void Update(HttpContext ctx, JavaScriptSerializer js)
         {
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
@@ -176,6 +194,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
+        // ── Query #4 DELETE ──────────────────────────────────────────────────────────────────────────
         private void Delete(HttpContext ctx, JavaScriptSerializer js)
         {
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
@@ -188,14 +207,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             int id = Convert.ToInt32(ctx.Request["id"]);
             con.Open();
 
-            SqlCommand c1 = new SqlCommand("DELETE FROM Comments   WHERE AnnouncementId=@id", con);
+            SqlCommand c1 = new SqlCommand("DELETE FROM Comments      WHERE AnnouncementId=@id", con);
             c1.Parameters.AddWithValue("@id", id); c1.ExecuteNonQuery();
 
-            SqlCommand c2 = new SqlCommand("DELETE FROM UserLikes  WHERE AnnouncementId=@id", con);
+            SqlCommand c2 = new SqlCommand("DELETE FROM UserLikes     WHERE AnnouncementId=@id", con);
             c2.Parameters.AddWithValue("@id", id); c2.ExecuteNonQuery();
 
-            SqlCommand c4 = new SqlCommand("DELETE FROM Announcements WHERE AnnouncementId=@id", con);
-            c4.Parameters.AddWithValue("@id", id); c4.ExecuteNonQuery();
+            SqlCommand c3 = new SqlCommand("DELETE FROM Announcements WHERE AnnouncementId=@id", con);
+            c3.Parameters.AddWithValue("@id", id); c3.ExecuteNonQuery();
 
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true }));
@@ -203,7 +222,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void TogglePin(HttpContext ctx, JavaScriptSerializer js)
         {
-            ctx.Response.Write(js.Serialize(new { ok = false, error = "Pin/unpin is now handled client-side only." }));
+            ctx.Response.Write(js.Serialize(new { ok = false, error = "Pin/unpin is handled via UserPinHandler." }));
         }
 
         public bool IsReusable { get { return false; } }

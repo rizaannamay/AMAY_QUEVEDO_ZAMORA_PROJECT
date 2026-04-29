@@ -87,6 +87,8 @@
             flex: 1;
             justify-content: center;
             min-width: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         .search-box {
@@ -120,6 +122,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            z-index: 1;
         }
 
         .search-btn:hover {
@@ -134,6 +143,9 @@
             gap: 15px;
             align-items: center;
             white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
         }
 
         .notification-bell {
@@ -822,7 +834,7 @@
                 </button>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px" UseSubmitBehavior="false" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
@@ -832,8 +844,8 @@
                     </button>
                     <button type="button" class="user-info" onclick="window.location.href='Profile.aspx'">
                         <div class="avatar" id="headerAvatar" style="overflow:hidden;">
-                            <% if (!string.IsNullOrEmpty(Session["ProfileImage"]?.ToString())) { %>
-                                <img src="<%= Session["ProfileImage"] %>" alt="Profile"
+                            <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
+                                <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
                                      style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                             <% } else { %>
                                 <i class="fas fa-user"></i>
@@ -1066,48 +1078,20 @@
         }
 
         function togglePin(postId) {
-            st_pins[postId] = !st_pins[postId];
-            if (!st_pins[postId]) delete st_pins[postId];
-            localStorage.setItem('student_pins', JSON.stringify(st_pins));
-            renderAnnouncements();
-            showToast(st_pins[postId] ? '📌 Pinned!' : '📌 Unpinned');
-
-        }
-
-        console.log('Pin successful! isPinned:', res.isPinned);
-
-        if (res.isPinned) st_pins[postId] = true;
-        else delete st_pins[postId];
-
-        // Update localStorage to trigger storage event for other tabs/pages
-        localStorage.setItem('campus_pins', JSON.stringify(st_pins));
-        localStorage.setItem('teacher_pins', JSON.stringify(st_pins));
-        console.log('Updated localStorage pins:', st_pins);
-
-        let card = document.querySelector(`.announcement-card[data-post-id="${postId}"]`);
-        if (card) {
-            let pinBtn = card.querySelector('.pin-btn-top');
-            if (pinBtn) {
-                pinBtn.style.color = res.isPinned ? '#e65100' : 'var(--muted-light)';
-                pinBtn.innerHTML = `<i class="${res.isPinned ? 'fas' : 'far'} fa-thumbtack"></i>`;
-                pinBtn.title = res.isPinned ? 'Unpin' : 'Pin';
-                console.log('Updated pin button UI');
-            } else {
-                console.warn('Pin button not found in card');
-            }
-        } else {
-            console.warn('Card not found for postId:', postId);
-        }
-
-        // Re-apply current filter so Pinned view updates immediately
-        let currentFilter = localStorage.getItem('student_filter') || 'All';
-        filterCategory(currentFilter);
-        showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
+                    if (res.isPinned) st_pins[postId] = true;
+                    else delete st_pins[postId];
+                    localStorage.setItem('campus_pins', JSON.stringify(st_pins));
+                    renderAnnouncements();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 })
-                .catch (err => {
-            console.error('Pin error:', err);
-            showToast('Could not update pin: ' + err.message);
-        });
+                .catch(function(err) {
+                    console.error('Pin error:', err);
+                    showToast('Could not update pin: ' + err.message);
+                });
         }
 
         function toggleCommentSection(postId) {

@@ -89,6 +89,8 @@
             flex: 1;
             justify-content: center;
             min-width: 0;
+            overflow: hidden;
+            position: relative;
         }
 
         .search-btn {
@@ -100,6 +102,13 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            z-index: 1;
         }
 
         .search-btn:hover {
@@ -114,6 +123,9 @@
             gap: 15px;
             align-items: center;
             white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
         }
 
         .notification-bell {
@@ -679,7 +691,6 @@
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
                         Text="🔎 Search Announcements..." OnClick="SearchButton_Click"
-                        Width="420px" Font-Bold="False" Font-Size="Medium" Height="54px"
                         UseSubmitBehavior="false" />
                 </div>
                 <div class="header-actions">
@@ -737,6 +748,10 @@
                     <button type="button" class="panel-menu-item" onclick="navigateWithFlip('AboutUs.aspx');">
                         <i class="fas fa-info-circle"></i> About Us
                     </button>
+                    <div class="divider-light"></div>
+                    <button type="button" class="panel-menu-item" onclick="navigateWithFlip('Backup.aspx');">
+                        <i class="fas fa-database"></i> Database Backup
+                    </button>
                 </div>
             </div>
             <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
@@ -793,7 +808,7 @@
                             <input type="file" id="announcementImageFile" accept="image/*" onchange="previewImageFile()" style="display:none;" />
                         </label>
                         <div id="imagePreview" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;">
-                            <img id="previewImg" style="width:100%;max-height:200px;object-fit:cover;display:block;" />
+                            <img id="previewImg" src="" style="width:100%;max-height:200px;object-fit:cover;display:block;" />
                             <button type="button" onclick="clearImagePreview()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&times;</button>
                         </div>
                     </div>

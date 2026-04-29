@@ -356,8 +356,7 @@
                     <div class="profile-banner">
                         <div class="profile-avatar-wrap"
                              onclick="document.getElementById('photoUpload').click();"
-                             title="Click to change photo">
-                            <div class="profile-avatar" id="avatarCircle">
+                             title="Click to change photo">                            <div class="profile-avatar" id="avatarCircle">
                                 <% if (!string.IsNullOrEmpty(ProfileImage)) { %>
                                     <img id="avatarImg"
                                          src="<%= ProfileImage %>"
@@ -385,14 +384,14 @@
                         </div>
 
                         <!-- Upload button -->
-                        <label class="upload-btn">
+                        <asp:FileUpload ID="photoUpload" runat="server"
+                            ClientIDMode="Static"
+                            accept="image/*"
+                            Style="display:none;" />
+                        <button type="button" class="upload-btn" onclick="document.getElementById('photoUpload').click();">
                             <i class="fas fa-camera"></i>
                             Change Photo
-                            <asp:FileUpload ID="photoUpload" runat="server"
-                                ClientIDMode="Static"
-                                accept="image/*"
-                                Style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;" />
-                        </label>
+                        </button>
                         <div class="upload-status" id="uploadStatus"></div>
                     </div>
                 </div>
@@ -444,7 +443,11 @@
         </div>
 
         <% if (!string.IsNullOrEmpty(UploadMessage)) { %>
-        <script>showToast('<%= UploadMessage %>');</script>
+        <script>
+            window.addEventListener('load', function() {
+                showToast('<%= UploadMessage.Replace("'", "\\'") %>');
+            });
+        </script>
         <% } %>
     </form>
 

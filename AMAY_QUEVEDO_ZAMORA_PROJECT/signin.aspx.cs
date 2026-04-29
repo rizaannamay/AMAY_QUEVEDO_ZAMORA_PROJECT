@@ -27,6 +27,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string confirmPassword = txtConfirmPassword.Text;
             string role            = rbAdmin.Checked ? "Admin" : "Student";
 
+            // ── Input validation ─────────────────────────────────────────────
             if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(confirmPassword))
@@ -50,9 +51,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 con.Open();
 
+                // ── Parameterized query — prevents SQL injection ──────────────
                 // Check for duplicate username or email
-                string checkSql = "SELECT COUNT(1) FROM Users WHERE Username = '" + username + "' OR Email = '" + email + "'";
+                string checkSql = "SELECT COUNT(1) FROM Users WHERE Username = @username OR Email = @email";
                 SqlCommand checkCmd = new SqlCommand(checkSql, con);
+                checkCmd.Parameters.AddWithValue("@username", username);
+                checkCmd.Parameters.AddWithValue("@email",    email);
                 int count = (int)checkCmd.ExecuteScalar();
 
                 if (count > 0)
@@ -62,9 +66,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     return;
                 }
 
-                // Insert new user
-                string insertSql = "INSERT INTO Users (FullName, Email, Username, Password, Role) VALUES ('" + fullName + "','" + email + "','" + username + "','" + password + "','" + role + "')";
+                // Insert new user — parameterized
+                string insertSql = "INSERT INTO Users (FullName, Email, Username, Password, Role) " +
+                                   "VALUES (@fullName, @email, @username, @password, @role)";
                 SqlCommand insertCmd = new SqlCommand(insertSql, con);
+                insertCmd.Parameters.AddWithValue("@fullName", fullName);
+                insertCmd.Parameters.AddWithValue("@email",    email);
+                insertCmd.Parameters.AddWithValue("@username", username);
+                insertCmd.Parameters.AddWithValue("@password", password);
+                insertCmd.Parameters.AddWithValue("@role",     role);
                 insertCmd.ExecuteNonQuery();
 
                 con.Close();
