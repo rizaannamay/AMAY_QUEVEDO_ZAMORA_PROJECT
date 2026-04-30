@@ -77,7 +77,7 @@
 
         form { height: auto; min-height: 100%; overflow: visible; }
 
-        .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; background: none; border: none; }
         .logo i { color: var(--primary); margin-right: 8px; }
 
         .search-container {
@@ -862,7 +862,7 @@
                             <% } %>
                         </div>
                         <div class="user-details">
-                            <div class="user-name" id="userName"><%= Session["FullName"] ?? "User" %></div>
+                            <div class="user-name" id="userName"><%= Session["Username"] ?? "User" %></div>
                             <div class="user-role" id="userRole"><%= Session["Role"] ?? "Student" %></div>
                         </div>
                     </button>

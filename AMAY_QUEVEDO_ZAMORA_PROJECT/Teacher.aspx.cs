@@ -31,12 +31,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 string em = System.Web.HttpUtility.JavaScriptStringEncode(email);
                 string rl = System.Web.HttpUtility.JavaScriptStringEncode(role);
 
+                string username = Session["Username"]?.ToString() ?? "";
+                string un = System.Web.HttpUtility.JavaScriptStringEncode(username);
+
                 string script = "<script>"
                     + "var el;"
-                    + "el=document.getElementById('userName');    if(el) el.innerText=\"" + fn + "\";"
+                    + "el=document.getElementById('userName');    if(el) el.innerText=\"" + un + "\";"
                     + "el=document.getElementById('userRole');    if(el) el.innerText=\"" + rl + "\";"
                     + "el=document.getElementById('pm-fullname'); if(el) el.innerText=\"" + fn + "\";"
-                    + "el=document.getElementById('pm-username'); if(el) el.innerText=\"" + System.Web.HttpUtility.JavaScriptStringEncode(Session["Username"]?.ToString() ?? "") + "\";"
+                    + "el=document.getElementById('pm-username'); if(el) el.innerText=\"" + un + "\";"
                     + "el=document.getElementById('pm-email');    if(el) el.innerText=\"" + em + "\";"
                     + "el=document.getElementById('pm-role');     if(el) el.innerText=\"" + rl + "\";"
                     + "el=document.getElementById('pm-role2');    if(el) el.innerText=\"" + rl + "\";"

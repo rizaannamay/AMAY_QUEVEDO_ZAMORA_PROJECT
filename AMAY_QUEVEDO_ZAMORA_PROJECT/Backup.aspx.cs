@@ -4,11 +4,24 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class Backup : Page
     {
+        // Controls declared here since there is no designer file
+        protected Label   lblUsers;
+        protected Label   lblAnnouncements;
+        protected Label   lblComments;
+        protected Label   lblLikes;
+        protected Label   lblNotifications;
+        protected Label   lblTimestamp;
+        protected Label   lblMsg;
+        protected Button  btnExportCSV;
+        protected Button  btnExportSQL;
+        protected GridView gvAnnouncements;
+
         private readonly string _conn =
             ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
 

@@ -57,7 +57,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                 string fullName    = dr["FullName"].ToString();
                                 string email       = dr["Email"].ToString();
                                 string matchedRole = dr["Role"].ToString();
-                                string profileImg   = dr["ProfileImage"] != DBNull.Value ? dr["ProfileImage"].ToString() : string.Empty;
+                                string profileImg  = dr["ProfileImage"] != DBNull.Value ? dr["ProfileImage"].ToString() : string.Empty;
 
                                 Session["UserId"]       = userId;
                                 Session["Username"]     = username;

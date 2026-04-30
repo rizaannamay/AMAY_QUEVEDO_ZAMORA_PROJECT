@@ -67,7 +67,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
-                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.FullName, " +
+                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.Username, " +
                          "ISNULL(u.ProfileImage, '') AS AuthorImage " +
                          "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";
 
@@ -95,7 +95,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     commentCount = Convert.ToInt32(dr["CommentCount"]),
                     shareCount   = Convert.ToInt32(dr["ShareCount"]),
                     isPinned     = Convert.ToBoolean(dr["IsPinned"]),
-                    author       = dr["FullName"].ToString(),
+                    author       = dr["Username"].ToString(),
                     authorImage  = dr["AuthorImage"].ToString(),
                     userLiked    = likedIds.Contains(annId)
                 });
@@ -156,7 +156,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             SqlCommand notifCmd = new SqlCommand(notifSql, con);
             notifCmd.Parameters.AddWithValue("@msg", "New announcement: " + title);
             notifCmd.ExecuteNonQuery();
-
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true, id = newId }));
         }

@@ -82,7 +82,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 // Notify author
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, Message) " +
-                    "SELECT a.UserId, u.FullName + ' liked your announcement: ' + a.Title " +
+                    "SELECT a.UserId, u.Username + ' liked your announcement: ' + a.Title " +
                     "FROM Announcements a JOIN Users u ON u.UserId=@uid " +
                     "WHERE a.AnnouncementId=@pid AND a.UserId <> @uid", con);
                 notifCmd.Parameters.AddWithValue("@pid", postId);

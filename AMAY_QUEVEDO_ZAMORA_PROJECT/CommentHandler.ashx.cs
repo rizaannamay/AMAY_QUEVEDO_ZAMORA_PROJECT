@@ -84,7 +84,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             // Notify announcement author
             SqlCommand notifCmd = new SqlCommand(
                 "INSERT INTO Notifications (UserId, Message) " +
-                "SELECT a.UserId, u.FullName + ' commented on your announcement: ' + a.Title " +
+                "SELECT a.UserId, u.Username + ' commented on your announcement: ' + a.Title " +
                 "FROM Announcements a JOIN Users u ON u.UserId=@uid " +
                 "WHERE a.AnnouncementId=@aid AND a.UserId <> @uid", con);
             notifCmd.Parameters.AddWithValue("@aid", announcementId);
@@ -107,7 +107,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             con.Open();
 
             SqlCommand cmd = new SqlCommand(
-                "SELECT c.CommentText, c.CreatedDate, u.FullName, ISNULL(u.ProfileImage, '') AS ProfileImage " +
+                "SELECT c.CommentText, c.CreatedDate, u.Username, ISNULL(u.ProfileImage, '') AS ProfileImage " +
                 "FROM Comments c JOIN Users u ON u.UserId = c.UserId " +
                 "WHERE c.AnnouncementId = @aid ORDER BY c.CreatedDate ASC", con);
             cmd.Parameters.AddWithValue("@aid", announcementId);
@@ -117,7 +117,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 list.Add(new
                 {
-                    author       = dr["FullName"].ToString(),
+                    author       = dr["Username"].ToString(),
                     text         = dr["CommentText"].ToString(),
                     date         = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
                     profileImage = dr["ProfileImage"].ToString()

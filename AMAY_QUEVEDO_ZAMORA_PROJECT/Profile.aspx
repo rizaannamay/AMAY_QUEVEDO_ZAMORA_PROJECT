@@ -278,7 +278,7 @@
                         </div>
                     </div>
                     <div class="profile-body">
-                        <div class="profile-name" id="displayName"><%= FullName %></div>
+                        <div class="profile-name" id="displayName"><%= Username %></div>
                         <div class="profile-role-badge <%= Role == "Admin" ? "admin" : "" %>">
                             <i class="fas fa-<%= Role == "Admin" ? "chalkboard-teacher" : "user-graduate" %>"
                                style="margin-right:5px;"></i><%= Role %>

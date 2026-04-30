@@ -117,7 +117,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             // Notify the announcement author (only if sharer is not the author)
             SqlCommand cmd = new SqlCommand(
                 "INSERT INTO Notifications (UserId, Message) " +
-                "SELECT a.UserId, u.FullName + ' shared your announcement: ' + a.Title " +
+                "SELECT a.UserId, u.Username + ' shared your announcement: ' + a.Title " +
                 "FROM Announcements a JOIN Users u ON u.UserId = @uid " +
                 "WHERE a.AnnouncementId = @pid AND a.UserId <> @uid", con);
             cmd.Parameters.AddWithValue("@uid", userId);

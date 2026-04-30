@@ -44,7 +44,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             string script = "<script>"
                 + "var el;"
-                + "el=document.getElementById('userName');    if(el) el.innerText=\"" + fn + "\";"
+                + "el=document.getElementById('userName');    if(el) el.innerText=\"" + un + "\";"
                 + "el=document.getElementById('userRole');    if(el) el.innerText=\"" + rl + "\";"
                 + "el=document.getElementById('pm-fullname'); if(el) el.innerText=\"" + fn + "\";"
                 + "el=document.getElementById('pm-username'); if(el) el.innerText=\"" + un + "\";"

@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AboutUs.aspx" />
+    <Content Include="Backup.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="Academic Updates.jpg" />
     <Content Include="Amay Riza Ann.jpg" />
@@ -78,6 +79,8 @@
     <Content Include="Comments.aspx" />
     <Content Include="ctu-logo.png" />
     <Content Include="LikeHandler.ashx" />
+    <Content Include="AnnouncementHandler.ashx" />
+    <Content Include="UserPinHandler.ashx" />
     <Content Include="CommentHandler.ashx" />
     <Content Include="NotificationHandler.ashx" />
     <Content Include="login.aspx" />
@@ -104,6 +107,10 @@
     <Compile Include="AboutUs.aspx.designer.cs">
       <DependentUpon>AboutUs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Backup.aspx.cs">
+      <DependentUpon>Backup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Profile.aspx.cs">
       <DependentUpon>Profile.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -113,6 +120,9 @@
     </Compile>
     <Compile Include="LikeHandler.ashx.cs">
       <DependentUpon>LikeHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UserPinHandler.ashx.cs">
+      <DependentUpon>UserPinHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="CommentHandler.ashx.cs">
       <DependentUpon>CommentHandler.ashx</DependentUpon>
