@@ -509,6 +509,24 @@
         .comment-input button {
             padding: 10px 22px;
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            border: none; border-radius: 30px; cursor: pointer;
+            font-weight: 600; color: white;
+        }
+        .comment {
+            display: flex; gap: 10px; padding: 10px 0;
+            border-bottom: 1px solid var(--border); font-size: 13px;
+        }
+        .comment:last-child { border-bottom: none; }
+        .comment-avatar {
+            width: 32px; height: 32px; min-width: 32px;
+            border-radius: 50%; overflow: hidden;
+            background: var(--active-bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; color: var(--primary); flex-shrink: 0;
+        }
+        .comment-author { font-weight: 700; color: var(--primary); }
+        .comment-time   { font-size: 11px; color: var(--muted-light); margin-top: 2px; }
+        .no-comments    { padding: 12px; text-align: center; color: var(--muted-light); font-size: 12px; }
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -850,7 +868,31 @@
 
         function loadAnnouncementsFromDB() {
             fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(r => r.json()).then(res => { if (res.ok) { st_announcements = res.data.map(a => ({ ...a, pinned: a.isPinned })); renderAnnouncements(); } });
+                .then(r => r.json()).then(res => {
+                    if (res.ok) {
+                        st_announcements = res.data.map(a => ({ ...a, pinned: a.isPinned }));
+                        // Rebuild pin state from DB
+                        st_pins = {};
+                        st_announcements.forEach(a => { if (a.isPinned) st_pins[a.id] = true; });
+                        renderAnnouncements();
+                    }
+                });
+        }
+
+        function avatarHtml(imgSrc, size, isTeacher) {
+            var sz = size || 50;
+            var icon = isTeacher ? 'fa-user-tie' : 'fa-user';
+            if (imgSrc) {
+                return `<div class="post-avatar" style="overflow:hidden;"><img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`;
+            }
+            return `<div class="post-avatar"><i class="fas ${icon}"></i></div>`;
+        }
+
+        function commentAvatarHtml(imgSrc) {
+            if (imgSrc) {
+                return `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`;
+            }
+            return `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
         }
 
         function renderAnnouncements() {
@@ -861,23 +903,45 @@
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
             filtered.sort((a, b) => (st_pins[a.id] && !st_pins[b.id]) ? -1 : (!st_pins[a.id] && st_pins[b.id]) ? 1 : b.id - a.id);
             container.innerHTML = filtered.map(post => {
-                let pinned = st_pins[post.id];
+                let pinned    = st_pins[post.id];
+                let liked     = !!post.userLiked;
                 let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' : (post.category === 'Suspension' ? 'post-category-suspension' : (post.category === 'Event' ? 'post-category-event' : 'post-category-general'));
                 let commentsCount = (st_comments[post.id] || []).length;
-                return `<div class="announcement-card" data-id="${post.id}"><div class="post-header"><div class="post-header-left"><div class="post-avatar"><i class="fas fa-user-tie"></i></div><div><div class="post-author">${escapeHtml(post.author)}</div><div class="post-meta"><span>${post.date}</span><span class="post-category ${catClass}">${post.category}</span></div></div></div><div><button type="button" class="edit-btn-top" onclick="openEditModal(${post.id})"><i class="fas fa-edit"></i></button><button type="button" class="delete-btn-top" onclick="deletePost(${post.id})"><i class="fas fa-trash"></i></button><button type="button" class="pin-btn-top ${pinned ? 'pinned' : ''}" onclick="togglePin(${post.id})"><i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i></button></div></div><div class="post-content"><div class="post-title">${escapeHtml(post.title)}</div><div class="post-text">${escapeHtml(post.content)}</div>${post.imageUrl ? `<div class="post-image"><img src="${post.imageUrl}" /></div>` : ''}</div><div class="post-stats"><span onclick="toggleLike(${post.id})"><i class="${st_likes[post.id] ? 'fas' : 'far'} fa-heart"></i> <span class="like-count">${likeCount}</span> Likes</span><span onclick="toggleCommentSection(${post.id})"><i class="far fa-comment"></i> <span class="comment-count">${commentsCount}</span> Comments</span><span onclick="sharePost(${post.id})"><i class="far fa-share-square"></i> Share</span></div><div class="action-buttons"><button type="button" class="action-btn" onclick="toggleLike(${post.id})"><i class="${st_likes[post.id] ? 'fas' : 'far'} fa-heart"></i> Like</button><button type="button" class="action-btn" onclick="toggleCommentSection(${post.id})">Comment</button><button type="button" class="action-btn" onclick="sharePost(${post.id})">Share</button></div><div class="comments-section" id="commentsSection_${post.id}" style="display:none;"><div class="comment-input"><input id="commentInput_${post.id}" placeholder="Write a comment..."/><button type="button" onclick="addComment(${post.id})">Post</button></div><div id="commentsList_${post.id}">${renderCommentsList(post.id)}</div></div></div>`;
+                let avatar = avatarHtml(post.authorImage, 50, true);
+                return `<div class="announcement-card" data-id="${post.id}"><div class="post-header"><div class="post-header-left">${avatar}<div><div class="post-author">${escapeHtml(post.author)}</div><div class="post-meta"><span>${post.date}</span><span class="post-category ${catClass}">${post.category}</span></div></div></div><div><button type="button" class="edit-btn-top" onclick="openEditModal(${post.id})"><i class="fas fa-edit"></i></button><button type="button" class="delete-btn-top" onclick="deletePost(${post.id})"><i class="fas fa-trash"></i></button><button type="button" class="pin-btn-top ${pinned ? 'pinned' : ''}" onclick="togglePin(${post.id})"><i class="fas fa-thumbtack"></i></button></div></div><div class="post-content"><div class="post-title">${escapeHtml(post.title)}</div><div class="post-text">${escapeHtml(post.content)}</div>${post.imageUrl ? `<div class="post-image"><img src="${post.imageUrl}" /></div>` : ''}</div><div class="post-stats"><span onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i> <span class="like-count">${likeCount}</span> Likes</span><span onclick="toggleCommentSection(${post.id})"><i class="far fa-comment"></i> <span class="comment-count">${commentsCount}</span> Comments</span><span onclick="sharePost(${post.id})"><i class="far fa-share-square"></i> Share</span></div><div class="action-buttons"><button type="button" class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${liked ? 'Liked' : 'Like'}</button><button type="button" class="action-btn" onclick="toggleCommentSection(${post.id})">Comment</button><button type="button" class="action-btn" onclick="sharePost(${post.id})">Share</button></div><div class="comments-section" id="commentsSection_${post.id}" style="display:none;"><div class="comment-input"><input id="commentInput_${post.id}" placeholder="Write a comment..."/><button type="button" onclick="addComment(${post.id})">Post</button></div><div id="commentsList_${post.id}">${renderCommentsList(post.id)}</div></div></div>`;
             }).join('');
         }
 
-        function renderCommentsList(postId) { let comments = st_comments[postId] || []; if (!comments.length) return '<div class="no-comments">No comments yet.</div>'; return comments.map(c => `<div class="comment"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.time}</small></div></div>`).join(''); }
+        function renderCommentsList(postId) {
+            let comments = st_comments[postId] || [];
+            if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
+            return comments.map(c => `<div class="comment">${commentAvatarHtml(c.profileImage)}<div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.time || c.date || ''}</small></div></div>`).join('');
+        }
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]); }
         function showToast(msg) { let t = document.createElement('div'); t.innerText = msg; t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999'; document.body.appendChild(t); setTimeout(() => t.remove(), 2500); }
         function toggleLike(id) { fetch(`LikeHandler.ashx?action=toggle&postId=${id}`, { credentials: 'same-origin' }).then(r => r.json()).then(res => { if (res.ok) { st_likes[id] = res.liked; st_likeCounts[id] = res.likeCount; saveSharedState(); renderAnnouncements(); } }); }
-        function togglePin(id) { st_pins[id] = !st_pins[id]; if (!st_pins[id]) delete st_pins[id]; saveSharedState(); renderAnnouncements(); }
+        function togglePin(id) {
+            fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not pin')); return; }
+                    if (res.isPinned) st_pins[id] = true; else delete st_pins[id];
+                    saveSharedState();
+                    renderAnnouncements();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(() => showToast('Could not update pin'));
+        }
         function addComment(postId) { let input = document.getElementById(`commentInput_${postId}`); let text = input.value.trim(); if (!text) return; fetch('CommentHandler.ashx?action=add', { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ postId, comment: text }) }).then(() => { input.value = ''; loadComments(postId); }); }
-        function loadComments(postId) { fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials: 'same-origin' }).then(r => r.json()).then(list => { st_comments[postId] = list; let listDiv = document.getElementById(`commentsList_${postId}`); if (listDiv) listDiv.innerHTML = renderCommentsList(postId); let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`); if (countSpan) countSpan.textContent = list.length; }); }
+        function loadComments(postId) { fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials: 'same-origin' }).then(r => r.json()).then(list => { st_comments[postId] = list; let listDiv = document.getElementById(`commentsList_${postId}`); if (listDiv) listDiv.innerHTML = list.length ? list.map(c => `<div class="comment">${commentAvatarHtml(c.profileImage)}<div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.date || ''}</small></div></div>`).join('') : '<div class="no-comments">No comments yet.</div>'; let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`); if (countSpan) countSpan.textContent = list.length; }); }
         function toggleCommentSection(id) { let sec = document.getElementById(`commentsSection_${id}`); if (sec) { let open = sec.style.display !== 'none' && sec.style.display !== ''; sec.style.display = open ? 'none' : 'block'; if (!open) loadComments(id); } }
-        function sharePost(id) { navigator.clipboard?.writeText(window.location.href); showToast('Link copied!'); }
+        function sharePost(id) {
+            navigator.clipboard?.writeText(window.location.href);
+            showToast('Link copied!');
+            fetch('NotificationHandler.ashx?action=notifyShare&postId=' + id, { credentials: 'same-origin' })
+                .catch(() => {});
+        }
 
         // Fixed filterCategory - persists selection, no auto-close of dropdown
         function filterCategory(cat) {
@@ -982,6 +1046,25 @@
         });
 
         loadAnnouncementsFromDB();
+        updateNotifBadge();
+        setInterval(updateNotifBadge, 30000);
+
+        function updateNotifBadge() {
+            fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    let badge = document.getElementById('notificationBadge');
+                    if (badge) {
+                        if (res.ok && res.count > 0) {
+                            badge.textContent = res.count;
+                            badge.style.display = 'inline-block';
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(() => {});
+        }
     </script>
 </body>
 </html>

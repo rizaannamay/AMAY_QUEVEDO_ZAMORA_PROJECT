@@ -107,7 +107,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             con.Open();
 
             SqlCommand cmd = new SqlCommand(
-                "SELECT c.CommentText, c.CreatedDate, u.FullName " +
+                "SELECT c.CommentText, c.CreatedDate, u.FullName, ISNULL(u.ProfileImage, '') AS ProfileImage " +
                 "FROM Comments c JOIN Users u ON u.UserId = c.UserId " +
                 "WHERE c.AnnouncementId = @aid ORDER BY c.CreatedDate ASC", con);
             cmd.Parameters.AddWithValue("@aid", announcementId);
@@ -117,9 +117,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 list.Add(new
                 {
-                    author = dr["FullName"].ToString(),
-                    text   = dr["CommentText"].ToString(),
-                    date   = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"]))
+                    author       = dr["FullName"].ToString(),
+                    text         = dr["CommentText"].ToString(),
+                    date         = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
+                    profileImage = dr["ProfileImage"].ToString()
                 });
             }
 

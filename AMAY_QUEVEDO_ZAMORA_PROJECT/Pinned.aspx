@@ -357,7 +357,15 @@
                 .then(function(announcementsRes) {
                     if (!announcementsRes.ok) { if (callback) callback([]); return; }
 
+                    // Merge DB pins (IsPinned=1) with localStorage per-user pins
+                    var localPins = {};
+                    try { localPins = JSON.parse(localStorage.getItem('student_pins') || '{}'); } catch(e) {}
+
+                    pins = {};
                     pinnedDB = announcementsRes.data.map(function(a) {
+                        // Pinned if admin pinned it OR user locally pinned it
+                        var pinned = !!a.isPinned || !!localPins[a.id];
+                        if (pinned) pins[a.id] = true;
                         var cat = a.category || '';
                         var catLabel = cat === 'Exam' ? 'Exam Schedule' : cat === 'Suspension' ? 'Class Suspension' : cat === 'Event' ? 'Campus Events' : cat;
                         return {
@@ -365,10 +373,11 @@
                             title: a.title||'',
                             category: catLabel,
                             date: a.date||'',
-                            time: '',
                             professor: a.author||'',
+                            authorImage: a.authorImage||'',
                             description: a.content||'',
-                            isPinned: !!pins[a.id],
+                            imageUrl: a.imageUrl||'',
+                            isPinned: pinned,
                             likeCount: a.likeCount||0,
                             commentCount: a.commentCount||0
                         };
@@ -380,22 +389,10 @@
         }
 
         var THEME_KEY = 'campus_theme';
-
-        function loadPins() {
-            var tp = JSON.parse(localStorage.getItem('teacher_pins') || '{}');
-            var cp = JSON.parse(localStorage.getItem('campus_pins')  || '{}');
-            var merged = Object.assign({}, cp, tp);
-            // Sanitize: remove any non-integer keys (e.g. "2:1" from corrupted state)
-            Object.keys(merged).forEach(function(k) {
-                if (!/^\d+$/.test(k)) delete merged[k];
-            });
-            return merged;
-        }
-
-        var pins      = loadPins();
-        var likes     = JSON.parse(localStorage.getItem('sd_likes')      || '{}');
-        var likeCounts= JSON.parse(localStorage.getItem('sd_likeCounts') || '{}');
-        var comments  = JSON.parse(localStorage.getItem('sd_comments')   || '{}');
+        var pins      = {};
+        var likes     = {};
+        var likeCounts= {};
+        var comments  = {};
 
         function saveState() {
             localStorage.setItem('campus_pins',    JSON.stringify(pins));
@@ -468,13 +465,17 @@
         }
 
         function togglePin(id) {
-            pins[id] = !pins[id];
-            if (!pins[id]) delete pins[id];
-            saveState();
+            if (pins[id]) {
+                delete pins[id];
+            } else {
+                pins[id] = true;
+            }
+            // Save to localStorage
+            localStorage.setItem('student_pins', JSON.stringify(pins));
             var ann = pinnedDB.find(function(a) { return a.id === id; });
             if (ann) ann.isPinned = !!pins[id];
             renderPinned();
-            showToast(pins[id] ? '📌 Pinned!' : '📌 Unpinned');
+            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
         }
 
         function openComments(id) {
@@ -573,7 +574,9 @@
                 return '<div class="pinned-card">'
                     + '<div class="card-top">'
                     +   '<div class="card-author">'
-                    +     '<div class="avatar"><i class="' + catIcon + '"></i></div>'
+                    +     (ann.authorImage
+                            ? '<div class="avatar" style="overflow:hidden;"><img src="' + escapeHtml(ann.authorImage) + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>'
+                            : '<div class="avatar"><i class="' + catIcon + '"></i></div>')
                     +     '<div>'
                     +       '<div class="author-name">' + escapeHtml(ann.professor) + '</div>'
                     +       '<div class="meta">'
@@ -589,6 +592,7 @@
                     + '</div>'
                     + '<div class="card-title">' + escapeHtml(ann.title) + '</div>'
                     + '<div class="card-text">' + escapeHtml(ann.description) + '</div>'
+                    + (ann.imageUrl ? '<div class="card-image" style="margin-top:12px;"><img src="' + escapeHtml(ann.imageUrl) + '" onerror="this.style.display=\'none\'" /></div>' : '')
                     + '<div style="display:flex;gap:16px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);color:var(--muted);font-size:13px;margin-top:14px">'
                     +   '<span onclick="toggleLike(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="' + (liked?'fas':'far') + ' fa-heart" style="' + (liked?'color:#dc2626':'') + '"></i> ' + lc + ' Likes</span>'
                     +   '<span onclick="openComments(' + ann.id + ')" style="cursor:pointer;display:flex;align-items:center;gap:5px"><i class="far fa-comment"></i> ' + cc + ' Comments</span>'

@@ -34,6 +34,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     case "getUnread":   GetUnreadCount(ctx, js, userId); break;
                     case "markRead":    MarkRead(ctx, js, userId);       break;
                     case "markAllRead": MarkAllRead(ctx, js, userId);    break;
+                    case "notifyShare": NotifyShare(ctx, js, userId);    break;
                     default:
                         ctx.Response.Write(js.Serialize(new { ok = false, error = "Unknown action" }));
                         break;
@@ -100,6 +101,27 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             SqlCommand cmd = new SqlCommand(
                 "UPDATE Notifications SET IsRead=1 WHERE UserId=@uid AND IsRead=0", con);
             cmd.Parameters.AddWithValue("@uid", userId);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            ctx.Response.Write(js.Serialize(new { ok = true }));
+        }
+
+        private void NotifyShare(HttpContext ctx, JavaScriptSerializer js, int userId)
+        {
+            if (!int.TryParse(ctx.Request["postId"], out int postId))
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Invalid postId" }));
+                return;
+            }
+            con.Open();
+            // Notify the announcement author (only if sharer is not the author)
+            SqlCommand cmd = new SqlCommand(
+                "INSERT INTO Notifications (UserId, Message) " +
+                "SELECT a.UserId, u.FullName + ' shared your announcement: ' + a.Title " +
+                "FROM Announcements a JOIN Users u ON u.UserId = @uid " +
+                "WHERE a.AnnouncementId = @pid AND a.UserId <> @uid", con);
+            cmd.Parameters.AddWithValue("@uid", userId);
+            cmd.Parameters.AddWithValue("@pid", postId);
             cmd.ExecuteNonQuery();
             con.Close();
             ctx.Response.Write(js.Serialize(new { ok = true }));

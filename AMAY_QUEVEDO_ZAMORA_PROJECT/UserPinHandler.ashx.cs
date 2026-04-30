@@ -8,9 +8,18 @@ using System.Web.SessionState;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
+    /// <summary>
+    /// Handles pin/unpin using the IsPinned column on the Announcements table.
+    /// No separate Pinned table is needed — follows the ERD.
+    /// Admin pins are global (IsPinned = 1 on the row).
+    /// Students see pinned posts at the top based on IsPinned.
+    /// </summary>
     public class UserPinHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString);
+        private static readonly string ConnStr =
+            ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
+
+        public bool IsReusable => false;
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -30,8 +39,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 switch (action)
                 {
-                    case "toggle":      TogglePin(ctx, js);   break;
-                    case "getUserPins": GetUserPins(ctx, js); break;
+                    case "toggle":      TogglePin(ctx, js); break;
+                    case "getUserPins": GetPinned(ctx, js); break;
                     default:
                         ctx.Response.Write(js.Serialize(new { ok = false, error = "Unknown action: " + action }));
                         break;
@@ -40,64 +49,79 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             catch (Exception ex)
             {
                 ctx.Response.Write(js.Serialize(new { ok = false, error = ex.Message }));
-                if (con.State == System.Data.ConnectionState.Open) con.Close();
             }
         }
 
+        /// <summary>
+        /// Toggles IsPinned on the Announcements row.
+        /// Only Admin can pin/unpin (students see the pin state but can't change it).
+        /// </summary>
         private void TogglePin(HttpContext ctx, JavaScriptSerializer js)
         {
-            int userId         = Convert.ToInt32(ctx.Session["UserId"]);
             int announcementId = Convert.ToInt32(ctx.Request["announcementId"]);
+            string role = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "";
 
-            con.Open();
-
-            SqlCommand checkCmd = new SqlCommand(
-                "SELECT COUNT(*) FROM Pinned WHERE UserId=@uid AND AnnouncementId=@aid", con);
-            checkCmd.Parameters.AddWithValue("@uid", userId);
-            checkCmd.Parameters.AddWithValue("@aid", announcementId);
-            bool isPinned = (int)checkCmd.ExecuteScalar() > 0;
-
-            if (isPinned)
+            // Only Admin can pin/unpin
+            if (!string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
             {
-                SqlCommand delCmd = new SqlCommand(
-                    "DELETE FROM Pinned WHERE UserId=@uid AND AnnouncementId=@aid", con);
-                delCmd.Parameters.AddWithValue("@uid", userId);
-                delCmd.Parameters.AddWithValue("@aid", announcementId);
-                delCmd.ExecuteNonQuery();
-                isPinned = false;
-            }
-            else
-            {
-                SqlCommand insCmd = new SqlCommand(
-                    "INSERT INTO Pinned (UserId, AnnouncementId) VALUES (@uid, @aid)", con);
-                insCmd.Parameters.AddWithValue("@uid", userId);
-                insCmd.Parameters.AddWithValue("@aid", announcementId);
-                insCmd.ExecuteNonQuery();
-                isPinned = true;
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Only admins can pin announcements." }));
+                return;
             }
 
-            con.Close();
-            ctx.Response.Write(js.Serialize(new { ok = true, isPinned = isPinned }));
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+
+                // Get current pin state
+                bool isPinned;
+                using (var chk = new SqlCommand(
+                    "SELECT IsPinned FROM Announcements WHERE AnnouncementId = @aid", con))
+                {
+                    chk.Parameters.AddWithValue("@aid", announcementId);
+                    var result = chk.ExecuteScalar();
+                    if (result == null || result == DBNull.Value)
+                    {
+                        ctx.Response.Write(js.Serialize(new { ok = false, error = "Announcement not found." }));
+                        return;
+                    }
+                    isPinned = Convert.ToBoolean(result);
+                }
+
+                // Toggle
+                bool newState = !isPinned;
+                using (var upd = new SqlCommand(
+                    "UPDATE Announcements SET IsPinned = @val WHERE AnnouncementId = @aid", con))
+                {
+                    upd.Parameters.AddWithValue("@val", newState ? 1 : 0);
+                    upd.Parameters.AddWithValue("@aid", announcementId);
+                    upd.ExecuteNonQuery();
+                }
+
+                ctx.Response.Write(js.Serialize(new { ok = true, isPinned = newState }));
+            }
         }
 
-        private void GetUserPins(HttpContext ctx, JavaScriptSerializer js)
+        /// <summary>
+        /// Returns all announcement IDs where IsPinned = 1.
+        /// Used by Student/Pinned pages to know which posts are pinned.
+        /// </summary>
+        private void GetPinned(HttpContext ctx, JavaScriptSerializer js)
         {
-            int userId = Convert.ToInt32(ctx.Session["UserId"]);
             var pinnedIds = new List<int>();
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(
-                "SELECT AnnouncementId FROM Pinned WHERE UserId=@uid", con);
-            cmd.Parameters.AddWithValue("@uid", userId);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-                pinnedIds.Add(Convert.ToInt32(dr["AnnouncementId"]));
-            dr.Close();
-            con.Close();
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "SELECT AnnouncementId FROM Announcements WHERE IsPinned = 1", con))
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                        pinnedIds.Add(Convert.ToInt32(dr["AnnouncementId"]));
+                }
+            }
 
             ctx.Response.Write(js.Serialize(new { ok = true, pinnedIds = pinnedIds }));
         }
-
-        public bool IsReusable { get { return false; } }
     }
 }

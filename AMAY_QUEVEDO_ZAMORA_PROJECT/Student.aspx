@@ -702,8 +702,18 @@
         body.dark-mode .logo               { color: #e0e7ff; }
         body.dark-mode .user-name          { color: #f1f5f9; }
         body.dark-mode .user-role          { color: #cbd5e1; }
-
-        /* Slideout panel */
+        /* Modal text */
+        body.dark-mode .modal-content      { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
+        body.dark-mode .modal-title,
+        body.dark-mode #pm-fullname        { color: #e0e7ff; }
+        body.dark-mode #pm-username,
+        body.dark-mode #pm-email,
+        body.dark-mode #pm-role            { color: #e2e8f0; }
+        /* Like button active */
+        body.dark-mode .action-btn.liked   { color: #f87171; }
+        /* Pin button unpinned in dark */
+        body.dark-mode .pin-btn-top        { color: rgba(148,163,184,0.5); }
+        body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
         body.dark-mode .slideout-panel     { 
             background: rgba(30, 41, 59, 0.98); 
             border-color: rgba(148, 163, 184, 0.2); 
@@ -830,7 +840,7 @@
         <div class="app-shell">
             <div class="header">
                 <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
-                    <i class="fas fa-university"></i> CampusAnnouncement
+                    <i class="fas fa-university"></i> Campus Connect
                 </button>
 
                 <div class="search-container">
@@ -1078,20 +1088,15 @@
         }
 
         function togglePin(postId) {
-            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(res => {
-                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
-                    if (res.isPinned) st_pins[postId] = true;
-                    else delete st_pins[postId];
-                    localStorage.setItem('campus_pins', JSON.stringify(st_pins));
-                    renderAnnouncements();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
-                })
-                .catch(function(err) {
-                    console.error('Pin error:', err);
-                    showToast('Could not update pin: ' + err.message);
-                });
+            // Per-user pin stored in localStorage (no Pinned table in ERD)
+            if (st_pins[postId]) {
+                delete st_pins[postId];
+            } else {
+                st_pins[postId] = true;
+            }
+            localStorage.setItem('student_pins', JSON.stringify(st_pins));
+            renderAnnouncements();
+            showToast(st_pins[postId] ? '📌 Pinned!' : 'Unpinned');
         }
 
         function toggleCommentSection(postId) {
@@ -1111,7 +1116,12 @@
                 .then(r => r.json())
                 .then(comments => {
                     if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                    listDiv.innerHTML = comments.map(c => `<div class="comment"><div class="comment-avatar"><i class="fas fa-user"></i></div><div><span class="comment-author">${escapeHtml(c.author)}</span><div class="comment-text">${escapeHtml(c.text)}</div><div class="comment-time">${escapeHtml(c.date)}</div></div></div>`).join('');
+                    listDiv.innerHTML = comments.map(c => {
+                        let cAvatar = c.profileImage
+                            ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                            : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
+                        return `<div class="comment">${cAvatar}<div><span class="comment-author">${escapeHtml(c.author)}</span><div class="comment-text">${escapeHtml(c.text)}</div><div class="comment-time">${escapeHtml(c.date)}</div></div></div>`;
+                    }).join('');
                 })
                 .catch(err => {
                     console.error('Load comments error:', err);
@@ -1154,6 +1164,9 @@
             } else {
                 showToast('📤 Shared!');
             }
+            // Notify the announcement author
+            fetch('NotificationHandler.ashx?action=notifyShare&postId=' + postId, { credentials: 'same-origin' })
+                .catch(() => {});
         }
 
         // ====================== RENDER ANNOUNCEMENTS FROM API ======================
@@ -1168,37 +1181,47 @@
                     let announcements = res.data;
                     if (!announcements.length) { container.innerHTML = '<div style="padding:40px;text-align:center;">No announcements</div>'; return; }
 
-                    // Load pins from localStorage first, then build + filter in one shot — zero flicker
+                    // Load pins from localStorage (per-user, no DB table needed)
                     try {
                         var savedPins = JSON.parse(localStorage.getItem('student_pins') || '{}');
                         st_pins = savedPins || {};
                     } catch (e) {
                         st_pins = {};
                     }
+                    // Also mark DB-pinned posts (admin pins) as pinned
+                    announcements.forEach(function(post) {
+                        if (post.isPinned) st_pins[post.id] = true;
+                    });
+
                     setTimeout(function () {
                         let savedFilter = localStorage.getItem('student_filter') || 'All';
 
                         container.innerHTML = announcements.map(post => {
-                            let isPinned = !!st_pins[post.id];
+                            let isPinned  = !!st_pins[post.id];
+                            let liked     = !!post.userLiked;
                             let likeCount = post.likeCount || 0;
                             let catClass = post.category === 'Exam' ? 'post-category-exam'
                                 : post.category === 'Suspension' ? 'post-category-suspension'
                                     : post.category === 'Event' ? 'post-category-event'
                                         : 'post-category-general';
 
-                            // Determine visibility before rendering — no flicker
                             let visible = savedFilter === 'All' || post.category === savedFilter;
+
+                            // Post avatar — use profile image if available
+                            let postAvatar = post.authorImage
+                                ? `<div class="post-avatar" style="overflow:hidden;"><img src="${post.authorImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                                : `<div class="post-avatar"><i class="fas fa-user-tie"></i></div>`;
 
                             return `<div class="announcement-card" data-post-id="${post.id}" data-category="${post.category}" style="${visible ? '' : 'display:none'}">
                                     <div class="post-header">
                                         <div class="post-header-left">
-                                            <div class="post-avatar"><i class="fas fa-user-tie"></i></div>
+                                            ${postAvatar}
                                             <div>
                                                 <div class="post-author">${escapeHtml(post.author)}</div>
                                                 <div class="post-meta"><span>${escapeHtml(post.date)}</span><span class="post-category ${catClass}">${escapeHtml(post.category)}</span></div>
                                             </div>
                                         </div>
-                                        <button type="button" class="pin-btn-top ${isPinned ? 'pinned' : ''}" style="color:${isPinned ? '#e65100' : 'var(--muted-light)'}" onclick="togglePin(${post.id})"><i class="${isPinned ? 'fas' : 'far'} fa-thumbtack"></i></button>
+                                        <button type="button" class="pin-btn-top ${isPinned ? 'pinned' : ''}" onclick="togglePin(${post.id})" title="${isPinned ? 'Unpin' : 'Pin'}"><i class="fas fa-thumbtack"></i></button>
                                     </div>
                                     <div class="post-content">
                                         <div class="post-title">${escapeHtml(post.title)}</div>
@@ -1206,12 +1229,12 @@
                                         ${post.imageUrl ? `<div class="post-image"><img src="${escapeHtml(post.imageUrl)}" onerror="this.style.display='none'"/></div>` : ''}
                                     </div>
                                     <div class="post-stats">
-                                        <span onclick="toggleLike(${post.id})"><i class="far fa-heart"></i> <span class="like-count">${likeCount}</span> Likes</span>
+                                        <span onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i> <span class="like-count">${likeCount}</span> Likes</span>
                                         <span onclick="toggleCommentSection(${post.id})"><i class="far fa-comment"></i> <span class="comment-count">${post.commentCount || 0}</span> Comments</span>
                                         <span onclick="sharePost(${post.id})"><i class="far fa-share-square"></i> Share</span>
                                     </div>
                                     <div class="action-buttons">
-                                        <button type="button" class="action-btn like-btn" onclick="toggleLike(${post.id})"><i class="far fa-heart"></i> Like</button>
+                                        <button type="button" class="action-btn like-btn ${liked ? 'liked' : ''}" onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart"></i> ${liked ? 'Liked' : 'Like'}</button>
                                         <button type="button" class="action-btn" onclick="toggleCommentSection(${post.id})"><i class="far fa-comment"></i> Comment</button>
                                         <button type="button" class="action-btn" onclick="sharePost(${post.id})"><i class="fas fa-share-alt"></i> Share</button>
                                     </div>
@@ -1270,6 +1293,9 @@
 
         // Initialize
         renderAnnouncements();
+        updateNotifBadge();
+        // Refresh badge every 30 seconds
+        setInterval(updateNotifBadge, 30000);
     </script>
 </body>
 </html>

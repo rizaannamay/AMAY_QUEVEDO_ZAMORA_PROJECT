@@ -39,7 +39,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // ── Query #2 SELECT + #5 SEARCH (WHERE) + #6 FILTER (category/date) + #7 JOIN + #9 ORDER BY ──
         private void GetAll(HttpContext ctx, JavaScriptSerializer js)
         {
             var list = new List<object>();
@@ -49,16 +48,32 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             bool filterCat  = !string.IsNullOrEmpty(category) && category != "All";
             bool filterDate = !string.IsNullOrEmpty(date);
 
+            // Get current user's liked post IDs
+            var likedIds = new System.Collections.Generic.HashSet<int>();
+            int currentUserId = ctx.Session["UserId"] != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
+
             con.Open();
+
+            if (currentUserId > 0)
+            {
+                using (var likeCmd = new SqlCommand(
+                    "SELECT AnnouncementId FROM UserLikes WHERE UserId = @uid", con))
+                {
+                    likeCmd.Parameters.AddWithValue("@uid", currentUserId);
+                    using (var lr = likeCmd.ExecuteReader())
+                        while (lr.Read())
+                            likedIds.Add(Convert.ToInt32(lr["AnnouncementId"]));
+                }
+            }
+
             string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
-                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.FullName " +
-                         "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";  // Query #7 JOIN
+                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.FullName, " +
+                         "ISNULL(u.ProfileImage, '') AS AuthorImage " +
+                         "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";
 
-            if (filterCat)  sql += " WHERE a.Category = @cat";                        // Query #6 FILTER
-            if (filterDate) sql += (filterCat ? " AND" : " WHERE") +
-                                   " CAST(a.Date_Posted AS DATE) = @date";             // Query #5 SEARCH
-
-            sql += " ORDER BY a.IsPinned DESC, a.Date_Posted DESC";                   // Query #9 ORDER BY
+            if (filterCat)  sql += " WHERE a.Category = @cat";
+            if (filterDate) sql += (filterCat ? " AND" : " WHERE") + " CAST(a.Date_Posted AS DATE) = @date";
+            sql += " ORDER BY a.IsPinned DESC, a.Date_Posted DESC";
 
             SqlCommand cmd = new SqlCommand(sql, con);
             if (filterCat)  cmd.Parameters.AddWithValue("@cat",  category);
@@ -67,9 +82,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
+                int annId = Convert.ToInt32(dr["AnnouncementId"]);
                 list.Add(new
                 {
-                    id           = Convert.ToInt32(dr["AnnouncementId"]),
+                    id           = annId,
                     title        = dr["Title"].ToString(),
                     content      = dr["Content"].ToString(),
                     category     = dr["Category"].ToString(),
@@ -79,7 +95,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     commentCount = Convert.ToInt32(dr["CommentCount"]),
                     shareCount   = Convert.ToInt32(dr["ShareCount"]),
                     isPinned     = Convert.ToBoolean(dr["IsPinned"]),
-                    author       = dr["FullName"].ToString()
+                    author       = dr["FullName"].ToString(),
+                    authorImage  = dr["AuthorImage"].ToString(),
+                    userLiked    = likedIds.Contains(annId)
                 });
             }
             dr.Close();
@@ -222,7 +240,28 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void TogglePin(HttpContext ctx, JavaScriptSerializer js)
         {
-            ctx.Response.Write(js.Serialize(new { ok = false, error = "Pin/unpin is handled via UserPinHandler." }));
+            // Delegate to UserPinHandler logic — update IsPinned on the Announcements row
+            if (ctx.Session["Role"] == null || ctx.Session["Role"].ToString() != "Admin")
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Only admins can pin." }));
+                return;
+            }
+            int id = Convert.ToInt32(ctx.Request["id"]);
+            con.Open();
+            bool current;
+            using (var chk = new SqlCommand("SELECT IsPinned FROM Announcements WHERE AnnouncementId=@id", con))
+            {
+                chk.Parameters.AddWithValue("@id", id);
+                current = Convert.ToBoolean(chk.ExecuteScalar());
+            }
+            using (var upd = new SqlCommand("UPDATE Announcements SET IsPinned=@v WHERE AnnouncementId=@id", con))
+            {
+                upd.Parameters.AddWithValue("@v", current ? 0 : 1);
+                upd.Parameters.AddWithValue("@id", id);
+                upd.ExecuteNonQuery();
+            }
+            con.Close();
+            ctx.Response.Write(js.Serialize(new { ok = true, isPinned = !current }));
         }
 
         public bool IsReusable { get { return false; } }
