@@ -1,12 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
-<script runat="server">
-    protected void SearchButton_Click(object sender, EventArgs e)
-    {
-        Response.Redirect("SearchDashboard.aspx");
-    }
-</script>
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -527,12 +520,6 @@
         .comment-author { font-weight: 700; color: var(--primary); }
         .comment-time   { font-size: 11px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px; text-align: center; color: var(--muted-light); font-size: 12px; }
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            color: white;
-        }
 
         .create-post-card {
             background: var(--surface-strong);

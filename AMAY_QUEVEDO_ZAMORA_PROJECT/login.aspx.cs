@@ -3,6 +3,8 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.UI;
 
+#pragma warning disable IDE1006 // Naming rule violations — class and method names match ASPX Inherits/event wiring
+
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : Page

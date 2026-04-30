@@ -29,272 +29,177 @@
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
             background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), var(--bg-image);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
+            background-size: cover; background-repeat: no-repeat;
+            background-position: center; background-attachment: fixed;
         }
 
         a { color: inherit; text-decoration: none; }
-
         .page-shell { min-height: 100vh; padding: 28px 20px 48px; }
+        .page-wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
-        .page-wrap {
-            max-width: 560px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-        }
-
-        /* ── Topbar ── */
+        /* Topbar */
         .topbar {
-            background: var(--surface);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: var(--shadow);
+            background: var(--surface); backdrop-filter: blur(14px);
+            border: 1px solid var(--border); border-radius: 20px;
+            padding: 14px 20px; display: flex; align-items: center;
+            justify-content: space-between; box-shadow: var(--shadow);
         }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: var(--primary); }
         .brand-badge {
-            width: 40px; height: 40px;
-            border-radius: 12px;
+            width: 40px; height: 40px; border-radius: 12px;
             background: linear-gradient(135deg, #1a3a5c, #2563eb);
-            color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
+            color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
-
         .back-btn {
             display: inline-flex; align-items: center; justify-content: center;
-            width: 40px; height: 40px;
-            border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, #1a3a5c, #2563eb);
-            color: #fff; border: none;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer; text-decoration: none;
+            color: #fff; border: none; box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; text-decoration: none;
         }
         .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,99,235,0.35); }
 
-        /* ── Profile Card ── */
+        /* Profile card */
         .profile-card {
-            background: var(--surface);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            background: var(--surface); backdrop-filter: blur(14px);
+            border: 1px solid var(--border); border-radius: 28px;
+            box-shadow: var(--shadow); overflow: hidden;
         }
-
-        /* Banner */
         .profile-banner {
             height: 120px;
             background: linear-gradient(135deg, #1a3a5c 0%, #2563eb 55%, #7c3aed 100%);
             position: relative;
         }
-
-        /* Avatar centered on banner bottom */
         .profile-avatar-wrap {
-            position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: pointer;
+            position: absolute; bottom: -50px; left: 50%;
+            transform: translateX(-50%); cursor: pointer;
         }
-
         .profile-avatar {
-            width: 100px; height: 100px;
-            border-radius: 50%;
+            width: 100px; height: 100px; border-radius: 50%;
             background: linear-gradient(135deg, #1e3a8a, #2563eb);
             border: 4px solid #ffffff;
             display: flex; align-items: center; justify-content: center;
             font-size: 40px; color: #fff;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            overflow: hidden;
-            position: relative;
+            overflow: hidden; position: relative;
         }
-
-        .profile-avatar img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            display: block;
-            border-radius: 50%;
-        }
-
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 50%; }
         .avatar-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 2px;
-            opacity: 0;
-            transition: opacity 0.2s;
+            position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 2px; opacity: 0; transition: opacity 0.2s;
         }
         .profile-avatar-wrap:hover .avatar-overlay { opacity: 1; }
         .avatar-overlay i { font-size: 20px; color: #fff; }
         .avatar-overlay span { font-size: 10px; color: #fff; font-weight: 600; }
 
-        /* Body below banner */
-        .profile-body {
-            padding: 62px 28px 28px;
-            text-align: center;
-        }
-
-        .profile-name {
-            font-size: 24px; font-weight: 800;
-            color: var(--primary); margin-bottom: 6px;
-        }
-
+        .profile-body { padding: 62px 28px 28px; text-align: center; }
+        .profile-name { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
         .profile-role-badge {
-            display: inline-block;
-            padding: 4px 16px; border-radius: 20px;
-            font-size: 12px; font-weight: 700;
-            background: #DBEAFE; color: #1E3A8A;
-            margin-bottom: 6px;
+            display: inline-block; padding: 4px 16px; border-radius: 20px;
+            font-size: 12px; font-weight: 700; background: #DBEAFE; color: #1E3A8A; margin-bottom: 6px;
         }
         .profile-role-badge.admin { background: #EDE9FE; color: #5B21B6; }
+        .profile-tagline { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
 
-        .profile-tagline {
-            color: var(--muted); font-size: 13px;
-            margin-bottom: 20px;
-        }
-
-        /* Upload button */
         .upload-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: #fff;
-            border-radius: 40px;
-            padding: 10px 22px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(37,99,235,0.25);
-            transition: transform 0.2s, box-shadow 0.2s;
-            overflow: hidden;
+            display: inline-flex; align-items: center; gap: 8px; position: relative;
+            background: linear-gradient(135deg, #2563eb, #3b82f6); color: #fff;
+            border-radius: 40px; padding: 10px 22px; font-size: 13px; font-weight: 600;
+            cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+            transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; border: none;
         }
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37,99,235,0.35);
-        }
-        .upload-btn input[type="file"] {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
+        .upload-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,99,235,0.35); }
+        .upload-status { display: none; margin-top: 10px; font-size: 12px; color: var(--primary); font-weight: 600; }
 
-        .upload-status {
-            display: none;
-            margin-top: 10px;
-            font-size: 12px;
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        /* ── Info list card ── */
+        /* Info card with edit */
         .info-card {
-            background: var(--surface);
-            backdrop-filter: blur(14px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            background: var(--surface); backdrop-filter: blur(14px);
+            border: 1px solid var(--border); border-radius: 24px;
+            box-shadow: var(--shadow); overflow: hidden;
         }
-
-        .info-row {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 22px;
+        .info-card-header {
+            padding: 14px 22px 10px;
+            display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border);
         }
-        .info-row:last-child { border-bottom: none; }
+        .info-card-title { font-size: 13px; font-weight: 700; color: var(--primary); }
+        .edit-toggle-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--surface-soft); border: 1px solid var(--border);
+            border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+            color: var(--primary); cursor: pointer; transition: all 0.2s;
+        }
+        .edit-toggle-btn:hover { background: #DBEAFE; border-color: var(--primary-2); }
+        .edit-toggle-btn.active { background: linear-gradient(135deg,#2563eb,#3b82f6); color: #fff; border-color: transparent; }
 
+        .info-row {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 22px; border-bottom: 1px solid var(--border);
+        }
+        .info-row:last-child { border-bottom: none; }
         .info-icon {
-            width: 42px; height: 42px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #1a3a5c, #2563eb);
-            color: #fff;
+            width: 42px; height: 42px; border-radius: 12px;
+            background: linear-gradient(135deg, #1a3a5c, #2563eb); color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px; flex-shrink: 0;
         }
-
+        .info-icon.locked { background: linear-gradient(135deg,#64748b,#94a3b8); }
         .info-text { flex: 1; min-width: 0; }
-
         .info-label {
-            font-size: 11px; color: var(--muted);
-            font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.07em; margin-bottom: 2px;
+            font-size: 11px; color: var(--muted); font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 2px;
         }
-
         .info-value {
-            font-size: 15px; font-weight: 700;
-            color: var(--primary);
+            font-size: 15px; font-weight: 700; color: var(--primary);
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
+        .info-input {
+            display: none; width: 100%; padding: 8px 12px;
+            background: var(--surface-soft); border: 1.5px solid var(--primary-2);
+            border-radius: 10px; font-size: 14px; font-weight: 600;
+            color: var(--primary); outline: none; font-family: inherit;
+        }
+        .info-input:focus { box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
 
-        /* ── Logout ── */
+        /* Save / Cancel buttons */
+        .edit-actions {
+            display: none; padding: 14px 22px;
+            border-top: 1px solid var(--border);
+            gap: 10px; justify-content: flex-end;
+        }
+        .btn-save {
+            padding: 10px 24px; border: none; border-radius: 40px;
+            background: linear-gradient(135deg,#2563eb,#3b82f6); color: #fff;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37,99,235,0.25); transition: all 0.2s;
+        }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(37,99,235,0.35); }
+        .btn-cancel-edit {
+            padding: 10px 20px; border: 1px solid var(--border); border-radius: 40px;
+            background: none; color: var(--muted); font-size: 13px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-cancel-edit:hover { background: var(--surface-soft); }
+
+        /* Logout */
         .logout-btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            color: #fff;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-            box-shadow: 0 4px 14px rgba(220,38,38,0.28);
+            width: 100%; padding: 15px; border: none; border-radius: 20px;
+            background: linear-gradient(135deg, #dc2626, #b91c1c); color: #fff;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: all 0.2s; box-shadow: 0 4px 14px rgba(220,38,38,0.28);
         }
-        .logout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(220,38,38,0.38);
-        }
+        .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(220,38,38,0.38); }
 
-        .footer-note {
-            text-align: center; color: var(--muted);
-            font-size: 12px; padding-bottom: 4px;
-        }
+        .footer-note { text-align: center; color: var(--muted); font-size: 12px; padding-bottom: 4px; }
 
-        /* ── Toast ── */
+        /* Toast */
         .toast-msg {
-            position: fixed; bottom: 28px; left: 50%;
-            transform: translateX(-50%);
-            background: #1a3a5c; color: #fff;
-            padding: 10px 24px; border-radius: 30px;
-            font-size: 13px; z-index: 9999;
-            box-shadow: 0 4px 16px rgba(0,0,0,.25);
-            animation: toastFade 2.6s ease forwards;
-            pointer-events: none;
+            position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+            background: #1a3a5c; color: #fff; padding: 10px 24px; border-radius: 30px;
+            font-size: 13px; z-index: 9999; box-shadow: 0 4px 16px rgba(0,0,0,.25);
+            animation: toastFade 2.6s ease forwards; pointer-events: none;
         }
         @keyframes toastFade {
             0%   { opacity:0; transform:translateX(-50%) translateY(10px); }
@@ -303,7 +208,7 @@
             100% { opacity:0; }
         }
 
-        /* ── Dark mode ── */
+        /* Dark mode */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -317,21 +222,22 @@
             --muted-light: #94a3b8;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        body.dark-mode {
-            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), var(--bg-image);
-        }
+        body.dark-mode { background-image: linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),var(--bg-image); }
         body.dark-mode .profile-avatar { border-color: rgba(30,41,59,0.98); }
         body.dark-mode .profile-role-badge       { background: rgba(59,130,246,0.25); color: #93c5fd; }
         body.dark-mode .profile-role-badge.admin { background: rgba(139,92,246,0.25); color: #c4b5fd; }
         body.dark-mode .brand        { color: #e0e7ff; }
         body.dark-mode .profile-name { color: #e0e7ff; }
         body.dark-mode .info-value   { color: #e0e7ff; }
+        body.dark-mode .info-input   { background: rgba(51,65,85,0.8); color: #e0e7ff; border-color: #60a5fa; }
+        body.dark-mode .info-card-title { color: #e0e7ff; }
+        body.dark-mode .edit-toggle-btn { color: #93c5fd; }
 
         @media (max-width: 600px) {
             .page-shell { padding: 14px 12px 40px; }
             .profile-body { padding: 60px 18px 22px; }
             .profile-banner { height: 100px; }
-            .info-row { padding: 14px 16px; }
+            .info-row { padding: 12px 16px; }
         }
     </style>
 </head>
@@ -351,16 +257,15 @@
                     </a>
                 </div>
 
-                <!-- Profile Card (banner + avatar + name + upload) -->
+                <!-- Profile Card -->
                 <div class="profile-card">
                     <div class="profile-banner">
                         <div class="profile-avatar-wrap"
                              onclick="document.getElementById('photoUpload').click();"
-                             title="Click to change photo">                            <div class="profile-avatar" id="avatarCircle">
+                             title="Click to change photo">
+                            <div class="profile-avatar" id="avatarCircle">
                                 <% if (!string.IsNullOrEmpty(ProfileImage)) { %>
-                                    <img id="avatarImg"
-                                         src="<%= ProfileImage %>"
-                                         alt="Profile Photo"
+                                    <img id="avatarImg" src="<%= ProfileImage %>" alt="Profile Photo"
                                          style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                                 <% } else { %>
                                     <i class="fas fa-user" id="avatarIcon"></i>
@@ -372,66 +277,96 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="profile-body">
-                        <div class="profile-name"><%= FullName %></div>
+                        <div class="profile-name" id="displayName"><%= FullName %></div>
                         <div class="profile-role-badge <%= Role == "Admin" ? "admin" : "" %>">
                             <i class="fas fa-<%= Role == "Admin" ? "chalkboard-teacher" : "user-graduate" %>"
                                style="margin-right:5px;"></i><%= Role %>
                         </div>
-                        <div class="profile-tagline">
-                            Cebu Technological University — Campus Connect Portal
-                        </div>
+                        <div class="profile-tagline">Cebu Technological University — Campus Connect Portal</div>
 
-                        <!-- Upload button -->
-                        <asp:FileUpload ID="photoUpload" runat="server"
-                            ClientIDMode="Static"
-                            accept="image/*"
-                            Style="display:none;" />
-                        <button type="button" class="upload-btn" onclick="document.getElementById('photoUpload').click();">
-                            <i class="fas fa-camera"></i>
-                            Change Photo
+                        <asp:FileUpload ID="photoUpload" runat="server" ClientIDMode="Static"
+                            accept="image/*" Style="display:none;" />
+                        <button type="button" class="upload-btn"
+                                onclick="document.getElementById('photoUpload').click();">
+                            <i class="fas fa-camera"></i> Change Photo
                         </button>
                         <div class="upload-status" id="uploadStatus"></div>
                     </div>
                 </div>
 
-                <!-- Info List -->
+                <!-- Info Card with Edit -->
                 <div class="info-card">
+                    <div class="info-card-header">
+                        <span class="info-card-title"><i class="fas fa-id-card" style="margin-right:6px;"></i>Account Info</span>
+                        <button type="button" class="edit-toggle-btn" id="editToggleBtn" onclick="toggleEdit()">
+                            <i class="fas fa-pen"></i> Edit
+                        </button>
+                    </div>
+
+                    <!-- Full Name -->
                     <div class="info-row">
                         <div class="info-icon"><i class="fas fa-user"></i></div>
                         <div class="info-text">
                             <div class="info-label">Full Name</div>
-                            <div class="info-value"><%= FullName %></div>
+                            <div class="info-value" id="val-fullname"><%= FullName %></div>
+                            <input type="text" class="info-input" id="inp-fullname"
+                                   value="<%= System.Web.HttpUtility.HtmlAttributeEncode(FullName) %>"
+                                   maxlength="100" placeholder="Full name" />
                         </div>
                     </div>
+
+                    <!-- Username -->
                     <div class="info-row">
                         <div class="info-icon"><i class="fas fa-at"></i></div>
                         <div class="info-text">
                             <div class="info-label">Username</div>
-                            <div class="info-value"><%= Username %></div>
+                            <div class="info-value" id="val-username"><%= Username %></div>
+                            <input type="text" class="info-input" id="inp-username"
+                                   value="<%= System.Web.HttpUtility.HtmlAttributeEncode(Username) %>"
+                                   maxlength="50" placeholder="Username" />
                         </div>
                     </div>
+
+                    <!-- Email -->
                     <div class="info-row">
                         <div class="info-icon"><i class="fas fa-envelope"></i></div>
                         <div class="info-text">
                             <div class="info-label">Email Address</div>
-                            <div class="info-value"><%= Email %></div>
+                            <div class="info-value" id="val-email"><%= Email %></div>
+                            <input type="email" class="info-input" id="inp-email"
+                                   value="<%= System.Web.HttpUtility.HtmlAttributeEncode(Email) %>"
+                                   maxlength="100" placeholder="Email address" />
                         </div>
                     </div>
+
+                    <!-- Role — read only -->
                     <div class="info-row">
-                        <div class="info-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div class="info-icon locked"><i class="fas fa-shield-alt"></i></div>
                         <div class="info-text">
-                            <div class="info-label">Role</div>
+                            <div class="info-label">Role <span style="font-size:10px;color:var(--muted-light);">(cannot be changed)</span></div>
                             <div class="info-value"><%= Role %></div>
                         </div>
                     </div>
+
+                    <!-- Save / Cancel -->
+                    <div class="edit-actions" id="editActions">
+                        <button type="button" class="btn-cancel-edit" onclick="cancelEdit()">Cancel</button>
+                        <button type="button" class="btn-save" onclick="saveProfile()">
+                            <i class="fas fa-check" style="margin-right:6px;"></i>Save Changes
+                        </button>
+                    </div>
                 </div>
+
+                <!-- Hidden fields for postback -->
+                <asp:HiddenField ID="hfAction"   runat="server" />
+                <asp:HiddenField ID="hfFullName" runat="server" />
+                <asp:HiddenField ID="hfUsername" runat="server" />
+                <asp:HiddenField ID="hfEmail"    runat="server" />
 
                 <!-- Logout -->
                 <button type="button" class="logout-btn" onclick="confirmLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Logout
+                    <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
 
                 <div class="footer-note">
@@ -444,7 +379,7 @@
 
         <% if (!string.IsNullOrEmpty(UploadMessage)) { %>
         <script>
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
                 showToast('<%= UploadMessage.Replace("'", "\\'") %>');
             });
         </script>
@@ -454,8 +389,7 @@
     <script>
         // ── Theme ──────────────────────────────────────────────
         (function () {
-            var isDark = localStorage.getItem('campus_theme') === 'dark';
-            document.body.classList.toggle('dark-mode', isDark);
+            document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
             window.addEventListener('storage', function (e) {
                 if (e.key === 'campus_theme')
                     document.body.classList.toggle('dark-mode', e.newValue === 'dark');
@@ -465,15 +399,61 @@
         // ── Toast ──────────────────────────────────────────────
         function showToast(msg) {
             var t = document.createElement('div');
-            t.className = 'toast-msg';
-            t.textContent = msg;
+            t.className = 'toast-msg'; t.textContent = msg;
             document.body.appendChild(t);
             setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2700);
         }
 
         // ── Logout ─────────────────────────────────────────────
-        function confirmLogout() {
-            window.location.href = 'Logout.aspx';
+        function confirmLogout() { window.location.href = 'Logout.aspx'; }
+
+        // ── Edit toggle ────────────────────────────────────────
+        var editing = false;
+
+        function toggleEdit() {
+            editing = !editing;
+            var btn = document.getElementById('editToggleBtn');
+            var actions = document.getElementById('editActions');
+            var values  = document.querySelectorAll('.info-value[id^="val-"]');
+            var inputs  = document.querySelectorAll('.info-input');
+
+            if (editing) {
+                btn.innerHTML = '<i class="fas fa-times"></i> Cancel';
+                btn.classList.add('active');
+                values.forEach(function (v) { v.style.display = 'none'; });
+                inputs.forEach(function (i) { i.style.display = 'block'; });
+                actions.style.display = 'flex';
+                document.getElementById('inp-fullname').focus();
+            } else {
+                cancelEdit();
+            }
+        }
+
+        function cancelEdit() {
+            editing = false;
+            var btn = document.getElementById('editToggleBtn');
+            btn.innerHTML = '<i class="fas fa-pen"></i> Edit';
+            btn.classList.remove('active');
+            document.querySelectorAll('.info-value[id^="val-"]').forEach(function (v) { v.style.display = ''; });
+            document.querySelectorAll('.info-input').forEach(function (i) { i.style.display = 'none'; });
+            document.getElementById('editActions').style.display = 'none';
+        }
+
+        function saveProfile() {
+            var fullName = document.getElementById('inp-fullname').value.trim();
+            var username = document.getElementById('inp-username').value.trim();
+            var email    = document.getElementById('inp-email').value.trim();
+
+            if (!fullName) { showToast('Full name cannot be empty.'); return; }
+            if (!username) { showToast('Username cannot be empty.'); return; }
+            if (!email || !email.includes('@')) { showToast('Please enter a valid email.'); return; }
+
+            // Set hidden fields and submit
+            document.getElementById('<%= hfAction.ClientID %>').value   = 'updateProfile';
+            document.getElementById('<%= hfFullName.ClientID %>').value = fullName;
+            document.getElementById('<%= hfUsername.ClientID %>').value = username;
+            document.getElementById('<%= hfEmail.ClientID %>').value    = email;
+            document.getElementById('form1').submit();
         }
 
         // ── Photo upload ────────────────────────────────────────
@@ -482,17 +462,9 @@
             photoInput.addEventListener('change', function () {
                 var file = this.files[0];
                 if (!file) return;
+                if (!file.type.startsWith('image/')) { showToast('Please select an image file.'); return; }
+                if (file.size > 2 * 1024 * 1024) { showToast('Image must be smaller than 2MB.'); return; }
 
-                if (!file.type.startsWith('image/')) {
-                    showToast('Please select an image file.');
-                    return;
-                }
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast('Image must be smaller than 5MB.');
-                    return;
-                }
-
-                // Instant preview in avatar circle
                 var reader = new FileReader();
                 reader.onload = function (ev) {
                     var circle = document.getElementById('avatarCircle');
@@ -500,12 +472,10 @@
                         var icon = circle.querySelector('#avatarIcon');
                         if (icon) icon.style.display = 'none';
                         var img = circle.querySelector('#avatarImg');
-                        if (img) {
-                            img.src = ev.target.result;
-                        } else {
+                        if (img) { img.src = ev.target.result; }
+                        else {
                             var newImg = document.createElement('img');
-                            newImg.id = 'avatarImg';
-                            newImg.alt = 'Profile Photo';
+                            newImg.id = 'avatarImg'; newImg.alt = 'Profile Photo';
                             newImg.src = ev.target.result;
                             newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;';
                             circle.insertBefore(newImg, circle.firstChild);
@@ -514,13 +484,11 @@
                 };
                 reader.readAsDataURL(file);
 
-                // Show spinner
                 var status = document.getElementById('uploadStatus');
                 if (status) {
                     status.style.display = 'block';
                     status.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Uploading...';
                 }
-
                 document.getElementById('form1').submit();
             });
         }
