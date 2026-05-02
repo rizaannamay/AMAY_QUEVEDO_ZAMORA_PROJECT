@@ -9,10 +9,8 @@ using System.Web.SessionState;
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     /// <summary>
-    /// Handles pin/unpin using the IsPinned column on the Announcements table.
-    /// No separate Pinned table is needed — follows the ERD.
-    /// Admin pins are global (IsPinned = 1 on the row).
-    /// Students see pinned posts at the top based on IsPinned.
+    /// Handles pin/unpin for both Admin (global IsPinned on Announcements)
+    /// and Student (per-user row in UserPins table).
     /// </summary>
     public class UserPinHandler : IHttpHandler, IRequiresSessionState
     {
@@ -40,7 +38,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 switch (action)
                 {
                     case "toggle":      TogglePin(ctx, js); break;
-                    case "getUserPins": GetPinned(ctx, js); break;
+                    case "getUserPins": GetUserPins(ctx, js); break;
                     default:
                         ctx.Response.Write(js.Serialize(new { ok = false, error = "Unknown action: " + action }));
                         break;
@@ -52,19 +50,24 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        /// <summary>
-        /// Toggles IsPinned on the Announcements row.
-        /// Only Admin can pin/unpin (students see the pin state but can't change it).
-        /// </summary>
+        // ─────────────────────────────────────────────────────────────
+        // TOGGLE — Admin toggles global IsPinned; Student toggles UserPins row
+        // ─────────────────────────────────────────────────────────────
         private void TogglePin(HttpContext ctx, JavaScriptSerializer js)
         {
-            int announcementId = Convert.ToInt32(ctx.Request["announcementId"]);
-            string role = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "";
-
-            // Only Admin can pin/unpin
-            if (!string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
+            int announcementId;
+            if (!int.TryParse(ctx.Request["announcementId"], out announcementId))
             {
-                ctx.Response.Write(js.Serialize(new { ok = false, error = "Only admins can pin announcements." }));
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Invalid announcement ID." }));
+                return;
+            }
+
+            string role   = ctx.Session["Role"]   != null ? ctx.Session["Role"].ToString()   : "";
+            int    userId = ctx.Session["UserId"]  != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
+
+            if (userId == 0)
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Session expired." }));
                 return;
             }
 
@@ -72,52 +75,117 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 con.Open();
 
-                // Get current pin state
-                bool isPinned;
-                using (var chk = new SqlCommand(
-                    "SELECT IsPinned FROM Announcements WHERE AnnouncementId = @aid", con))
+                if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
                 {
-                    chk.Parameters.AddWithValue("@aid", announcementId);
-                    var result = chk.ExecuteScalar();
-                    if (result == null || result == DBNull.Value)
+                    // ── Admin: toggle global IsPinned on the Announcements row ──
+                    bool isPinned;
+                    using (var chk = new SqlCommand(
+                        "SELECT IsPinned FROM Announcements WHERE AnnouncementId = @aid", con))
                     {
-                        ctx.Response.Write(js.Serialize(new { ok = false, error = "Announcement not found." }));
-                        return;
+                        chk.Parameters.AddWithValue("@aid", announcementId);
+                        var result = chk.ExecuteScalar();
+                        if (result == null || result == DBNull.Value)
+                        {
+                            ctx.Response.Write(js.Serialize(new { ok = false, error = "Announcement not found." }));
+                            return;
+                        }
+                        isPinned = Convert.ToBoolean(result);
                     }
-                    isPinned = Convert.ToBoolean(result);
-                }
 
-                // Toggle
-                bool newState = !isPinned;
-                using (var upd = new SqlCommand(
-                    "UPDATE Announcements SET IsPinned = @val WHERE AnnouncementId = @aid", con))
+                    bool newState = !isPinned;
+                    using (var upd = new SqlCommand(
+                        "UPDATE Announcements SET IsPinned = @val WHERE AnnouncementId = @aid", con))
+                    {
+                        upd.Parameters.AddWithValue("@val", newState ? 1 : 0);
+                        upd.Parameters.AddWithValue("@aid", announcementId);
+                        upd.ExecuteNonQuery();
+                    }
+
+                    ctx.Response.Write(js.Serialize(new { ok = true, isPinned = newState }));
+                }
+                else
                 {
-                    upd.Parameters.AddWithValue("@val", newState ? 1 : 0);
-                    upd.Parameters.AddWithValue("@aid", announcementId);
-                    upd.ExecuteNonQuery();
-                }
+                    // ── Student: toggle row in UserPins table ──
+                    bool alreadyPinned;
+                    using (var chk = new SqlCommand(
+                        "SELECT COUNT(1) FROM UserPins WHERE UserId = @uid AND AnnouncementId = @aid", con))
+                    {
+                        chk.Parameters.AddWithValue("@uid", userId);
+                        chk.Parameters.AddWithValue("@aid", announcementId);
+                        alreadyPinned = Convert.ToInt32(chk.ExecuteScalar()) > 0;
+                    }
 
-                ctx.Response.Write(js.Serialize(new { ok = true, isPinned = newState }));
+                    if (alreadyPinned)
+                    {
+                        // Unpin — delete the row
+                        using (var del = new SqlCommand(
+                            "DELETE FROM UserPins WHERE UserId = @uid AND AnnouncementId = @aid", con))
+                        {
+                            del.Parameters.AddWithValue("@uid", userId);
+                            del.Parameters.AddWithValue("@aid", announcementId);
+                            del.ExecuteNonQuery();
+                        }
+                        ctx.Response.Write(js.Serialize(new { ok = true, isPinned = false }));
+                    }
+                    else
+                    {
+                        // Pin — insert a row
+                        using (var ins = new SqlCommand(
+                            "INSERT INTO UserPins (UserId, AnnouncementId) VALUES (@uid, @aid)", con))
+                        {
+                            ins.Parameters.AddWithValue("@uid", userId);
+                            ins.Parameters.AddWithValue("@aid", announcementId);
+                            ins.ExecuteNonQuery();
+                        }
+                        ctx.Response.Write(js.Serialize(new { ok = true, isPinned = true }));
+                    }
+                }
             }
         }
 
-        /// <summary>
-        /// Returns all announcement IDs where IsPinned = 1.
-        /// Used by Student/Pinned pages to know which posts are pinned.
-        /// </summary>
-        private void GetPinned(HttpContext ctx, JavaScriptSerializer js)
+        // ─────────────────────────────────────────────────────────────
+        // GET USER PINS — returns IDs pinned by this user
+        // Admin: returns globally pinned IDs (IsPinned = 1)
+        // Student: returns IDs from UserPins for this user
+        //          PLUS any globally pinned IDs (admin pins are always shown)
+        // ─────────────────────────────────────────────────────────────
+        private void GetUserPins(HttpContext ctx, JavaScriptSerializer js)
         {
+            string role   = ctx.Session["Role"]   != null ? ctx.Session["Role"].ToString()   : "";
+            int    userId = ctx.Session["UserId"]  != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
+
             var pinnedIds = new List<int>();
 
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
-                using (var cmd = new SqlCommand(
-                    "SELECT AnnouncementId FROM Announcements WHERE IsPinned = 1", con))
-                using (var dr = cmd.ExecuteReader())
+
+                if (string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase))
                 {
-                    while (dr.Read())
-                        pinnedIds.Add(Convert.ToInt32(dr["AnnouncementId"]));
+                    // Admin sees globally pinned posts
+                    using (var cmd = new SqlCommand(
+                        "SELECT AnnouncementId FROM Announcements WHERE IsPinned = 1", con))
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                            pinnedIds.Add(Convert.ToInt32(dr["AnnouncementId"]));
+                    }
+                }
+                else
+                {
+                    // Student sees their own pins + any globally pinned posts
+                    using (var cmd = new SqlCommand(
+                        @"SELECT AnnouncementId FROM Announcements WHERE IsPinned = 1
+                          UNION
+                          SELECT AnnouncementId FROM UserPins WHERE UserId = @uid", con))
+                    {
+                        cmd.Parameters.AddWithValue("@uid", userId);
+                        using (var dr = cmd.ExecuteReader())
+                        {
+                            while (dr.Read())
+                                pinnedIds.Add(Convert.ToInt32(dr["AnnouncementId"]));
+                        }
+                    }
                 }
             }
 

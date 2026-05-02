@@ -1088,15 +1088,24 @@
         }
 
         function togglePin(postId) {
-            // Per-user pin stored in localStorage (no Pinned table in ERD)
-            if (st_pins[postId]) {
-                delete st_pins[postId];
-            } else {
-                st_pins[postId] = true;
-            }
-            localStorage.setItem('student_pins', JSON.stringify(st_pins));
-            renderAnnouncements();
-            showToast(st_pins[postId] ? '📌 Pinned!' : 'Unpinned');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
+                    if (res.isPinned) {
+                        st_pins[postId] = true;
+                    } else {
+                        delete st_pins[postId];
+                    }
+                    // Update pin button UI without full re-render
+                    let btn = document.querySelector(`.pin-btn-top[onclick="togglePin(${postId})"]`);
+                    if (btn) {
+                        btn.classList.toggle('pinned', res.isPinned);
+                        btn.title = res.isPinned ? 'Unpin' : 'Pin';
+                    }
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(() => showToast('Could not update pin'));
         }
 
         function toggleCommentSection(postId) {
@@ -1174,19 +1183,19 @@
             let container = document.getElementById('announcementsContainer');
             if (!container) return;
 
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(r => r.json())
-                .then(res => {
+            // Load both announcements and user pins in parallel
+            Promise.all([
+                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(r => r.json()),
+                fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(r => r.json())
+            ]).then(([res, pinRes]) => {
                     if (!res.ok) { container.innerHTML = '<div style="padding:40px;text-align:center;">Error loading</div>'; return; }
                     let announcements = res.data;
                     if (!announcements.length) { container.innerHTML = '<div style="padding:40px;text-align:center;">No announcements</div>'; return; }
 
-                    // Load pins from localStorage (per-user, no DB table needed)
-                    try {
-                        var savedPins = JSON.parse(localStorage.getItem('student_pins') || '{}');
-                        st_pins = savedPins || {};
-                    } catch (e) {
-                        st_pins = {};
+                    // Build pin map from DB (includes both user pins + admin global pins)
+                    st_pins = {};
+                    if (pinRes.ok && pinRes.pinnedIds) {
+                        pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
                     }
                     // Also mark DB-pinned posts (admin pins) as pinned
                     announcements.forEach(function(post) {
@@ -1259,6 +1268,8 @@
 
                         updateNotifBadge();
                     });
+                }).catch(() => {
+                    container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
                 });
         }
 

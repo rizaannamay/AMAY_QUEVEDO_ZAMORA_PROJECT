@@ -1,40 +1,23 @@
--- Check if Pinned table exists and create it if not
+-- Run this once against CAPdb to enable per-user student pins
 USE CAPdb;
 GO
 
--- Check if table exists
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Pinned')
+IF NOT EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_NAME = 'UserPins'
+)
 BEGIN
-    -- Create Pinned table
-    CREATE TABLE Pinned (
-        PinId INT IDENTITY(1,1) PRIMARY KEY,
-        UserId INT NOT NULL,
-        AnnouncementId INT NOT NULL,
-        CreatedDate DATETIME DEFAULT GETDATE(),
-        CONSTRAINT FK_Pinned_User FOREIGN KEY (UserId) REFERENCES Users(UserId) ON DELETE CASCADE,
-        CONSTRAINT FK_Pinned_Announcement FOREIGN KEY (AnnouncementId) REFERENCES Announcements(AnnouncementId) ON DELETE CASCADE,
-        CONSTRAINT UQ_Pinned_UserAnnouncement UNIQUE (UserId, AnnouncementId)
+    CREATE TABLE UserPins (
+        UserPinId      INT      PRIMARY KEY IDENTITY(1,1),
+        UserId         INT      NOT NULL REFERENCES Users(UserId) ON DELETE CASCADE,
+        AnnouncementId INT      NOT NULL REFERENCES Announcements(AnnouncementId) ON DELETE CASCADE,
+        CreatedDate    DATETIME NOT NULL DEFAULT GETDATE(),
+        UNIQUE (UserId, AnnouncementId)   -- one pin per user per post
     );
-    
-    PRINT 'Pinned table created successfully!';
+    PRINT 'UserPins table created.';
 END
 ELSE
 BEGIN
-    PRINT 'Pinned table already exists.';
+    PRINT 'UserPins table already exists.';
 END
-GO
-
--- Verify table structure
-SELECT 
-    COLUMN_NAME,
-    DATA_TYPE,
-    IS_NULLABLE,
-    COLUMN_DEFAULT
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME = 'Pinned'
-ORDER BY ORDINAL_POSITION;
-GO
-
--- Check if there are any pins
-SELECT COUNT(*) AS TotalPins FROM Pinned;
 GO
