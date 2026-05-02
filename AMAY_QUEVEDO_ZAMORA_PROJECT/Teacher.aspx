@@ -730,8 +730,7 @@
         <div class="app-shell">
             <div class="header">
                 <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
-                    <i class="fas fa-chalkboard-teacher"></i> CampusConnect Teacher
-                </div>
+                    <i class="fas fa-chalkboard-teacher"></i> Campus Announcement</div>
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
                         Text="🔎 Search Announcements..." OnClick="SearchButton_Click"

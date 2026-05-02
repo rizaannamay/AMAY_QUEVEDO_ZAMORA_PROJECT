@@ -9,8 +9,11 @@
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
+
+
     public partial class Notifications
     {
+
         /// <summary>
         /// form1 control.
         /// </summary>
@@ -19,32 +22,5 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// btnMarkAllRead control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnMarkAllRead;
-
-        /// <summary>
-        /// rptNotifications control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptNotifications;
-
-        /// <summary>
-        /// pnlEmpty control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEmpty;
     }
 }

@@ -840,7 +840,7 @@
         <div class="app-shell">
             <div class="header">
                 <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
-                    <i class="fas fa-university"></i> Campus Connect
+                    <i class="fas fa-university"></i> Campus Announcement
                 </button>
 
                 <div class="search-container">

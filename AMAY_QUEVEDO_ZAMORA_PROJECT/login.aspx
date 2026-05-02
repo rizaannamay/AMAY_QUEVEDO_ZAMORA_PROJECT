@@ -3,17 +3,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
+            background: linear-gradient(135deg, #b2ebf2 0%, #80deea 50%, #4dd0e1 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,200 +20,292 @@
             padding: 20px;
         }
 
-        .login-container {
+        /* ── OUTER CARD ── */
+        .auth-card {
+            display: flex;
             width: 100%;
-            max-width: 440px;
+            max-width: 820px;
+            min-height: 500px;
+            background: #ffffff;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
         }
 
-        /* Logo */
-        .neon-logo {
+        /* ── LEFT TEAL PANEL ── */
+        .panel-left {
+            width: 42%;
+            background: linear-gradient(160deg, #00bcd4 0%, #00838f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 36px;
             text-align: center;
-            margin-bottom: 40px;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
         }
 
-        .neon-logo img {
-            width: 90px;
-            height: auto;
-            filter: drop-shadow(0 4px 12px rgba(0,100,200,0.2));
+        /* subtle radial highlights */
+        .panel-left::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12) 0%, transparent 55%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.08) 0%, transparent 50%);
+            pointer-events: none;
         }
 
-        .neon-logo h1 {
+        .panel-left h2 {
             font-size: 32px;
             font-weight: 800;
-            /* Solid color fallback — removes background-clip usage that VS flags */
-            color: #1a3a5c;
-            margin-top: 15px;
-            letter-spacing: 1px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.25;
+            position: relative;
         }
 
-        .neon-logo p {
-            color: #5a6e7c;
+        .panel-left .divider {
+            width: 44px;
+            height: 3px;
+            background: rgba(255,255,255,0.45);
+            border-radius: 2px;
+            margin: 16px auto;
+            position: relative;
+        }
+
+        .panel-left p {
             font-size: 13px;
-            margin-top: 6px;
+            color: rgba(255,255,255,0.82);
+            margin-bottom: 32px;
+            position: relative;
         }
 
-        /* Card */
-        .neon-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 45px 40px;
-            border: 1px solid rgba(26,58,92,0.1);
-            box-shadow: 0 20px 35px rgba(0,0,0,0.05);
-        }
-
-        .card-header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .card-header h2 {
-            color: #1a3a5c;
-            font-size: 26px;
+        .btn-outline-white {
+            display: inline-block;
+            padding: 11px 40px;
+            border: 2px solid rgba(255,255,255,0.9);
+            border-radius: 40px;
+            color: #ffffff;
+            font-size: 15px;
             font-weight: 700;
+            text-decoration: none;
+            background: transparent;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        .btn-outline-white:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .card-header span {
-            color: #7a8e9e;
-            font-size: 14px;
+        /* ── RIGHT FORM PANEL ── */
+        .panel-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 44px;
+            background: #ffffff;
         }
 
-        .input-group {
-            margin-bottom: 22px;
+        .panel-right h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: #1a2a3a;
+            margin-bottom: 28px;
+            text-align: center;
         }
 
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 13px;
-        }
-
-        .input-field {
+        /* ── INPUTS ── */
+        .input-wrap {
+            position: relative;
             width: 100%;
-            padding: 14px 16px;
-            background: #f8fafc;
-            border: 1px solid #dce4ec;
+            margin-bottom: 16px;
+        }
+        .input-wrap input,
+        .input-wrap select {
+            width: 100%;
+            padding: 13px 44px 13px 18px;
+            background: #f4f6f9;
+            border: 1.5px solid #e0e6ed;
             border-radius: 12px;
             font-size: 14px;
             color: #1a2a3a;
-            transition: all 0.2s;
-            box-sizing: border-box;
             font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
         }
-
-        .input-field option {
-            background: #ffffff;
-            color: #1a2a3a;
-        }
-
-        .input-field:focus {
+        .input-wrap input::placeholder { color: #a8b8c8; }
+        .input-wrap input:focus,
+        .input-wrap select:focus {
             outline: none;
-            border-color: #2c5a7a;
-            box-shadow: 0 0 0 3px rgba(44,90,122,0.1);
+            border-color: #00838f;
+            box-shadow: 0 0 0 3px rgba(0,131,143,0.12);
+            background: #ffffff;
         }
+        .input-wrap .icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0c0d0;
+            font-size: 14px;
+            pointer-events: none;
+        }
+        .input-wrap select option { background:#fff; color:#1a2a3a; }
 
-        .input-field::placeholder {
-            color: #b0c4de;
+        .forgot-row {
+            width: 100%;
+            text-align: right;
+            margin-bottom: 18px;
         }
+        .forgot-row span {
+            font-size: 12px;
+            color: #6b7c8f;
+            cursor: pointer;
+        }
+        .forgot-row span:hover { color: #00838f; text-decoration: underline; }
 
         .btn-login {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-            color: white;
+            padding: 13px;
+            background: linear-gradient(135deg, #004d5e 0%, #00bcd4 100%);
+            color: #ffffff;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 40px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
         }
-
         .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(26,58,92,0.2);
-            background: linear-gradient(135deg, #0f2a40, #1a4a6a);
+            box-shadow: 0 8px 24px rgba(0,131,143,0.3);
         }
 
-        #lblError {
-            color: #dc2626;
+        .social-label {
             font-size: 12px;
-            display: block;
-            margin: 12px 0;
-            padding: 10px;
-            background: #fef2f2;
+            color: #9aabb8;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .social-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .social-btn {
+            width: 44px; height: 44px;
+            border: 1.5px solid #dce4ec;
             border-radius: 10px;
-            text-align: center;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 12px;
-            color: #8a9bb0;
-        }
-
-        .footer a {
-            color: #1a3a5c;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: #555;
             text-decoration: none;
-            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .social-btn:hover {
+            border-color: #00838f;
+            color: #00838f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,131,143,0.12);
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .error-box {
+            width: 100%;
+            padding: 10px 14px;
+            background: #fef2f2;
+            border-left: 3px solid #dc2626;
+            border-radius: 10px;
+            color: #dc2626;
+            font-size: 13px;
+            margin-bottom: 14px;
+            text-align: center;
         }
 
-        .divider {
-            margin: 15px 0 10px;
-            font-size: 12px;
-            color: #b0c4de;
+        @media (max-width: 640px) {
+            .auth-card { flex-direction: column; max-width: 420px; }
+            .panel-left { width: 100%; padding: 36px 28px; }
+            .panel-right { padding: 32px 24px; }
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="neon-logo">
-            <img src="ctu-logo.png" alt="CTU Logo" />
-            <h1>CAMPUS CONNECT</h1>
-            <p>Cebu Technological University</p>
+    <div class="auth-card">
+
+        <!-- LEFT TEAL PANEL -->
+        <div class="panel-left">
+            <h2>Hello,<br />Welcome</h2>
+            <div class="divider"></div>
+            <p>Don't have an account?</p>
+            <a href="signin.aspx" class="btn-outline-white">Register</a>
         </div>
 
-        <form id="form1" runat="server">
-            <div class="neon-card">
-                <div class="card-header">
-                    <h2>Log In</h2>
-                    <span>Access announcement portal</span>
-                </div>
+        <!-- RIGHT FORM PANEL -->
+        <div class="panel-right">
+            <form id="form1" runat="server" style="width:100%;max-width:320px;">
+                <h1>Login</h1>
 
-                <div class="input-group">
-                    <asp:Label ID="Label1" runat="server" Text="Role"></asp:Label>
-                    <asp:DropDownList ID="txtRole" runat="server" CssClass="input-field">
+                <div class="input-wrap">
+                    <asp:DropDownList ID="txtRole" runat="server"
+                        style="width:100%;padding:13px 44px 13px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;appearance:none;-webkit-appearance:none;">
                         <asp:ListItem Text="Student" Value="Student" />
-                        <asp:ListItem Text="Admin" Value="Admin" />
+                        <asp:ListItem Text="Admin"   Value="Admin"   />
                     </asp:DropDownList>
+                    <span class="icon"><i class="fas fa-chevron-down"></i></span>
                 </div>
 
-                <div class="input-group">
-                    <asp:Label ID="Label3" runat="server" Text="Username"></asp:Label>
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="input-field" placeholder="Enter username"></asp:TextBox>
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtUsername" runat="server"
+                        style="width:100%;padding:13px 44px 13px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Username"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-user"></i></span>
                 </div>
 
-                <div class="input-group">
-                    <asp:Label ID="Label4" runat="server" Text="Password"></asp:Label>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" TextMode="Password" placeholder="Enter password"></asp:TextBox>
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
+                        style="width:100%;padding:13px 44px 13px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Password"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-lock"></i></span>
                 </div>
 
-                <asp:Label ID="lblError" runat="server"></asp:Label>
-
-                <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="Log In" CssClass="btn-login" />
-
-                <div class="footer">
-                    <div class="divider">────────── OR ──────────</div>
-                    <p>Don't have an account? <a href="signin.aspx">Sign Up Here</a></p>
+                <div class="forgot-row">
+                    <span>Forgot Password?</span>
                 </div>
-            </div>
-        </form>
+
+                <asp:Label ID="lblError" runat="server" CssClass="error-box" style="display:none;"></asp:Label>
+
+                <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click"
+                    Text="Login" CssClass="btn-login" UseSubmitBehavior="true" />
+
+                <div class="social-label">or login with social platforms</div>
+                <div class="social-row">
+                    <a href="#" class="social-btn" title="Google"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </form>
+        </div>
     </div>
+
+    <script>
+        (function () {
+            var err = document.getElementById('<%= lblError.ClientID %>');
+            if (err && err.innerText.trim() !== '') err.style.display = 'block';
+        })();
+    </script>
 </body>
 </html>

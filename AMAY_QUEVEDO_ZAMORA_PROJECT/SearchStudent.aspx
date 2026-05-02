@@ -293,6 +293,112 @@
         .section-title { color: #93c5fd !important; }
         .result-count  { color: #93c5fd !important; background: rgba(15,25,55,0.75) !important; border-color: rgba(255,255,255,0.1) !important; }
 
+        /* ══════════════════════════════════════════
+           LIGHT MODE OVERRIDES
+           Applied when body has class "light-mode"
+        ══════════════════════════════════════════ */
+        body.light-mode {
+            background-color: #f0f4f8;
+            background-image: url('wbg.jpg');
+            color: #1a2a3a;
+        }
+        body.light-mode::before {
+            background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
+        }
+        body.light-mode .glass-nav {
+            background: linear-gradient(135deg, #1a3a5c 0%, #2c5a7a 100%);
+        }
+        body.light-mode .glass-sidebar {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(26,58,92,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        body.light-mode .glass-card {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(26,58,92,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        body.light-mode .glass-card:hover {
+            border-color: rgba(26,58,92,0.3);
+        }
+        body.light-mode .announce-card {
+            background: #ffffff;
+            border-color: #3B82F6;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        body.light-mode .announce-card:hover {
+            border-color: #1E3A8A;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        body.light-mode .card-author-name { color: #1a3a5c; }
+        body.light-mode .card-meta        { color: #6b7c8f; }
+        body.light-mode .card-title       { color: #1a2a3a; }
+        body.light-mode .card-desc        { color: #374151; }
+        body.light-mode .post-stats {
+            border-color: rgba(26,58,92,0.1);
+            color: #6b7c8f;
+        }
+        body.light-mode .post-stats span:hover { color: #1a3a5c; }
+        body.light-mode .action-btn { color: #6b7c8f; }
+        body.light-mode .action-btn:hover { background: #e8f0fe; color: #1a3a5c; }
+        body.light-mode .action-btn.liked { color: #dc2626; }
+        body.light-mode .comments-section {
+            border-color: rgba(26,58,92,0.1);
+        }
+        body.light-mode .comment-input-row input {
+            background: #f8fafc;
+            border-color: rgba(26,58,92,0.2);
+            color: #1a2a3a;
+        }
+        body.light-mode .comment-input-row input::placeholder { color: #9db0c4; }
+        body.light-mode .comment-input-row input:focus { border-color: #1a3a5c; }
+        body.light-mode .comment-item { border-color: rgba(26,58,92,0.08); }
+        body.light-mode .comment-avatar { background: #e8f0fe; color: #1a3a5c; }
+        body.light-mode .comment-author { color: #1a3a5c; }
+        body.light-mode .comment-text   { color: #374151; }
+        body.light-mode .comment-time   { color: #9db0c4; }
+        body.light-mode .no-comments    { color: #9db0c4; }
+        body.light-mode .history-item {
+            background: rgba(26,58,92,0.05);
+            border-color: rgba(26,58,92,0.1);
+            color: #374151;
+        }
+        body.light-mode .history-item:hover {
+            background: #e8f0fe;
+            border-color: rgba(26,58,92,0.25);
+            color: #1a3a5c;
+        }
+        body.light-mode .search-input {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.6);
+            color: #ffffff;
+        }
+        body.light-mode .search-input::placeholder { color: rgba(255,255,255,0.75); }
+        body.light-mode .filter-select {
+            background: #f8fafc;
+            border-color: rgba(26,58,92,0.2);
+            color: #1a2a3a;
+        }
+        body.light-mode .section-title { color: #1a3a5c !important; }
+        body.light-mode .result-count  { color: #1a3a5c !important; background: rgba(255,255,255,0.9) !important; border-color: rgba(26,58,92,0.2) !important; }
+        body.light-mode footer {
+            border-color: rgba(26,58,92,0.1) !important;
+            color: #6b7c8f !important;
+            background: rgba(255,255,255,0.6) !important;
+        }
+        body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
+        body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
+        body.light-mode .cat-default    { background: #e0e7ff; color: #4f46e5; }
+        body.light-mode .confirm-card {
+            background: #ffffff;
+            border-color: rgba(26,58,92,0.15);
+        }
+        body.light-mode .confirm-title   { color: #1a2a3a; }
+        body.light-mode .confirm-message { color: #6b7c8f; }
+        body.light-mode .btn-cancel { background: rgba(26,58,92,0.08); color: #374151; }
+        body.light-mode .btn-cancel:hover { background: rgba(26,58,92,0.14); }
+
         .toast-msg {
             position: fixed;
             bottom: 28px;
@@ -414,7 +520,7 @@
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
                             <div>
-                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusConnect</h1>
+                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusAnnouncement</h1>
                                 <p class="text-xs font-medium hidden sm:block text-white/70">Student Portal</p>
                             </div>
                         </div>
@@ -879,7 +985,18 @@
         // Theme sync
         (function () {
             const KEY = 'campus_theme';
-            window.addEventListener('storage', e => { if (e.key === KEY) { } });
+
+            function applyTheme(isDark) {
+                document.body.classList.toggle('light-mode', !isDark);
+            }
+
+            // Apply immediately on load
+            applyTheme(localStorage.getItem(KEY) === 'dark');
+
+            // Sync when another tab changes the theme
+            window.addEventListener('storage', e => {
+                if (e.key === KEY) applyTheme(e.newValue === 'dark');
+            });
         })();
     </script>
 </body>

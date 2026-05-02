@@ -5,341 +5,378 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect - Create Account</title>
+    <title>Campus Connect - Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #e8f0fe 0%, #d4e0f0 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        padding: 20px;
-    }
-
-    .signup-container {
-        width: 100%;
-        max-width: 500px;
-    }
-
-    .logo {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .logo img {
-        width: 80px;
-        height: auto;
-        filter: drop-shadow(0 4px 12px rgba(0,100,200,0.2));
-    }
-
-    .logo h1 {
-        font-size: 32px;
-        font-weight: 800;
-        color: #1a3a5c;
-        margin-top: 12px;
-        letter-spacing: 1px;
-    }
-
-    .logo p {
-        color: #5a6e7c;
-        font-size: 13px;
-        margin-top: 5px;
-    }
-
-    .signup-card {
-        background: white;
-        border-radius: 24px;
-        padding: 40px 35px;
-        border: 1px solid rgba(26,58,92,0.1);
-        box-shadow: 0 20px 35px rgba(0,0,0,0.05);
-    }
-
-    .card-header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .card-header h2 {
-        color: #1a3a5c;
-        font-size: 28px;
-        font-weight: 700;
-    }
-
-    .card-header span {
-        color: #7a8e9e;
-        font-size: 14px;
-    }
-
-    .input-group {
-        margin-bottom: 20px;
-    }
-
-    .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 13px;
-    }
-
-    .input-group label i {
-        margin-right: 8px;
-        color: #1a3a5c;
-        width: 16px;
-    }
-
-    .input-field {
-        width: 100%;
-        padding: 14px 16px;
-        background: #f8fafc;
-        border: 1px solid #dce4ec;
-        border-radius: 12px;
-        font-size: 14px;
-        color: #1a2a3a;
-        transition: all 0.2s;
-        box-sizing: border-box;
-        font-family: inherit;
-    }
-
-    .input-field:focus {
-        outline: none;
-        border-color: #2c5a7a;
-        box-shadow: 0 0 0 3px rgba(44,90,122,0.1);
-        background: white;
-    }
-
-    .input-field::placeholder {
-        color: #b0c4de;
-    }
-
-    .role-group {
-        margin-bottom: 20px;
-    }
-
-    .role-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 13px;
-    }
-
-    .role-options {
-        display: flex;
-        gap: 25px;
-        background: #f8fafc;
-        padding: 12px 20px;
-        border-radius: 12px;
-        border: 1px solid #dce4ec;
-    }
-
-    .role-option {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-    }
-
-    .role-option input {
-        width: 18px;
-        height: 18px;
-        cursor: pointer;
-        accent-color: #1a3a5c;
-    }
-
-    .role-option span {
-        font-size: 14px;
-        color: #2c3e50;
-    }
-
-    .btn-signup {
-        width: 100%;
-        padding: 15px;
-        background: linear-gradient(135deg, #1a3a5c, #2c5a7a);
-        color: white;
-        border: none;
-        border-radius: 12px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 10px;
-    }
-
-    .btn-signup:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(26,58,92,0.2);
-        background: linear-gradient(135deg, #0f2a40, #1a4a6a);
-    }
-
-    .error-message {
-        color: #dc2626;
-        font-size: 13px;
-        display: block;
-        margin: 12px 0;
-        padding: 12px;
-        background: #fef2f2;
-        border-radius: 10px;
-        text-align: center;
-        border-left: 3px solid #dc2626;
-    }
-
-    .success-message {
-        color: #16a34a;
-        font-size: 13px;
-        display: block;
-        margin: 12px 0;
-        padding: 12px;
-        background: #f0fdf4;
-        border-radius: 10px;
-        text-align: center;
-        border-left: 3px solid #16a34a;
-    }
-
-    .password-requirements {
-        font-size: 11px;
-        color: #8a9bb0;
-        margin-top: 6px;
-        padding-left: 5px;
-    }
-
-    .footer-links {
-        text-align: center;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #eef2f6;
-    }
-
-    .footer-links a {
-        color: #1a3a5c;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-    .footer-links a:hover {
-        text-decoration: underline;
-    }
-
-    .footer-links p {
-        color: #8a9bb0;
-        font-size: 13px;
-        margin-bottom: 8px;
-    }
-
-    @media (max-width: 550px) {
-        .signup-card {
-            padding: 30px 25px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #b2ebf2 0%, #80deea 50%, #4dd0e1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .role-options {
+
+        /* ── OUTER CARD ── */
+        .auth-card {
+            display: flex;
+            width: 100%;
+            max-width: 820px;
+            min-height: 540px;
+            background: #ffffff;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+        }
+
+        /* ── LEFT FORM PANEL ── */
+        .panel-left {
+            flex: 1;
+            display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            padding: 44px 44px;
+            background: #ffffff;
         }
-    }
-</style>
+
+        .panel-left h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a2a3a;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+
+        /* ── INPUTS ── */
+        .input-wrap {
+            position: relative;
+            width: 100%;
+            margin-bottom: 13px;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 12px 44px 12px 18px;
+            background: #f4f6f9;
+            border: 1.5px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1a2a3a;
+            font-family: inherit;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-wrap input::placeholder { color: #a8b8c8; }
+        .input-wrap input:focus {
+            outline: none;
+            border-color: #00838f;
+            box-shadow: 0 0 0 3px rgba(0,131,143,0.12);
+            background: #ffffff;
+        }
+        .input-wrap .icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0c0d0;
+            font-size: 14px;
+            pointer-events: none;
+        }
+
+        /* ── ROLE RADIOS ── */
+        .role-row {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            background: #f4f6f9;
+            border: 1.5px solid #e0e6ed;
+            border-radius: 12px;
+            padding: 11px 18px;
+            margin-bottom: 13px;
+        }
+        .role-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+        .role-option input[type="radio"] {
+            width: 15px; height: 15px;
+            accent-color: #00838f;
+            cursor: pointer;
+        }
+
+        /* ── REGISTER BUTTON ── */
+        .btn-register {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #004d5e 0%, #00bcd4 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,131,143,0.3);
+        }
+
+        /* ── SOCIAL ── */
+        .social-label {
+            font-size: 12px;
+            color: #9aabb8;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        .social-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .social-btn {
+            width: 44px; height: 44px;
+            border: 1.5px solid #dce4ec;
+            border-radius: 10px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .social-btn:hover {
+            border-color: #00838f;
+            color: #00838f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,131,143,0.12);
+        }
+
+        /* ── MESSAGES ── */
+        .msg-box {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            text-align: center;
+            display: block;
+        }
+        .error-message   { background:#fef2f2; border-left:3px solid #dc2626; color:#dc2626; }
+        .success-message { background:#f0fdf4; border-left:3px solid #16a34a; color:#16a34a; }
+
+        /* ── RIGHT DARK TEAL PANEL ── */
+        .panel-right {
+            width: 42%;
+            background: linear-gradient(160deg, #006978 0%, #003d47 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 36px;
+            text-align: center;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-right::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 25% 25%, rgba(255,255,255,0.09) 0%, transparent 55%),
+                radial-gradient(circle at 75% 75%, rgba(255,255,255,0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .panel-right h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.25;
+            position: relative;
+        }
+
+        .panel-right .divider {
+            width: 44px;
+            height: 3px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 2px;
+            margin: 16px auto;
+            position: relative;
+        }
+
+        .panel-right p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.78);
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .btn-outline-white {
+            display: inline-block;
+            padding: 11px 40px;
+            border: 2px solid rgba(255,255,255,0.9);
+            border-radius: 40px;
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            background: transparent;
+            transition: all 0.25s;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        .btn-outline-white:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 640px) {
+            .auth-card { flex-direction: column-reverse; max-width: 420px; }
+            .panel-right { width: 100%; padding: 36px 28px; }
+            .panel-left { padding: 32px 24px; }
+        }
+    </style>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div class="signup-container">
-            <div class="logo">
-                <img src="ctu-logo.png" alt="CTU Logo" />
-                <h1>CAMPUS CONNECT</h1>
-                <p>Cebu Technological University</p>
-            </div>
-
-            <div class="signup-card">
-                <div class="card-header">
-                    <h2>Create Account</h2>
-                    <span>Join the Campus Connect community</span>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-user-circle"></i> Full Name</label>
-                    <asp:TextBox ID="txtFullName" runat="server" CssClass="input-field" placeholder="Enter your full name"></asp:TextBox>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-envelope"></i> Email Address</label>
-                    <asp:TextBox ID="txtEmail" runat="server" CssClass="input-field" placeholder="Enter your email address" TextMode="Email"></asp:TextBox>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> Username</label>
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="input-field" placeholder="Choose a username"></asp:TextBox>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> Password</label>
-                    <asp:TextBox ID="txtPassword" runat="server" CssClass="input-field" placeholder="Create a password" TextMode="Password"></asp:TextBox>
-                    <div class="password-requirements" id="passwordReq">
-                        <i class="fas fa-info-circle"></i> Password must be at least 6 characters
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-check-circle"></i> Confirm Password</label>
-                    <asp:TextBox ID="txtConfirmPassword" runat="server" CssClass="input-field" placeholder="Confirm your password" TextMode="Password"></asp:TextBox>
-                </div>
-
-                <div class="role-group">
-                    <label><i class="fas fa-users"></i> I am a</label>
-                    <div class="role-options">
-                        <label class="role-option">
-                            <asp:RadioButton ID="rbStudent" runat="server" GroupName="Role" Checked="true" />
-                            <span>Student</span>
-                        </label>
-                        <label class="role-option">
-                            <asp:RadioButton ID="rbAdmin" runat="server" GroupName="Role" />
-                            <span>Admin</span>
-                        </label>
-                    </div>
-                </div>
-
-                <asp:Label ID="lblMessage" runat="server" Visible="false"></asp:Label>
-
-                <asp:Button ID="btnSignUp" runat="server" Text="Create Account" CssClass="btn-signup" OnClick="BtnSignUp_Click" />
-
-                <div class="footer-links">
-                    <p>Already have an account?</p>
-                    <a href="login.aspx">Log In Here</a>
-                </div>
-            </div>
+    <!-- ═══ SPLASH OVERLAY ═══ -->
+    <div id="signinSplash" style="
+        position:fixed;inset:0;background:#1c1f26;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;
+        z-index:99999;transition:opacity 0.5s ease;">
+        <img src="ctu-logo.png" alt="CTU Logo" style="
+            width:150px;height:150px;object-fit:contain;
+            filter:drop-shadow(0 0 18px rgba(0,188,212,0.55)) drop-shadow(0 0 40px rgba(0,188,212,0.25));
+            animation:signinLogoPulse 2s ease-in-out infinite;" />
+        <div style="font-family:'Segoe UI',sans-serif;font-size:15px;font-weight:700;
+                    color:rgba(255,255,255,0.55);letter-spacing:3px;text-transform:uppercase;">
+            Campus Announcement
         </div>
-    </form>
+        <div style="font-family:'Segoe UI',sans-serif;font-size:11px;
+                    color:rgba(255,255,255,0.3);letter-spacing:1.5px;margin-top:-14px;">
+            Cebu Technological University
+        </div>
+    </div>
+    <style>
+        @keyframes signinLogoPulse {
+            0%   { filter:drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
+            50%  { filter:drop-shadow(0 0 28px rgba(0,188,212,0.75)) drop-shadow(0 0 60px rgba(0,188,212,0.35)); }
+            100% { filter:drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
+        }
+    </style>
+    <script>
+        (function () {
+            var splash = document.getElementById('signinSplash');
+            if (!splash) return;
+            setTimeout(function () {
+                splash.style.opacity = '0';
+                setTimeout(function () { splash.style.display = 'none'; }, 520);
+            }, 1800);
+        })();
+    </script>
+
+    <div class="auth-card">
+
+        <!-- LEFT FORM PANEL -->
+        <div class="panel-left">
+            <form id="form1" runat="server" style="width:100%;max-width:320px;">
+                <h1>Registration</h1>
+
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtFullName" runat="server"
+                        style="width:100%;padding:12px 44px 12px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Full Name"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                </div>
+
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtUsername" runat="server"
+                        style="width:100%;padding:12px 44px 12px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Username"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-at"></i></span>
+                </div>
+
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtEmail" runat="server" TextMode="Email"
+                        style="width:100%;padding:12px 44px 12px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Email"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                </div>
+
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
+                        style="width:100%;padding:12px 44px 12px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Password"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                </div>
+
+                <div class="input-wrap">
+                    <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password"
+                        style="width:100%;padding:12px 44px 12px 18px;background:#f4f6f9;border:1.5px solid #e0e6ed;border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;"
+                        placeholder="Confirm Password"></asp:TextBox>
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                </div>
+
+                <div class="role-row">
+                    <label class="role-option">
+                        <asp:RadioButton ID="rbStudent" runat="server" GroupName="Role" Checked="true" />
+                        <span>Student</span>
+                    </label>
+                    <label class="role-option">
+                        <asp:RadioButton ID="rbAdmin" runat="server" GroupName="Role" />
+                        <span>Admin</span>
+                    </label>
+                </div>
+
+                <asp:Label ID="lblMessage" runat="server" Visible="false" CssClass="msg-box"></asp:Label>
+
+                <asp:Button ID="btnSignUp" runat="server" Text="Register"
+                    CssClass="btn-register" OnClick="BtnSignUp_Click" UseSubmitBehavior="true" />
+
+                <div class="social-label">or register with social platforms</div>
+                <div class="social-row">
+                    <a href="#" class="social-btn" title="Google"><i class="fab fa-google"></i></a>
+                    <a href="#" class="social-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- RIGHT DARK TEAL PANEL -->
+        <div class="panel-right">
+            <h2>Welcome<br />Back!</h2>
+            <div class="divider"></div>
+            <p>Already have an account?</p>
+            <a href="login.aspx" class="btn-outline-white">Login</a>
+        </div>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var passwordField = document.getElementById('<%= txtPassword.ClientID %>');
-            var confirmField  = document.getElementById('<%= txtConfirmPassword.ClientID %>');
-            var passwordReq   = document.getElementById('passwordReq');
-
-            if (passwordField && passwordReq) {
-                passwordField.addEventListener('keyup', function () {
-                    if (this.value.length >= 6) {
-                        passwordReq.innerHTML = '<i class="fas fa-check-circle"></i> Password strength: Good';
-                        passwordReq.style.color = '#16a34a';
-                    } else {
-                        passwordReq.innerHTML = '<i class="fas fa-info-circle"></i> Password must be at least 6 characters';
-                        passwordReq.style.color = '#8a9bb0';
-                    }
+        (function () {
+            var pw  = document.getElementById('<%= txtPassword.ClientID %>');
+            var cpw = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+            if (pw && cpw) {
+                cpw.addEventListener('input', function () {
+                    this.style.borderColor = (this.value === pw.value && pw.value.length >= 6)
+                        ? '#00838f' : '#e0e6ed';
                 });
             }
-
-            if (confirmField && passwordField) {
-                confirmField.addEventListener('keyup', function () {
-                    this.style.borderColor = (this.value === passwordField.value && passwordField.value.length >= 6)
-                        ? '#16a34a' : '#dce4ec';
-                });
-            }
-        });
+        })();
     </script>
 </body>
 </html>

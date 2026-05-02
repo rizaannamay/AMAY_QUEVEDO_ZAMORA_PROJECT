@@ -314,6 +314,124 @@
 
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
 
+        /* ══════════════════════════════════════════
+           LIGHT MODE OVERRIDES
+           Applied when body has class "light-mode"
+        ══════════════════════════════════════════ */
+        body.light-mode {
+            background-color: #f0f4f8;
+            background-image:
+                radial-gradient(ellipse at 15% 40%, rgba(200,220,255,0.35) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(180,200,255,0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 85%, rgba(210,225,255,0.25) 0%, transparent 45%);
+            color: #1a2a3a;
+        }
+        body.light-mode .glass-nav {
+            background: rgba(26,58,92,0.95);
+            border-color: rgba(26,58,92,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        body.light-mode .glass-sidebar {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(26,58,92,0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        body.light-mode .glass-card {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(26,58,92,0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        body.light-mode .glass-card:hover {
+            border-color: rgba(26,58,92,0.3);
+        }
+        body.light-mode .announce-card {
+            background: #ffffff;
+            border-color: rgba(59,130,246,0.4);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        body.light-mode .announce-card:hover {
+            border-color: rgba(99,102,241,0.6);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        body.light-mode .card-author-name { color: #1a3a5c; }
+        body.light-mode .card-meta        { color: #6b7c8f; }
+        body.light-mode .card-title       { color: #1a2a3a; }
+        body.light-mode .card-desc        { color: #374151; }
+        body.light-mode .post-stats {
+            border-color: rgba(26,58,92,0.1);
+            color: #6b7c8f;
+        }
+        body.light-mode .post-stats span:hover { color: #1a3a5c; }
+        body.light-mode .action-btn { color: #6b7c8f; }
+        body.light-mode .action-btn:hover { background: #e8f0fe; color: #1a3a5c; }
+        body.light-mode .action-btn.liked { color: #dc2626; }
+        body.light-mode .action-btn.pinned-active { color: #e65100; }
+        body.light-mode .comments-section { border-color: rgba(26,58,92,0.1); }
+        body.light-mode .comment-input-row input {
+            background: #f8fafc;
+            border-color: rgba(26,58,92,0.2);
+            color: #1a2a3a;
+        }
+        body.light-mode .comment-input-row input::placeholder { color: #9db0c4; }
+        body.light-mode .comment-input-row input:focus { border-color: #1a3a5c; }
+        body.light-mode .comment-item { border-color: rgba(26,58,92,0.08); }
+        body.light-mode .comment-avatar { background: #e8f0fe; color: #1a3a5c; }
+        body.light-mode .comment-author { color: #1a3a5c; }
+        body.light-mode .comment-text   { color: #374151; }
+        body.light-mode .comment-time   { color: #9db0c4; }
+        body.light-mode .no-comments    { color: #9db0c4; }
+        body.light-mode .history-item {
+            background: rgba(26,58,92,0.05);
+            border-color: rgba(26,58,92,0.1);
+            color: #374151;
+        }
+        body.light-mode .history-item:hover {
+            background: #e8f0fe;
+            border-color: rgba(26,58,92,0.25);
+            color: #1a3a5c;
+        }
+        body.light-mode .search-input {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+            color: #ffffff;
+        }
+        body.light-mode .search-input::placeholder { color: rgba(255,255,255,0.75); }
+        body.light-mode .filter-select {
+            background: #f8fafc;
+            border-color: rgba(26,58,92,0.2);
+            color: #1a2a3a;
+        }
+        body.light-mode .filter-select option { background: #ffffff; color: #1a2a3a; }
+        body.light-mode .section-title { color: #1a3a5c; }
+        body.light-mode .section-icon  { color: #1a3a5c; }
+        body.light-mode #resultCount {
+            background: rgba(26,58,92,0.08);
+            border-color: rgba(26,58,92,0.2);
+            color: #1a3a5c !important;
+        }
+        body.light-mode #emptyState {
+            background: rgba(255,255,255,0.9);
+            border-color: rgba(26,58,92,0.15);
+        }
+        body.light-mode footer {
+            border-color: rgba(26,58,92,0.1) !important;
+            color: #6b7c8f !important;
+            background: rgba(255,255,255,0.6) !important;
+        }
+        body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
+        body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
+        body.light-mode .cat-default    { background: #e0e7ff; color: #4f46e5; }
+        body.light-mode .confirm-card {
+            background: #ffffff;
+            border-color: rgba(26,58,92,0.15);
+        }
+        body.light-mode .confirm-title   { color: #1a2a3a; }
+        body.light-mode .confirm-message { color: #6b7c8f; }
+        body.light-mode .btn-cancel { background: rgba(26,58,92,0.08); color: #374151; border-color: rgba(26,58,92,0.15); }
+        body.light-mode .btn-cancel:hover { background: rgba(26,58,92,0.14); }
+        body.light-mode #waveBg { opacity: 0.08; }
+
         /* ── TOAST ── */
         .toast-msg {
             position: fixed;
@@ -517,7 +635,7 @@
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
                             <div>
-                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusConnect</h1>
+                                <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusAnnouncement</h1>
                                 <p class="text-xs font-medium hidden sm:block" style="color:rgba(255,255,255,0.55)">Teacher Portal</p>
                             </div>
                         </div>
@@ -1127,6 +1245,22 @@
         // ════════════════════════════════════════════════════════
         // THEME — sync with campus_theme (storage events from other tabs)
         // ════════════════════════════════════════════════════════
+        (function () {
+            const KEY = 'campus_theme';
+
+            function applyTheme(isDark) {
+                document.body.classList.toggle('light-mode', !isDark);
+            }
+
+            // Apply immediately on load
+            applyTheme(localStorage.getItem(KEY) === 'dark');
+
+            // Sync when another tab changes the theme
+            window.addEventListener('storage', e => {
+                if (e.key === KEY) applyTheme(e.newValue === 'dark');
+            });
+        })();
+
         window.addEventListener('storage', e => {
             if (e.key === 'campus_pins' || e.key === 'teacher_pins') {
                 pins = loadPins();

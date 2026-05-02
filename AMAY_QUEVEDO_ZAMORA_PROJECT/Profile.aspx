@@ -250,7 +250,7 @@
                 <div class="topbar">
                     <div class="brand">
                         <div class="brand-badge"><i class="fas fa-university"></i></div>
-                        <span>Campus Connect</span>
+                        <span>Campus Annnouncement</span>
                     </div>
                     <a class="back-btn" href="<%= BackUrl %>" title="Back to Portal">
                         <i class="fas fa-home" style="font-size:16px;"></i>

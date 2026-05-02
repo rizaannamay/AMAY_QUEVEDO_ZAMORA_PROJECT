@@ -14,7 +14,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             if (!IsPostBack && Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"])
             {
                 string role = Session["Role"] != null ? Session["Role"].ToString() : "";
-                Response.Redirect(role == "Admin" ? "Teacher.aspx" : "Student.aspx");
+                Response.Redirect(role == "Admin" ? "Splash.aspx?dest=Teacher" : "Splash.aspx?dest=Student");
             }
         }
 

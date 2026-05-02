@@ -17,10 +17,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             if (!IsPostBack)
             {
                 lblError.Text = string.Empty;
+
+                // Already logged in → splash then dashboard
                 if (Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"])
                 {
                     string role = Session["Role"] != null ? Session["Role"].ToString() : "";
-                    Response.Redirect(role == "Admin" ? "Teacher.aspx" : "Student.aspx");
+                    Response.Redirect(role == "Admin" ? "Splash.aspx?dest=Teacher" : "Splash.aspx?dest=Student");
+                    return;
+                }
+
+                // First visit (no ?from=splash) → show splash first, then come back here
+                if (Request.QueryString["from"] != "splash")
+                {
+                    Response.Redirect("Splash.aspx");
                 }
             }
         }
@@ -68,9 +77,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                 Session["IsLoggedIn"]   = true;
 
                                 if (matchedRole == "Admin")
-                                    Response.Redirect("Teacher.aspx");
+                                    Response.Redirect("Splash.aspx?dest=Teacher");
                                 else
-                                    Response.Redirect("Student.aspx");
+                                    Response.Redirect("Splash.aspx?dest=Student");
                             }
                             else
                             {
