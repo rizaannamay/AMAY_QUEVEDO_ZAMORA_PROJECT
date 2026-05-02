@@ -188,7 +188,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             var postedFile = upload.PostedFile;
             string ext = Path.GetExtension(postedFile.FileName ?? "").ToLowerInvariant();
 
-            if (Array.IndexOf(AllowedExtensions, ext) < 0)
+            if (ext != ".jpg" && ext != ".jpeg" && ext != ".png" && ext != ".gif" && ext != ".webp")
             { UploadMessage = "Only JPG, PNG, GIF, or WEBP images are allowed."; return; }
 
             if (postedFile.ContentLength <= 0)
@@ -204,20 +204,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                byte[] bytes = new byte[postedFile.ContentLength];
-                using (var stream = postedFile.InputStream)
-                {
-                    int totalRead = 0;
-                    while (totalRead < bytes.Length)
-                    {
-                        int read = stream.Read(bytes, totalRead, bytes.Length - totalRead);
-                        if (read == 0) break;
-                        totalRead += read;
-                    }
-                }
+                // Save file to disk — store only the path in the DB, not the image itself
+                string folderPath = Server.MapPath("~/uploads/profiles/");
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
 
-                string dataUri = "data:" + postedFile.ContentType + ";base64," + Convert.ToBase64String(bytes);
+                // Use userId as filename so each user has exactly one photo file
+                string fileName     = userId + ext;
+                string fullPath     = Path.Combine(folderPath, fileName);
+                string relativePath = "uploads/profiles/" + fileName;
 
+                postedFile.SaveAs(fullPath);
+
+                // Save the relative path to the database
                 string cs = ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString;
                 using (var con = new SqlConnection(cs))
                 {
@@ -225,21 +224,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     using (var cmd = new SqlCommand(
                         "UPDATE Users SET ProfileImage = @img WHERE UserId = @uid", con))
                     {
-                        cmd.Parameters.AddWithValue("@img", dataUri);
+                        cmd.Parameters.AddWithValue("@img", relativePath);
                         cmd.Parameters.AddWithValue("@uid", userId);
                         cmd.ExecuteNonQuery();
                     }
                 }
 
-                Session["ProfileImage"] = dataUri;
-                ProfileImage = dataUri;
+                Session["ProfileImage"] = relativePath;
+                ProfileImage = relativePath;
                 UploadMessage = "Profile photo updated successfully!";
-            }
-            catch (SqlException sqlEx)
-            {
-                UploadMessage = sqlEx.Message.IndexOf("truncat", StringComparison.OrdinalIgnoreCase) >= 0
-                    ? "Image too large. Use a smaller photo (under 2MB)."
-                    : "Database error: " + sqlEx.Message;
             }
             catch (Exception ex)
             {

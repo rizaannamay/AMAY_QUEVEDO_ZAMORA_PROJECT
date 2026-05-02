@@ -443,18 +443,23 @@
 
         // ── Load from DB ──────────────────────────────────────
         function loadFromDB(callback) {
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(function (r) { return r.json(); })
-                .then(function (res) {
+            Promise.all([
+                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function (r) { return r.json(); }),
+                fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(function (r) { return r.json(); })
+            ]).then(function (results) {
+                    var res    = results[0];
+                    var pinRes = results[1];
+
                     if (!res.ok) { if (callback) callback([]); return; }
 
-                    var localPins = {};
-                    try { localPins = JSON.parse(localStorage.getItem('student_pins') || '{}'); } catch (e) { }
-
+                    // Build pin map from DB (user pins + admin global pins)
                     pins = {};
+                    if (pinRes.ok && pinRes.pinnedIds) {
+                        pinRes.pinnedIds.forEach(function (id) { pins[id] = true; });
+                    }
+
                     pinnedDB = res.data.map(function (a) {
-                        var pinned = !!a.isPinned || !!localPins[a.id];
-                        if (pinned) pins[a.id] = true;
+                        var pinned = !!pins[a.id];
 
                         likes[a.id] = !!a.userLiked;
                         likeCounts[a.id] = a.likeCount || 0;
@@ -526,12 +531,19 @@
 
         // ── Pin ───────────────────────────────────────────────
         function togglePin(id) {
-            if (pins[id]) { delete pins[id]; } else { pins[id] = true; }
-            localStorage.setItem('student_pins', JSON.stringify(pins));
-            var ann = pinnedDB.find(function (a) { return a.id === id; });
-            if (ann) ann.isPinned = !!pins[id];
-            renderPinned();
-            showToast(pins[id] ? '📌 Pinned!' : 'Unpinned');
+            fetch('UserPinHandler.ashx?action=toggle&announcementId=' + id, { credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
+                    if (res.isPinned) {
+                        pins[id] = true;
+                    } else {
+                        delete pins[id];
+                    }
+                    renderPinned();
+                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                })
+                .catch(function () { showToast('Could not update pin'); });
         }
 
         // ── Comments ──────────────────────────────────────────

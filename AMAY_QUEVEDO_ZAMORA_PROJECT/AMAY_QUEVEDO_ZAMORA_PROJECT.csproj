@@ -82,6 +82,7 @@
     <Content Include="LikeHandler.ashx" />
     <Content Include="AnnouncementHandler.ashx" />
     <Content Include="UserPinHandler.ashx" />
+    <Content Include="UploadProfilePhoto.ashx" />
     <Content Include="CommentHandler.ashx" />
     <Content Include="NotificationHandler.ashx" />
     <Content Include="login.aspx" />
@@ -124,6 +125,9 @@
     </Compile>
     <Compile Include="UserPinHandler.ashx.cs">
       <DependentUpon>UserPinHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UploadProfilePhoto.ashx.cs">
+      <DependentUpon>UploadProfilePhoto.ashx</DependentUpon>
     </Compile>
     <Compile Include="CommentHandler.ashx.cs">
       <DependentUpon>CommentHandler.ashx</DependentUpon>
