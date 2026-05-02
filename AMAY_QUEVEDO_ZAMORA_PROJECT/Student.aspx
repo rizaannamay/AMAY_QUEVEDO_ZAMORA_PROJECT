@@ -192,116 +192,87 @@
         }
         .user-info:hover { background: rgba(255,255,255,1); }
 
-        /* HAMBURGER MENU BUTTON - New addition */
-        .hamburger-menu-btn {
-            background: var(--surface-soft);
-            border: 1px solid var(--border);
-            width: 44px;
-            height: 44px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 20px;
-            color: var(--primary);
-        }
-        .hamburger-menu-btn:hover {
-            background: var(--active-bg);
-            transform: scale(0.98);
-        }
-
-        /* SLIDE-OUT PANEL (Right Side) */
+        /* LEFT SIDEBAR — always visible */
         .slideout-panel {
             position: fixed;
             top: 0;
-            right: -380px;
-            width: 360px;
-            max-width: 85vw;
+            left: 0;
+            width: 270px;
             height: 100vh;
             background: var(--surface-strong);
             backdrop-filter: blur(16px);
-            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
             z-index: 1100;
-            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             flex-direction: column;
-            border-left: 1px solid var(--border);
-        }
-        .slideout-panel.open {
-            right: 0;
+            border-right: 1px solid var(--border);
         }
         .panel-header {
-            padding: 24px 20px 16px;
+            padding: 24px 16px 16px;
             border-bottom: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
         .panel-header h3 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--primary);
             margin: 0;
         }
-        .panel-close {
-            background: none;
-            border: none;
-            font-size: 26px;
-            cursor: pointer;
-            color: var(--muted);
-            line-height: 1;
-            padding: 0 8px;
-        }
-        .panel-close:hover { color: #dc2626; }
         .panel-menu-list {
             flex: 1;
             overflow-y: auto;
-            padding: 16px 0;
+            padding: 12px 0;
         }
         .panel-menu-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 24px;
+            gap: 12px;
+            padding: 12px 20px;
             cursor: pointer;
             width: 100%;
             border: none;
             background: none;
             text-align: left;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             color: var(--page-text);
             transition: all 0.2s;
             border-left: 3px solid transparent;
         }
         .panel-menu-item i {
-            width: 24px;
-            font-size: 18px;
+            width: 20px;
+            font-size: 16px;
             color: var(--primary);
         }
         .panel-menu-item:hover {
-            background: var(--surface-soft);
-            color: var(--primary);
+            background: #e6f7f9;
+            color: #007a8a;
+            border-left-color: #00bcd4;
         }
+        .panel-menu-item.active {
+            background: linear-gradient(135deg, #005f73, #00bcd4);
+            color: #ffffff;
+            border-left-color: transparent;
+        }
+        .panel-menu-item.active i { color: #ffffff; }
         .category-dropdown-panel {
-            margin-left: 52px;
-            margin-bottom: 12px;
+            margin-left: 44px;
+            margin-bottom: 8px;
             display: none;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
         .dropdown-item-panel {
             background: none;
             border: none;
             text-align: left;
-            padding: 8px 12px;
+            padding: 7px 10px;
             cursor: pointer;
             width: 100%;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--page-text);
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.2s;
         }
         .dropdown-item-panel:hover {
@@ -315,21 +286,22 @@
             width: 100%;
         }
         .theme-toggle-row .toggle-switch-panel {
-            width: 44px;
-            height: 22px;
+            width: 40px;
+            height: 20px;
             background: #dce4ec;
             border-radius: 30px;
             position: relative;
             cursor: pointer;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
         .theme-toggle-row .toggle-switch-panel.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
         }
         .theme-toggle-row .toggle-switch-panel::after {
             content: '';
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
@@ -338,16 +310,21 @@
             transition: all 0.3s;
         }
         .theme-toggle-row .toggle-switch-panel.active::after {
-            left: 24px;
+            left: 22px;
         }
         .divider-light {
             height: 1px;
             background: var(--border);
-            margin: 8px 20px;
+            margin: 6px 16px;
         }
         .overlay-black {
             display: none !important;
             pointer-events: none !important;
+        }
+
+        /* Dashboard always offset by sidebar width */
+        .app-shell {
+            padding-left: 286px;
         }
 
         .avatar, .profile-avatar, .post-avatar {
@@ -382,7 +359,7 @@
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
             overflow: visible;
         }
 
@@ -498,7 +475,7 @@
 
         .post-image img {
             width: 100%;
-            max-height: 300px;
+            max-height: 200px;
             object-fit: cover;
             border-radius: 16px;
             display: block;
@@ -724,6 +701,7 @@
         body.dark-mode .panel-menu-item:hover { 
             background: rgba(59, 130, 246, 0.2); 
             color: #ffffff; 
+            border-left-color: #93c5fd;
         }
         body.dark-mode .dropdown-item-panel { color: #e2e8f0; }
         body.dark-mode .dropdown-item-panel:hover { 
@@ -787,15 +765,7 @@
             background: rgba(51, 65, 85, 0.8);
         }
         
-        /* Hamburger menu */
-        body.dark-mode .hamburger-menu-btn {
-            background: rgba(51, 65, 85, 0.6);
-            border-color: rgba(148, 163, 184, 0.3);
-            color: #93c5fd;
-        }
-        body.dark-mode .hamburger-menu-btn:hover {
-            background: rgba(59, 130, 246, 0.2);
-        }
+        /* Hamburger menu — removed (sidebar is always visible) */
 
         /* Profile modal */
         body.dark-mode .modal-content  { 
@@ -829,7 +799,8 @@
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
-            .app-shell { height: auto; min-height: 100%; overflow: visible; }
+            .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; }
+            .slideout-panel { display: none; }
             .content-shell { overflow: visible; }
             .announcement-board { overflow: visible; }
         }
@@ -866,18 +837,14 @@
                             <div class="user-role" id="userRole"><%= Session["Role"] ?? "Student" %></div>
                         </div>
                     </button>
-                    <!-- HAMBURGER MENU ICON - right side of profile -->
-                    <button type="button" class="hamburger-menu-btn" id="hamburgerBtn">
-                        <i class="fas fa-bars"></i>
-                    </button>
+                    <!-- Hamburger button removed — sidebar is always visible -->
                 </div>
             </div>
 
-            <!-- SLIDE-OUT PANEL with Filters & Settings -->
+            <!-- PERMANENT LEFT SIDEBAR -->
             <div id="slideoutPanel" class="slideout-panel">
                 <div class="panel-header">
                     <h3><i class="fas fa-sliders-h"></i> Menu</h3>
-                    <button type="button" class="panel-close" id="closePanelBtn">&times;</button>
                 </div>
                 <div class="panel-menu-list">
                     <button type="button" class="panel-menu-item" id="filterCategoryBtn">
@@ -966,33 +933,37 @@
 
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]); }
 
-        // ====================== SLIDE-OUT CONTROLS ======================
-        function openSlideout() {
-            document.getElementById('slideoutPanel').classList.add('open');
+        function timeAgo(dateStr) {
+            if (!dateStr) return '';
+            var date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
-        function closeSlideout() {
-            document.getElementById('slideoutPanel').classList.remove('open');
-        }
 
-        // Hamburger toggles the panel open/closed
-        document.getElementById('hamburgerBtn').addEventListener('click', function (e) {
-            e.stopPropagation();
-            let panel = document.getElementById('slideoutPanel');
-            if (panel.classList.contains('open')) closeSlideout();
-            else openSlideout();
-        });
+        // ====================== SIDEBAR (always visible, no toggle needed) ======================
 
-        // X button closes the panel
-        document.getElementById('closePanelBtn').addEventListener('click', closeSlideout);
-
-        // Category dropdown toggle inside panel — stays open
+        // Category dropdown toggle inside panel
         document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
             e.stopPropagation();
             let panel = document.getElementById('categoryDropdownPanel');
             panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
         });
 
-        // Theme toggle from panel — stays open
+        // Theme toggle from panel
         document.getElementById('settingsThemeBtn').addEventListener('click', function (e) {
             e.stopPropagation();
             toggleTheme();
@@ -1125,17 +1096,106 @@
                 .then(r => r.json())
                 .then(comments => {
                     if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                    listDiv.innerHTML = comments.map(c => {
+
+                    // Separate top-level and replies
+                    const topLevel = comments.filter(c => !c.parentCommentId);
+                    const replies  = comments.filter(c =>  c.parentCommentId);
+
+                    listDiv.innerHTML = topLevel.map(c => {
                         let cAvatar = c.profileImage
                             ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
                             : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
-                        return `<div class="comment">${cAvatar}<div><span class="comment-author">${escapeHtml(c.author)}</span><div class="comment-text">${escapeHtml(c.text)}</div><div class="comment-time">${escapeHtml(c.date)}</div></div></div>`;
+
+                        // Replies for this comment
+                        let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                        let repliesHtml = commentReplies.map(r => {
+                            let rAvatar = r.profileImage
+                                ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                                : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
+                            return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+                                ${rAvatar}
+                                <div>
+                                    <span class="comment-author">${escapeHtml(r.author)}</span>
+                                    <div class="comment-text">${escapeHtml(r.text)}</div>
+                                    <div class="comment-time">${escapeHtml(r.date)}</div>
+                                </div>
+                            </div>`;
+                        }).join('');
+
+                        return `<div class="comment" data-comment-id="${c.commentId}">
+                            ${cAvatar}
+                            <div style="flex:1;min-width:0;">
+                                <span class="comment-author">${escapeHtml(c.author)}</span>
+                                <div class="comment-text">${escapeHtml(c.text)}</div>
+                                <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                    <div class="comment-time">${escapeHtml(c.date)}</div>
+                                    <button type="button" class="comment-like-btn ${c.userLiked ? 'liked' : ''}"
+                                        onclick="likeComment(${c.commentId}, this)"
+                                        style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
+                                        <i class="${c.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                        <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
+                                    </button>
+                                    <button type="button" onclick="toggleReplyBox(${c.commentId}, ${postId})"
+                                        style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
+                                        onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                                        <i class="fas fa-reply"></i> Reply
+                                    </button>
+                                </div>
+                                <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
+                                    <div class="comment-input" style="margin:0;">
+                                        <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                        <button type="button" onclick="submitReply(${c.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                    </div>
+                                </div>
+                                ${repliesHtml}
+                            </div>
+                        </div>`;
                     }).join('');
                 })
                 .catch(err => {
                     console.error('Load comments error:', err);
                     listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>';
                 });
+        }
+
+        function likeComment(commentId, btn) {
+            fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.success) return;
+                    btn.className = 'comment-like-btn' + (res.liked ? ' liked' : '');
+                    btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                    btn.querySelector('i').className = res.liked ? 'fas fa-heart' : 'far fa-heart';
+                    btn.querySelector('.clc').textContent = res.likeCount > 0 ? res.likeCount : '';
+                });
+        }
+
+        function toggleReplyBox(commentId, postId) {
+            let box = document.getElementById('replyBox_' + commentId);
+            if (!box) return;
+            let isHidden = box.style.display === 'none';
+            box.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) document.getElementById('replyInput_' + commentId)?.focus();
+        }
+
+        function submitReply(commentId, postId) {
+            let input = document.getElementById('replyInput_' + commentId);
+            let text = input ? input.value.trim() : '';
+            if (!text) return showToast('Write a reply first');
+            fetch('CommentHandler.ashx?action=reply', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: postId, parentCommentId: commentId, comment: text })
+            }).then(r => r.json()).then(res => {
+                if (res.success) {
+                    input.value = '';
+                    document.getElementById('replyBox_' + commentId).style.display = 'none';
+                    loadCommentsFromDB(postId);
+                    showToast('↩️ Reply posted');
+                } else {
+                    showToast('Error: ' + (res.error || 'Could not reply'));
+                }
+            });
         }
 
         function addComment(btn, postId) {
@@ -1227,7 +1287,7 @@
                                             ${postAvatar}
                                             <div>
                                                 <div class="post-author">${escapeHtml(post.author)}</div>
-                                                <div class="post-meta"><span>${escapeHtml(post.date)}</span><span class="post-category ${catClass}">${escapeHtml(post.category)}</span></div>
+                                                <div class="post-meta"><span>${escapeHtml(timeAgo(post.date))}</span><span class="post-category ${catClass}">${escapeHtml(post.category)}</span></div>
                                             </div>
                                         </div>
                                         <button type="button" class="pin-btn-top ${isPinned ? 'pinned' : ''}" onclick="togglePin(${post.id})" title="${isPinned ? 'Unpin' : 'Pin'}"><i class="fas fa-thumbtack"></i></button>

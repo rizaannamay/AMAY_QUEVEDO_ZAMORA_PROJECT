@@ -10,7 +10,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class NotificationHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString);
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {

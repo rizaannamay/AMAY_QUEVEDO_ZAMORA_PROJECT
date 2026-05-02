@@ -46,7 +46,7 @@
         }
 
         .page-wrap {
-            max-width: 1460px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
@@ -85,15 +85,15 @@
         }
         .back-link:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,99,235,0.35); }
 
-        .pinned-list { display: grid; gap: 24px; }
+        .pinned-list { display: grid; gap: 20px; grid-template-columns: 1fr; }
 
         .pinned-card {
             background: var(--surface);
             backdrop-filter: blur(12px);
-            border-radius: 28px;
+            border-radius: 20px;
             border: 1px solid #3B82F6;
-            box-shadow: var(--shadow);
-            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+            padding: 24px;
             transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
         }
 
@@ -155,7 +155,7 @@
 
         .card-image img {
             width: 100%;
-            max-height: 420px;
+            max-height: 200px;
             object-fit: cover;
             display: block;
             border-radius: 24px;
@@ -381,8 +381,7 @@
             .page-title { font-size: 28px; }
             .pinned-card { padding: 20px; }
             .card-top { flex-direction: column; }
-        }
-    </style>
+        }    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -421,9 +420,23 @@
 
         function formatDate(d) {
             if (!d) return '';
-            var dt = new Date(d);
-            if (isNaN(dt)) return d;
-            return dt.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            var date = new Date(d);
+            if (isNaN(date)) return d;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
 
         function getCatClass(cat) {

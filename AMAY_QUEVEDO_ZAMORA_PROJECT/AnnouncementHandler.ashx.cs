@@ -10,7 +10,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class AnnouncementHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["CampusConnectDB"].ConnectionString);
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -67,7 +67,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
-                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.Username, " +
+                         "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.Username, u.FullName, " +
                          "ISNULL(u.ProfileImage, '') AS AuthorImage " +
                          "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";
 
@@ -90,12 +90,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     content      = dr["Content"].ToString(),
                     category     = dr["Category"].ToString(),
                     imageUrl     = dr["ImageUrl"] != DBNull.Value ? dr["ImageUrl"].ToString() : "",
-                    date         = Convert.ToDateTime(dr["Date_Posted"]).ToString("MMMM dd, yyyy"),
+                    date         = Convert.ToDateTime(dr["Date_Posted"]).ToString("yyyy-MM-ddTHH:mm:ss"),
                     likeCount    = Convert.ToInt32(dr["LikeCount"]),
                     commentCount = Convert.ToInt32(dr["CommentCount"]),
                     shareCount   = Convert.ToInt32(dr["ShareCount"]),
                     isPinned     = Convert.ToBoolean(dr["IsPinned"]),
                     author       = dr["Username"].ToString(),
+                    authorFullName = dr["FullName"].ToString(),
                     authorImage  = dr["AuthorImage"].ToString(),
                     userLiked    = likedIds.Contains(annId)
                 });

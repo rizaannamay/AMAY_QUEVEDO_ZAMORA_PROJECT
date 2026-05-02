@@ -164,97 +164,70 @@
         }
         .user-info:hover { background: var(--active-bg); }
 
-        .hamburger-menu-btn {
-            background: var(--surface-soft);
-            border: 1px solid var(--border);
-            width: 44px;
-            height: 44px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 20px;
-            color: var(--primary);
-        }
-        .hamburger-menu-btn:hover {
-            background: var(--active-bg);
-            transform: scale(0.98);
-        }
-
+        /* LEFT SIDEBAR — always visible */
         .slideout-panel {
             position: fixed;
             top: 0;
-            right: -380px;
-            width: 360px;
-            max-width: 85vw;
+            left: 0;
+            width: 270px;
             height: 100vh;
             background: var(--surface-strong);
             backdrop-filter: blur(16px);
-            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
             z-index: 1100;
-            transition: right 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             display: flex;
             flex-direction: column;
-            border-left: 1px solid var(--border);
-        }
-        .slideout-panel.open {
-            right: 0;
+            border-right: 1px solid var(--border);
         }
         .panel-header {
-            padding: 24px 20px 16px;
+            padding: 24px 16px 16px;
             border-bottom: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
         .panel-header h3 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--primary);
             margin: 0;
         }
-        .panel-close {
-            background: none;
-            border: none;
-            font-size: 26px;
-            cursor: pointer;
-            color: var(--muted);
-            line-height: 1;
-            padding: 0 8px;
-        }
-        .panel-close:hover { color: var(--danger); }
         .panel-menu-list {
             flex: 1;
             overflow-y: auto;
-            padding: 16px 0;
+            padding: 12px 0;
         }
         .panel-menu-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px 24px;
+            gap: 12px;
+            padding: 12px 20px;
             cursor: pointer;
             width: 100%;
             border: none;
             background: none;
             text-align: left;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 500;
             color: var(--page-text);
             transition: all 0.2s;
             border-left: 3px solid transparent;
         }
         .panel-menu-item i {
-            width: 24px;
-            font-size: 18px;
+            width: 20px;
+            font-size: 16px;
             color: var(--primary);
         }
         .panel-menu-item:hover {
-            background: var(--surface-soft);
-            color: var(--primary);
+            background: #e6f7f9;
+            color: #007a8a;
+            border-left-color: #00bcd4;
         }
+        .panel-menu-item.active {
+            background: linear-gradient(135deg, #005f73, #00bcd4);
+            color: #ffffff;
+            border-left-color: transparent;
+        }
+        .panel-menu-item.active i { color: #ffffff; }
         .theme-toggle-row {
             display: flex;
             align-items: center;
@@ -262,21 +235,22 @@
             width: 100%;
         }
         .theme-toggle-row .toggle-switch-panel {
-            width: 44px;
-            height: 22px;
+            width: 40px;
+            height: 20px;
             background: #dce4ec;
             border-radius: 30px;
             position: relative;
             cursor: pointer;
             transition: all 0.3s;
+            flex-shrink: 0;
         }
         .theme-toggle-row .toggle-switch-panel.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
         }
         .theme-toggle-row .toggle-switch-panel::after {
             content: '';
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             background: #ffffff;
             border-radius: 50%;
             position: absolute;
@@ -285,40 +259,44 @@
             transition: all 0.3s;
         }
         .theme-toggle-row .toggle-switch-panel.active::after {
-            left: 24px;
+            left: 22px;
         }
         .divider-light {
             height: 1px;
             background: var(--border);
-            margin: 8px 20px;
+            margin: 6px 16px;
         }
         .overlay-black {
             display: none !important;
             pointer-events: none !important;
         }
-
         .category-dropdown-panel {
-            margin-left: 52px;
-            margin-bottom: 12px;
+            margin-left: 44px;
+            margin-bottom: 8px;
             display: none;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
         }
         .dropdown-item-panel {
             background: none;
             border: none;
             text-align: left;
-            padding: 8px 12px;
+            padding: 7px 10px;
             cursor: pointer;
             width: 100%;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--page-text);
-            border-radius: 12px;
+            border-radius: 10px;
             transition: all 0.2s;
         }
         .dropdown-item-panel:hover {
             background: var(--surface-soft);
             color: var(--primary);
+        }
+
+        /* Dashboard always offset by sidebar width */
+        .app-shell {
+            padding-left: 286px;
         }
 
         .avatar, .post-avatar, .create-post-avatar {
@@ -353,7 +331,7 @@
             backdrop-filter: blur(10px);
             border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
             overflow: visible;
         }
 
@@ -449,7 +427,7 @@
         .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
         .post-text { color: var(--page-text); line-height: 1.5; }
         .post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
-        .post-image img { width: 100%; max-height: 300px; object-fit: cover; border-radius: 16px; }
+        .post-image img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 16px; }
 
         .post-stats {
             display: flex;
@@ -680,7 +658,7 @@
         body.dark-mode .panel-header h3 { color: #c7d2fe; }
         body.dark-mode .panel-menu-item { color: #cbd5e1; }
         body.dark-mode .panel-menu-item i { color: #818cf8; }
-        body.dark-mode .panel-menu-item:hover { background: rgba(99,102,241,0.15); color: #ffffff; }
+        body.dark-mode .panel-menu-item:hover { background: rgba(99,102,241,0.15); color: #ffffff; border-left-color: #818cf8; }
         body.dark-mode .dropdown-item-panel { color: #cbd5e1; }
         body.dark-mode .dropdown-item-panel:hover { background: rgba(99,102,241,0.15); color: #ffffff; }
         body.dark-mode .divider-light { background: rgba(255,255,255,0.08); }
@@ -722,7 +700,63 @@
             .content-shell { overflow: visible; }
             .announcement-board { overflow: visible; }
             html, body { overflow: auto; }
+            .app-shell { padding-left: 20px; }
+            .slideout-panel { display: none; }
         }
+
+        /* ── Custom Delete Confirm Modal ── */
+        .delete-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+        .delete-modal-overlay.active { opacity: 1; visibility: visible; }
+        .delete-modal-card {
+            background: var(--surface-strong);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+            padding: 32px 28px 24px;
+            max-width: 380px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.94);
+            transition: transform 0.2s ease;
+        }
+        .delete-modal-overlay.active .delete-modal-card { transform: scale(1); }
+        .delete-modal-icon {
+            width: 60px; height: 60px;
+            background: rgba(220, 38, 38, 0.12);
+            border: 1.5px solid rgba(220, 38, 38, 0.3);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px; color: #dc2626;
+        }
+        .delete-modal-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+        .delete-modal-msg   { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+        .delete-modal-btns  { display: flex; gap: 10px; }
+        .delete-modal-btns button {
+            flex: 1; padding: 11px 0; border-radius: 40px; border: none;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s; font-family: inherit;
+        }
+        .btn-dm-cancel { background: var(--surface-soft); border: 1px solid var(--border) !important; color: var(--muted); }
+        .btn-dm-cancel:hover { background: var(--active-bg); color: var(--primary); }
+        .btn-dm-delete { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; }
+        .btn-dm-delete:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(220,38,38,0.35); }
+        body.dark-mode .delete-modal-card  { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
+        body.dark-mode .delete-modal-title { color: #e0e7ff; }
+        body.dark-mode .btn-dm-cancel { background: rgba(51,65,85,0.6); color: #cbd5e1; border-color: rgba(148,163,184,0.3) !important; }
+        body.dark-mode .btn-dm-cancel:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
     </style>
 </head>
 <body>
@@ -755,16 +789,14 @@
                             <div class="user-role"><%= Session["Role"] ?? "Teacher" %></div>
                         </div>
                     </div>
-                    <div class="hamburger-menu-btn" id="hamburgerBtn">
-                        <i class="fas fa-bars"></i>
-                    </div>
+                    <!-- Hamburger button removed — sidebar is always visible -->
                 </div>
             </div>
 
+            <!-- PERMANENT LEFT SIDEBAR -->
             <div id="slideoutPanel" class="slideout-panel">
                 <div class="panel-header">
                     <h3><i class="fas fa-sliders-h"></i> Menu</h3>
-                    <button type="button" class="panel-close" id="closePanelBtn">&times;</button>
                 </div>
                 <div class="panel-menu-list">
                     <button type="button" class="panel-menu-item" id="filterCategoryBtn">
@@ -897,6 +929,19 @@
         <div class="footer"><i class="fas fa-shield-alt"></i> Secure Portal | Cebu Technological University</div>
     </form>
 
+    <!-- ── Delete Confirm Modal ── -->
+    <div id="deleteConfirmModal" class="delete-modal-overlay">
+        <div class="delete-modal-card">
+            <div class="delete-modal-icon"><i class="fas fa-trash-alt"></i></div>
+            <div class="delete-modal-title">Delete Announcement?</div>
+            <div class="delete-modal-msg">This action cannot be undone. The announcement and all its comments will be permanently removed.</div>
+            <div class="delete-modal-btns">
+                <button type="button" class="btn-dm-cancel" id="deleteCancelBtn">Cancel</button>
+                <button type="button" class="btn-dm-delete" id="deleteConfirmBtn"><i class="fas fa-trash-alt" style="margin-right:6px;"></i>Delete</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let st_announcements = [], st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
 
@@ -983,7 +1028,7 @@
                             <div>
                                 <div class="post-author">${escapeHtml(post.author)}</div>
                                 <div class="post-meta">
-                                    <span>${post.date}</span>
+                                    <span>${timeAgo(post.date)}</span>
                                     <span class="post-category ${catClass}">${post.category}</span>
                                 </div>
                             </div>
@@ -1023,12 +1068,68 @@
         function renderCommentsList(postId) {
             let comments = st_comments[postId] || [];
             if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
-            return comments.map(c => `<div class="comment">${commentAvatarHtml(c.profileImage)}<div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.time || c.date || ''}</small></div></div>`).join('');
+            const topLevel = comments.filter(c => !c.parentCommentId);
+            const replies  = comments.filter(c =>  c.parentCommentId);
+            return topLevel.map(c => {
+                let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
+                    `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+                        ${commentAvatarHtml(r.profileImage)}
+                        <div><span class="comment-author">${escapeHtml(r.author)}</span><div>${escapeHtml(r.text)}</div><small>${r.date||''}</small></div>
+                    </div>`
+                ).join('');
+                return `<div class="comment" data-comment-id="${c.commentId}">
+                    ${commentAvatarHtml(c.profileImage)}
+                    <div style="flex:1;min-width:0;">
+                        <span class="comment-author">${escapeHtml(c.author)}</span>
+                        <div>${escapeHtml(c.text)}</div>
+                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                            <small>${c.date||''}</small>
+                            <button type="button" class="comment-like-btn ${c.userLiked?'liked':''}" onclick="likeComment(${c.commentId},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                <i class="${c.userLiked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBox(${c.commentId},${postId})"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
+                            <div class="comment-input" style="margin:0;">
+                                <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                <button type="button" onclick="submitReply(${c.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                            </div>
+                        </div>
+                        ${rHtml}
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
+        }
+
+        function timeAgo(dateStr) {
+            if (!dateStr) return '';
+            var date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
 
         function showToast(msg) {
@@ -1087,14 +1188,47 @@
                 .then(list => {
                     st_comments[postId] = list;
                     let listDiv = document.getElementById(`commentsList_${postId}`);
-                    if (listDiv) {
-                        listDiv.innerHTML = list.length
-                            ? list.map(c => `<div class="comment">${commentAvatarHtml(c.profileImage)}<div><span class="comment-author">${escapeHtml(c.author)}</span><div>${escapeHtml(c.text)}</div><small>${c.date || ''}</small></div></div>`).join('')
-                            : '<div class="no-comments">No comments yet.</div>';
-                    }
+                    if (listDiv) listDiv.innerHTML = renderCommentsList(postId);
                     let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`);
-                    if (countSpan) countSpan.textContent = list.length;
+                    if (countSpan) countSpan.textContent = list.filter(c => !c.parentCommentId).length;
                 });
+        }
+
+        function likeComment(commentId, btn) {
+            fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.success) return;
+                    btn.className = 'comment-like-btn' + (res.liked ? ' liked' : '');
+                    btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                    btn.querySelector('i').className = res.liked ? 'fas fa-heart' : 'far fa-heart';
+                    btn.querySelector('.clc').textContent = res.likeCount > 0 ? res.likeCount : '';
+                });
+        }
+
+        function toggleReplyBox(commentId, postId) {
+            let box = document.getElementById('replyBox_' + commentId);
+            if (!box) return;
+            box.style.display = box.style.display === 'none' ? 'block' : 'none';
+            if (box.style.display === 'block') document.getElementById('replyInput_' + commentId)?.focus();
+        }
+
+        function submitReply(commentId, postId) {
+            let input = document.getElementById('replyInput_' + commentId);
+            let text = input ? input.value.trim() : '';
+            if (!text) return showToast('Write a reply first');
+            fetch('CommentHandler.ashx?action=reply', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: postId, parentCommentId: commentId, comment: text })
+            }).then(r => r.json()).then(res => {
+                if (res.success) {
+                    input.value = '';
+                    document.getElementById('replyBox_' + commentId).style.display = 'none';
+                    loadComments(postId);
+                    showToast('↩️ Reply posted');
+                }
+            });
         }
 
         function toggleCommentSection(id) {
@@ -1122,17 +1256,7 @@
             });
         }
 
-        function openSlideout() { document.getElementById('slideoutPanel').classList.add('open'); }
-        function closeSlideout() { document.getElementById('slideoutPanel').classList.remove('open'); }
-
-        document.getElementById('hamburgerBtn').addEventListener('click', function (e) {
-            e.stopPropagation();
-            let panel = document.getElementById('slideoutPanel');
-            if (panel.classList.contains('open')) closeSlideout();
-            else openSlideout();
-        });
-
-        document.getElementById('closePanelBtn').addEventListener('click', closeSlideout);
+        // Sidebar is always visible — no toggle needed
 
         document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
             e.stopPropagation();
@@ -1221,11 +1345,26 @@
         }
 
         function deletePost(id) {
-            if (confirm('Delete?')) {
+            var modal = document.getElementById('deleteConfirmModal');
+            if (!modal) return;
+            modal.classList.add('active');
+
+            document.getElementById('deleteConfirmBtn').onclick = function () {
+                modal.classList.remove('active');
                 fetch(`AnnouncementHandler.ashx?action=delete&id=${id}`, { credentials: 'same-origin' })
-                    .then(() => loadAnnouncementsFromDB());
-            }
+                    .then(() => { loadAnnouncementsFromDB(); showToast('🗑️ Deleted'); });
+            };
         }
+
+        document.getElementById('deleteCancelBtn').addEventListener('click', function () {
+            document.getElementById('deleteConfirmModal').classList.remove('active');
+        });
+        document.getElementById('deleteConfirmModal').addEventListener('click', function (e) {
+            if (e.target === this) this.classList.remove('active');
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') document.getElementById('deleteConfirmModal').classList.remove('active');
+        });
 
         function openProfileModal() { document.getElementById('profileModal').style.display = 'flex'; }
         function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }

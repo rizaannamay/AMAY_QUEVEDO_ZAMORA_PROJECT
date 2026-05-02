@@ -504,6 +504,53 @@
             .comment-input-row { flex-direction: column; }
             .comment-input-row button { padding: 10px; border-radius: 12px; }
         }
+
+        /* Sidebar offset — removed, these pages have no sidebar */
+        .page-content-offset {
+            padding-left: 0;
+        }
+
+        /* User profile card shown when searching by username */
+        .user-profile-card {
+            background: rgba(15, 25, 55, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 20px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 4px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .user-profile-card .upc-avatar {
+            width: 64px; height: 64px; border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; color: #fff; flex-shrink: 0; overflow: hidden;
+            border: 3px solid rgba(99,102,241,0.4);
+        }
+        .user-profile-card .upc-avatar img { width:100%;height:100%;object-fit:cover;border-radius:50%;display:block; }
+        .user-profile-card .upc-name { font-size: 17px; font-weight: 800; color: #e0e7ff; }
+        .user-profile-card .upc-username { font-size: 13px; color: #93c5fd; margin-top: 2px; }
+        .user-profile-card .upc-meta { display:flex; gap:12px; margin-top:6px; flex-wrap:wrap; }
+        .user-profile-card .upc-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            background: rgba(99,102,241,0.2); color: #c4b5fd;
+        }
+        .user-profile-card .upc-posts {
+            font-size: 12px; color: #94a3b8;
+        }
+        body.light-mode .user-profile-card {
+            background: rgba(255,255,255,0.92);
+            border-color: rgba(26,58,92,0.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+        body.light-mode .user-profile-card .upc-name    { color: #1a2a3a; }
+        body.light-mode .user-profile-card .upc-username { color: #2563eb; }
+        body.light-mode .user-profile-card .upc-badge   { background: #dbeafe; color: #1e3a8a; }
+        body.light-mode .user-profile-card .upc-posts   { color: #6b7c8f; }
     </style>
 </head>
 <body class="antialiased relative">
@@ -511,7 +558,7 @@
     <form id="form1" runat="server">
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
 
-        <div class="relative z-10">
+        <div class="relative z-10 page-content-offset">
             <header class="glass-nav sticky top-0 z-40 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
@@ -675,7 +722,26 @@
         }
 
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m])); }
-        function formatDate(d) { try { return new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); } catch (e) { return d; } }
+        function formatDate(d) {
+            if (!d) return '';
+            var date = new Date(d);
+            if (isNaN(date)) return d;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
+        }
         function getBannerClass(cat) { if (cat === 'Exam Schedule') return 'banner-exam'; if (cat === 'Class Suspension') return 'banner-suspension'; if (cat === 'Campus Events') return 'banner-events'; return 'banner-default'; }
         function getBannerText(cat) { if (cat === 'Exam Schedule') return 'EXAM SCHEDULE'; if (cat === 'Class Suspension') return 'CLASS SUSPENSION'; if (cat === 'Campus Events') return 'CAMPUS EVENT'; return (cat || 'GENERAL').toUpperCase(); }
         function getCatClass(cat) { if (cat === 'Exam Schedule') return 'cat-exam'; if (cat === 'Class Suspension') return 'cat-suspension'; if (cat === 'Campus Events') return 'cat-event'; return 'cat-default'; }
@@ -712,7 +778,7 @@
 
         function getFilteredAnnouncements() {
             let results = [...announcementsDB];
-            if (currentSearchTerm.trim()) { const kw = currentSearchTerm.toLowerCase().trim(); results = results.filter(a => a.title.toLowerCase().includes(kw) || a.description.toLowerCase().includes(kw) || a.professor.toLowerCase().includes(kw)); }
+            if (currentSearchTerm.trim()) { const kw = currentSearchTerm.toLowerCase().trim(); results = results.filter(a => a.title.toLowerCase().includes(kw) || a.description.toLowerCase().includes(kw) || a.professor.toLowerCase().includes(kw) || (a.authorFullName || '').toLowerCase().includes(kw)); }
             if (currentDate) results = results.filter(a => a.date && a.date.startsWith(currentDate));
             if (currentSort === 'latest') results.sort((a, b) => new Date(b.date) - new Date(a.date));
             else results.sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -748,8 +814,8 @@
                     <div style="padding:18px 20px 12px">
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
                             <div style="display:flex;align-items:center;gap:12px;flex:1">
-                                <div style="width:44px;height:44px;background:rgba(99,102,241,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">
-                                    <i class="fas fa-user-tie" style="color:#93c5fd"></i>
+                                <div style="width:44px;height:44px;background:rgba(99,102,241,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;">
+                                    ${ann.authorImage ? `<img src="${escapeHtml(ann.authorImage)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" />` : `<i class="fas fa-user-tie" style="color:#93c5fd"></i>`}
                                 </div>
                                 <div>
                                     <div class="card-author-name">${escapeHtml(ann.professor)}</div>
@@ -763,12 +829,11 @@
                                 <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}"
                                     style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#fb923c' : 'rgba(148,163,184,0.5)'}">
                                     <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
-                                </button>
-                            </div>
+                                </button>                            </div>
                         </div>
                         <div class="card-title">${escapeHtml(ann.title)}</div>
                         <div class="card-desc">${escapeHtml(ann.description)}</div>
-                        ${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:260px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}
+                        ${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:200px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}
                         <div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${getCatIcon(ann.category)} ${ann.category}</span></div>
                     </div>
                     <div class="post-stats">
@@ -965,6 +1030,8 @@
                     category: a.category === 'Exam' ? 'Exam Schedule' : a.category === 'Suspension' ? 'Class Suspension' : a.category === 'Event' ? 'Campus Events' : (a.category || 'General'),
                     date: a.date || '',
                     professor: a.author || 'Admin',
+                    authorFullName: a.authorFullName || a.author || '',
+                    authorImage: a.authorImage || '',
                     description: a.content || '',
                     imageUrl: a.imageUrl || '',
                     likeCount: a.likeCount || 0,

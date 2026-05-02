@@ -34,8 +34,8 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        .page-shell { min-height:100vh; padding:32px 20px 60px; }
-        .page-wrap  { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+        .page-shell { min-height:100vh; padding:32px 32px 60px; }
+        .page-wrap  { max-width:100%; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
 
         /* ── Topbar ── */
         .topbar {
@@ -59,13 +59,25 @@
         .notif-item {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 18px;
-            box-shadow: var(--shadow);
+            border-radius: 16px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.09);
             overflow: hidden;
             transition: box-shadow 0.2s, border-color 0.2s;
         }
-        .notif-item:hover { box-shadow: 0 12px 28px rgba(0,0,0,0.1); border-color: var(--primary-2); }
+        .notif-item:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.13); border-color: var(--primary-2); }
         .notif-item.unread { border-left: 4px solid var(--primary-2); }
+
+        /* Red unread dot */
+        .unread-dot {
+            width: 9px;
+            height: 9px;
+            background: #dc2626;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 2px rgba(220,38,38,0.2);
+            transition: opacity 0.3s;
+        }
+        .notif-item:not(.unread) .unread-dot { display: none; }
 
         .notif-teaser {
             display: flex; align-items: center; gap: 14px;
@@ -134,7 +146,7 @@
         .post-title-full { font-size:17px; font-weight:800; color:var(--primary); margin-bottom:8px; }
         .post-content    { font-size:13px; color:var(--page-text); line-height:1.65; }
         .post-img        { margin-top:12px; border-radius:12px; overflow:hidden; }
-        .post-img img    { width:100%; max-height:280px; object-fit:cover; display:block; border-radius:12px; }
+        .post-img img    { width:100%; max-height:200px; object-fit:cover; display:block; border-radius:12px; }
 
         /* action row */
         .post-actions {
@@ -269,6 +281,27 @@
             });
         }
 
+        function timeAgo(dateStr) {
+            if (!dateStr) return '';
+            var date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
+        }
+
         function showToast(msg) {
             var t = document.createElement('div');
             t.className = 'toast-msg'; t.textContent = msg;
@@ -306,6 +339,25 @@
             });
             if (!isOpen) {
                 item.classList.add('open');
+                // Mark as read — remove red dot and unread border
+                if (item.classList.contains('unread')) {
+                    item.classList.remove('unread');
+                    var dot = item.querySelector('.unread-dot');
+                    if (dot) dot.style.display = 'none';
+                    // Tell server
+                    var notifId = item.dataset.notifId;
+                    if (notifId) {
+                        fetch('NotificationHandler.ashx?action=markRead&id=' + notifId, { credentials: 'same-origin' })
+                            .catch(function() {});
+                        // Update badge count
+                        var badge = document.getElementById('globalBadge');
+                        if (badge) {
+                            var count = parseInt(badge.textContent || '0') - 1;
+                            if (count > 0) { badge.textContent = count; }
+                            else { badge.style.display = 'none'; }
+                        }
+                    }
+                }
                 // Load comments when first opened
                 var cl = document.getElementById('cl-' + id);
                 if (cl && cl.dataset.loaded !== 'true') {
@@ -391,61 +443,102 @@
         function loadAndRender() {
             var list = document.getElementById('notifList');
 
-            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok || !res.data || !res.data.length) {
-                        list.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>No announcements yet.</p></div>';
-                        return;
+            // Fetch both announcements and unread notification IDs in parallel
+            Promise.all([
+                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); }),
+                fetch('NotificationHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); })
+            ]).then(function(results) {
+                var res      = results[0];
+                var notifRes = results[1];
+
+                // Build a map of announcementId → {notifId, isRead} from notification messages
+                var notifMap = {};
+                if (notifRes.ok && notifRes.data) {
+                    notifRes.data.forEach(function(n) {
+                        // Notifications contain announcement title in message — match by checking unread
+                        // We store notifId keyed by position; use isRead flag
+                        if (!n.isRead) {
+                            // Mark all unread — we'll use a simple unread set
+                            notifMap[n.id] = true;
+                        }
+                    });
+                }
+
+                // Count unread for badge
+                var unreadCount = notifRes.ok ? notifRes.data.filter(function(n) { return !n.isRead; }).length : 0;
+                var badge = document.getElementById('globalBadge');
+                if (badge) {
+                    if (unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; }
+                    else { badge.style.display = 'none'; }
+                }
+
+                if (!res.ok || !res.data || !res.data.length) {
+                    list.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>No announcements yet.</p></div>';
+                    return;
+                }
+
+                // Build announcement→notif mapping by index (latest notif = latest announcement)
+                var notifList = notifRes.ok && notifRes.data ? notifRes.data : [];
+
+                list.innerHTML = res.data.map(function(ann, idx) {
+                    var liked    = !!likes[ann.id];
+                    var lc       = ann.likeCount || 0;
+                    var cc       = ann.commentCount || 0;
+                    var iconCls  = getIconClass(ann.category);
+                    var iconFa   = getCatIcon(ann.category);
+                    var pillCls  = getPillClass(ann.category);
+
+                    // Match notification record for this announcement (by title in message)
+                    var matchedNotif = null;
+                    for (var i = 0; i < notifList.length; i++) {
+                        if (notifList[i].message && notifList[i].message.indexOf(ann.title) !== -1) {
+                            matchedNotif = notifList[i];
+                            break;
+                        }
                     }
+                    var isUnread  = matchedNotif ? !matchedNotif.isRead : false;
+                    var notifId   = matchedNotif ? matchedNotif.id : '';
 
-                    list.innerHTML = res.data.map(function(ann) {
-                        var liked    = !!likes[ann.id];
-                        var lc       = ann.likeCount || 0;
-                        var cc       = ann.commentCount || 0;
-                        var iconCls  = getIconClass(ann.category);
-                        var iconFa   = getCatIcon(ann.category);
-                        var pillCls  = getPillClass(ann.category);
+                    // Author avatar
+                    var authorAv = ann.authorImage
+                        ? '<div class="post-avatar-sm"><img src="' + escapeHtml(ann.authorImage) + '" /></div>'
+                        : '<div class="post-avatar-sm"><i class="fas fa-user-tie"></i></div>';
 
-                        // Author avatar
-                        var authorAv = ann.authorImage
-                            ? '<div class="post-avatar-sm"><img src="' + escapeHtml(ann.authorImage) + '" /></div>'
-                            : '<div class="post-avatar-sm"><i class="fas fa-user-tie"></i></div>';
+                    // Teaser: first 80 chars of content
+                    var teaser = (ann.content || '').length > 80
+                        ? ann.content.substring(0, 80) + '…'
+                        : ann.content;
 
-                        // Teaser: first 80 chars of content
-                        var teaser = (ann.content || '').length > 80
-                            ? ann.content.substring(0, 80) + '…'
-                            : ann.content;
+                    return '<div class="notif-item' + (isUnread ? ' unread' : '') + '" id="notif-' + ann.id + '" data-notif-id="' + notifId + '">'
 
-                        return '<div class="notif-item" id="notif-' + ann.id + '">'
+                        // ── Teaser row (always visible) ──
+                        + '<div class="notif-teaser" onclick="togglePost(' + ann.id + ')">'
+                        +   '<div class="notif-icon ' + iconCls + '"><i class="fas ' + iconFa + '"></i></div>'
+                        +   '<div class="notif-info">'
+                        +     '<div class="notif-title">' + escapeHtml(ann.title) + '</div>'
+                        +     '<div class="notif-sub">'
+                        +       '<span class="cat-pill ' + pillCls + '">' + escapeHtml(ann.category) + '</span>'
+                        +       '<span>' + timeAgo(ann.date) + '</span>'
+                        +       '<span style="color:var(--muted-light)">· ' + escapeHtml(teaser) + '</span>'
+                        +     '</div>'
+                        +   '</div>'
+                        +   (isUnread ? '<span class="unread-dot"></span>' : '')
+                        +   '<i class="fas fa-chevron-right notif-chevron"></i>'
+                        + '</div>'
 
-                            // ── Teaser row (always visible) ──
-                            + '<div class="notif-teaser" onclick="togglePost(' + ann.id + ')">'
-                            +   '<div class="notif-icon ' + iconCls + '"><i class="fas ' + iconFa + '"></i></div>'
-                            +   '<div class="notif-info">'
-                            +     '<div class="notif-title">' + escapeHtml(ann.title) + '</div>'
-                            +     '<div class="notif-sub">'
-                            +       '<span class="cat-pill ' + pillCls + '">' + escapeHtml(ann.category) + '</span>'
-                            +       '<span>' + escapeHtml(ann.date) + '</span>'
-                            +       '<span style="color:var(--muted-light)">· ' + escapeHtml(teaser) + '</span>'
-                            +     '</div>'
-                            +   '</div>'
-                            +   '<i class="fas fa-chevron-right notif-chevron"></i>'
-                            + '</div>'
-
-                            // ── Expanded full post ──
-                            + '<div class="notif-post">'
-                            +   '<div class="post-author-row">'
-                            +     authorAv
-                            +     '<div><div class="post-author-name">' + escapeHtml(ann.author) + '</div>'
-                            +     '<div class="post-date">' + escapeHtml(ann.date) + '</div></div>'
-                            +   '</div>'
-                            +   '<div class="post-title-full">' + escapeHtml(ann.title) + '</div>'
-                            +   '<div class="post-content">' + escapeHtml(ann.content) + '</div>'
-                            +   (ann.imageUrl ? '<div class="post-img"><img src="' + escapeHtml(ann.imageUrl) + '" onerror="this.style.display=\'none\'" /></div>' : '')
-                            +   '<div class="post-actions">'
-                            +     '<button type="button" id="lb-' + ann.id + '" class="act-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + ann.id + ')">'
-                            +       '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span id="lc-' + ann.id + '">' + lc + '</span> Likes'
+                        // ── Expanded full post ──
+                        + '<div class="notif-post">'
+                        +   '<div class="post-author-row">'
+                        +     authorAv
+                        +     '<div><div class="post-author-name">' + escapeHtml(ann.author) + '</div>'
+                        +     '<div class="post-date">' + timeAgo(ann.date) + '</div></div>'
+                        +   '</div>'
+                        +   '<div class="post-title-full">' + escapeHtml(ann.title) + '</div>'
+                        +   '<div class="post-content">' + escapeHtml(ann.content) + '</div>'
+                        +   (ann.imageUrl ? '<div class="post-img"><img src="' + escapeHtml(ann.imageUrl) + '" onerror="this.style.display=\'none\'" /></div>' : '')
+                        +   '<div class="post-actions">'
+                        +     '<button type="button" id="lb-' + ann.id + '" class="act-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + ann.id + ')">'
+                        +       '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span id="lc-' + ann.id + '">' + lc + '</span> Likes'
                             +     '</button>'
                             +     '<button type="button" class="act-btn" onclick="togglePost(' + ann.id + ');loadComments(' + ann.id + ')">'
                             +       '<i class="far fa-comment"></i> <span id="cc-' + ann.id + '">' + cc + '</span> Comments'
@@ -465,8 +558,7 @@
 
                             + '</div>';
                     }).join('');
-                })
-                .catch(function() {
+                }).catch(function() {
                     list.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Could not load. Check your connection.</p></div>';
                 });
         }

@@ -33,9 +33,17 @@
             background-position: center; background-attachment: fixed;
         }
 
-        a { color: inherit; text-decoration: none; }
-        .page-shell { min-height: 100vh; padding: 28px 20px 48px; }
-        .page-wrap { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+        .page-shell { min-height: 100vh; padding: 28px 32px 48px; }
+        .page-wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+
+        /* Single column layout */
+        .profile-columns {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .profile-col-left  { display: flex; flex-direction: column; gap: 18px; }
+        .profile-col-right { display: flex; flex-direction: column; gap: 18px; }
 
         /* Topbar */
         .topbar {
@@ -233,11 +241,12 @@
         body.dark-mode .info-card-title { color: #e0e7ff; }
         body.dark-mode .edit-toggle-btn { color: #93c5fd; }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .page-shell { padding: 14px 12px 40px; }
             .profile-body { padding: 60px 18px 22px; }
             .profile-banner { height: 100px; }
             .info-row { padding: 12px 16px; }
+            .profile-columns { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -256,6 +265,10 @@
                         <i class="fas fa-home" style="font-size:16px;"></i>
                     </a>
                 </div>
+
+                <!-- Two-column layout -->
+                <div class="profile-columns">
+                    <div class="profile-col-left">
 
                 <!-- Profile Card -->
                 <div class="profile-card">
@@ -294,6 +307,9 @@
                         <div class="upload-status" id="uploadStatus"></div>
                     </div>
                 </div>
+
+                    </div><!-- end col-left -->
+                    <div class="profile-col-right">
 
                 <!-- Info Card with Edit -->
                 <div class="info-card">
@@ -364,7 +380,10 @@
                 <asp:HiddenField ID="hfUsername" runat="server" />
                 <asp:HiddenField ID="hfEmail"    runat="server" />
 
-                <!-- Logout -->
+                    </div><!-- end col-right -->
+                </div><!-- end profile-columns -->
+
+                <!-- Logout — always at the bottom -->
                 <button type="button" class="logout-btn" onclick="confirmLogout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>

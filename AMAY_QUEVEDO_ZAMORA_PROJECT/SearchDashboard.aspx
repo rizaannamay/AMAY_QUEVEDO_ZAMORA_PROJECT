@@ -574,6 +574,14 @@
             .card-author-name { font-size: 13px; }
         }
 
+        /* Sidebar offset — removed, these pages have no sidebar */
+        .page-content-offset {
+            padding-left: 0;
+        }
+
+        /* Cap announcement images */
+        .announce-card img { max-height: 200px; object-fit: cover; width: 100%; }
+
         /* ── FOOTER ── */
         footer {
             border-color: rgba(255,255,255,0.07) !important;
@@ -624,7 +632,7 @@
     <form id="form1" runat="server">
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
 
-        <div class="relative z-10">
+        <div class="relative z-10 page-content-offset">
 
             <!-- ═══ NAVBAR ═══ -->
             <header class="glass-nav sticky top-0 z-40">
@@ -780,6 +788,7 @@
                                 : (a.category || 'General'),
                     date: a.date || '',
                     professor: a.author || '',
+                    authorFullName: a.authorFullName || a.author || '',
                     description: a.content || '',
                     imageUrl: a.imageUrl || '',
                     likeCount: a.likeCount || 0,
@@ -884,7 +893,24 @@
         }
 
         function formatDate(dateStr) {
-            return new Date(dateStr).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+            if (!dateStr) return '';
+            var date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            var now = new Date();
+            var sec = Math.floor((now - date) / 1000);
+            if (sec < 60)  return 'Just now';
+            var min = Math.floor(sec / 60);
+            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            var hr = Math.floor(min / 60);
+            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            var day = Math.floor(hr / 24);
+            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            var wk = Math.floor(day / 7);
+            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            var mo = Math.floor(day / 30);
+            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            var yr = Math.floor(day / 365);
+            return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
 
         function getBannerClass(type) {
@@ -968,7 +994,8 @@
                 results = results.filter(a =>
                     a.title.toLowerCase().includes(kw) ||
                     a.description.toLowerCase().includes(kw) ||
-                    a.professor.toLowerCase().includes(kw)
+                    a.professor.toLowerCase().includes(kw) ||
+                    (a.authorFullName || '').toLowerCase().includes(kw)
                 );
             }
             if (currentDate) results = results.filter(a => a.date === currentDate);
@@ -1010,7 +1037,9 @@
                     <div style="padding:18px 20px 12px">
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
                             <div style="display:flex;align-items:center;gap:12px;flex:1">
-                                <div style="width:44px;height:44px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${ann.professorAvatar || '👤'}</div>
+                                <div style="width:44px;height:44px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;">
+                                    ${ann.authorImage ? `<img src="${escapeHtml(ann.authorImage)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" />` : `<i class="fas fa-user-tie" style="color:#93c5fd"></i>`}
+                                </div>
                                 <div>
                                     <div class="card-author-name">${escapeHtml(ann.professor)}</div>
                                     <div class="card-meta"><i class="far fa-calendar-alt mr-1"></i>${formatDate(ann.date)}</div>
@@ -1024,7 +1053,7 @@
                                     onclick="togglePin(${ann.id})"
                                     title="${pinned ? 'Unpin' : 'Pin this announcement'}"
                                     style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:${pinned ? 'rgba(230,81,0,0.18)' : 'rgba(255,255,255,0.06)'};border:1px solid ${pinned ? 'rgba(230,81,0,0.35)' : 'rgba(255,255,255,0.1)'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#fb923c' : '#64748b'}">
-                                    <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
+                                    <i class="fas fa-thumbtack"></i>
                                 </button>
                             </div>
                         </div>
