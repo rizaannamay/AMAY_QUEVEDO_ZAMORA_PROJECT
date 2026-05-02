@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="AboutUs.aspx" />
     <Content Include="Backup.aspx" />
+    <Content Include="ctu.png" />
     <Content Include="Profile.aspx" />
     <Content Include="Academic Updates.jpg" />
     <Content Include="Amay Riza Ann.jpg" />
