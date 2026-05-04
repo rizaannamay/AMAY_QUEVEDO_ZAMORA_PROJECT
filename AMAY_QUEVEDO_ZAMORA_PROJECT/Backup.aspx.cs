@@ -23,7 +23,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected GridView gvAnnouncements;
 
         private readonly string _conn =
-            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+            @"Data Source=DESKTOP-C0LQQT8\SQLEXPRESS;Initial Catalog=CAPdb;Integrated Security=True;TrustServerCertificate=True;";
 
         protected void Page_Load(object sender, EventArgs e)
         {

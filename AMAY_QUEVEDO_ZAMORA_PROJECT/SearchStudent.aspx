@@ -983,10 +983,10 @@
             renderResults();
         }
 
-        function applyFilters() { currentDate = dateFilter.value || ''; currentSort = sortFilter.value; renderResults(); }
+        function applyFilters() { currentSort = sortFilter.value; renderResults(); }
 
         function resetEverything() {
-            searchInput.value = ''; dateFilter.value = ''; sortFilter.value = 'latest';
+            searchInput.value = ''; if (window._datePicker) window._datePicker.clear(); sortFilter.value = 'latest';
             currentSearchTerm = ''; currentDate = ''; currentSort = 'latest';
             if (lastSearchHidden) lastSearchHidden.value = '';
             renderResults();
@@ -997,10 +997,12 @@
         function init() {
             renderHistory();
             updateNotifBadge();
-            flatpickr(dateFilter, {
+            window._datePicker = flatpickr(dateFilter, {
                 dateFormat: 'Y-m-d', altInput: true, altFormat: 'F j, Y',
-                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
+                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); },
+                onClear: () => { currentDate = ''; renderResults(); }
             });
+            searchInput.addEventListener('input', () => { currentSearchTerm = searchInput.value; renderResults(); });
             searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
             sortFilter.addEventListener('change', applyFilters);
             if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);

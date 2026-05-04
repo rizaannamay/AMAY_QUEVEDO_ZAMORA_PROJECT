@@ -7,7 +7,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-        readonly SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        readonly SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-C0LQQT8\SQLEXPRESS;Initial Catalog=CAPdb;Integrated Security=True;TrustServerCertificate=True;");
 
         protected void Page_Load(object sender, EventArgs e)
         {

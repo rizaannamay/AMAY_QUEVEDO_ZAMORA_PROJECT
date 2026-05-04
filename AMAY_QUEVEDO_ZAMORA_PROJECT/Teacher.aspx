@@ -60,7 +60,7 @@
 
         .header {
             flex: 0 0 auto;
-            background: var(--surface);
+            background: rgba(10, 18, 40, 0.85);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;

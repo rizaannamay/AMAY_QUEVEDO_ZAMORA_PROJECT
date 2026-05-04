@@ -9,7 +9,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-C0LQQT8\SQLEXPRESS;Initial Catalog=CAPdb;Integrated Security=True;TrustServerCertificate=True;");
 
         public void ProcessRequest(HttpContext ctx)
         {

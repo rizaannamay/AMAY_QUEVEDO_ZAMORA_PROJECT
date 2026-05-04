@@ -16,7 +16,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     public class DTRHandler : IHttpHandler, IRequiresSessionState
     {
         private static readonly string ConnStr =
-            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+            @"Data Source=DESKTOP-C0LQQT8\SQLEXPRESS;Initial Catalog=CAPdb;Integrated Security=True;TrustServerCertificate=True;";
 
         public bool IsReusable => false;
 
