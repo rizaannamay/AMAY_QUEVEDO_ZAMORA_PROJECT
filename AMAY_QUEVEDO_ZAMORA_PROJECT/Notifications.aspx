@@ -5,232 +5,380 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notifications — Campus Connect</title>
+    <title>Notifications - Campus Connect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
             --bg-image: url('wbg.jpg');
-            --page-text: #1a2a3a;
-            --surface: rgba(255,255,255,0.93);
+            --page-text: #2b6f68;
+            --surface: rgba(255, 255, 255, 0.93);
             --surface-strong: #ffffff;
-            --surface-soft: #f0f5ff;
-            --border: rgba(26,58,92,0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2563eb;
-            --muted: #6b7c8f;
-            --muted-light: #9db0c4;
-            --shadow: 0 8px 24px rgba(0,0,0,0.08);
-            --active-bg: #e8f0fe;
+            --surface-soft: #f6f3ef;
+            --border: rgba(103, 184, 169, 0.18);
+            --primary: #5db6aa;
+            --primary-strong: #2f8f86;
+            --primary-2: #E28A6D;
+            --accent: #E8C55E;
+            --accent-strong: #D46565;
+            --muted: #6f8f8a;
+            --muted-light: #9ab7b2;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --active-bg: rgba(103, 184, 169, 0.14);
+        }
+
+        html, body, form {
+            min-height: 100%;
         }
 
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(rgba(255,255,255,0.16),rgba(255,255,255,0.16)), var(--bg-image);
-            background-size: cover; background-attachment: fixed;
-            transition: background 0.3s, color 0.3s;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.20)), var(--bg-image);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
         }
 
-        .page-shell { min-height:100vh; padding:32px 32px 60px; }
-        .page-wrap  { max-width:100%; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-        /* ── Topbar ── */
+        button {
+            font: inherit;
+        }
+
+        .page-shell {
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .page-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
         .topbar {
-            background: var(--surface); backdrop-filter: blur(14px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 14px 20px; display: flex; align-items: center;
-            justify-content: space-between; box-shadow: var(--shadow);
+            background:
+                linear-gradient(135deg, rgba(103,184,169,0.14), rgba(255,248,244,0.96) 42%, rgba(226,138,109,0.18)),
+                var(--surface);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(226,138,109,0.18);
+            border-radius: 22px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--shadow);
+            flex-wrap: wrap;
         }
-        .topbar-title { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; color:var(--primary); }
-        .topbar-title i { color:var(--primary-2); }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-strong);
+        }
+
+        .topbar-sub {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .topbar-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         .back-btn {
-            width:40px; height:40px; border-radius:50%;
-            background:linear-gradient(135deg,#1a3a5c,#2563eb);
-            color:#fff; border:none; cursor:pointer; text-decoration:none;
-            display:flex; align-items:center; justify-content:center;
-            box-shadow:var(--shadow); transition:transform .2s;
-        }
-        .back-btn:hover { transform:translateY(-2px); }
-
-        /* ── Notification item (teaser) ── */
-        .notif-item {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.09);
-            overflow: hidden;
-            transition: box-shadow 0.2s, border-color 0.2s;
-        }
-        .notif-item:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.13); border-color: var(--primary-2); }
-        .notif-item.unread { border-left: 4px solid var(--primary-2); }
-
-        /* Red unread dot */
-        .unread-dot {
-            width: 9px;
-            height: 9px;
-            background: #dc2626;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            flex-shrink: 0;
-            box-shadow: 0 0 0 2px rgba(220,38,38,0.2);
-            transition: opacity 0.3s;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
         }
-        .notif-item:not(.unread) .unread-dot { display: none; }
 
-        .notif-teaser {
-            display: flex; align-items: center; gap: 14px;
-            padding: 16px 18px; cursor: pointer;
-            user-select: none;
+        .mark-all-btn {
+            border: 1px solid rgba(103, 184, 169, 0.22);
+            background: var(--surface-soft);
+            color: var(--primary-strong);
+            border-radius: 999px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .summary-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .summary-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .summary-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--primary-strong);
+        }
+
+        .summary-text {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent-strong), var(--primary-2));
+            color: #fff;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .list-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .notif-item {
+            background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(247,244,240,0.96));
+            border: 1px solid rgba(103, 184, 169, 0.20);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .notif-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(103, 184, 169, 0.10);
+            border-color: rgba(226, 138, 109, 0.30);
+        }
+
+        .notif-item.unread {
+            border-left: 5px solid var(--primary-strong);
+        }
+
+        .notif-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 18px;
         }
 
         .notif-icon {
-            width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; color: #fff;
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 18px;
         }
-        .icon-exam       { background: linear-gradient(135deg,#0f2b5c,#3b82f6); }
-        .icon-suspension { background: linear-gradient(135deg,#7c2d12,#f59e0b); }
-        .icon-event      { background: linear-gradient(135deg,#064e3b,#14b8a6); }
-        .icon-general    { background: linear-gradient(135deg,#1e1b4b,#818cf8); }
 
-        .notif-info { flex:1; min-width:0; }
-        .notif-title {
-            font-size: 14px; font-weight: 700; color: var(--primary);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .notif-like { background: linear-gradient(135deg, #d46565, #E28A6D); }
+        .notif-comment { background: linear-gradient(135deg, #67B8A9, #2f8f86); }
+        .notif-share { background: linear-gradient(135deg, #E8C55E, #E28A6D); }
+        .notif-default { background: linear-gradient(135deg, #67B8A9, #E28A6D); }
+
+        .notif-main {
+            flex: 1;
+            min-width: 0;
         }
+
+        .notif-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .notif-message {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-strong);
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .notif-time {
+            font-size: 12px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
         .notif-sub {
-            font-size: 12px; color: var(--muted); margin-top: 3px;
-            display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
         }
-        .cat-pill {
-            display: inline-block; padding: 1px 8px; border-radius: 20px;
-            font-size: 10px; font-weight: 700;
+
+        .notif-state {
+            font-size: 12px;
+            color: var(--muted);
         }
-        .pill-exam       { background:#DBEAFE; color:#1E3A8A; }
-        .pill-suspension { background:#ffebee; color:#c62828; }
-        .pill-event      { background:#dcfce7; color:#166534; }
-        .pill-general    { background:#EDE9FE; color:#5B21B6; }
+
+        .notif-unread-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220,38,38,0.14);
+            flex-shrink: 0;
+        }
+
+        .notif-item:not(.unread) .notif-unread-dot {
+            display: none;
+        }
 
         .notif-chevron {
-            color: var(--muted-light); font-size: 13px; flex-shrink: 0;
-            transition: transform 0.25s;
-        }
-        .notif-item.open .notif-chevron { transform: rotate(90deg); }
-
-        /* ── Expanded post ── */
-        .notif-post {
-            display: none;
-            border-top: 1px solid var(--border);
-            padding: 18px 20px 14px;
-            animation: slideDown 0.2s ease;
-        }
-        .notif-item.open .notif-post { display: block; }
-
-        @keyframes slideDown {
-            from { opacity:0; transform:translateY(-6px); }
-            to   { opacity:1; transform:translateY(0); }
+            color: var(--muted-light);
+            font-size: 14px;
+            flex-shrink: 0;
         }
 
-        .post-author-row { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
-        .post-avatar-sm {
-            width:40px; height:40px; border-radius:50%; overflow:hidden; flex-shrink:0;
-            background:linear-gradient(135deg,var(--primary),var(--primary-2));
-            display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px;
+        .empty-state {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            padding: 60px 20px;
+            text-align: center;
         }
-        .post-avatar-sm img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-        .post-author-name { font-weight:700; font-size:14px; color:var(--primary); }
-        .post-date        { font-size:11px; color:var(--muted); margin-top:2px; }
 
-        .post-title-full { font-size:17px; font-weight:800; color:var(--primary); margin-bottom:8px; }
-        .post-content    { font-size:13px; color:var(--page-text); line-height:1.65; }
-        .post-img        { margin-top:12px; border-radius:12px; overflow:hidden; }
-        .post-img img    { width:100%; max-height:200px; object-fit:cover; display:block; border-radius:12px; }
+        .empty-state i {
+            font-size: 48px;
+            color: var(--primary);
+            opacity: 0.35;
+            display: block;
+            margin-bottom: 14px;
+        }
 
-        /* action row */
-        .post-actions {
-            display:flex; gap:6px; margin-top:14px; padding-top:12px;
-            border-top:1px solid var(--border);
+        .empty-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-strong);
         }
-        .act-btn {
-            flex:1; background:none; border:none; padding:9px 4px; border-radius:10px;
-            cursor:pointer; font-size:13px; color:var(--muted);
-            display:flex; align-items:center; justify-content:center; gap:6px;
-            transition:all 0.2s; font-family:inherit;
-        }
-        .act-btn:hover { background:var(--active-bg); color:var(--primary); }
-        .act-btn.liked { color:#dc2626; }
 
-        /* comments */
-        .comments-wrap { margin-top:12px; }
-        .comment-input-row { display:flex; gap:8px; margin-bottom:10px; }
-        .comment-input-row input {
-            flex:1; padding:9px 14px; background:var(--surface-soft);
-            border:1px solid var(--border); border-radius:30px; outline:none;
-            font-size:13px; color:var(--page-text); font-family:inherit;
+        .empty-text {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 8px;
         }
-        .comment-input-row button {
-            background:linear-gradient(135deg,var(--primary),var(--primary-2));
-            border:none; padding:0 18px; border-radius:30px;
-            color:#fff; font-weight:600; cursor:pointer; font-size:13px; font-family:inherit;
-        }
-        .comment-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; }
-        .comment-item:last-child { border-bottom:none; }
-        .c-avatar {
-            width:30px; height:30px; min-width:30px; border-radius:50%; overflow:hidden;
-            background:var(--active-bg); display:flex; align-items:center; justify-content:center;
-            color:var(--primary); font-size:12px; flex-shrink:0;
-        }
-        .c-avatar img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
-        .c-author { font-weight:700; color:var(--primary); }
-        .c-time   { font-size:10px; color:var(--muted-light); margin-top:2px; }
-        .no-comments { padding:10px 0; text-align:center; color:var(--muted-light); font-size:12px; }
 
-        /* empty / loading */
-        .empty-state { text-align:center; padding:60px 20px; color:var(--muted); }
-        .empty-state i { font-size:48px; opacity:0.3; display:block; margin-bottom:14px; }
-
-        /* toast */
         .toast-msg {
-            position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
-            background:#1a3a5c; color:#fff; padding:10px 24px; border-radius:30px;
-            font-size:13px; z-index:9999; box-shadow:0 4px 16px rgba(0,0,0,.25);
-            animation:toastFade 2.6s ease forwards; pointer-events:none;
-        }
-        @keyframes toastFade {
-            0%  { opacity:0; transform:translateX(-50%) translateY(10px); }
-            12% { opacity:1; transform:translateX(-50%) translateY(0); }
-            80% { opacity:1; }
-            100%{ opacity:0; }
+            position: fixed;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2f8f86;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.20);
         }
 
-        /* dark mode */
         .dark-mode {
             --bg-image: url('bg.jpg');
-            --page-text: #e4e6eb;
-            --surface: rgba(30,41,59,0.95);
-            --surface-strong: rgba(30,41,59,0.98);
-            --surface-soft: rgba(51,65,85,0.6);
-            --border: rgba(148,163,184,0.2);
-            --primary: #93c5fd;
-            --primary-2: #60a5fa;
-            --muted: #cbd5e1;
-            --muted-light: #94a3b8;
-            --shadow: 0 8px 32px rgba(0,0,0,0.5);
-            --active-bg: rgba(59,130,246,0.2);
+            --page-text: #b9efe7;
+            --surface: rgba(31, 42, 47, 0.95);
+            --surface-strong: rgba(31, 42, 47, 0.98);
+            --surface-soft: rgba(103, 184, 169, 0.10);
+            --border: rgba(103, 184, 169, 0.22);
+            --primary: #7fd8cc;
+            --primary-strong: #9ee3d7;
+            --primary-2: #E28A6D;
+            --accent: #E8C55E;
+            --accent-strong: #D46565;
+            --muted: #9dc9c2;
+            --muted-light: #7ea8a2;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+            --active-bg: rgba(103, 184, 169, 0.18);
         }
-        body.dark-mode { background-image:linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),var(--bg-image); }
-        body.dark-mode .notif-title  { color:#e0e7ff; }
-        body.dark-mode .post-title-full { color:#e0e7ff; }
-        body.dark-mode .post-author-name { color:#c7d2fe; }
-        body.dark-mode .topbar-title { color:#e0e7ff; }
-        body.dark-mode .act-btn:hover { background:rgba(59,130,246,0.15); color:#93c5fd; }
 
-        @media (max-width:600px) {
-            .page-shell { padding:16px 12px 40px; }
-            .notif-teaser { padding:14px 14px; }
-            .notif-post { padding:14px 14px 12px; }
+        body.dark-mode {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), var(--bg-image);
+        }
+
+        body.dark-mode .topbar,
+        body.dark-mode .summary-card,
+        body.dark-mode .empty-state,
+        body.dark-mode .notif-item {
+            background: rgba(31, 42, 47, 0.95);
+        }
+
+        @media (max-width: 700px) {
+            .page-shell { padding: 14px 12px 24px; }
+            .topbar, .summary-card { padding: 14px; }
+            .notif-row { padding: 14px; }
         }
     </style>
 </head>
@@ -238,336 +386,229 @@
     <form id="form1" runat="server">
         <div class="page-shell">
             <div class="page-wrap">
-
-                <!-- Topbar -->
                 <div class="topbar">
-                    <div class="topbar-title">
-                        <i class="fas fa-bell"></i>
-                        <span>Notifications</span>
+                    <div class="topbar-left">
+                        <div>
+                            <div class="topbar-title">
+                                <i class="fas fa-bell"></i>
+                                <span>Notifications</span>
+                            </div>
+                            <div class="topbar-sub">Click a notification to open the exact post.</div>
+                        </div>
                     </div>
-                    <a class="back-btn" href="<%= BackUrl %>" title="Back">
-                        <i class="fas fa-home" style="font-size:16px;"></i>
-                    </a>
+
+                    <div class="topbar-actions">
+                        <button type="button" class="mark-all-btn" onclick="markAllNotificationsRead()">
+                            <i class="fas fa-check-double"></i> Mark all as read
+                        </button>
+                        <a class="back-btn" href="<%= BackUrl %>" title="Back">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <!-- Notification list -->
-                <div id="notifList">
+                <div class="summary-card">
+                    <div class="summary-left">
+                        <div class="summary-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div>
+                            <div class="summary-title">Activity Notifications</div>
+                            <div class="summary-text"></div>
+                        </div>
+                    </div>
+
+                    <div id="unreadBadge" class="badge-pill" style="display:none;">0</div>
+                </div>
+
+                <div id="notifList" class="list-wrap">
                     <div class="empty-state">
                         <i class="fas fa-spinner fa-spin"></i>
-                        <p>Loading notifications...</p>
+                        <div class="empty-title">Loading notifications...</div>
+                        <div class="empty-text">Please wait a moment.</div>
                     </div>
                 </div>
-
             </div>
         </div>
     </form>
 
     <script>
-        // ── Theme ──────────────────────────────────────────────
-        (function() {
+        (function () {
             document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
-            window.addEventListener('storage', function(e) {
-                if (e.key === 'campus_theme')
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme') {
                     document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+                }
             });
         })();
 
-        var likes = {};
-
         function escapeHtml(s) {
             if (!s) return '';
-            return String(s).replace(/[&<>"']/g, function(c) {
-                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+            return String(s).replace(/[&<>"']/g, function (c) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[c];
             });
-        }
-
-        function timeAgo(dateStr) {
-            if (!dateStr) return '';
-            var date = new Date(dateStr);
-            if (isNaN(date)) return dateStr;
-            var now = new Date();
-            var sec = Math.floor((now - date) / 1000);
-            if (sec < 60)  return 'Just now';
-            var min = Math.floor(sec / 60);
-            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
-            var hr = Math.floor(min / 60);
-            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
-            var day = Math.floor(hr / 24);
-            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
-            var wk = Math.floor(day / 7);
-            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
-            var mo = Math.floor(day / 30);
-            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
-            var yr = Math.floor(day / 365);
-            return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
 
         function showToast(msg) {
             var t = document.createElement('div');
-            t.className = 'toast-msg'; t.textContent = msg;
+            t.className = 'toast-msg';
+            t.textContent = msg;
             document.body.appendChild(t);
-            setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 2700);
+            setTimeout(function () {
+                if (t.parentNode) t.parentNode.removeChild(t);
+            }, 2200);
         }
 
-        function getCatIcon(cat) {
-            if (cat === 'Exam')       return 'fa-file-alt';
-            if (cat === 'Suspension') return 'fa-cloud-rain';
-            if (cat === 'Event')      return 'fa-calendar-alt';
-            return 'fa-bullhorn';
-        }
-        function getIconClass(cat) {
-            if (cat === 'Exam')       return 'icon-exam';
-            if (cat === 'Suspension') return 'icon-suspension';
-            if (cat === 'Event')      return 'icon-event';
-            return 'icon-general';
-        }
-        function getPillClass(cat) {
-            if (cat === 'Exam')       return 'pill-exam';
-            if (cat === 'Suspension') return 'pill-suspension';
-            if (cat === 'Event')      return 'pill-event';
-            return 'pill-general';
+        function getNotifType(message) {
+            var text = (message || '').toLowerCase();
+            if (text.indexOf('liked your announcement') !== -1) return 'like';
+            if (text.indexOf('commented on your announcement') !== -1) return 'comment';
+            if (text.indexOf('shared your announcement') !== -1) return 'share';
+            return 'default';
         }
 
-        // ── Toggle expand/collapse ─────────────────────────────
-        function togglePost(id) {
-            var item = document.getElementById('notif-' + id);
-            if (!item) return;
-            var isOpen = item.classList.contains('open');
-            // Close all others
-            document.querySelectorAll('.notif-item.open').forEach(function(el) {
-                el.classList.remove('open');
-            });
-            if (!isOpen) {
-                item.classList.add('open');
-                // Mark as read — remove red dot and unread border
-                if (item.classList.contains('unread')) {
-                    item.classList.remove('unread');
-                    var dot = item.querySelector('.unread-dot');
-                    if (dot) dot.style.display = 'none';
-                    // Tell server
-                    var notifId = item.dataset.notifId;
-                    if (notifId) {
-                        fetch('NotificationHandler.ashx?action=markRead&id=' + notifId, { credentials: 'same-origin' })
-                            .catch(function() {});
-                        // Update badge count
-                        var badge = document.getElementById('globalBadge');
-                        if (badge) {
-                            var count = parseInt(badge.textContent || '0') - 1;
-                            if (count > 0) { badge.textContent = count; }
-                            else { badge.style.display = 'none'; }
-                        }
-                    }
-                }
-                // Load comments when first opened
-                var cl = document.getElementById('cl-' + id);
-                if (cl && cl.dataset.loaded !== 'true') {
-                    loadComments(id);
-                }
+        function getNotifIcon(type) {
+            if (type === 'like') return 'fa-heart';
+            if (type === 'comment') return 'fa-comment';
+            if (type === 'share') return 'fa-share-alt';
+            return 'fa-bell';
+        }
+
+        function getNotifClass(type) {
+            if (type === 'like') return 'notif-like';
+            if (type === 'comment') return 'notif-comment';
+            if (type === 'share') return 'notif-share';
+            return 'notif-default';
+        }
+
+        function renderUnreadBadge(list) {
+            var unreadCount = 0;
+            for (var i = 0; i < list.length; i++) {
+                if (!list[i].isRead) unreadCount++;
+            }
+
+            var badge = document.getElementById('unreadBadge');
+            if (!badge) return;
+
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
             }
         }
 
-        // ── Like ──────────────────────────────────────────────
-        function toggleLike(id) {
-            fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
-                    if (!res.ok) { showToast('Error: ' + (res.error || 'Could not like')); return; }
-                    likes[id] = res.liked;
-                    var lcEl = document.getElementById('lc-' + id);
-                    if (lcEl) lcEl.textContent = res.likeCount;
-                    var btn = document.getElementById('lb-' + id);
-                    if (btn) {
-                        btn.className = 'act-btn' + (res.liked ? ' liked' : '');
-                        btn.innerHTML = '<i class="' + (res.liked ? 'fas' : 'far') + ' fa-heart"></i> ' + (res.liked ? 'Liked' : 'Like');
+        function renderNotifications(list) {
+            var container = document.getElementById('notifList');
+            if (!container) return;
+
+            renderUnreadBadge(list);
+
+            if (!list || !list.length) {
+                container.innerHTML =
+                    '<div class="empty-state">' +
+                    '<i class="fas fa-bell-slash"></i>' +
+                    '<div class="empty-title">No notifications yet</div>' +
+                    '<div class="empty-text">Student reactions to your announcements will appear here.</div>' +
+                    '</div>';
+                return;
+            }
+
+            container.innerHTML = list.map(function (item) {
+                var type = getNotifType(item.message);
+                var icon = getNotifIcon(type);
+                var iconClass = getNotifClass(type);
+                var stateText = item.isRead ? 'Read' : 'Unread';
+
+                return '' +
+                    '<div class="notif-item' + (item.isRead ? '' : ' unread') + '" onclick="openNotification(' + item.id + ',' + item.announcementId + ')">' +
+                    '<div class="notif-row">' +
+                    '<div class="notif-icon ' + iconClass + '">' +
+                    '<i class="fas ' + icon + '"></i>' +
+                    '</div>' +
+                    '<div class="notif-main">' +
+                    '<div class="notif-head">' +
+                    '<div class="notif-message">' + escapeHtml(item.message) + '</div>' +
+                    '<div class="notif-time">' + escapeHtml(item.time || item.createdDate || '') + '</div>' +
+                    '</div>' +
+                    '<div class="notif-sub">' +
+                    '<span class="notif-unread-dot"></span>' +
+                    '<span class="notif-state">' + stateText + '</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '<i class="fas fa-chevron-right notif-chevron"></i>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        function loadNotifications() {
+            fetch('NotificationHandler.ashx?action=getAll', { credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (!res.ok) {
+                        document.getElementById('notifList').innerHTML =
+                            '<div class="empty-state">' +
+                            '<i class="fas fa-exclamation-triangle"></i>' +
+                            '<div class="empty-title">Could not load notifications</div>' +
+                            '<div class="empty-text">' + escapeHtml(res.error || 'Please try again.') + '</div>' +
+                            '</div>';
+                        return;
                     }
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+
+                    renderNotifications(res.data || []);
                 })
-                .catch(function() { showToast('Could not update like'); });
-        }
-
-        // ── Comments ──────────────────────────────────────────
-        function loadComments(id) {
-            var cl = document.getElementById('cl-' + id);
-            if (!cl) return;
-            cl.innerHTML = '<div class="no-comments"><i class="fas fa-spinner fa-spin"></i></div>';
-            fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(list) {
-                    cl.dataset.loaded = 'true';
-                    if (!list.length) { cl.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                    cl.innerHTML = list.map(function(c) {
-                        var av = c.profileImage
-                            ? '<div class="c-avatar"><img src="' + escapeHtml(c.profileImage) + '" /></div>'
-                            : '<div class="c-avatar"><i class="fas fa-user"></i></div>';
-                        return '<div class="comment-item">' + av
-                            + '<div><div class="c-author">' + escapeHtml(c.author) + '</div>'
-                            + '<div>' + escapeHtml(c.text) + '</div>'
-                            + '<div class="c-time">' + escapeHtml(c.date) + '</div></div></div>';
-                    }).join('');
-                    var cc = document.getElementById('cc-' + id);
-                    if (cc) cc.textContent = list.length;
-                })
-                .catch(function() { cl.innerHTML = '<div class="no-comments">Could not load comments.</div>'; });
-        }
-
-        function postComment(id) {
-            var input = document.getElementById('ci-' + id);
-            if (!input) return;
-            var text = input.value.trim();
-            if (!text) { showToast('Write a comment first'); return; }
-            fetch('CommentHandler.ashx?action=add', {
-                method: 'POST', credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ postId: id, comment: text })
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(res) {
-                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post')); return; }
-                input.value = '';
-                var cl = document.getElementById('cl-' + id);
-                if (cl) cl.dataset.loaded = 'false';
-                loadComments(id);
-                showToast('💬 Comment posted!');
-            })
-            .catch(function() { showToast('Could not post comment'); });
-        }
-
-        function sharePost(id, title) {
-            var url = window.location.origin + window.location.pathname.replace('Notifications.aspx','') + '?post=' + id;
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(url).then(function() { showToast('🔗 Link copied!'); });
-            } else { showToast('Shared: ' + title); }
-        }
-
-        // ── Load & render ─────────────────────────────────────
-        function loadAndRender() {
-            var list = document.getElementById('notifList');
-
-            // Fetch both announcements and unread notification IDs in parallel
-            Promise.all([
-                fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); }),
-                fetch('NotificationHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function(r) { return r.json(); })
-            ]).then(function(results) {
-                var res      = results[0];
-                var notifRes = results[1];
-
-                // Build a map of announcementId → {notifId, isRead} from notification messages
-                var notifMap = {};
-                if (notifRes.ok && notifRes.data) {
-                    notifRes.data.forEach(function(n) {
-                        // Notifications contain announcement title in message — match by checking unread
-                        // We store notifId keyed by position; use isRead flag
-                        if (!n.isRead) {
-                            // Mark all unread — we'll use a simple unread set
-                            notifMap[n.id] = true;
-                        }
-                    });
-                }
-
-                // Count unread for badge
-                var unreadCount = notifRes.ok ? notifRes.data.filter(function(n) { return !n.isRead; }).length : 0;
-                var badge = document.getElementById('globalBadge');
-                if (badge) {
-                    if (unreadCount > 0) { badge.textContent = unreadCount; badge.style.display = 'inline-block'; }
-                    else { badge.style.display = 'none'; }
-                }
-
-                if (!res.ok || !res.data || !res.data.length) {
-                    list.innerHTML = '<div class="empty-state"><i class="fas fa-bell-slash"></i><p>No announcements yet.</p></div>';
-                    return;
-                }
-
-                // Build announcement→notif mapping by index (latest notif = latest announcement)
-                var notifList = notifRes.ok && notifRes.data ? notifRes.data : [];
-
-                list.innerHTML = res.data.map(function(ann, idx) {
-                    var liked    = !!likes[ann.id];
-                    var lc       = ann.likeCount || 0;
-                    var cc       = ann.commentCount || 0;
-                    var iconCls  = getIconClass(ann.category);
-                    var iconFa   = getCatIcon(ann.category);
-                    var pillCls  = getPillClass(ann.category);
-
-                    // Match notification record for this announcement (by title in message)
-                    var matchedNotif = null;
-                    for (var i = 0; i < notifList.length; i++) {
-                        if (notifList[i].message && notifList[i].message.indexOf(ann.title) !== -1) {
-                            matchedNotif = notifList[i];
-                            break;
-                        }
-                    }
-                    var isUnread  = matchedNotif ? !matchedNotif.isRead : false;
-                    var notifId   = matchedNotif ? matchedNotif.id : '';
-
-                    // Author avatar
-                    var authorAv = ann.authorImage
-                        ? '<div class="post-avatar-sm"><img src="' + escapeHtml(ann.authorImage) + '" /></div>'
-                        : '<div class="post-avatar-sm"><i class="fas fa-user-tie"></i></div>';
-
-                    // Teaser: first 80 chars of content
-                    var teaser = (ann.content || '').length > 80
-                        ? ann.content.substring(0, 80) + '…'
-                        : ann.content;
-
-                    return '<div class="notif-item' + (isUnread ? ' unread' : '') + '" id="notif-' + ann.id + '" data-notif-id="' + notifId + '">'
-
-                        // ── Teaser row (always visible) ──
-                        + '<div class="notif-teaser" onclick="togglePost(' + ann.id + ')">'
-                        +   '<div class="notif-icon ' + iconCls + '"><i class="fas ' + iconFa + '"></i></div>'
-                        +   '<div class="notif-info">'
-                        +     '<div class="notif-title">' + escapeHtml(ann.title) + '</div>'
-                        +     '<div class="notif-sub">'
-                        +       '<span class="cat-pill ' + pillCls + '">' + escapeHtml(ann.category) + '</span>'
-                        +       '<span>' + timeAgo(ann.date) + '</span>'
-                        +       '<span style="color:var(--muted-light)">· ' + escapeHtml(teaser) + '</span>'
-                        +     '</div>'
-                        +   '</div>'
-                        +   (isUnread ? '<span class="unread-dot"></span>' : '')
-                        +   '<i class="fas fa-chevron-right notif-chevron"></i>'
-                        + '</div>'
-
-                        // ── Expanded full post ──
-                        + '<div class="notif-post">'
-                        +   '<div class="post-author-row">'
-                        +     authorAv
-                        +     '<div><div class="post-author-name">' + escapeHtml(ann.author) + '</div>'
-                        +     '<div class="post-date">' + timeAgo(ann.date) + '</div></div>'
-                        +   '</div>'
-                        +   '<div class="post-title-full">' + escapeHtml(ann.title) + '</div>'
-                        +   '<div class="post-content">' + escapeHtml(ann.content) + '</div>'
-                        +   (ann.imageUrl ? '<div class="post-img"><img src="' + escapeHtml(ann.imageUrl) + '" onerror="this.style.display=\'none\'" /></div>' : '')
-                        +   '<div class="post-actions">'
-                        +     '<button type="button" id="lb-' + ann.id + '" class="act-btn' + (liked ? ' liked' : '') + '" onclick="toggleLike(' + ann.id + ')">'
-                        +       '<i class="' + (liked ? 'fas' : 'far') + ' fa-heart"></i> <span id="lc-' + ann.id + '">' + lc + '</span> Likes'
-                            +     '</button>'
-                            +     '<button type="button" class="act-btn" onclick="togglePost(' + ann.id + ');loadComments(' + ann.id + ')">'
-                            +       '<i class="far fa-comment"></i> <span id="cc-' + ann.id + '">' + cc + '</span> Comments'
-                            +     '</button>'
-                            +     '<button type="button" class="act-btn" onclick="sharePost(' + ann.id + ',\'' + escapeHtml(ann.title) + '\')">'
-                            +       '<i class="fas fa-share-alt"></i> Share'
-                            +     '</button>'
-                            +   '</div>'
-                            +   '<div class="comments-wrap">'
-                            +     '<div class="comment-input-row">'
-                            +       '<input id="ci-' + ann.id + '" type="text" placeholder="Write a comment..." />'
-                            +       '<button type="button" onclick="postComment(' + ann.id + ')">Post</button>'
-                            +     '</div>'
-                            +     '<div id="cl-' + ann.id + '"><div class="no-comments">No comments yet.</div></div>'
-                            +   '</div>'
-                            + '</div>'
-
-                            + '</div>';
-                    }).join('');
-                }).catch(function() {
-                    list.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Could not load. Check your connection.</p></div>';
+                .catch(function () {
+                    document.getElementById('notifList').innerHTML =
+                        '<div class="empty-state">' +
+                        '<i class="fas fa-wifi"></i>' +
+                        '<div class="empty-title">Connection problem</div>' +
+                        '<div class="empty-text">Please check your connection and try again.</div>' +
+                        '</div>';
                 });
         }
 
-        loadAndRender();
+        function openNotification(notificationId, announcementId) {
+            fetch('NotificationHandler.ashx?action=markRead&id=' + encodeURIComponent(notificationId), { credentials: 'same-origin' })
+                .then(function () {
+                    if (announcementId && announcementId > 0) {
+                        window.location.href = 'Teacher.aspx?postId=' + encodeURIComponent(announcementId);
+                    } else {
+                        window.location.href = 'Teacher.aspx';
+                    }
+                })
+                .catch(function () {
+                    if (announcementId && announcementId > 0) {
+                        window.location.href = 'Teacher.aspx?postId=' + encodeURIComponent(announcementId);
+                    } else {
+                        window.location.href = 'Teacher.aspx';
+                    }
+                });
+        }
 
-        // Mark all notifications as read when this page is opened
-        fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
-            .catch(function() {});
+        function markAllNotificationsRead() {
+            fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    if (!res.ok) {
+                        showToast('Could not mark notifications as read');
+                        return;
+                    }
+                    showToast('All notifications marked as read');
+                    loadNotifications();
+                })
+                .catch(function () {
+                    showToast('Could not mark notifications as read');
+                });
+        }
+
+        loadNotifications();
     </script>
 </body>
 </html>

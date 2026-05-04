@@ -9,7 +9,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : Page
     {
-        private readonly string connectionString =@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
 
         protected void Page_Load(object sender, EventArgs e)
         {

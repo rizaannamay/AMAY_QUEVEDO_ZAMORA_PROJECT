@@ -359,8 +359,8 @@
             <div class="brand-name">Campus Announcement</div>
             <h2>Hello,<br />Welcome</h2>
             <div class="divider"></div>
-            <p>Don't have an account yet?<br />Register to get started.</p>
-            <a href="signin.aspx" class="btn-outline-white">Register</a>
+           
+            <a href="signin.aspx"></a>
         </div>
 
         <!-- RIGHT FORM PANEL -->

@@ -56,6 +56,7 @@
             flex-direction: column;
             gap: 10px;
             padding: 16px 20px 20px;
+            padding-left: 286px;
         }
 
         .header {
@@ -162,9 +163,9 @@
             cursor: pointer;
             transition: background 0.2s;
         }
+
         .user-info:hover { background: var(--active-bg); }
 
-        /* LEFT SIDEBAR — always visible */
         .slideout-panel {
             position: fixed;
             top: 0;
@@ -179,23 +180,27 @@
             flex-direction: column;
             border-right: 1px solid var(--border);
         }
+
         .panel-header {
             padding: 24px 16px 16px;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
         }
+
         .panel-header h3 {
             font-size: 18px;
             font-weight: 700;
             color: var(--primary);
             margin: 0;
         }
+
         .panel-menu-list {
             flex: 1;
             overflow-y: auto;
             padding: 12px 0;
         }
+
         .panel-menu-item {
             display: flex;
             align-items: center;
@@ -212,28 +217,34 @@
             transition: all 0.2s;
             border-left: 3px solid transparent;
         }
+
         .panel-menu-item i {
             width: 20px;
             font-size: 16px;
             color: var(--primary);
         }
+
         .panel-menu-item:hover {
             background: #e6f7f9;
             color: #007a8a;
             border-left-color: #00bcd4;
         }
+
         .panel-menu-item.active {
             background: linear-gradient(135deg, #005f73, #00bcd4);
             color: #ffffff;
             border-left-color: transparent;
         }
+
         .panel-menu-item.active i { color: #ffffff; }
+
         .theme-toggle-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
         }
+
         .theme-toggle-row .toggle-switch-panel {
             width: 40px;
             height: 20px;
@@ -244,9 +255,11 @@
             transition: all 0.3s;
             flex-shrink: 0;
         }
+
         .theme-toggle-row .toggle-switch-panel.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
         }
+
         .theme-toggle-row .toggle-switch-panel::after {
             content: '';
             width: 16px;
@@ -258,18 +271,22 @@
             left: 2px;
             transition: all 0.3s;
         }
+
         .theme-toggle-row .toggle-switch-panel.active::after {
             left: 22px;
         }
+
         .divider-light {
             height: 1px;
             background: var(--border);
             margin: 6px 16px;
         }
+
         .overlay-black {
             display: none !important;
             pointer-events: none !important;
         }
+
         .category-dropdown-panel {
             margin-left: 44px;
             margin-bottom: 8px;
@@ -277,6 +294,7 @@
             flex-direction: column;
             gap: 4px;
         }
+
         .dropdown-item-panel {
             background: none;
             border: none;
@@ -289,14 +307,10 @@
             border-radius: 10px;
             transition: all 0.2s;
         }
+
         .dropdown-item-panel:hover {
             background: var(--surface-soft);
             color: var(--primary);
-        }
-
-        /* Dashboard always offset by sidebar width */
-        .app-shell {
-            padding-left: 286px;
         }
 
         .avatar, .post-avatar, .create-post-avatar {
@@ -355,11 +369,24 @@
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
             overflow: hidden;
+            scroll-margin-top: 100px;
         }
 
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0,0,0,0.08);
             border-color: var(--primary);
+        }
+
+        .announcement-card.notification-target {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22), 0 12px 28px rgba(245, 158, 11, 0.18);
+            animation: targetPulse 2s ease-in-out 2;
+        }
+
+        @keyframes targetPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
         }
 
         .post-header {
@@ -418,6 +445,7 @@
             width: 36px;
             height: 36px;
         }
+
         .pin-btn-top.pinned { color: #e65100; }
         .pin-btn-top:hover, .edit-btn-top:hover, .delete-btn-top:hover { background: var(--surface-soft); }
         .edit-btn-top:hover { color: #3b82f6; }
@@ -438,6 +466,7 @@
             color: var(--muted);
             font-size: 13px;
         }
+
         .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
         .post-stats span:hover { color: var(--primary); }
 
@@ -457,6 +486,7 @@
             gap: 8px;
             transition: all 0.3s;
         }
+
         .action-btn.liked { color: #dc2626; }
 
         .comments-section {
@@ -464,8 +494,10 @@
             border-top: 1px solid var(--border);
             display: none;
         }
+
         .comments-section.show { display: block; }
         .comment-input { display: flex; gap: 10px; margin: 15px 0; }
+
         .comment-input input {
             flex: 1;
             padding: 10px 16px;
@@ -474,6 +506,7 @@
             border-radius: 30px;
             outline: none;
         }
+
         .comment-input button {
             padding: 10px 22px;
             background: linear-gradient(135deg, var(--primary), var(--primary-2));
@@ -483,6 +516,7 @@
             font-weight: 600;
             color: white;
         }
+
         .comment {
             display: flex;
             gap: 10px;
@@ -490,7 +524,9 @@
             border-bottom: 1px solid var(--border);
             font-size: 13px;
         }
+
         .comment:last-child { border-bottom: none; }
+
         .comment-avatar {
             width: 32px;
             height: 32px;
@@ -505,6 +541,7 @@
             color: var(--primary);
             flex-shrink: 0;
         }
+
         .comment-author { font-weight: 700; color: var(--primary); }
         .comment-time { font-size: 11px; color: var(--muted-light); margin-top: 2px; }
         .no-comments { padding: 12px; text-align: center; color: var(--muted-light); font-size: 12px; }
@@ -518,7 +555,9 @@
             cursor: pointer;
             margin-bottom: 12px;
         }
+
         .create-post-header { display: flex; align-items: center; gap: 12px; }
+
         .create-post-avatar {
             width: 44px;
             height: 44px;
@@ -528,6 +567,7 @@
             justify-content: center;
             font-size: 18px;
         }
+
         .create-post-input {
             flex: 1;
             background: var(--surface-soft);
@@ -550,6 +590,7 @@
             justify-content: center;
             padding: 20px;
         }
+
         .modal-content {
             background: var(--surface-strong);
             border-radius: 28px;
@@ -558,15 +599,19 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+
         .modal-title {
             font-size: 20px;
             font-weight: 700;
             color: var(--primary);
         }
+
         .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
         .modal-body { padding: 24px; }
+
         .form-group { margin-bottom: 20px; }
         .form-group label { font-weight: 600; margin-bottom: 8px; display: block; }
+
         .form-group input, .form-group textarea, .form-group select {
             width: 100%;
             padding: 12px 16px;
@@ -574,6 +619,7 @@
             border: 1px solid var(--border);
             border-radius: 16px;
         }
+
         .btn-publish { background: var(--success); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
         .btn-cancel { background: none; border: 1px solid var(--border); padding: 10px 24px; border-radius: 40px; cursor: pointer; }
 
@@ -606,13 +652,16 @@
             color: var(--page-text);
         }
 
-        body.dark-mode .announcement-board {
-            background: transparent;
-        }
+        body.dark-mode .announcement-board { background: transparent; }
 
         body.dark-mode .announcement-card {
             background: #22314a;
             border-color: rgba(86, 136, 224, 0.45);
+        }
+
+        body.dark-mode .announcement-card.notification-target {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25), 0 12px 28px rgba(251, 191, 36, 0.18);
         }
 
         body.dark-mode .card {
@@ -653,7 +702,6 @@
         body.dark-mode .logo { color: #c7d2fe; }
         body.dark-mode .user-name { color: #e2e8f0; }
         body.dark-mode .user-role { color: #94a3b8; }
-
         body.dark-mode .slideout-panel { background: rgba(10,15,40,0.97); border-color: rgba(255,255,255,0.08); }
         body.dark-mode .panel-header h3 { color: #c7d2fe; }
         body.dark-mode .panel-menu-item { color: #cbd5e1; }
@@ -668,6 +716,7 @@
             border-color: rgba(255,255,255,0.1);
             color: #e2e8f0;
         }
+
         body.dark-mode .comment-input input::placeholder { color: #64748b; }
 
         body.dark-mode .form-group input,
@@ -683,11 +732,9 @@
         body.dark-mode .post-category-event { background: rgba(46,125,50,0.2); color: #a5d6a7; }
         body.dark-mode .post-category-general { background: rgba(99,102,241,0.2); color: #c7d2fe; }
         body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
-
         body.dark-mode .search-btn { border-color: rgba(255,255,255,0.2); color: #e2e8f0; }
         body.dark-mode .edit-btn-top:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
         body.dark-mode .delete-btn-top:hover { background: rgba(239,68,68,0.15); color: #fca5a5; }
-
         body.dark-mode .modal-content { background: rgba(10,15,40,0.97); border: 1px solid rgba(255,255,255,0.1); }
         body.dark-mode .modal-header h2 { color: #c7d2fe; }
         body.dark-mode .form-group label { color: #a5b4fc; }
@@ -704,7 +751,6 @@
             .slideout-panel { display: none; }
         }
 
-        /* ── Custom Delete Confirm Modal ── */
         .delete-modal-overlay {
             position: fixed;
             inset: 0;
@@ -718,7 +764,9 @@
             visibility: hidden;
             transition: opacity 0.2s ease, visibility 0.2s ease;
         }
+
         .delete-modal-overlay.active { opacity: 1; visibility: visible; }
+
         .delete-modal-card {
             background: var(--surface-strong);
             border: 1px solid var(--border);
@@ -731,29 +779,45 @@
             transform: scale(0.94);
             transition: transform 0.2s ease;
         }
+
         .delete-modal-overlay.active .delete-modal-card { transform: scale(1); }
+
         .delete-modal-icon {
-            width: 60px; height: 60px;
+            width: 60px;
+            height: 60px;
             background: rgba(220, 38, 38, 0.12);
             border: 1.5px solid rgba(220, 38, 38, 0.3);
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin: 0 auto 16px;
-            font-size: 24px; color: #dc2626;
+            font-size: 24px;
+            color: #dc2626;
         }
+
         .delete-modal-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
-        .delete-modal-msg   { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
-        .delete-modal-btns  { display: flex; gap: 10px; }
+        .delete-modal-msg { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+        .delete-modal-btns { display: flex; gap: 10px; }
+
         .delete-modal-btns button {
-            flex: 1; padding: 11px 0; border-radius: 40px; border: none;
-            font-size: 14px; font-weight: 700; cursor: pointer;
-            transition: all 0.2s; font-family: inherit;
+            flex: 1;
+            padding: 11px 0;
+            border-radius: 40px;
+            border: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
         }
+
         .btn-dm-cancel { background: var(--surface-soft); border: 1px solid var(--border) !important; color: var(--muted); }
         .btn-dm-cancel:hover { background: var(--active-bg); color: var(--primary); }
         .btn-dm-delete { background: linear-gradient(135deg, #dc2626, #b91c1c); color: #ffffff; }
         .btn-dm-delete:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(220,38,38,0.35); }
-        body.dark-mode .delete-modal-card  { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
+
+        body.dark-mode .delete-modal-card { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
         body.dark-mode .delete-modal-title { color: #e0e7ff; }
         body.dark-mode .btn-dm-cancel { background: rgba(51,65,85,0.6); color: #cbd5e1; border-color: rgba(148,163,184,0.3) !important; }
         body.dark-mode .btn-dm-cancel:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
@@ -764,7 +828,8 @@
         <div class="app-shell">
             <div class="header">
                 <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
-                    <i class="fas fa-chalkboard-teacher"></i> Campus Announcement</div>
+                    <i class="fas fa-chalkboard-teacher"></i> Campus Announcement
+                </div>
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
                         Text="🔎 Search Announcements..." OnClick="SearchButton_Click"
@@ -789,11 +854,9 @@
                             <div class="user-role"><%= Session["Role"] ?? "Teacher" %></div>
                         </div>
                     </div>
-                    <!-- Hamburger button removed — sidebar is always visible -->
                 </div>
             </div>
 
-            <!-- PERMANENT LEFT SIDEBAR -->
             <div id="slideoutPanel" class="slideout-panel">
                 <div class="panel-header">
                     <h3><i class="fas fa-sliders-h"></i> Menu</h3>
@@ -929,7 +992,6 @@
         <div class="footer"><i class="fas fa-shield-alt"></i> Secure Portal | Cebu Technological University</div>
     </form>
 
-    <!-- ── Delete Confirm Modal ── -->
     <div id="deleteConfirmModal" class="delete-modal-overlay">
         <div class="delete-modal-card">
             <div class="delete-modal-icon"><i class="fas fa-trash-alt"></i></div>
@@ -944,6 +1006,13 @@
 
     <script>
         let st_announcements = [], st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
+        let focusPostId = 0;
+
+        (function () {
+            let params = new URLSearchParams(window.location.search);
+            let pid = parseInt(params.get('postId') || '0', 10);
+            if (!isNaN(pid) && pid > 0) focusPostId = pid;
+        })();
 
         function saveSharedState() {
             localStorage.setItem('teacher_data', JSON.stringify({
@@ -968,6 +1037,7 @@
                 st_comments = {};
             }
         }
+
         loadSharedState();
 
         function loadAnnouncementsFromDB() {
@@ -979,6 +1049,7 @@
                         st_pins = {};
                         st_announcements.forEach(a => { if (a.isPinned) st_pins[a.id] = true; });
                         renderAnnouncements();
+                        highlightFocusedPost();
                     }
                 });
         }
@@ -1001,14 +1072,15 @@
         function renderAnnouncements() {
             let container = document.getElementById('announcementsContainer');
             if (!container) return;
+
             let filter = localStorage.getItem('teacher_filter') || 'All';
             document.getElementById('activeFilterLabel').innerText = filter;
 
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
             filtered.sort((a, b) =>
                 (st_pins[a.id] && !st_pins[b.id]) ? -1 :
-                    (!st_pins[a.id] && st_pins[b.id]) ? 1 :
-                        b.id - a.id
+                (!st_pins[a.id] && st_pins[b.id]) ? 1 :
+                b.id - a.id
             );
 
             container.innerHTML = filtered.map(post => {
@@ -1017,11 +1089,12 @@
                 let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' :
                     post.category === 'Suspension' ? 'post-category-suspension' :
-                        post.category === 'Event' ? 'post-category-event' : 'post-category-general';
-                let commentsCount = (st_comments[post.id] || []).length;
+                    post.category === 'Event' ? 'post-category-event' : 'post-category-general';
+                let commentsCount = (st_comments[post.id] || []).filter(c => !c.parentCommentId).length || post.commentCount || 0;
                 let avatar = avatarHtml(post.authorImage, 50, true);
+                let targetClass = focusPostId === post.id ? ' notification-target' : '';
 
-                return `<div class="announcement-card" data-id="${post.id}">
+                return `<div class="announcement-card${targetClass}" data-id="${post.id}" id="post_${post.id}">
                     <div class="post-header">
                         <div class="post-header-left">
                             ${avatar}
@@ -1065,11 +1138,25 @@
             }).join('');
         }
 
+        function highlightFocusedPost() {
+            if (!focusPostId) return;
+
+            let card = document.getElementById('post_' + focusPostId);
+            if (!card) return;
+
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                card.classList.add('notification-target');
+            }, 250);
+
+            toggleCommentSection(focusPostId);
+        }
+
         function renderCommentsList(postId) {
             let comments = st_comments[postId] || [];
             if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
             const topLevel = comments.filter(c => !c.parentCommentId);
-            const replies  = comments.filter(c =>  c.parentCommentId);
+            const replies = comments.filter(c => c.parentCommentId);
             return topLevel.map(c => {
                 let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
                     `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
@@ -1117,17 +1204,17 @@
             if (isNaN(date)) return dateStr;
             var now = new Date();
             var sec = Math.floor((now - date) / 1000);
-            if (sec < 60)  return 'Just now';
+            if (sec < 60) return 'Just now';
             var min = Math.floor(sec / 60);
-            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            if (min < 60) return min + (min === 1 ? ' min ago' : ' mins ago');
             var hr = Math.floor(min / 60);
-            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            if (hr < 24) return hr + (hr === 1 ? ' hour ago' : ' hours ago');
             var day = Math.floor(hr / 24);
-            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            if (day < 7) return day + (day === 1 ? ' day ago' : ' days ago');
             var wk = Math.floor(day / 7);
-            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            if (wk < 5) return wk + (wk === 1 ? ' week ago' : ' weeks ago');
             var mo = Math.floor(day / 30);
-            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            if (mo < 12) return mo + (mo === 1 ? ' month ago' : ' months ago');
             var yr = Math.floor(day / 365);
             return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
@@ -1150,6 +1237,7 @@
                     st_likeCounts[id] = res.likeCount;
                     saveSharedState();
                     renderAnnouncements();
+                    if (focusPostId) highlightFocusedPost();
                     showToast(res.liked ? '❤️ Liked!' : 'Like removed');
                 });
         }
@@ -1162,6 +1250,7 @@
                     if (res.isPinned) st_pins[id] = true; else delete st_pins[id];
                     saveSharedState();
                     renderAnnouncements();
+                    if (focusPostId) highlightFocusedPost();
                     showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 })
                 .catch(() => showToast('Could not update pin'));
@@ -1218,7 +1307,8 @@
             let text = input ? input.value.trim() : '';
             if (!text) return showToast('Write a reply first');
             fetch('CommentHandler.ashx?action=reply', {
-                method: 'POST', credentials: 'same-origin',
+                method: 'POST',
+                credentials: 'same-origin',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ postId: postId, parentCommentId: commentId, comment: text })
             }).then(r => r.json()).then(res => {
@@ -1250,13 +1340,12 @@
             localStorage.setItem('teacher_filter', cat);
             document.getElementById('activeFilterLabel').innerText = cat;
             renderAnnouncements();
+            if (focusPostId) highlightFocusedPost();
             document.querySelectorAll('.dropdown-item-panel').forEach(btn => {
                 btn.style.fontWeight = btn.textContent.includes(cat) || (cat === 'All' && btn.textContent.includes('All')) ? '700' : '';
                 btn.style.color = btn.style.fontWeight === '700' ? 'var(--primary)' : '';
             });
         }
-
-        // Sidebar is always visible — no toggle needed
 
         document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
             e.stopPropagation();
@@ -1359,9 +1448,11 @@
         document.getElementById('deleteCancelBtn').addEventListener('click', function () {
             document.getElementById('deleteConfirmModal').classList.remove('active');
         });
+
         document.getElementById('deleteConfirmModal').addEventListener('click', function (e) {
             if (e.target === this) this.classList.remove('active');
         });
+
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') document.getElementById('deleteConfirmModal').classList.remove('active');
         });

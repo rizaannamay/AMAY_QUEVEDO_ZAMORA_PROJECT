@@ -456,8 +456,7 @@
             <div class="brand-name">Campus Announcement</div>
             <h2>Welcome<br />Back!</h2>
             <div class="divider"></div>
-            <p>Already have an account?<br />Sign in to continue.</p>
-            <a href="login.aspx" class="btn-outline-white">Sign In</a>
+            <a href="login.aspx"> </a>
         </div>
     </div>
 
