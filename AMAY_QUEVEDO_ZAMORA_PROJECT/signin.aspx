@@ -454,7 +454,7 @@
         <div class="panel-right">
             <img src="ctu-logo.png" alt="CTU Logo" class="brand-logo" />
             <div class="brand-name">Campus Announcement</div>
-            <h2>Welcome<br />Back!</h2>
+            <h2>Hello,<br />Welcome!</h2>
             <div class="divider"></div>
             <a href="login.aspx"> </a>
         </div>

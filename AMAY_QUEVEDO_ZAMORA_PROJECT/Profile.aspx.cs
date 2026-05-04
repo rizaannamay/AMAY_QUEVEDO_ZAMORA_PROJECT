@@ -86,7 +86,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+                string cs = @"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
                 using (var con = new SqlConnection(cs))
                 {
                     con.Open();
