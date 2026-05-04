@@ -57,7 +57,7 @@
 
         /* -- NAVBAR -- */
         .glass-nav {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: rgba(10, 18, 40, 0.85);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
@@ -306,7 +306,7 @@
             background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
         }
         body.light-mode .glass-nav {
-            background: linear-gradient(135deg, #1a3a5c 0%, #2c5a7a 100%);
+            background: rgba(26, 58, 92, 0.95);
         }
         body.light-mode .glass-sidebar {
             background: rgba(255,255,255,0.92);
@@ -780,9 +780,17 @@
             let results = [...announcementsDB];
             if (currentSearchTerm.trim()) { const kw = currentSearchTerm.toLowerCase().trim(); results = results.filter(a => a.title.toLowerCase().includes(kw) || a.description.toLowerCase().includes(kw) || a.professor.toLowerCase().includes(kw) || (a.authorFullName || '').toLowerCase().includes(kw)); }
             if (currentDate) results = results.filter(a => a.date && a.date.startsWith(currentDate));
-            if (currentSort === 'latest') results.sort((a, b) => new Date(b.date) - new Date(a.date));
-            else results.sort((a, b) => new Date(a.date) - new Date(b.date));
-            results.sort((a, b) => (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0));
+
+            // Sort: pinned items always float to top, date order applied within each group
+            const dateCompare = currentSort === 'oldest'
+                ? (a, b) => new Date(a.date) - new Date(b.date)
+                : (a, b) => new Date(b.date) - new Date(a.date);
+
+            results.sort((a, b) => {
+                const pinDiff = (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0);
+                return pinDiff !== 0 ? pinDiff : dateCompare(a, b);
+            });
+
             return results;
         }
 
@@ -834,7 +842,7 @@
                         <div class="card-title">${escapeHtml(ann.title)}</div>
                         <div class="card-desc">${escapeHtml(ann.description)}</div>
                         ${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:200px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}
-                        <div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${getCatIcon(ann.category)} ${ann.category}</span></div>
+                        <div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${ann.category}</span></div>
                     </div>
                     <div class="post-stats">
                         <span onclick="toggleLike(${ann.id})">
@@ -983,10 +991,10 @@
             renderResults();
         }
 
-        function applyFilters() { currentDate = dateFilter.value || ''; currentSort = sortFilter.value; renderResults(); }
+        function applyFilters() { currentSort = sortFilter.value; renderResults(); }
 
         function resetEverything() {
-            searchInput.value = ''; dateFilter.value = ''; sortFilter.value = 'latest';
+            searchInput.value = ''; if (window._datePicker) window._datePicker.clear(); sortFilter.value = 'latest';
             currentSearchTerm = ''; currentDate = ''; currentSort = 'latest';
             if (lastSearchHidden) lastSearchHidden.value = '';
             renderResults();
@@ -997,10 +1005,12 @@
         function init() {
             renderHistory();
             updateNotifBadge();
-            flatpickr(dateFilter, {
+            window._datePicker = flatpickr(dateFilter, {
                 dateFormat: 'Y-m-d', altInput: true, altFormat: 'F j, Y',
-                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); }
+                onChange: (_, dateStr) => { currentDate = dateStr || ''; renderResults(); },
+                onClear: () => { currentDate = ''; renderResults(); }
             });
+            searchInput.addEventListener('input', () => { currentSearchTerm = searchInput.value; renderResults(); });
             searchInput.addEventListener('keypress', e => { if (e.key === 'Enter') performSearch(); });
             sortFilter.addEventListener('change', applyFilters);
             if (resetFiltersBtn) resetFiltersBtn.addEventListener('click', resetEverything);

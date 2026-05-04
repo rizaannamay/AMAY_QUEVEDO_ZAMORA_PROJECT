@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -61,7 +61,7 @@
 
         .header {
             flex: 0 0 auto;
-            background: var(--surface);
+            background: #1a3a5c;
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -103,6 +103,13 @@
             text-overflow: ellipsis;
             position: relative;
             z-index: 1;
+        }
+
+        .search-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f002";
+            margin-right: 8px;
         }
 
         .search-btn:hover {
@@ -634,6 +641,32 @@
             color: var(--muted);
         }
 
+        /* Light mode — white text on dark #1a3a5c header */
+        body:not(.dark-mode) .header .logo,
+        body:not(.dark-mode) .header .logo i,
+        body:not(.dark-mode) .header .user-name,
+        body:not(.dark-mode) .header .user-role,
+        body:not(.dark-mode) .header .bell-icon,
+        body:not(.dark-mode) .header .search-btn { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
+        body:not(.dark-mode) .header .user-info {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .user-info .user-name,
+        body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
+        body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
+        body:not(.dark-mode) .header .notification-bell {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.6);
+            color: #ffffff;
+        }
+
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -832,7 +865,7 @@
                 </div>
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
-                        Text="🔎 Search Announcements..." OnClick="SearchButton_Click"
+                        Text="Search Announcements..." OnClick="SearchButton_Click"
                         UseSubmitBehavior="false" />
                 </div>
                 <div class="header-actions">

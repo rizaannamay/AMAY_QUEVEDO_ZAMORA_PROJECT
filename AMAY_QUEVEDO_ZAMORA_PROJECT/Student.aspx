@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,7 +56,7 @@
 
         .header {
             flex: 0 0 auto;
-            background: var(--surface);
+            background: #1a3a5c;
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -89,6 +89,9 @@
             min-width: 0;
             overflow: hidden;
             position: relative;
+            top: 1px;
+            left: 0px;
+            height: 54px;
         }
 
         .search-box {
@@ -131,8 +134,14 @@
             z-index: 1;
         }
 
+        .search-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f002";
+            margin-right: 8px;
+        }
+
         .search-btn:hover {
-            background: #e8f0fe;
             border-color: rgba(26,58,92,0.4);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
@@ -195,18 +204,16 @@
         /* LEFT SIDEBAR — always visible */
         .slideout-panel {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 7px;
+            left: 3px;
             width: 270px;
             height: 100vh;
-            background: var(--surface-strong);
             backdrop-filter: blur(16px);
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
             z-index: 1100;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid var(--border);
-        }
+            }
         .panel-header {
             padding: 24px 16px 16px;
             border-bottom: 1px solid var(--border);
@@ -622,6 +629,32 @@
             text-align: center;
         }
 
+        /* Light mode — white text on dark #1a3a5c header */
+        body:not(.dark-mode) .header .logo,
+        body:not(.dark-mode) .header .logo i,
+        body:not(.dark-mode) .header .user-name,
+        body:not(.dark-mode) .header .user-role,
+        body:not(.dark-mode) .header .bell-icon,
+        body:not(.dark-mode) .header .search-btn { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
+        body:not(.dark-mode) .header .user-info {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .user-info .user-name,
+        body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
+        body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
+        body:not(.dark-mode) .header .notification-bell {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.6);
+            color: #ffffff;
+        }
+
         /* Dark Mode */
         .dark-mode {
             --bg-image: url('bg.jpg');
@@ -811,17 +844,16 @@
         <div class="app-shell">
             <div class="header">
                 <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
-                    <i class="fas fa-university"></i> Campus Announcement
-                </button>
+                    <i class="fas fa-university"></i> Campus Announcement</button>
 
                 <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="🔎 Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" UseSubmitBehavior="false" />
+                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn" Text="Search........" OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" UseSubmitBehavior="false" />
                 </div>
 
                 <div class="header-actions">
                     <button type="button" class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')">
                         <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
+                        <span id="notificationBadge" class="badge-red" style="display:none;">0="display:none;">0</span>
                     </button>
                     <button type="button" class="user-info" onclick="window.location.href='Profile.aspx'">
                         <div class="avatar" id="headerAvatar" style="overflow:hidden;">
