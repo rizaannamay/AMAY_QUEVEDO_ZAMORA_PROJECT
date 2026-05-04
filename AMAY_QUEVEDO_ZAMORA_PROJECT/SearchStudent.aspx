@@ -57,7 +57,7 @@
 
         /* -- NAVBAR -- */
         .glass-nav {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: rgba(10, 18, 40, 0.85);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
@@ -306,7 +306,7 @@
             background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
         }
         body.light-mode .glass-nav {
-            background: linear-gradient(135deg, #1a3a5c 0%, #2c5a7a 100%);
+            background: rgba(26, 58, 92, 0.95);
         }
         body.light-mode .glass-sidebar {
             background: rgba(255,255,255,0.92);
@@ -834,7 +834,7 @@
                         <div class="card-title">${escapeHtml(ann.title)}</div>
                         <div class="card-desc">${escapeHtml(ann.description)}</div>
                         ${ann.imageUrl ? `<div style="margin-top:10px;border-radius:12px;overflow:hidden"><img src="${escapeHtml(ann.imageUrl)}" alt="" style="width:100%;max-height:200px;object-fit:cover" onerror="this.style.display='none'"/></div>` : ''}
-                        <div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${getCatIcon(ann.category)} ${ann.category}</span></div>
+                        <div style="margin-top:10px"><span class="cat-badge ${getCatClass(ann.category)}">${ann.category}</span></div>
                     </div>
                     <div class="post-stats">
                         <span onclick="toggleLike(${ann.id})">

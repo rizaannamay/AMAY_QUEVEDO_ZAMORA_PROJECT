@@ -60,7 +60,7 @@
 
         .header {
             flex: 0 0 auto;
-            background: rgba(10, 18, 40, 0.85);
+            background: #1a3a5c;
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -586,6 +586,32 @@
             text-align: center;
             font-size: 12px;
             color: var(--muted);
+        }
+
+        /* Light mode — white text on dark #1a3a5c header */
+        body:not(.dark-mode) .header .logo,
+        body:not(.dark-mode) .header .logo i,
+        body:not(.dark-mode) .header .user-name,
+        body:not(.dark-mode) .header .user-role,
+        body:not(.dark-mode) .header .bell-icon,
+        body:not(.dark-mode) .header .search-btn { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
+        body:not(.dark-mode) .header .user-info {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .user-info .user-name,
+        body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
+        body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
+        body:not(.dark-mode) .header .notification-bell {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.6);
+            color: #ffffff;
         }
 
         .dark-mode {
