@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -102,6 +102,13 @@
             text-overflow: ellipsis;
             position: relative;
             z-index: 1;
+        }
+
+        .search-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f002";
+            margin-right: 8px;
         }
 
         .search-btn:hover {
@@ -793,7 +800,7 @@
                     <i class="fas fa-chalkboard-teacher"></i> Campus Announcement</div>
                 <div class="search-container">
                     <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
-                        Text="🔎 Search Announcements..." OnClick="SearchButton_Click"
+                        Text="Search Announcements..." OnClick="SearchButton_Click"
                         UseSubmitBehavior="false" />
                 </div>
                 <div class="header-actions">

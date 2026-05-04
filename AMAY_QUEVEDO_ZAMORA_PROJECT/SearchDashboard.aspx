@@ -1000,16 +1000,16 @@
             }
             if (currentDate) results = results.filter(a => a.date && a.date.startsWith(currentDate));
 
-            if (currentSort === 'pinned') {
-                results.sort((a, b) => (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0));
-            } else if (currentSort === 'latest') {
-                results.sort((a, b) => new Date(b.date) - new Date(a.date));
-            } else {
-                results.sort((a, b) => new Date(a.date) - new Date(b.date));
-            }
-            if (currentSort !== 'pinned') {
-                results.sort((a, b) => (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0));
-            }
+            // Sort: pinned items always float to top, date order applied within each group
+            const dateCompare = currentSort === 'oldest'
+                ? (a, b) => new Date(a.date) - new Date(b.date)
+                : (a, b) => new Date(b.date) - new Date(a.date);
+
+            results.sort((a, b) => {
+                const pinDiff = (pins[b.id] ? 1 : 0) - (pins[a.id] ? 1 : 0);
+                return pinDiff !== 0 ? pinDiff : dateCompare(a, b);
+            });
+
             return results;
         }
 
