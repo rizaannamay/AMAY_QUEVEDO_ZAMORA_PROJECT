@@ -60,6 +60,22 @@
             background: #2AACBF;
             border-bottom: none;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .glass-nav {
+            background: rgba(15, 25, 55, 0.92);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        body.dark-mode {
+            background-color: #0F172A;
+            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #e4e6eb;
         }
 
         .glass-nav h1,
@@ -284,9 +300,13 @@
         .flatpickr-current-month .flatpickr-monthDropdown-months { color: #1a2a3a !important; }
         .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #2AACBF !important; }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(26,58,92,0.05); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(42,172,191,0.4); border-radius: 10px; }
+        /* Hide page scrollbar */
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
+        /* Custom scrollbar for inner containers */
+        .glass-sidebar::-webkit-scrollbar { width: 6px; }
+        .glass-sidebar::-webkit-scrollbar-track { background: rgba(26,58,92,0.05); border-radius: 10px; }
+        .glass-sidebar::-webkit-scrollbar-thumb { background: rgba(42,172,191,0.4); border-radius: 10px; }
 
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
 
@@ -307,7 +327,7 @@
             background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
         }
         body.light-mode .glass-nav {
-            background: rgba(26, 58, 92, 0.95);
+            background: #2AACBF;
         }
         body.light-mode .glass-sidebar {
             background: rgba(255,255,255,0.92);
@@ -399,6 +419,97 @@
         body.light-mode .confirm-message { color: #6b7c8f; }
         body.light-mode .btn-cancel { background: rgba(26,58,92,0.08); color: #374151; }
         body.light-mode .btn-cancel:hover { background: rgba(26,58,92,0.14); }
+
+        /* ══════════════════════════════════════════
+           DARK MODE OVERRIDES
+        ══════════════════════════════════════════ */
+        body.dark-mode .glass-sidebar {
+            background: rgba(15, 25, 55, 0.85);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        body.dark-mode .glass-card {
+            background: rgba(15, 25, 55, 0.80);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .glass-card:hover {
+            border-color: rgba(99,102,241,0.4);
+        }
+        body.dark-mode .announce-card {
+            background: rgba(22, 36, 71, 0.95);
+            border-color: rgba(59,130,246,0.35);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        body.dark-mode .announce-card:hover {
+            border-color: rgba(99,102,241,0.6);
+            box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+        }
+        body.dark-mode .card-author-name { color: #93c5fd; }
+        body.dark-mode .card-meta        { color: #94a3b8; }
+        body.dark-mode .card-title       { color: #e0e7ff; }
+        body.dark-mode .card-desc        { color: #cbd5e1; }
+        body.dark-mode .post-stats {
+            border-color: rgba(255,255,255,0.07);
+            color: #94a3b8;
+        }
+        body.dark-mode .post-stats span:hover { color: #93c5fd; }
+        body.dark-mode .action-btn { color: #94a3b8; }
+        body.dark-mode .action-btn:hover { background: rgba(99,102,241,0.15); color: #c7d2fe; }
+        body.dark-mode .action-btn.liked { color: #f87171; }
+        body.dark-mode .action-btn.pinned-active { color: #fb923c; }
+        body.dark-mode .comments-section { border-color: rgba(255,255,255,0.07); }
+        body.dark-mode .comment-input-row input {
+            background: rgba(255,255,255,0.07);
+            border-color: rgba(255,255,255,0.12);
+            color: #e2e8f0;
+        }
+        body.dark-mode .comment-input-row input::placeholder { color: #64748b; }
+        body.dark-mode .comment-item { border-color: rgba(255,255,255,0.07); }
+        body.dark-mode .comment-avatar { background: rgba(99,102,241,0.2); color: #93c5fd; }
+        body.dark-mode .comment-author { color: #a5b4fc; }
+        body.dark-mode .comment-text   { color: #cbd5e1; }
+        body.dark-mode .comment-time   { color: #64748b; }
+        body.dark-mode .no-comments    { color: #64748b; }
+        body.dark-mode .history-item {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.08);
+            color: #cbd5e1;
+        }
+        body.dark-mode .history-item:hover {
+            background: rgba(99,102,241,0.18);
+            border-color: rgba(99,102,241,0.4);
+            color: #e0e7ff;
+        }
+        body.dark-mode .filter-select {
+            background: rgba(15,25,55,0.85);
+            border-color: rgba(255,255,255,0.12);
+            color: #e2e8f0;
+        }
+        body.dark-mode .filter-select option { background: #0f172a; color: #e2e8f0; }
+        body.dark-mode .section-title { color: #e0e7ff !important; }
+        body.dark-mode #resultCount {
+            background: rgba(99,102,241,0.15) !important;
+            border-color: rgba(99,102,241,0.3) !important;
+            color: #c7d2fe !important;
+        }
+        body.dark-mode .cat-exam       { background: rgba(25,118,210,0.2); color: #90caf9; }
+        body.dark-mode .cat-suspension { background: rgba(198,40,40,0.2);  color: #ef9a9a; }
+        body.dark-mode .cat-event      { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
+        body.dark-mode .cat-default    { background: rgba(99,102,241,0.2); color: #c7d2fe; }
+        body.dark-mode .confirm-card {
+            background: rgba(15,25,55,0.97);
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-mode .confirm-title   { color: #e0e7ff; }
+        body.dark-mode .confirm-message { color: #94a3b8; }
+        body.dark-mode .btn-cancel { background: rgba(51,65,85,0.6); color: #cbd5e1; border-color: rgba(148,163,184,0.3); }
+        body.dark-mode .btn-cancel:hover { background: rgba(99,102,241,0.15); color: #93c5fd; }
+        body.dark-mode footer {
+            border-color: rgba(255,255,255,0.07) !important;
+            color: #64748b !important;
+            background: rgba(15,25,55,0.5) !important;
+        }
 
         .toast-msg {
             position: fixed;

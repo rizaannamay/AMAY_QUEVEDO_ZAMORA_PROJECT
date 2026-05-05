@@ -17,6 +17,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.ContentType = "application/json";
             string action = ctx.Request.QueryString["action"] ?? "";
 
+            // GetComments is public — no login required
+            if (action == "get")
+            {
+                EnsureSchema();
+                try { GetComments(ctx); }
+                catch (Exception ex)
+                {
+                    ctx.Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
+                }
+                return;
+            }
+
+            // All other actions require login
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] || ctx.Session["UserId"] == null)
             {
                 ctx.Response.Write("{\"success\":false,\"error\":\"Not logged in\"}");
@@ -35,10 +48,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                     case "reply":
                         ReplyComment(ctx);
-                        break;
-
-                    case "get":
-                        GetComments(ctx);
                         break;
 
                     case "likeComment":
@@ -159,6 +168,32 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     countCmd.Parameters.AddWithValue("@aid", announcementId);
                     countCmd.ExecuteNonQuery();
                 }
+
+                // Notify the post author (teacher) that someone commented
+                using (var postAuthorNotif = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' replied on your announcement: ' + a.Title, 0, GETDATE() " +
+                    "FROM Announcements a " +
+                    "JOIN Users u ON u.UserId = @uid " +
+                    "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con))
+                {
+                    postAuthorNotif.Parameters.AddWithValue("@aid", announcementId);
+                    postAuthorNotif.Parameters.AddWithValue("@uid", userId);
+                    postAuthorNotif.ExecuteNonQuery();
+                }
+
+                // Notify the original comment author (student) that someone replied to their comment
+                using (var commentAuthorNotif = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT c.UserId, c.AnnouncementId, u.Username + ' replied to your comment', 0, GETDATE() " +
+                    "FROM Comments c " +
+                    "JOIN Users u ON u.UserId = @uid " +
+                    "WHERE c.CommentId = @pid AND c.UserId <> @uid", con))
+                {
+                    commentAuthorNotif.Parameters.AddWithValue("@pid", parentCommentId);
+                    commentAuthorNotif.Parameters.AddWithValue("@uid", userId);
+                    commentAuthorNotif.ExecuteNonQuery();
+                }
             }
 
             ctx.Response.Write("{\"success\":true}");
@@ -208,6 +243,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         ins.Parameters.AddWithValue("@uid", userId);
                         ins.ExecuteNonQuery();
                     }
+
+                    // Notify the comment author that someone liked their comment
+                    using (var notifCmd = new SqlCommand(
+                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                        "SELECT c.UserId, c.AnnouncementId, u.Username + ' liked your comment', 0, GETDATE() " +
+                        "FROM Comments c " +
+                        "JOIN Users u ON u.UserId = @uid " +
+                        "WHERE c.CommentId = @cid AND c.UserId <> @uid", con))
+                    {
+                        notifCmd.Parameters.AddWithValue("@cid", commentId);
+                        notifCmd.Parameters.AddWithValue("@uid", userId);
+                        notifCmd.ExecuteNonQuery();
+                    }
                 }
 
                 using (var upd = new SqlCommand(
@@ -237,7 +285,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            int currentUserId = Convert.ToInt32(ctx.Session["UserId"]);
+            int currentUserId = 0;
+            if (ctx.Session["UserId"] != null)
+                currentUserId = Convert.ToInt32(ctx.Session["UserId"]);
+
             List<object> list = new List<object>();
 
             using (var con = new SqlConnection(ConnStr))
@@ -245,7 +296,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 con.Open();
 
                 using (var cmd = new SqlCommand(
-                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
+                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, " +
+                    "ISNULL(c.LikeCount, 0) AS LikeCount, " +
                     "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
                     "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
                     "FROM Comments c " +
@@ -260,16 +312,24 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     {
                         while (dr.Read())
                         {
+                            object rawParent = dr["ParentCommentId"];
+                            int? parentId = null;
+                            if (rawParent != DBNull.Value)
+                            {
+                                int p = Convert.ToInt32(rawParent);
+                                if (p > 0) parentId = p;
+                            }
+
                             list.Add(new
                             {
-                                commentId = Convert.ToInt32(dr["CommentId"]),
-                                parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
-                                author = dr["Username"].ToString(),
-                                text = dr["CommentText"].ToString(),
-                                date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
-                                likeCount = Convert.ToInt32(dr["LikeCount"]),
-                                userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
-                                profileImage = dr["ProfileImage"].ToString()
+                                commentId       = Convert.ToInt32(dr["CommentId"]),
+                                parentCommentId = parentId,
+                                author          = dr["Username"].ToString(),
+                                text            = dr["CommentText"].ToString(),
+                                date            = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
+                                likeCount       = Convert.ToInt32(dr["LikeCount"]),
+                                userLiked       = Convert.ToInt32(dr["UserLiked"]) > 0,
+                                profileImage    = dr["ProfileImage"].ToString()
                             });
                         }
                     }
@@ -277,6 +337,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
             ctx.Response.Write(js.Serialize(list));
         }
 
@@ -334,7 +395,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 catch
                 {
-                    _schemaChecked = true;
+                    // Don't mark as checked on failure — allow retry next request
                 }
             }
         }
@@ -348,6 +409,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
             try
             {
                 return js.Deserialize<Dictionary<string, object>>(json);

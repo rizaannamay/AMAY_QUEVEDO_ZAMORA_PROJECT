@@ -26,6 +26,8 @@
 
         html, body, form { min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -225,6 +227,15 @@
 
         body.dark-mode {
             background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), var(--bg-image);
+            background-color: #0F172A;
+        }
+
+        body.dark-mode .header {
+            background: rgba(15,25,55,0.85);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
         body.dark-mode .notif-item.unread { border-left-color: #3b82f6; }

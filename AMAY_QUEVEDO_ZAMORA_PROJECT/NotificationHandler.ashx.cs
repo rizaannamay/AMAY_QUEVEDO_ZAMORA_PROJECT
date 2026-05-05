@@ -16,6 +16,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             ctx.Response.ContentType = "application/json";
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
 
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"])
             {
@@ -164,6 +165,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
+
+                // Increment ShareCount
+                using (var updCmd = new SqlCommand(
+                    "UPDATE Announcements SET ShareCount = ShareCount + 1 WHERE AnnouncementId = @pid", con))
+                {
+                    updCmd.Parameters.AddWithValue("@pid", postId);
+                    updCmd.ExecuteNonQuery();
+                }
+
+                // Notify the post author (only if sharer is not the author)
                 using (var cmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                     "SELECT a.UserId, a.AnnouncementId, u.Username + ' shared your announcement: ' + a.Title, 0, GETDATE() " +
@@ -175,8 +186,18 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     cmd.Parameters.AddWithValue("@pid", postId);
                     cmd.ExecuteNonQuery();
                 }
+
+                // Return updated share count
+                int newCount;
+                using (var countCmd = new SqlCommand(
+                    "SELECT ISNULL(ShareCount, 0) FROM Announcements WHERE AnnouncementId = @pid", con))
+                {
+                    countCmd.Parameters.AddWithValue("@pid", postId);
+                    newCount = Convert.ToInt32(countCmd.ExecuteScalar());
+                }
+
+                ctx.Response.Write(js.Serialize(new { ok = true, shareCount = newCount }));
             }
-            ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
         private string GetTimeAgo(DateTime date)

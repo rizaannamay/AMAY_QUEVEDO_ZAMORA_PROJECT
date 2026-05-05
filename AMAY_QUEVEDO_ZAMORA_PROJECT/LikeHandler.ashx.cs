@@ -15,6 +15,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             ctx.Response.ContentType = "application/json";
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
 
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] || ctx.Session["UserId"] == null)
             {
@@ -81,7 +82,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
 
                     using (var updCmd = new SqlCommand(
-                        "UPDATE Announcements SET LikeCount = CASE WHEN LikeCount > 0 THEN LikeCount - 1 ELSE 0 END WHERE AnnouncementId=@pid", con))
+                        "UPDATE Announcements SET LikeCount = (SELECT COUNT(*) FROM UserLikes WHERE AnnouncementId=@pid) WHERE AnnouncementId=@pid", con))
                     {
                         updCmd.Parameters.AddWithValue("@pid", postId);
                         updCmd.ExecuteNonQuery();
@@ -98,7 +99,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
 
                     using (var updCmd = new SqlCommand(
-                        "UPDATE Announcements SET LikeCount = LikeCount + 1 WHERE AnnouncementId=@pid", con))
+                        "UPDATE Announcements SET LikeCount = (SELECT COUNT(*) FROM UserLikes WHERE AnnouncementId=@pid) WHERE AnnouncementId=@pid", con))
                     {
                         updCmd.Parameters.AddWithValue("@pid", postId);
                         updCmd.ExecuteNonQuery();

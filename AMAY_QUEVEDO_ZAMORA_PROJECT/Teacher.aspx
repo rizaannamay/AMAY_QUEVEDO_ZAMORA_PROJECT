@@ -35,6 +35,8 @@
 
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -679,7 +681,11 @@
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+
+        .modal-content::-webkit-scrollbar { display: none; }
 
         .modal-title {
             font-size: 20px;
@@ -748,6 +754,11 @@
 
         body.dark-mode {
             background-color: #0F172A;
+            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--page-text);
         }
 
@@ -755,6 +766,10 @@
 
         /* Hide scrollbar on announcement board (Chrome/Safari) */
         .announcement-board::-webkit-scrollbar { display: none; }
+
+        /* Hide page scrollbar globally */
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         body:not(.dark-mode) .announcement-card {
             border-color: #2AACBF;
@@ -1164,7 +1179,7 @@
             try {
                 var data = JSON.parse(localStorage.getItem('teacher_data') || '{}');
                 st_likes = data.likes || {};
-                st_likeCounts = data.likeCounts || {};
+                st_likeCounts = {};  // always use DB counts, never cache
                 st_pins = data.pins || {};
                 st_comments = data.comments || {};
             } catch (e) {
@@ -1223,7 +1238,7 @@
             container.innerHTML = filtered.map(post => {
                 let pinned = st_pins[post.id];
                 let liked = !!post.userLiked;
-                let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
+                let likeCount = post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' :
                     post.category === 'Suspension' ? 'post-category-suspension' :
                     post.category === 'Event' ? 'post-category-event' : 'post-category-general';
@@ -1278,43 +1293,70 @@
         function highlightFocusedPost() {
             if (!focusPostId || focusPostId <= 0) return;
 
-            // Remove highlight from any previously highlighted card
-            document.querySelectorAll('.announcement-card.notification-target').forEach(function(el) {
-                el.classList.remove('notification-target');
-            });
-
             let card = document.getElementById('post_' + focusPostId);
             if (!card) return;
 
-            setTimeout(function() {
-                // Scroll within the announcement-board container (not the page)
-                let board = document.getElementById('announcementsContainer');
-                if (board) {
-                    let cardTop = card.offsetTop - board.offsetTop;
-                    board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
-                } else {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                card.classList.add('notification-target');
-                // Remove highlight after 5 seconds
-                setTimeout(function() { card.classList.remove('notification-target'); }, 5000);
-            }, 250);
+            // Add highlight class immediately
+            document.querySelectorAll('.announcement-card.notification-target').forEach(function(el) {
+                el.classList.remove('notification-target');
+            });
+            card.classList.add('notification-target');
 
+            // Use requestAnimationFrame to ensure layout is complete before scrolling
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    var board = document.getElementById('announcementsContainer');
+                    if (board) {
+                        var boardRect = board.getBoundingClientRect();
+                        var cardRect  = card.getBoundingClientRect();
+                        var offset    = cardRect.top - boardRect.top + board.scrollTop - 20;
+                        board.scrollTo({ top: offset, behavior: 'smooth' });
+                    } else {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            });
+
+            // Open comment section
             toggleCommentSection(focusPostId);
+
+            // Remove highlight after 6 seconds
+            setTimeout(function() { card.classList.remove('notification-target'); }, 6000);
         }
 
         function renderCommentsList(postId) {
             let comments = st_comments[postId] || [];
             if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
-            const topLevel = comments.filter(c => !c.parentCommentId);
-            const replies = comments.filter(c => c.parentCommentId);
-            return topLevel.map(c => {
-                let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
-                    `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+
+            // Build map for root ancestor lookup
+            const commentMap = {};
+            comments.forEach(c => { commentMap[c.commentId] = c; });
+            function getRootId(c) {
+                let visited = new Set();
+                while (c.parentCommentId != null && c.parentCommentId !== 0) {
+                    if (visited.has(c.commentId)) break;
+                    visited.add(c.commentId);
+                    let parent = commentMap[c.parentCommentId];
+                    if (!parent) break;
+                    c = parent;
+                }
+                return c.commentId;
+            }
+
+            const topLevel = comments.filter(c => c.parentCommentId == null || c.parentCommentId === 0);
+            const replies  = comments.filter(c => c.parentCommentId != null && c.parentCommentId !== 0);
+            const roots = topLevel.length ? topLevel : comments;
+            return roots.map(c => {
+                // All replies belonging to this root (any depth)
+                let rHtml = replies.filter(r => getRootId(r) == c.commentId).map(r => {
+                    let replyingTo = (r.parentCommentId != null && r.parentCommentId !== 0 && r.parentCommentId != c.commentId)
+                        ? `<span style="color:var(--primary-2);font-weight:600;">@${escapeHtml((commentMap[r.parentCommentId] || {}).author || '')}</span> `
+                        : '';
+                    return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
                         ${commentAvatarHtml(r.profileImage)}
                         <div style="flex:1;min-width:0;">
                             <span class="comment-author">${escapeHtml(r.author)}</span>
-                            <div>${escapeHtml(r.text)}</div>
+                            <div>${replyingTo}${escapeHtml(r.text)}</div>
                             <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
                                 <small>${r.date||''}</small>
                                 <button type="button" class="comment-like-btn ${r.userLiked?'liked':''}" onclick="likeComment(${r.commentId},this)"
@@ -1334,8 +1376,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>`
-                ).join('');
+                    </div>`;
+                }).join('');
                 return `<div class="comment" data-comment-id="${c.commentId}">
                     ${commentAvatarHtml(c.profileImage)}
                     <div style="flex:1;min-width:0;">

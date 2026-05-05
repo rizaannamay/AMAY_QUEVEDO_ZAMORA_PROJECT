@@ -2,9 +2,6 @@
 <script runat="server">
     protected string BackUrl {
         get {
-
-
-
             string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
             return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
         }
@@ -47,8 +44,10 @@
 
         html, body, form { min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
-        /* Cover content that scrolls behind the fixed header */
+        /* Fixed header background overlay - removed gradient that was causing issues */
         body::before {
             content: '';
             position: fixed;
@@ -58,8 +57,8 @@
             height: 80px;
             z-index: 199;
             pointer-events: none;
-            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
-                var(--bg-image) center/cover fixed no-repeat;
+            /* Fixed: transparent background to avoid white line overlay */
+            background: transparent;
         }
 
         body {
@@ -123,7 +122,7 @@
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99,102,241,0.15);
         }
 
-        /* ── TOPBAR — matches dashboard dark navy header ── */
+        /* ── TOPBAR — fixed header with proper background, no scrolling overlap issues ── */
         .topbar {
             background: #2AACBF;
             border-radius: 24px;
@@ -134,10 +133,38 @@
             gap: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
             position: fixed;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            z-index: 200;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 10px;
+            width: auto;
+            z-index: 1000;
+            backdrop-filter: none;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .topbar {
+            background: rgba(15, 25, 55, 0.92);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Add safe area for body padding to prevent content from hiding under fixed header */
+        body {
+            padding-top: 90px;
+        }
+
+        /* Responsive margin adjustment for topbar */
+        @media (max-width: 768px) {
+            .topbar {
+                margin: 8px;
+                padding: 12px 18px;
+                border-radius: 20px;
+            }
+            body {
+                padding-top: 80px;
+            }
         }
 
         .brand {
@@ -548,7 +575,7 @@
         /* ── RESPONSIVE ── */
         @media (max-width: 980px) {
             body { padding: 76px 10px 10px; }
-            .topbar { top: 6px; left: 6px; right: 6px; align-items: flex-start; flex-direction: column; }
+            .topbar { top: 0; margin: 6px; flex-direction: column; align-items: flex-start; }
             .creator-card { grid-template-columns: 1fr; text-align: center; }
             .creator-photo { margin: 0 auto; }
         }
@@ -559,7 +586,7 @@
     <form id="form1" runat="server">
         <div class="page-shell">
 
-            <!-- ═══ TOPBAR ═══ -->
+            <!-- ═══ TOPBAR / HEADER - FIXED VERSION WITH PROPER POSITIONING ═══ -->
             <div class="topbar">
                 <div class="brand">
                     <div class="brand-badge">
@@ -704,12 +731,12 @@
     <script>
         // ── Theme sync — reads campus_theme set by other pages ──
         (function () {
-            function applyTheme(val) {
-                document.body.classList.toggle('dark-mode', val === 'dark');
+            function applyTheme(isDark) {
+                document.body.classList.toggle('dark-mode', isDark);
             }
-            applyTheme(localStorage.getItem('campus_theme') || 'light');
+            applyTheme(localStorage.getItem('campus_theme') === 'dark');
             window.addEventListener('storage', function (e) {
-                if (e.key === 'campus_theme') applyTheme(e.newValue || 'light');
+                if (e.key === 'campus_theme') applyTheme(e.newValue === 'dark');
             });
         })();
 
@@ -741,5 +768,3 @@
     </script>
 </body>
 </html>
-
-

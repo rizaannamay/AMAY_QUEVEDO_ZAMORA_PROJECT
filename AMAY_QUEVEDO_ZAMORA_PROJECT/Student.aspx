@@ -31,6 +31,8 @@
 
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -745,8 +747,11 @@
             border-color: rgba(148, 163, 184, 0.2); 
         }
         body.dark-mode .header             { 
-            background: rgba(30, 41, 59, 0.95); 
-            border-color: rgba(148, 163, 184, 0.2); 
+            background: rgba(15,25,55,0.85); 
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
 
         /* Text */
@@ -1247,34 +1252,71 @@
                 .then(data => {
                     // API returns array on success, object with success:false on error
                     if (!Array.isArray(data)) {
-                        listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>';
+                        console.error('CommentHandler error:', data);
+                        listDiv.innerHTML = '<div class="no-comments" style="color:#ef4444;">Error: ' + escapeHtml(data.error || 'Unknown error') + '</div>';
                         return;
                     }
                     const comments = data;
                     if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
 
-                    // Separate top-level and replies
-                    const topLevel = comments.filter(c => !c.parentCommentId);
-                    const replies  = comments.filter(c =>  c.parentCommentId);
+                    // Build a map for quick lookup
+                    const commentMap = {};
+                    comments.forEach(c => { commentMap[c.commentId] = c; });
 
-                    if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+                    // Find the root ancestor of any comment
+                    function getRootId(c) {
+                        let visited = new Set();
+                        while (c.parentCommentId != null && c.parentCommentId !== 0) {
+                            if (visited.has(c.commentId)) break; // cycle guard
+                            visited.add(c.commentId);
+                            let parent = commentMap[c.parentCommentId];
+                            if (!parent) break;
+                            c = parent;
+                        }
+                        return c.commentId;
+                    }
+
+                    // Separate top-level and all replies (flatten all nested replies under root)
+                    const topLevel = comments.filter(c => c.parentCommentId == null || c.parentCommentId === 0);
+                    const replies  = comments.filter(c => c.parentCommentId != null && c.parentCommentId !== 0);
+
+                    if (!topLevel.length) {
+                        listDiv.innerHTML = comments.map(c => {
+                            let cAvatar = c.profileImage
+                                ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                                : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
+                            return `<div class="comment" data-comment-id="${c.commentId}">
+                                ${cAvatar}
+                                <div style="flex:1;min-width:0;">
+                                    <span class="comment-author">${escapeHtml(c.author)}</span>
+                                    <div class="comment-text">${escapeHtml(c.text)}</div>
+                                    <div class="comment-time">${escapeHtml(c.date)}</div>
+                                </div>
+                            </div>`;
+                        }).join('');
+                        return;
+                    }
 
                     listDiv.innerHTML = topLevel.map(c => {
                         let cAvatar = c.profileImage
                             ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
                             : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
 
-                        // Replies for this comment
-                        let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                        // All replies that belong to this root comment (any depth)
+                        let commentReplies = replies.filter(r => getRootId(r) == c.commentId);
                         let repliesHtml = commentReplies.map(r => {
                             let rAvatar = r.profileImage
                                 ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
                                 : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
+                            // Show @mention if replying to another reply
+                            let replyingTo = (r.parentCommentId != null && r.parentCommentId !== 0 && r.parentCommentId != c.commentId)
+                                ? `<span style="color:var(--primary-2);font-weight:600;">@${escapeHtml((commentMap[r.parentCommentId] || {}).author || '')}</span> `
+                                : '';
                             return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
                                 ${rAvatar}
                                 <div style="flex:1;min-width:0;">
                                     <span class="comment-author">${escapeHtml(r.author)}</span>
-                                    <div class="comment-text">${escapeHtml(r.text)}</div>
+                                    <div class="comment-text">${replyingTo}${escapeHtml(r.text)}</div>
                                     <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
                                         <div class="comment-time">${escapeHtml(r.date)}</div>
                                         <button type="button" class="comment-like-btn ${r.userLiked ? 'liked' : ''}"
@@ -1440,7 +1482,10 @@
                     });
 
                     setTimeout(function () {
-                        let savedFilter = localStorage.getItem('student_filter') || 'All';
+                        // If coming from a notification, reset filter to 'All' so the target post is visible
+                        var notifPostId = parseInt(new URLSearchParams(window.location.search).get('postId') || '0', 10);
+                        let savedFilter = (notifPostId > 0) ? 'All' : (localStorage.getItem('student_filter') || 'All');
+                        if (notifPostId > 0) localStorage.setItem('student_filter', 'All');
 
                         container.innerHTML = announcements.map(post => {
                             let isPinned  = !!st_pins[post.id];
@@ -1502,6 +1547,37 @@
                         });
 
                         updateNotifBadge();
+
+                        // ── Highlight post from notification link after render ──
+                        (function () {
+                            var params = new URLSearchParams(window.location.search);
+                            var pid = parseInt(params.get('postId') || '0', 10);
+                            if (!isNaN(pid) && pid > 0) {
+                                var card = document.querySelector('.announcement-card[data-post-id="' + pid + '"]');
+                                if (card) {
+                                    card.classList.add('notification-target');
+
+                                    var board = document.getElementById('announcementsContainer');
+                                    var boardStyle = board ? window.getComputedStyle(board).overflowY : 'visible';
+                                    var boardScrollable = boardStyle === 'auto' || boardStyle === 'scroll';
+
+                                    if (board && boardScrollable) {
+                                        // Board is the scroll container
+                                        var boardRect = board.getBoundingClientRect();
+                                        var cardRect  = card.getBoundingClientRect();
+                                        var offset    = cardRect.top - boardRect.top + board.scrollTop - 20;
+                                        board.scrollTo({ top: offset, behavior: 'smooth' });
+                                    } else {
+                                        // Page is the scroll container (mobile/responsive)
+                                        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    }
+
+                                    var sec = document.getElementById('commentsSection_' + pid);
+                                    if (sec) { sec.style.display = 'block'; loadCommentsFromDB(pid); }
+                                    setTimeout(function () { card.classList.remove('notification-target'); }, 6000);
+                                }
+                            }
+                        })();
                     });
                 }).catch(() => {
                     container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
@@ -1542,37 +1618,7 @@
         updateNotifBadge();
 
         // ── Highlight post from notification link (?postId=X) ──────────────
-        (function () {
-            var params = new URLSearchParams(window.location.search);
-            var pid = parseInt(params.get('postId') || '0', 10);
-            if (!isNaN(pid) && pid > 0) {
-                var attempts = 0;
-                var interval = setInterval(function () {
-                    var card = document.querySelector('.announcement-card[data-post-id="' + pid + '"]');
-                    if (card || attempts > 20) {
-                        clearInterval(interval);
-                        if (card) {
-                            // Scroll within the announcement-board container
-                            var board = document.getElementById('announcementsContainer');
-                            if (board) {
-                                var cardTop = card.offsetTop - board.offsetTop;
-                                board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
-                            } else {
-                                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                            // Apply CSS class highlight (same as Teacher.aspx)
-                            card.classList.add('notification-target');
-                            // Open comments section
-                            var sec = document.getElementById('commentsSection_' + pid);
-                            if (sec) { sec.style.display = 'block'; loadCommentsFromDB(pid); }
-                            // Remove highlight after 5 seconds
-                            setTimeout(function () { card.classList.remove('notification-target'); }, 5000);
-                        }
-                    }
-                    attempts++;
-                }, 150);
-            }
-        })();
+        // (handled inside renderAnnouncements after DOM is written)
 
         // Refresh badge every 30 seconds
         setInterval(updateNotifBadge, 30000);

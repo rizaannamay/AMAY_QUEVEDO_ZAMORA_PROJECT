@@ -26,6 +26,8 @@
 
         html, body, form { min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -256,7 +258,14 @@
             --muted-light: #94a3b8;
             --shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        body.dark-mode { background-image: linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),var(--bg-image); }
+        body.dark-mode { background-image: linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),var(--bg-image); background-color: #0F172A; }
+        body.dark-mode .topbar {
+            background: rgba(15,25,55,0.85);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
         body.dark-mode .profile-avatar { border-color: rgba(30,41,59,0.98); }
         body.dark-mode .profile-role-badge       { background: rgba(59,130,246,0.25); color: #93c5fd; }
         body.dark-mode .profile-role-badge.admin { background: rgba(139,92,246,0.25); color: #c4b5fd; }
