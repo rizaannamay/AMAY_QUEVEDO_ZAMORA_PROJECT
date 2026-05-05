@@ -336,7 +336,7 @@
         }
 
         .user-name { font-size: 14px; font-weight: 600; }
-        .user-role, .post-meta, .comment-time, .footer { color: var(--muted); }
+        .user-role, .post-meta, .comment-time { color: var(--muted); }
 
         .content-shell {
             flex: 1;
@@ -630,16 +630,8 @@
         .btn-publish { background: var(--success); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
         .btn-cancel { background: none; border: 1px solid var(--border); padding: 10px 24px; border-radius: 40px; cursor: pointer; }
 
-        .footer {
-            position: fixed;
-            left: 20px;
-            right: 20px;
-            bottom: 0;
-            height: 34px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--muted);
-        }
+        /* ── FOOTER ── */
+        /* removed */
 
         /* Light mode — white text on dark #1a3a5c header */
         body:not(.dark-mode) .header .logo,
@@ -1022,7 +1014,6 @@
             </div>
         </div>
 
-        <div class="footer"><i class="fas fa-shield-alt"></i> Secure Portal | Cebu Technological University</div>
     </form>
 
     <div id="deleteConfirmModal" class="delete-modal-overlay">
@@ -1046,7 +1037,6 @@
             let pid = parseInt(params.get('postId') || '0', 10);
             if (!isNaN(pid) && pid > 0) focusPostId = pid;
         })();
-
         function saveSharedState() {
             localStorage.setItem('teacher_data', JSON.stringify({
                 likes: st_likes,
@@ -1125,7 +1115,7 @@
                     post.category === 'Event' ? 'post-category-event' : 'post-category-general';
                 let commentsCount = (st_comments[post.id] || []).filter(c => !c.parentCommentId).length || post.commentCount || 0;
                 let avatar = avatarHtml(post.authorImage, 50, true);
-                let targetClass = focusPostId === post.id ? ' notification-target' : '';
+                let targetClass = (focusPostId > 0 && focusPostId === post.id) ? ' notification-target' : '';
 
                 return `<div class="announcement-card${targetClass}" data-id="${post.id}" id="post_${post.id}">
                     <div class="post-header">
@@ -1172,12 +1162,17 @@
         }
 
         function highlightFocusedPost() {
-            if (!focusPostId) return;
+            if (!focusPostId || focusPostId <= 0) return;
+
+            // Remove highlight from any previously highlighted card
+            document.querySelectorAll('.announcement-card.notification-target').forEach(function(el) {
+                el.classList.remove('notification-target');
+            });
 
             let card = document.getElementById('post_' + focusPostId);
             if (!card) return;
 
-            setTimeout(() => {
+            setTimeout(function() {
                 card.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 card.classList.add('notification-target');
             }, 250);
@@ -1284,7 +1279,7 @@
                     saveSharedState();
                     renderAnnouncements();
                     if (focusPostId) highlightFocusedPost();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? 'Pinned!' : 'Unpinned');
                 })
                 .catch(() => showToast('Could not update pin'));
         }
@@ -1349,7 +1344,7 @@
                     input.value = '';
                     document.getElementById('replyBox_' + commentId).style.display = 'none';
                     loadComments(postId);
-                    showToast('↩️ Reply posted');
+                    showToast('Reply posted');
                 }
             });
         }
@@ -1474,7 +1469,7 @@
             document.getElementById('deleteConfirmBtn').onclick = function () {
                 modal.classList.remove('active');
                 fetch(`AnnouncementHandler.ashx?action=delete&id=${id}`, { credentials: 'same-origin' })
-                    .then(() => { loadAnnouncementsFromDB(); showToast('🗑️ Deleted'); });
+                    .then(() => { loadAnnouncementsFromDB(); showToast('Announcement deleted.'); });
             };
         }
 

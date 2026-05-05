@@ -68,13 +68,6 @@
             border: 1px solid var(--border);
         }
 
-        .footer {
-            flex: 0 0 34px;
-            text-align: center;
-            line-height: 34px;
-            font-size: 12px;
-        }
-
         form { height: auto; min-height: 100%; overflow: visible; }
 
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; background: none; border: none; }
@@ -350,7 +343,7 @@
         }
 
         .user-name { font-size: 14px; font-weight: 600; }
-        .user-role, .profile-email, .post-meta, .comment-time, .footer { color: var(--muted); }
+        .user-role, .profile-email, .post-meta, .comment-time { color: var(--muted); }
 
         .content-shell {
             flex: 1 1 0;
@@ -1397,6 +1390,34 @@
         // Initialize
         renderAnnouncements();
         updateNotifBadge();
+
+        // ── Highlight post from notification link (?postId=X) ──────────────
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var pid = parseInt(params.get('postId') || '0', 10);
+            if (!isNaN(pid) && pid > 0) {
+                // Wait for cards to render then scroll + highlight
+                var attempts = 0;
+                var interval = setInterval(function () {
+                    var card = document.querySelector('.announcement-card[data-post-id="' + pid + '"]');
+                    if (card || attempts > 20) {
+                        clearInterval(interval);
+                        if (card) {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            card.style.transition = 'box-shadow 0.3s, border-color 0.3s';
+                            card.style.borderColor = '#f59e0b';
+                            card.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.22), 0 12px 28px rgba(245,158,11,0.18)';
+                            // Open comments section
+                            var sec = document.getElementById('commentsSection_' + pid);
+                            if (sec) sec.style.display = 'block';
+                            loadCommentsFromDB(pid);
+                        }
+                    }
+                    attempts++;
+                }, 150);
+            }
+        })();
+
         // Refresh badge every 30 seconds
         setInterval(updateNotifBadge, 30000);
     </script>

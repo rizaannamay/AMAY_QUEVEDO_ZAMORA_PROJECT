@@ -9,7 +9,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class NotificationHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        private static readonly string ConnStr =
+            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -21,6 +22,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 ctx.Response.Write(js.Serialize(new { ok = false, error = "Not logged in" }));
                 return;
             }
+
+            EnsureSchema();
 
             int userId = Convert.ToInt32(ctx.Session["UserId"]);
             string action = ctx.Request["action"] ?? "";
@@ -57,7 +60,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             catch (Exception ex)
             {
                 ctx.Response.Write(js.Serialize(new { ok = false, error = ex.Message }));
-                if (con.State == System.Data.ConnectionState.Open) con.Close();
             }
         }
 
@@ -65,45 +67,50 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             List<object> list = new List<object>();
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(
-                "SELECT TOP 100 NotificationId, UserId, AnnouncementId, Message, IsRead, CreatedDate " +
-                "FROM Notifications WHERE UserId=@uid ORDER BY CreatedDate DESC, NotificationId DESC", con);
-            cmd.Parameters.AddWithValue("@uid", userId);
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            using (var con = new SqlConnection(ConnStr))
             {
-                DateTime created = Convert.ToDateTime(dr["CreatedDate"]);
-
-                list.Add(new
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "SELECT TOP 100 NotificationId, UserId, AnnouncementId, Message, IsRead, CreatedDate " +
+                    "FROM Notifications WHERE UserId=@uid ORDER BY CreatedDate DESC, NotificationId DESC", con))
                 {
-                    id = Convert.ToInt32(dr["NotificationId"]),
-                    userId = Convert.ToInt32(dr["UserId"]),
-                    announcementId = dr["AnnouncementId"] == DBNull.Value ? 0 : Convert.ToInt32(dr["AnnouncementId"]),
-                    message = dr["Message"].ToString(),
-                    isRead = Convert.ToBoolean(dr["IsRead"]),
-                    time = GetTimeAgo(created),
-                    createdDate = created.ToString("yyyy-MM-dd HH:mm:ss")
-                });
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            DateTime created = Convert.ToDateTime(dr["CreatedDate"]);
+                            list.Add(new
+                            {
+                                id = Convert.ToInt32(dr["NotificationId"]),
+                                userId = Convert.ToInt32(dr["UserId"]),
+                                announcementId = dr["AnnouncementId"] == DBNull.Value ? 0 : Convert.ToInt32(dr["AnnouncementId"]),
+                                message = dr["Message"].ToString(),
+                                isRead = Convert.ToBoolean(dr["IsRead"]),
+                                time = GetTimeAgo(created),
+                                createdDate = created.ToString("yyyy-MM-dd HH:mm:ss")
+                            });
+                        }
+                    }
+                }
             }
-
-            dr.Close();
-            con.Close();
 
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
         }
 
         private void GetUnreadCount(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
-            con.Open();
-            SqlCommand cmd = new SqlCommand(
-                "SELECT COUNT(1) FROM Notifications WHERE UserId=@uid AND IsRead=0", con);
-            cmd.Parameters.AddWithValue("@uid", userId);
-
-            int count = Convert.ToInt32(cmd.ExecuteScalar());
-            con.Close();
-
+            int count;
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "SELECT COUNT(1) FROM Notifications WHERE UserId=@uid AND IsRead=0", con))
+                {
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    count = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
             ctx.Response.Write(js.Serialize(new { ok = true, count = count }));
         }
 
@@ -116,26 +123,32 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(
-                "UPDATE Notifications SET IsRead=1 WHERE NotificationId=@nid AND UserId=@uid", con);
-            cmd.Parameters.AddWithValue("@nid", notifId);
-            cmd.Parameters.AddWithValue("@uid", userId);
-            cmd.ExecuteNonQuery();
-            con.Close();
-
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "UPDATE Notifications SET IsRead=1 WHERE NotificationId=@nid AND UserId=@uid", con))
+                {
+                    cmd.Parameters.AddWithValue("@nid", notifId);
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
         private void MarkAllRead(HttpContext ctx, JavaScriptSerializer js, int userId)
         {
-            con.Open();
-            SqlCommand cmd = new SqlCommand(
-                "UPDATE Notifications SET IsRead=1 WHERE UserId=@uid AND IsRead=0", con);
-            cmd.Parameters.AddWithValue("@uid", userId);
-            cmd.ExecuteNonQuery();
-            con.Close();
-
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "UPDATE Notifications SET IsRead=1 WHERE UserId=@uid AND IsRead=0", con))
+                {
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
@@ -148,20 +161,21 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(
-                "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                "SELECT a.UserId, a.AnnouncementId, u.Username + ' shared your announcement: ' + a.Title, 0, GETDATE() " +
-                "FROM Announcements a " +
-                "JOIN Users u ON u.UserId = @uid " +
-                "WHERE a.AnnouncementId = @pid AND a.UserId <> @uid", con);
-            cmd.Parameters.AddWithValue("@uid", userId);
-            cmd.Parameters.AddWithValue("@pid", postId);
-            cmd.ExecuteNonQuery();
-
-            con.Close();
-
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' shared your announcement: ' + a.Title, 0, GETDATE() " +
+                    "FROM Announcements a " +
+                    "JOIN Users u ON u.UserId = @uid " +
+                    "WHERE a.AnnouncementId = @pid AND a.UserId <> @uid", con))
+                {
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.Parameters.AddWithValue("@pid", postId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
@@ -188,6 +202,33 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return date.ToString("MMM dd");
 
             return date.ToString("MMM dd, yyyy");
+        }
+
+        private static bool _schemaChecked = false;
+        private static readonly object _schemaLock = new object();
+
+        private void EnsureSchema()
+        {
+            if (_schemaChecked) return;
+            lock (_schemaLock)
+            {
+                if (_schemaChecked) return;
+                try
+                {
+                    using (var con = new SqlConnection(ConnStr))
+                    {
+                        con.Open();
+                        using (var cmd = new SqlCommand(
+                            "IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id=OBJECT_ID('Notifications') AND name='AnnouncementId') " +
+                            "ALTER TABLE Notifications ADD AnnouncementId INT NULL REFERENCES Announcements(AnnouncementId) ON DELETE SET NULL", con))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch { /* ignore — column may already exist */ }
+                _schemaChecked = true;
+            }
         }
 
         public bool IsReusable

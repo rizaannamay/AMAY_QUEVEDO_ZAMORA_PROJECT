@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true"  %>
+﻿<%@ Page Language="C#" AutoEventWireup="true"  %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,18 +16,18 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        :root {
-            --page-text: #e4e6eb;
-            --surface: rgba(15, 25, 55, 0.85);
-            --surface-strong: rgba(15, 25, 55, 0.92);
-            --surface-soft: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.1);
-            --primary: #818cf8;
-            --primary-2: #6366f1;
-            --muted: #94a3b8;
-            --muted-light: #64748b;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --active-bg: rgba(99, 102, 241, 0.18);
+                        :root {
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a3a5c;
+            --primary-2: #2c5a7a;
+            --muted: #6b7c8f;
+            --muted-light: #9db0c4;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --active-bg: #e8f0fe;
         }
 
         body {
@@ -35,20 +35,19 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-color: #0F172A;
-            background-image: url('bg.jpg');
+            background-color: #f0f4f8;
+            background-image: url('wbg.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* Dark overlay to match Notifications page look */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, rgba(10, 15, 40, 0.92) 0%, rgba(15, 23, 60, 0.92) 100%);
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3));
             z-index: 0;
             pointer-events: none;
         }
@@ -57,9 +56,10 @@
 
         /* -- NAVBAR -- */
         .glass-nav {
-            background: rgba(10, 18, 40, 0.85);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            background: #1a3a5c;
+            border-radius: 24px;
+            margin: 16px 20px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .glass-nav h1,
@@ -69,44 +69,44 @@
         .glass-nav .text-muted { color: rgba(255, 255, 255, 0.7) !important; }
 
         .glass-sidebar {
-            background: rgba(15, 25, 55, 0.75);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(26, 58, 92, 0.15);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         .glass-card {
-            background: rgba(15, 25, 55, 0.75);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(26, 58, 92, 0.15);
             transition: all 0.3s ease;
         }
 
         .glass-card:hover {
-            border-color: rgba(99, 102, 241, 0.4);
+            border-color: rgba(26, 58, 92, 0.3);
             transform: translateY(-2px);
         }
 
         .announce-card {
-            background: rgba(15, 25, 55, 0.88);
+            background: #ffffff;
             border: 1px solid #3B82F6;
             border-radius: 20px;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
             overflow: hidden;
             will-change: transform;
         }
 
         .announce-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-            border-color: #93C5FD;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+            border-color: #1E3A8A;
         }
 
-        .card-author-name { color: #93c5fd; font-weight: 700; font-size: 15px; }
-        .card-meta        { color: var(--muted); font-size: 12px; }
-        .card-title       { color: #e0e7ff; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .card-desc        { color: #e2e8f0; font-size: 13px; line-height: 1.6; }
+        .card-author-name { color: #1a3a5c; font-weight: 700; font-size: 15px; }
+        .card-meta        { color: #6b7c8f; font-size: 12px; }
+        .card-title       { color: #1a2a3a; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .card-desc        { color: #374151; font-size: 13px; line-height: 1.6; }
 
         .card-banner {
             background: linear-gradient(135deg, #1e3a8a, #4f46e5);
@@ -223,26 +223,26 @@
             font-size: 10px;
             font-weight: 700;
         }
-        .cat-exam       { background: rgba(30, 58, 138, 0.3);  color: #93C5FD; }
-        .cat-suspension { background: rgba(198, 40, 40, 0.2);  color: #ef9a9a; }
-        .cat-event      { background: rgba(22, 101, 52, 0.25); color: #86efac; }
-        .cat-default    { background: rgba(91, 33, 182, 0.2);  color: #c4b5fd; }
+        .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        .cat-suspension { background: #ffebee; color: #c62828; }
+        .cat-event      { background: #e8f5e9; color: #2e7d32; }
+        .cat-default    { background: #e0e7ff; color: #4f46e5; }
 
         .history-item {
             cursor: pointer;
             transition: all 0.2s ease;
             padding: 8px 12px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #cbd5e1;
+            background: rgba(26, 58, 92, 0.05);
+            border: 1px solid rgba(26, 58, 92, 0.1);
+            color: #374151;
             font-size: 13px;
         }
         .history-item:hover {
-            background: rgba(99, 102, 241, 0.18);
+            background: #e8f0fe;
             transform: translateX(4px);
-            border-color: rgba(99, 102, 241, 0.4);
-            color: #93c5fd;
+            border-color: rgba(26, 58, 92, 0.25);
+            color: #1a3a5c;
         }
 
         .search-input {
@@ -293,9 +293,30 @@
         .section-title { color: #93c5fd !important; }
         .result-count  { color: #93c5fd !important; background: rgba(15,25,55,0.75) !important; border-color: rgba(255,255,255,0.1) !important; }
 
+        /* Dark mode variables */
+        body.dark-mode {
+            --page-text: #e4e6eb;
+            --surface: rgba(15, 25, 55, 0.85);
+            --surface-strong: rgba(15, 25, 55, 0.92);
+            --surface-soft: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #818cf8;
+            --primary-2: #6366f1;
+            --muted: #94a3b8;
+            --muted-light: #64748b;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --active-bg: rgba(99, 102, 241, 0.18);
+            background-color: #0F172A;
+            background-image: url('bg.jpg');
+            color: var(--page-text);
+        }
+        body.dark-mode::before {
+            background: linear-gradient(135deg, rgba(10, 15, 40, 0.92) 0%, rgba(15, 23, 60, 0.92) 100%);
+        }
+
         /* ══════════════════════════════════════════
-           LIGHT MODE OVERRIDES
-           Applied when body has class "light-mode"
+           DARK MODE OVERRIDES
+           Applied when body has class "dark-mode"
         ══════════════════════════════════════════ */
         body.light-mode {
             background-color: #f0f4f8;
@@ -303,10 +324,10 @@
             color: #1a2a3a;
         }
         body.light-mode::before {
-            background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
+            background: linear-gradient(rgba(255,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
         }
         body.light-mode .glass-nav {
-            background: rgba(26, 58, 92, 0.95);
+            background: #1a3a5c;
         }
         body.light-mode .glass-sidebar {
             background: rgba(255,255,255,0.92);
@@ -381,11 +402,6 @@
         }
         body.light-mode .section-title { color: #1a3a5c !important; }
         body.light-mode .result-count  { color: #1a3a5c !important; background: rgba(255,255,255,0.9) !important; border-color: rgba(26,58,92,0.2) !important; }
-        body.light-mode footer {
-            border-color: rgba(26,58,92,0.1) !important;
-            color: #6b7c8f !important;
-            background: rgba(255,255,255,0.6) !important;
-        }
         body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
         body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
         body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
@@ -487,13 +503,6 @@
         .btn-info    { background: #3b82f6; color: white; }
         .btn-info:hover    { background: #2563eb; }
 
-        /* Footer */
-        footer {
-            border-color: rgba(255,255,255,0.08) !important;
-            color: var(--muted) !important;
-            background: rgba(10,15,40,0.5) !important;
-        }
-
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
             .action-buttons { padding: 6px 14px 10px; gap: 2px; }
@@ -559,7 +568,7 @@
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
 
         <div class="relative z-10 page-content-offset">
-            <header class="glass-nav sticky top-0 z-40 shadow-lg">
+            <header class="glass-nav rounded-2xl">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
                         <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('Student.aspx')">
@@ -640,11 +649,6 @@
                     </div>
                 </div>
             </div>
-
-            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm">
-                <i class="far fa-copyright"></i> 2026 CampusConnect · Connecting Students to Campus Life
-            </footer>
-        </div>
 
         <!-- CONFIRMATION DIALOG -->
         <div id="confirmModal" class="modal-overlay">
@@ -831,13 +835,12 @@
                                 </div>
                             </div>
                             <div style="display:flex;align-items:center;gap:8px">
-                                <div class="card-banner ${getBannerClass(ann.category)} px-3 py-1 hidden sm:block">
-                                    <p class="text-white text-xs font-bold tracking-wide">${getBannerText(ann.category)}</p>
-                                </div>
-                                <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}"
-                                    style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#fb923c' : 'rgba(148,163,184,0.5)'}">
-                                    <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
-                                </button>                            </div>
+                                <span class="cat-badge ${getCatClass(ann.category)}" style="font-size:11px;padding:3px 10px;">${getBannerText(ann.category)}</span>
+                                <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin'}"
+                                    style="flex:none;width:32px;height:32px;padding:0;border-radius:50%;background:none;border:1px solid ${pinned ? '#fb923c' : '#d1d5db'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;color:${pinned ? '#fb923c' : '#9db0c4'}">
+                                    <i class="fas fa-thumbtack"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="card-title">${escapeHtml(ann.title)}</div>
                         <div class="card-desc">${escapeHtml(ann.description)}</div>
@@ -1064,6 +1067,7 @@
             const KEY = 'campus_theme';
 
             function applyTheme(isDark) {
+                document.body.classList.toggle('dark-mode', isDark);
                 document.body.classList.toggle('light-mode', !isDark);
             }
 
@@ -1078,3 +1082,4 @@
     </script>
 </body>
 </html>
+

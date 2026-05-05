@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Profile" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Profile" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -24,6 +24,8 @@
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
+        html, body, form { min-height: 100%; }
+
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -45,27 +47,31 @@
         .profile-col-left  { display: flex; flex-direction: column; gap: 18px; }
         .profile-col-right { display: flex; flex-direction: column; gap: 18px; }
 
-        /* Topbar */
+        /* Topbar — matches dashboard header */
         .topbar {
-            background: var(--surface); backdrop-filter: blur(14px);
-            border: 1px solid var(--border); border-radius: 20px;
-            padding: 14px 20px; display: flex; align-items: center;
-            justify-content: space-between; box-shadow: var(--shadow);
+            background: #1a3a5c;
+            border-radius: 24px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--shadow);
         }
-        .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: var(--primary); }
+        .brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; color: #ffffff; }
         .brand-badge {
             width: 40px; height: 40px; border-radius: 12px;
-            background: linear-gradient(135deg, #1a3a5c, #2563eb);
+            background: rgba(255,255,255,0.15);
             color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px;
         }
         .back-btn {
             display: inline-flex; align-items: center; justify-content: center;
             width: 40px; height: 40px; border-radius: 50%;
-            background: linear-gradient(135deg, #1a3a5c, #2563eb);
-            color: #fff; border: none; box-shadow: var(--shadow);
-            transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; text-decoration: none;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; cursor: pointer; text-decoration: none;
+            transition: background 0.2s;
         }
-        .back-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37,99,235,0.35); }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
 
         /* Profile card */
         .profile-card {
@@ -200,8 +206,6 @@
         }
         .logout-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(220,38,38,0.38); }
 
-        .footer-note { text-align: center; color: var(--muted); font-size: 12px; padding-bottom: 4px; }
-
         /* Toast */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -234,7 +238,6 @@
         body.dark-mode .profile-avatar { border-color: rgba(30,41,59,0.98); }
         body.dark-mode .profile-role-badge       { background: rgba(59,130,246,0.25); color: #93c5fd; }
         body.dark-mode .profile-role-badge.admin { background: rgba(139,92,246,0.25); color: #c4b5fd; }
-        body.dark-mode .brand        { color: #e0e7ff; }
         body.dark-mode .profile-name { color: #e0e7ff; }
         body.dark-mode .info-value   { color: #e0e7ff; }
         body.dark-mode .info-input   { background: rgba(51,65,85,0.8); color: #e0e7ff; border-color: #60a5fa; }
@@ -388,11 +391,6 @@
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
 
-                <div class="footer-note">
-                    <i class="fas fa-shield-alt" style="margin-right:4px;"></i>
-                    Cebu Technological University — Campus Connect Portal
-                </div>
-
             </div>
         </div>
 
@@ -514,3 +512,5 @@
     </script>
 </body>
 </html>
+
+

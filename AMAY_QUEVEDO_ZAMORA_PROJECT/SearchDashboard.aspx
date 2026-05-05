@@ -413,11 +413,6 @@
             background: rgba(255,255,255,0.9);
             border-color: rgba(26,58,92,0.15);
         }
-        body.light-mode footer {
-            border-color: rgba(26,58,92,0.1) !important;
-            color: #6b7c8f !important;
-            background: rgba(255,255,255,0.6) !important;
-        }
         body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
         body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
         body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
@@ -582,13 +577,6 @@
         /* Cap announcement images */
         .announce-card img { max-height: 200px; object-fit: cover; width: 100%; }
 
-        /* ── FOOTER ── */
-        footer {
-            border-color: rgba(255,255,255,0.07) !important;
-            color: var(--muted) !important;
-            background: rgba(5,10,25,0.5) !important;
-        }
-
         /* ── RESULT COUNT BADGE ── */
         #resultCount {
             background: rgba(99,102,241,0.18);
@@ -727,12 +715,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ═══ FOOTER ═══ -->
-            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm">
-                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Teachers to Campus Life
-            </footer>
-        </div>
 
         <!-- ═══ CONFIRM MODAL (Clear History) ═══ -->
         <div id="confirmModal" class="modal-overlay">
