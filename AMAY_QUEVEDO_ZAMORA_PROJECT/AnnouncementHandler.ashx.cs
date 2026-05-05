@@ -111,35 +111,56 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
         }
 
+        // ── Helper: save all uploaded files and return comma-separated URLs ────────────────────────
+        private string SaveUploadedFiles(HttpContext ctx)
+        {
+            var urls = new System.Collections.Generic.List<string>();
+            string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
+            if (!System.IO.Directory.Exists(uploadsDir))
+                System.IO.Directory.CreateDirectory(uploadsDir);
+
+            // Accept multiple images (imageFile, imageFile_1, imageFile_2, ...)
+            // Also accept videoFile and attachFile keys
+            var allowedImageExts  = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                { ".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp" };
+            var allowedVideoExts  = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                { ".mp4", ".webm", ".ogg", ".mov", ".avi" };
+            var allowedAttachExts = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                { ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx", ".txt", ".zip" };
+
+            for (int i = 0; i < ctx.Request.Files.Count; i++)
+            {
+                var file = ctx.Request.Files[i];
+                if (file == null || file.ContentLength == 0) continue;
+                string ext = System.IO.Path.GetExtension(file.FileName).ToLower();
+                bool allowed = allowedImageExts.Contains(ext) || allowedVideoExts.Contains(ext) || allowedAttachExts.Contains(ext);
+                if (!allowed) continue;
+                string fileName = Guid.NewGuid().ToString() + ext;
+                file.SaveAs(System.IO.Path.Combine(uploadsDir, fileName));
+                urls.Add("uploads/announcements/" + fileName);
+            }
+            return string.Join(",", urls);
+        }
+
         // ── Query #1 INSERT ──────────────────────────────────────────────────────────────────────────
         private void Create(HttpContext ctx, JavaScriptSerializer js)
         {
-            if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
-                ctx.Session["Role"].ToString() != "Admin")
+            // Check session — accept any logged-in Admin
+            bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
+            string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+
+            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             {
-                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized (role=" + sessionRole + ", loggedIn=" + isLoggedIn + ")" }));
                 return;
             }
 
             string title   = ctx.Request.Form["title"]    != null ? ctx.Request.Form["title"].Trim()    : "";
             string content = ctx.Request.Form["content"]  != null ? ctx.Request.Form["content"].Trim()  : "";
             string cat     = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
-            string imgUrl  = "";
             int    uid     = Convert.ToInt32(ctx.Session["UserId"]);
 
-            if (ctx.Request.Files.Count > 0 && ctx.Request.Files["imageFile"] != null)
-            {
-                var file = ctx.Request.Files["imageFile"];
-                if (file.ContentLength > 0)
-                {
-                    string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
-                    if (!System.IO.Directory.Exists(uploadsDir))
-                        System.IO.Directory.CreateDirectory(uploadsDir);
-                    string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
-                    file.SaveAs(System.IO.Path.Combine(uploadsDir, fileName));
-                    imgUrl = "uploads/announcements/" + fileName;
-                }
-            }
+            string mediaUrls = SaveUploadedFiles(ctx);
 
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
             {
@@ -159,7 +180,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     cmd.Parameters.AddWithValue("@title",   title);
                     cmd.Parameters.AddWithValue("@content", content);
                     cmd.Parameters.AddWithValue("@cat",     cat);
-                    cmd.Parameters.AddWithValue("@img",     imgUrl);
+                    cmd.Parameters.AddWithValue("@img",     mediaUrls);
                     newId = (int)cmd.ExecuteScalar();
                 }
                 using (var notifCmd = new SqlCommand(
@@ -174,28 +195,32 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void Update(HttpContext ctx, JavaScriptSerializer js)
         {
-            if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
-                ctx.Session["Role"].ToString() != "Admin")
-            { ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" })); return; }
+            bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
+            string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+
+            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            { ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized (role=" + sessionRole + ")" })); return; }
 
             int    id      = Convert.ToInt32(ctx.Request["id"]);
             string title   = ctx.Request.Form["title"]    != null ? ctx.Request.Form["title"].Trim()    : "";
             string content = ctx.Request.Form["content"]  != null ? ctx.Request.Form["content"].Trim()  : "";
             string cat     = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
-            string imgUrl  = null;
 
-            if (ctx.Request.Files.Count > 0 && ctx.Request.Files["imageFile"] != null)
-            {
-                var file = ctx.Request.Files["imageFile"];
-                if (file.ContentLength > 0)
-                {
-                    string uploadsDir = ctx.Server.MapPath("~/uploads/announcements/");
-                    if (!System.IO.Directory.Exists(uploadsDir)) System.IO.Directory.CreateDirectory(uploadsDir);
-                    string fileName = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
-                    file.SaveAs(System.IO.Path.Combine(uploadsDir, fileName));
-                    imgUrl = "uploads/announcements/" + fileName;
-                }
-            }
+            // keepUrls = comma-separated existing URLs the client wants to retain
+            string keepUrls = ctx.Request.Form["keepUrls"] ?? "";
+
+            string newMediaUrls = SaveUploadedFiles(ctx);
+
+            // Merge kept existing URLs with any newly uploaded ones
+            var finalParts = new List<string>();
+            if (!string.IsNullOrEmpty(keepUrls))
+                foreach (var u in keepUrls.Split(','))
+                    if (!string.IsNullOrEmpty(u.Trim())) finalParts.Add(u.Trim());
+            if (!string.IsNullOrEmpty(newMediaUrls))
+                foreach (var u in newMediaUrls.Split(','))
+                    if (!string.IsNullOrEmpty(u.Trim())) finalParts.Add(u.Trim());
+
+            string finalMediaUrls = string.Join(",", finalParts);
 
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
             { ctx.Response.Write(js.Serialize(new { ok = false, error = "Title and content are required" })); return; }
@@ -203,16 +228,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
-                string sql = imgUrl != null
-                    ? "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img WHERE AnnouncementId=@id"
-                    : "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat WHERE AnnouncementId=@id";
-                using (var cmd = new SqlCommand(sql, con))
+                using (var cmd = new SqlCommand(
+                    "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img WHERE AnnouncementId=@id", con))
                 {
                     cmd.Parameters.AddWithValue("@title",   title);
                     cmd.Parameters.AddWithValue("@content", content);
                     cmd.Parameters.AddWithValue("@cat",     cat);
                     cmd.Parameters.AddWithValue("@id",      id);
-                    if (imgUrl != null) cmd.Parameters.AddWithValue("@img", imgUrl);
+                    cmd.Parameters.AddWithValue("@img",     finalMediaUrls);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -221,8 +244,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void Delete(HttpContext ctx, JavaScriptSerializer js)
         {
-            if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] ||
-                ctx.Session["Role"].ToString() != "Admin")
+            bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
+            string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+
+            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
             { ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" })); return; }
 
             int id = Convert.ToInt32(ctx.Request["id"]);

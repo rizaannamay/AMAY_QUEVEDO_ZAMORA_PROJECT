@@ -21,12 +21,12 @@
             --surface-strong: #ffffff;
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --active-bg: #e8f0fe;
+            --active-bg: #e0f7fa;
             --danger: #dc2626;
             --danger-hover: #b91c1c;
             --success: #10b981;
@@ -35,6 +35,22 @@
 
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            z-index: 1199;
+            pointer-events: none;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -54,14 +70,22 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 16px 20px 20px;
+            gap: 16px;
+            padding: 120px 20px 32px 16px;
             padding-left: 286px;
+            overflow-y: visible;
+        }
+
+        /* Dashboard layout: sidebar + main side by side */
+        .dashboard-body {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            flex: 1;
         }
 
         .header {
-            flex: 0 0 auto;
-            background: #1a3a5c;
+            background: #2AACBF;
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -69,8 +93,13 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 1200;
         }
 
         .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; }
@@ -175,16 +204,18 @@
 
         .slideout-panel {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 270px;
-            height: 100vh;
+            top: 120px;
+            left: 10px;
+            width: 260px;
+            height: calc(100vh - 130px);
             background: var(--surface-strong);
             backdrop-filter: blur(16px);
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
             z-index: 1100;
             display: flex;
             flex-direction: column;
+            border-radius: 16px;
+            overflow: hidden;
             border-right: 1px solid var(--border);
         }
 
@@ -228,7 +259,7 @@
         .panel-menu-item i {
             width: 20px;
             font-size: 16px;
-            color: var(--primary);
+            color: #2AACBF;
         }
 
         .panel-menu-item:hover {
@@ -264,7 +295,7 @@
         }
 
         .theme-toggle-row .toggle-switch-panel.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
         }
 
         .theme-toggle-row .toggle-switch-panel::after {
@@ -315,13 +346,22 @@
             transition: all 0.2s;
         }
 
+        .dropdown-item-panel i { color: #2AACBF; }
+
         .dropdown-item-panel:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
 
+        .dropdown-item-panel.active-filter {
+            background: #2AACBF;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .dropdown-item-panel.active-filter i { color: #ffffff; }
+
         .avatar, .post-avatar, .create-post-avatar {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             color: #ffffff;
         }
 
@@ -357,15 +397,49 @@
         }
 
         .main-panel.card {
-            min-height: 600px;
+            height: calc(100vh - 140px);
+            position: sticky;
+            top: 120px;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .announcement-board {
             flex: 1 1 auto;
+            overflow-y: auto;
+            scrollbar-width: none;        /* Firefox */
+            -ms-overflow-style: none;     /* IE/Edge */
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
+        }
+
+        /* Teacher: main-panel wraps create-post + card, needs flex column */
+        main.main-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            height: calc(100vh - 140px);
+            position: sticky;
+            top: 120px;
+        }
+
+        main.main-panel > .card {
+            flex: 1 1 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        main.main-panel .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary);
+            border-radius: 24px 24px 0 0;
         }
 
         .announcement-card {
@@ -435,7 +509,7 @@
             font-weight: 600;
         }
 
-        .post-category-exam { background: #e3f2fd; color: #1976d2; }
+        .post-category-exam { background: #e0f7fa; color: #2AACBF; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
         .post-category-general { background: #e0e7ff; color: #4f46e5; }
@@ -455,7 +529,7 @@
 
         .pin-btn-top.pinned { color: #e65100; }
         .pin-btn-top:hover, .edit-btn-top:hover, .delete-btn-top:hover { background: var(--surface-soft); }
-        .edit-btn-top:hover { color: #3b82f6; }
+        .edit-btn-top:hover { color: #2AACBF; }
         .delete-btn-top:hover { color: #ef4444; }
 
         .post-content { padding: 0 22px 16px; }
@@ -516,7 +590,7 @@
 
         .comment-input button {
             padding: 10px 22px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -679,6 +753,13 @@
 
         body.dark-mode .announcement-board { background: transparent; }
 
+        /* Hide scrollbar on announcement board (Chrome/Safari) */
+        .announcement-board::-webkit-scrollbar { display: none; }
+
+        body:not(.dark-mode) .announcement-card {
+            border-color: #2AACBF;
+        }
+
         body.dark-mode .announcement-card {
             background: #22314a;
             border-color: rgba(86, 136, 224, 0.45);
@@ -769,11 +850,15 @@
         body.dark-mode #pm-email { color: #e2e8f0; }
 
         @media (max-width: 980px) {
-            .content-shell { overflow: visible; }
-            .announcement-board { overflow: visible; }
             html, body { overflow: auto; }
-            .app-shell { padding-left: 20px; }
+            .app-shell { height: auto; min-height: 100%; overflow-y: auto; padding-left: 20px; padding-top: 120px; }
             .slideout-panel { display: none; }
+            .dashboard-body { display: block; }
+            .content-shell { overflow: visible; }
+            .main-panel.card { height: auto; position: static; overflow: visible; }
+            main.main-panel { height: auto; position: static; }
+            main.main-panel > .card { overflow: visible; }
+            .announcement-board { overflow: visible; }
         }
 
         .delete-modal-overlay {
@@ -850,8 +935,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="app-shell">
-            <div class="header">
+        <div class="header">
                 <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
                     <i class="fas fa-chalkboard-teacher"></i> Campus Announcement
                 </div>
@@ -881,7 +965,8 @@
                     </div>
                 </div>
             </div>
-
+        <div class="app-shell">
+            <div class="dashboard-body">
             <div id="slideoutPanel" class="slideout-panel">
                 <div class="panel-header">
                     <h3><i class="fas fa-sliders-h"></i> Menu</h3>
@@ -926,8 +1011,8 @@
                             <div class="create-post-input">Share an announcement with students...</div>
                         </div>
                     </div>
-                    <div class="card" style="flex:1 1 0; min-height:0; display:flex; flex-direction:column;">
-                        <div class="card-header" style="padding:18px 22px; border-bottom:1px solid var(--border);">
+                    <div class="card">
+                        <div class="card-header" style="padding:18px 22px; border-bottom:1px solid var(--border); flex-shrink:0; border-radius:24px 24px 0 0;">
                             <i class="fas fa-bullhorn"></i> Announcement Board
                             <span style="float: right; font-size: 12px;">Showing: <span id="activeFilterLabel">All</span></span>
                         </div>
@@ -935,6 +1020,7 @@
                     </div>
                 </main>
             </div>
+            </div><!-- end dashboard-body -->
         </div>
 
         <div id="createPostModal" class="modal">
@@ -962,15 +1048,37 @@
                         <textarea id="announcementContent" rows="4" placeholder="Write your announcement here..." style="width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface-soft);font-size:14px;outline:none;resize:vertical;"></textarea>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Photo <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Photos <span style="font-weight:400;color:var(--muted);">(optional, multiple)</span></label>
                         <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                             <i class="fas fa-image" style="color:var(--primary);font-size:18px;"></i>
-                            <span style="font-size:13px;color:var(--muted);">Click to choose an image</span>
-                            <input type="file" id="announcementImageFile" accept="image/*" onchange="previewImageFile()" style="display:none;" />
+                            <span style="font-size:13px;color:var(--muted);">Click to choose images</span>
+                            <input type="file" id="announcementImageFile" accept="image/*" multiple onchange="previewImageFiles()" style="display:none;" />
                         </label>
-                        <div id="imagePreview" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;">
-                            <img id="previewImg" src="" style="width:100%;max-height:200px;object-fit:cover;display:block;" />
-                            <button type="button" onclick="clearImagePreview()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                        <div id="imagePreviewContainer" style="margin-top:10px;flex-wrap:wrap;gap:8px;display:none;"></div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Video <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
+                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            <i class="fas fa-video" style="color:var(--primary);font-size:18px;"></i>
+                            <span style="font-size:13px;color:var(--muted);">Click to choose a video</span>
+                            <input type="file" id="announcementVideoFile" accept="video/*" onchange="previewVideoFile()" style="display:none;" />
+                        </label>
+                        <div id="videoPreviewContainer" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;">
+                            <video id="previewVideo" controls style="width:100%;max-height:180px;display:block;border-radius:12px;"></video>
+                            <button type="button" onclick="clearVideoPreview()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&times;</button>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom:8px;">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. — optional)</span></label>
+                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                            <i class="fas fa-paperclip" style="color:var(--primary);font-size:18px;"></i>
+                            <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
+                            <input type="file" id="announcementAttachFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" onchange="previewAttachFile()" style="display:none;" />
+                        </label>
+                        <div id="attachPreviewContainer" style="display:none;margin-top:8px;padding:10px 14px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                            <i class="fas fa-file" style="color:var(--primary);font-size:18px;"></i>
+                            <span id="attachFileName" style="font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
+                            <button type="button" onclick="clearAttachPreview()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;">&times;</button>
                         </div>
                     </div>
                 </div>
@@ -984,11 +1092,11 @@
         <div id="profileModal" class="modal" style="display:none;">
             <div class="modal-content" style="max-width:420px;text-align:left;">
                 <div style="text-align:center;margin-bottom:20px;">
-                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
+                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2AACBF,#1a9aaa);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname"><%= Session["FullName"] ?? "User" %></div>
-                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role"><%= Session["Role"] ?? "Admin" %></span>
+                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#e0f7fa;color:#2AACBF;" id="pm-role"><%= Session["Role"] ?? "Admin" %></span>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;"><i class="fas fa-user" style="color:var(--primary);"></i><div><div style="font-size:11px;color:var(--muted);">Username</div><div style="font-weight:600;" id="pm-username"><%= Session["Username"] ?? "User" %></div></div></div>
@@ -1015,6 +1123,12 @@
         </div>
 
     </form>
+
+    <!-- Image Lightbox -->
+    <div id="imageLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;padding:20px;">
+        <button onclick="closeLightbox()" style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
+        <img id="lightboxImg" src="" style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
+    </div>
 
     <div id="deleteConfirmModal" class="delete-modal-overlay">
         <div class="delete-modal-card">
@@ -1138,7 +1252,7 @@
                     <div class="post-content">
                         <div class="post-title">${escapeHtml(post.title)}</div>
                         <div class="post-text">${escapeHtml(post.content)}</div>
-                        ${post.imageUrl ? `<div class="post-image"><img src="${post.imageUrl}" /></div>` : ''}
+                        ${renderMediaHtml(post.imageUrl)}
                     </div>
                     <div class="post-stats">
                         <span onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i> <span class="like-count">${likeCount}</span> Likes</span>
@@ -1173,8 +1287,17 @@
             if (!card) return;
 
             setTimeout(function() {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Scroll within the announcement-board container (not the page)
+                let board = document.getElementById('announcementsContainer');
+                if (board) {
+                    let cardTop = card.offsetTop - board.offsetTop;
+                    board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
+                } else {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 card.classList.add('notification-target');
+                // Remove highlight after 5 seconds
+                setTimeout(function() { card.classList.remove('notification-target'); }, 5000);
             }, 250);
 
             toggleCommentSection(focusPostId);
@@ -1189,7 +1312,28 @@
                 let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
                     `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
                         ${commentAvatarHtml(r.profileImage)}
-                        <div><span class="comment-author">${escapeHtml(r.author)}</span><div>${escapeHtml(r.text)}</div><small>${r.date||''}</small></div>
+                        <div style="flex:1;min-width:0;">
+                            <span class="comment-author">${escapeHtml(r.author)}</span>
+                            <div>${escapeHtml(r.text)}</div>
+                            <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                <small>${r.date||''}</small>
+                                <button type="button" class="comment-like-btn ${r.userLiked?'liked':''}" onclick="likeComment(${r.commentId},this)"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                    <i class="${r.userLiked?'fas':'far'} fa-heart"></i>
+                                    <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
+                                </button>
+                                <button type="button" onclick="toggleReplyBox(${r.commentId},${postId})"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
+                                    <i class="fas fa-reply"></i> Reply
+                                </button>
+                            </div>
+                            <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
+                                <div class="comment-input" style="margin:0;">
+                                    <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                    <button type="button" onclick="submitReply(${r.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>`
                 ).join('');
                 return `<div class="comment" data-comment-id="${c.commentId}">
@@ -1221,6 +1365,66 @@
             }).join('');
         }
 
+        // ====================== MEDIA RENDER HELPER ======================
+        var videoExts  = ['mp4','webm','ogg','mov','avi'];
+        var imageExts  = ['jpg','jpeg','png','gif','webp','bmp'];
+
+        function getExt(url) {
+            return (url.split('.').pop() || '').toLowerCase().split('?')[0];
+        }
+
+        function renderMediaHtml(mediaUrl) {
+            if (!mediaUrl) return '';
+            var urls = mediaUrl.split(',').map(function(u) { return u.trim(); }).filter(Boolean);
+            if (!urls.length) return '';
+            var html = '';
+            var images = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) !== -1; });
+            var videos = urls.filter(function(u) { return videoExts.indexOf(getExt(u)) !== -1; });
+            var files  = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
+
+            if (images.length === 1) {
+                html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
+            } else if (images.length > 1) {
+                html += `<div class="post-image" style="display:flex;flex-wrap:wrap;gap:6px;">`;
+                images.forEach(function(img) {
+                    html += `<img src="${img}" style="width:calc(50% - 3px);max-height:160px;object-fit:cover;border-radius:12px;cursor:zoom-in;flex:1 1 calc(50% - 3px);" onclick="openLightbox('${img}')" onerror="this.style.display='none'" />`;
+                });
+                html += `</div>`;
+            }
+
+            videos.forEach(function(vid) {
+                html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
+            });
+
+            files.forEach(function(f) {
+                var fname = f.split('/').pop();
+                var ext = getExt(f).toUpperCase();
+                html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-file-alt" style="color:var(--primary);font-size:18px;"></i>
+                    <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fname}</span>
+                    <a href="${f}" download="${fname}" style="padding:6px 14px;background:#2AACBF;color:#fff;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;"><i class="fas fa-download" style="margin-right:4px;"></i>Download</a>
+                </div>`;
+            });
+
+            return html;
+        }
+
+        // ====================== LIGHTBOX ======================
+        function openLightbox(src) {
+            var lb = document.getElementById('imageLightbox');
+            var lbImg = document.getElementById('lightboxImg');
+            if (!lb || !lbImg) return;
+            lbImg.src = src;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            var lb = document.getElementById('imageLightbox');
+            if (lb) lb.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
@@ -1250,7 +1454,7 @@
         function showToast(msg) {
             let t = document.createElement('div');
             t.innerText = msg;
-            t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
+            t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2AACBF;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
             document.body.appendChild(t);
             setTimeout(() => t.remove(), 2500);
         }
@@ -1266,7 +1470,7 @@
                     saveSharedState();
                     renderAnnouncements();
                     if (focusPostId) highlightFocusedPost();
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                    showToast(res.liked ? 'Liked!' : 'Like removed');
                 });
         }
 
@@ -1302,7 +1506,10 @@
         function loadComments(postId) {
             fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials: 'same-origin' })
                 .then(r => r.json())
-                .then(list => {
+                .then(data => {
+                    // API returns array on success, object with success:false on error
+                    if (!Array.isArray(data)) return;
+                    const list = data;
                     st_comments[postId] = list;
                     let listDiv = document.getElementById(`commentsList_${postId}`);
                     if (listDiv) listDiv.innerHTML = renderCommentsList(postId);
@@ -1369,9 +1576,8 @@
             document.getElementById('activeFilterLabel').innerText = cat;
             renderAnnouncements();
             if (focusPostId) highlightFocusedPost();
-            document.querySelectorAll('.dropdown-item-panel').forEach(btn => {
-                btn.style.fontWeight = btn.textContent.includes(cat) || (cat === 'All' && btn.textContent.includes('All')) ? '700' : '';
-                btn.style.color = btn.style.fontWeight === '700' ? 'var(--primary)' : '';
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === cat);
             });
         }
 
@@ -1388,17 +1594,120 @@
             btn.onclick = publishAnnouncement;
         }
 
+        // ── Media state for create/edit modal ──────────────────────────────
+        let selectedImageFiles = [];
+        let selectedVideoFile  = null;
+        let selectedAttachFile = null;
+        let existingMediaUrls  = [];  // existing URLs shown in edit mode
+
         function closeCreatePostModal() {
             document.getElementById('createPostModal').style.display = 'none';
             document.getElementById('announcementTitle').value = '';
             document.getElementById('announcementContent').value = '';
             document.getElementById('announcementImageFile').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('announcementVideoFile').value = '';
+            document.getElementById('announcementAttachFile').value = '';
+            selectedImageFiles = [];
+            selectedVideoFile  = null;
+            selectedAttachFile = null;
+            existingMediaUrls  = [];
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
+            document.getElementById('videoPreviewContainer').style.display = 'none';
+            document.getElementById('attachPreviewContainer').style.display = 'none';
+        }
+
+        function previewImageFiles() {
+            let input = document.getElementById('announcementImageFile');
+            let newFiles = Array.from(input.files);
+            // Merge new files, skip duplicates by name+size
+            newFiles.forEach(function(f) {
+                let isDupe = selectedImageFiles.some(function(e) { return e.name === f.name && e.size === f.size; });
+                if (!isDupe) selectedImageFiles.push(f);
+            });
+            // Reset input so the same file can be re-added after removal
+            input.value = '';
+            renderImagePreviews();
+        }
+
+        function renderImagePreviews() {
+            let container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = '';
+            if (!selectedImageFiles.length) { container.style.display = 'none'; return; }
+            container.style.display = 'flex';
+            selectedImageFiles.forEach(function(file, idx) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let wrap = document.createElement('div');
+                    wrap.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;';
+                    wrap.innerHTML = `
+                        <img src="${e.target.result}" style="width:100px;height:80px;object-fit:cover;display:block;" />
+                        <button type="button" onclick="removeImageFile(${idx})"
+                            style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;
+                                   background:rgba(0,0,0,0.6);color:#fff;border:none;cursor:pointer;
+                                   font-size:13px;display:flex;align-items:center;justify-content:center;line-height:1;">
+                            &times;
+                        </button>`;
+                    container.appendChild(wrap);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImageFile(idx) {
+            selectedImageFiles.splice(idx, 1);
+            renderImagePreviews();
+        }
+
+        function previewVideoFile() {
+            let file = document.getElementById('announcementVideoFile').files[0];
+            let container = document.getElementById('videoPreviewContainer');
+            if (file) {
+                selectedVideoFile = file;
+                let url = URL.createObjectURL(file);
+                document.getElementById('previewVideo').src = url;
+                container.style.display = 'block';
+                // Restore default clear button behaviour
+                let clearBtn = container.querySelector('button');
+                if (clearBtn) clearBtn.onclick = clearVideoPreview;
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function clearVideoPreview() {
+            selectedVideoFile = null;
+            document.getElementById('announcementVideoFile').value = '';
+            document.getElementById('previewVideo').src = '';
+            document.getElementById('videoPreviewContainer').style.display = 'none';
+        }
+
+        function previewAttachFile() {
+            let file = document.getElementById('announcementAttachFile').files[0];
+            let container = document.getElementById('attachPreviewContainer');
+            if (file) {
+                selectedAttachFile = file;
+                document.getElementById('attachFileName').textContent = file.name;
+                container.style.display = 'flex';
+                // Restore default clear button behaviour
+                let clearBtn = container.querySelector('button');
+                if (clearBtn) clearBtn.onclick = clearAttachPreview;
+            } else {
+                container.style.display = 'none';
+            }
+        }
+
+        function clearAttachPreview() {
+            selectedAttachFile = null;
+            document.getElementById('announcementAttachFile').value = '';
+            document.getElementById('attachPreviewContainer').style.display = 'none';
         }
 
         function clearImagePreview() {
+            selectedImageFiles = [];
             document.getElementById('announcementImageFile').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
         }
 
         function publishAnnouncement() {
@@ -1407,57 +1716,192 @@
             let category = document.getElementById('announcementCategory').value;
             if (!title || !content) return showToast('Please fill in title and content');
 
-            let form = new FormData();
-            form.append('title', title);
-            form.append('content', content);
-            form.append('category', category);
+            let btn = document.getElementById('postBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Posting...';
 
-            let file = document.getElementById('announcementImageFile').files[0];
-            if (file) form.append('imageFile', file);
+            let formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('category', category);
+
+            // Multiple images
+            for (let i = 0; i < selectedImageFiles.length; i++) {
+                formData.append('imageFile', selectedImageFiles[i]);
+            }
+            // Video
+            let videoFile = selectedVideoFile || document.getElementById('announcementVideoFile').files[0];
+            if (videoFile) formData.append('videoFile', videoFile);
+            // Attachment
+            let attachFile = selectedAttachFile || document.getElementById('announcementAttachFile').files[0];
+            if (attachFile) formData.append('attachFile', attachFile);
 
             fetch('AnnouncementHandler.ashx?action=create', {
                 method: 'POST',
                 credentials: 'same-origin',
-                body: form
-            }).then(() => {
-                closeCreatePostModal();
-                loadAnnouncementsFromDB();
-                showToast('Posted!');
+                body: formData
+            })
+            .then(r => r.json())
+            .then(res => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
+                if (res.ok) {
+                    closeCreatePostModal();
+                    loadAnnouncementsFromDB();
+                    showToast('Posted!');
+                } else {
+                    showToast('Error: ' + (res.error || 'Could not post'));
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
+                showToast('Network error. Please try again.');
+                console.error('Publish error:', err);
             });
         }
 
         function openEditModal(id) {
             let post = st_announcements.find(p => p.id === id);
-            if (post) {
-                document.getElementById('announcementTitle').value = post.title;
-                document.getElementById('announcementContent').value = post.content;
-                document.getElementById('announcementCategory').value = post.category;
-                openCreatePostModal();
-                let btn = document.getElementById('postBtn');
-                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
-                btn.onclick = () => updateAnnouncement(id);
+            if (!post) return;
+
+            document.getElementById('announcementTitle').value    = post.title;
+            document.getElementById('announcementContent').value  = post.content;
+            document.getElementById('announcementCategory').value = post.category;
+
+            // Reset new-file state
+            selectedImageFiles = [];
+            selectedVideoFile  = null;
+            selectedAttachFile = null;
+            document.getElementById('announcementImageFile').value  = '';
+            document.getElementById('announcementVideoFile').value  = '';
+            document.getElementById('announcementAttachFile').value = '';
+            document.getElementById('imagePreviewContainer').innerHTML  = '';
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('videoPreviewContainer').style.display = 'none';
+            document.getElementById('attachPreviewContainer').style.display = 'none';
+
+            // Populate existing media as removable previews
+            existingMediaUrls = post.imageUrl
+                ? post.imageUrl.split(',').map(u => u.trim()).filter(Boolean)
+                : [];
+            renderExistingMediaPreviews();
+
+            openCreatePostModal();
+            let btn = document.getElementById('postBtn');
+            btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+            btn.onclick = () => updateAnnouncement(id);
+        }
+
+        function renderExistingMediaPreviews() {
+            // Images
+            let imgContainer = document.getElementById('imagePreviewContainer');
+            let existingImages = existingMediaUrls.filter(u => imageExts.indexOf(getExt(u)) !== -1);
+            if (existingImages.length) {
+                imgContainer.style.display = 'flex';
+                existingImages.forEach(function(url) {
+                    let wrap = document.createElement('div');
+                    wrap.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;border:2px solid #2AACBF;flex-shrink:0;';
+                    wrap.dataset.url = url;
+                    wrap.innerHTML = `
+                        <img src="${url}" style="width:100px;height:80px;object-fit:cover;display:block;" />
+                        <button type="button" onclick="removeExistingMedia('${url}')"
+                            style="position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;
+                                   background:rgba(220,38,38,0.85);color:#fff;border:none;cursor:pointer;
+                                   font-size:13px;display:flex;align-items:center;justify-content:center;line-height:1;">
+                            &times;
+                        </button>`;
+                    imgContainer.appendChild(wrap);
+                });
+            }
+
+            // Video
+            let existingVideo = existingMediaUrls.find(u => videoExts.indexOf(getExt(u)) !== -1);
+            if (existingVideo) {
+                let vc = document.getElementById('videoPreviewContainer');
+                document.getElementById('previewVideo').src = existingVideo;
+                vc.style.display = 'block';
+                // Replace the clear button to remove from existingMediaUrls
+                let clearBtn = vc.querySelector('button');
+                if (clearBtn) clearBtn.onclick = function() { removeExistingMedia(existingVideo); };
+            }
+
+            // File attachment
+            let existingFile = existingMediaUrls.find(u => imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1);
+            if (existingFile) {
+                let fname = existingFile.split('/').pop();
+                document.getElementById('attachFileName').textContent = fname;
+                let ac = document.getElementById('attachPreviewContainer');
+                ac.style.display = 'flex';
+                let clearBtn = ac.querySelector('button');
+                if (clearBtn) clearBtn.onclick = function() { removeExistingMedia(existingFile); };
+            }
+        }
+
+        function removeExistingMedia(url) {
+            existingMediaUrls = existingMediaUrls.filter(u => u !== url);
+            let ext = getExt(url);
+
+            if (imageExts.indexOf(ext) !== -1) {
+                // Remove just this image thumbnail
+                let container = document.getElementById('imagePreviewContainer');
+                let wrap = container.querySelector('[data-url="' + url + '"]');
+                if (wrap) wrap.remove();
+                if (!container.children.length) container.style.display = 'none';
+            } else if (videoExts.indexOf(ext) !== -1) {
+                document.getElementById('previewVideo').src = '';
+                document.getElementById('videoPreviewContainer').style.display = 'none';
+            } else {
+                document.getElementById('attachPreviewContainer').style.display = 'none';
             }
         }
 
         function updateAnnouncement(id) {
-            let title = document.getElementById('announcementTitle').value;
-            let content = document.getElementById('announcementContent').value;
+            let title    = document.getElementById('announcementTitle').value;
+            let content  = document.getElementById('announcementContent').value;
             let category = document.getElementById('announcementCategory').value;
-            let form = new FormData();
-            form.append('title', title);
-            form.append('content', content);
-            form.append('category', category);
-            let file = document.getElementById('announcementImageFile').files[0];
-            if (file) form.append('imageFile', file);
+            let formData = new FormData();
+            formData.append('title',    title);
+            formData.append('content',  content);
+            formData.append('category', category);
+            // Tell the server which existing URLs to keep
+            formData.append('keepUrls', existingMediaUrls.join(','));
+
+            // New files selected during edit
+            for (let i = 0; i < selectedImageFiles.length; i++) {
+                formData.append('imageFile', selectedImageFiles[i]);
+            }
+            let videoFile = selectedVideoFile || document.getElementById('announcementVideoFile').files[0];
+            if (videoFile) formData.append('videoFile', videoFile);
+            let attachFile = selectedAttachFile || document.getElementById('announcementAttachFile').files[0];
+            if (attachFile) formData.append('attachFile', attachFile);
+
+            let btn = document.getElementById('postBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Updating...';
 
             fetch(`AnnouncementHandler.ashx?action=update&id=${id}`, {
                 method: 'POST',
-                body: form,
+                body: formData,
                 credentials: 'same-origin'
-            }).then(() => {
-                closeCreatePostModal();
-                loadAnnouncementsFromDB();
-                showToast('Updated');
+            })
+            .then(r => r.json())
+            .then(res => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+                if (res.ok) {
+                    closeCreatePostModal();
+                    loadAnnouncementsFromDB();
+                    showToast('Updated');
+                } else {
+                    showToast('Error: ' + (res.error || 'Could not update'));
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+                showToast('Network error. Please try again.');
+                console.error('Update error:', err);
             });
         }
 
@@ -1482,7 +1926,10 @@
         });
 
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') document.getElementById('deleteConfirmModal').classList.remove('active');
+            if (e.key === 'Escape') {
+                document.getElementById('deleteConfirmModal').classList.remove('active');
+                closeLightbox();
+            }
         });
 
         function openProfileModal() { document.getElementById('profileModal').style.display = 'flex'; }
@@ -1500,18 +1947,6 @@
         }
 
         function openNotificationDropdown() { navigateWithFlip('Notifications.aspx'); }
-
-        function previewImageFile() {
-            let file = document.getElementById('announcementImageFile').files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = e => {
-                    document.getElementById('previewImg').src = e.target.result;
-                    document.getElementById('imagePreview').style.display = 'block';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
 
         document.getElementById('settingsThemeBtn').addEventListener('click', (e) => {
             e.stopPropagation();

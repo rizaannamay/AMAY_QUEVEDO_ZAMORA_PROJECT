@@ -18,14 +18,31 @@
             --surface-strong: #ffffff;
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         html, body, form { min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 199;
+            pointer-events: none;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
         body {
             min-height: 100vh;
@@ -41,7 +58,7 @@
 
         /* ── Header (matches dashboard) ── */
         .header {
-            background: #1a3a5c;
+            background: #2AACBF;
             border-radius: 24px;
             padding: 12px 24px;
             display: flex;
@@ -49,7 +66,11 @@
             align-items: center;
             gap: 16px;
             box-shadow: var(--shadow);
-            margin: 16px 20px 0;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 200;
         }
 
         .logo {
@@ -67,7 +88,7 @@
         .back-btn:hover { background: rgba(255,255,255,0.25); }
 
         /* ── Page shell ── */
-        .page-shell { padding: 16px 20px 24px; }
+        .page-shell { padding: 80px 20px 24px; }
         .page-wrap  { max-width: 800px; margin: 24px auto 0; }
 
         .page-title {
@@ -82,7 +103,7 @@
         .pinned-card {
             background: var(--surface-strong);
             border-radius: 20px;
-            border: 1px solid #3B82F6;
+            border: 1px solid #2AACBF;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             overflow: hidden;
             transition: all 0.3s;
@@ -102,7 +123,7 @@
 
         .post-avatar {
             width: 50px; height: 50px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             color: #fff; display: flex; align-items: center; justify-content: center;
             font-size: 20px; flex-shrink: 0; overflow: hidden;
         }
@@ -119,7 +140,7 @@
             font-size: 10px; font-weight: 600;
         }
 
-        .post-category-exam       { background: #e3f2fd; color: #1976d2; }
+        .post-category-exam       { background: #e0f7fa; color: #2AACBF; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event      { background: #e8f5e9; color: #2e7d32; }
         .post-category-general    { background: #e0e7ff; color: #4f46e5; }
@@ -181,7 +202,7 @@
 
         .comment-input button {
             padding: 10px 22px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             border: none; border-radius: 30px; cursor: pointer;
             font-weight: 600; color: white; font-family: inherit;
         }
@@ -193,7 +214,7 @@
         .comment-item:last-child { border-bottom: none; }
 
         .comment-avatar {
-            width: 32px; height: 32px; background: #e8f0fe; border-radius: 50%;
+            width: 32px; height: 32px; background: #e0f7fa; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; color: var(--primary); flex-shrink: 0; overflow: hidden;
         }
@@ -216,7 +237,7 @@
         /* ── Toast ── */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-            background: #1a3a5c; color: #fff; padding: 10px 24px;
+            background: #2AACBF; color: #fff; padding: 10px 24px;
             border-radius: 30px; font-size: 13px; z-index: 9999;
             box-shadow: 0 4px 16px rgba(0,0,0,.25); pointer-events: none;
         }
@@ -264,8 +285,8 @@
         body.dark-mode .pin-badge { background: rgba(251,146,60,0.2); color: #fdba74; }
 
         @media (max-width: 768px) {
-            .header { margin: 10px 10px 0; padding: 10px 16px; }
-            .page-shell { padding: 10px 10px 32px; }
+            .header { top: 6px; left: 6px; right: 6px; padding: 10px 16px; }
+            .page-shell { padding: 76px 10px 32px; }
             .post-header { padding: 14px 16px 10px; }
             .post-content { padding: 0 16px 14px; }
             .post-stats { padding: 8px 16px; gap: 12px; font-size: 12px; }
@@ -285,15 +306,11 @@
 
         <div class="page-shell">
             <div class="page-wrap">
-                <div class="page-title">
-                    <i class="fas fa-thumbtack" style="color:#ea580c;"></i>
-                    <span>Pinned Announcements</span>
-                </div>
                 <div class="pinned-list">
                     <div style="text-align:center;padding:40px;color:var(--muted);">
                         <i class="fas fa-spinner fa-spin" style="font-size:28px;"></i>
-                        <p style="margin-top:10px;">Loading pinned announcements...ding pinned announcements...</p>
-                    </div>
+                        <p style="margin-top:10px;">
+                            Loading pinned announcements...ding pinned announcements...v>
                 </div>
             </div>
         </div>
@@ -345,7 +362,7 @@
         function showToast(msg) {
             var t = document.createElement('div');
             t.textContent = msg;
-            t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
+            t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2AACBF;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
             document.body.appendChild(t);
             setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
         }
@@ -433,7 +450,7 @@
                         }
                     }
 
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                    showToast(res.liked ? 'Liked!' : 'Like removed');
                 })
                 .catch(function () { showToast('Could not update like'); });
         }
@@ -522,7 +539,7 @@
                         var cc = card.querySelector('.comment-stat-count');
                         if (cc) cc.textContent = parseInt(cc.textContent || '0') + 1;
                     }
-                    showToast('💬 Comment posted!');
+                    showToast('Comment posted!');
                 })
                 .catch(function () {
                     if (btn) { btn.disabled = false; btn.textContent = 'Post'; }
@@ -535,7 +552,7 @@
             var url = window.location.href.split('?')[0];
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url)
-                    .then(function () { showToast('🔗 Link copied!'); })
+                    .then(function () { showToast('Link copied!'); })
                     .catch(function () { fallbackCopy(url); });
             } else {
                 fallbackCopy(url);
@@ -551,7 +568,7 @@
             dummy.select();
             document.execCommand('copy');
             document.body.removeChild(dummy);
-            showToast('🔗 Link copied!');
+            showToast('Link copied!');
         }
 
         // ── Render ────────────────────────────────────────────

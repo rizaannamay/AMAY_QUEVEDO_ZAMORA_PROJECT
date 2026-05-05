@@ -87,3 +87,15 @@ GO
 
 
 
+
+-- ── Expand ImageUrl to support multiple comma-separated media URLs ────────────
+IF EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_NAME = 'Announcements' AND COLUMN_NAME = 'ImageUrl'
+      AND CHARACTER_MAXIMUM_LENGTH < 2000
+)
+BEGIN
+    ALTER TABLE Announcements ALTER COLUMN ImageUrl NVARCHAR(MAX) NULL;
+    PRINT 'ImageUrl column expanded to NVARCHAR(MAX).';
+END
+GO

@@ -235,6 +235,12 @@
         }
         .input-wrap .toggle-pw:hover { color: #00838f; }
 
+        /* Hide browser-native password reveal button */
+        .input-wrap input[type="password"]::-ms-reveal,
+        .input-wrap input[type="password"]::-ms-clear,
+        .input-wrap input::-webkit-credentials-auto-fill-button,
+        .input-wrap input::-webkit-textfield-decoration-container { display: none !important; }
+
         .input-wrap select option { background: #fff; color: #1a2a3a; }
 
         /* ── FORGOT ROW ── */

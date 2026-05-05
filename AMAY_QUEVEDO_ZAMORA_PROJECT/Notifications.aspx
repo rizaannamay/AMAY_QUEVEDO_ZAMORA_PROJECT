@@ -17,14 +17,31 @@
             --surface-strong: #ffffff;
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
         html, body, form { min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 199;
+            pointer-events: none;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
 
         body {
             min-height: 100vh;
@@ -41,7 +58,7 @@
 
         /* ── Header (matches dashboard) ── */
         .header {
-            background: #1a3a5c;
+            background: #2AACBF;
             border-radius: 24px;
             padding: 12px 24px;
             display: flex;
@@ -49,7 +66,11 @@
             align-items: center;
             gap: 16px;
             box-shadow: var(--shadow);
-            margin: 16px 20px 0;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 200;
         }
 
         .logo {
@@ -76,7 +97,7 @@
         .mark-all-btn:hover { background: rgba(255,255,255,0.25); }
 
         /* ── Page shell ── */
-        .page-shell { padding: 16px 20px 24px; }
+        .page-shell { padding: 80px 20px 24px; }
         .page-wrap { max-width: 800px; margin: 24px auto 0; display: flex; flex-direction: column; gap: 14px; }
 
         /* ── Summary card ── */
@@ -91,7 +112,7 @@
 
         .summary-icon {
             width: 50px; height: 50px; border-radius: 14px;
-            background: linear-gradient(135deg, #1a3a5c, #2563eb);
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
 
@@ -135,9 +156,9 @@
         }
 
         .notif-like    { background: linear-gradient(135deg, #dc2626, #ef4444); }
-        .notif-comment { background: linear-gradient(135deg, #1a3a5c, #2563eb); }
+        .notif-comment { background: linear-gradient(135deg, #2AACBF, #1a9aaa); }
         .notif-share   { background: linear-gradient(135deg, #d97706, #f59e0b); }
-        .notif-default { background: linear-gradient(135deg, #1a3a5c, #2c5a7a); }
+        .notif-default { background: linear-gradient(135deg, #2AACBF, #1a9aaa); }
 
         .notif-main { flex: 1; min-width: 0; }
 
@@ -182,7 +203,7 @@
         /* ── Toast ── */
         .toast-msg {
             position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%);
-            background: #1a3a5c; color: #fff; padding: 10px 24px;
+            background: #2AACBF; color: #fff; padding: 10px 24px;
             border-radius: 999px; font-size: 13px; z-index: 9999;
             box-shadow: 0 8px 24px rgba(0,0,0,0.20); pointer-events: none;
         }
@@ -211,8 +232,8 @@
         body.dark-mode .summary-title { color: #e0e7ff; }
 
         @media (max-width: 700px) {
-            .header { margin: 10px 10px 0; padding: 10px 16px; }
-            .page-shell { padding: 10px 10px 32px; }
+            .header { top: 6px; left: 6px; right: 6px; padding: 10px 16px; }
+            .page-shell { padding: 76px 10px 32px; }
             .notif-row { padding: 12px 14px; }
         }
     </style>
@@ -392,7 +413,7 @@
                 .then(function (r) { return r.json(); })
                 .then(function (res) {
                     if (!res.ok) { showToast('Could not mark as read'); return; }
-                    showToast('✅ All notifications marked as read');
+                    showToast('All notifications marked as read');
                     loadNotifications();
                 })
                 .catch(function () { showToast('Could not mark as read'); });

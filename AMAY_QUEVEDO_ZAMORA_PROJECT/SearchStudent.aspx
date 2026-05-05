@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true"  %>
+<%@ Page Language="C#" AutoEventWireup="true"  %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,18 +16,18 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-                        :root {
+        :root {
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.92);
             --surface-strong: #ffffff;
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --active-bg: #e8f0fe;
+            --active-bg: #e0f7fa;
         }
 
         body {
@@ -35,19 +35,20 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-color: #f0f4f8;
-            background-image: url('wbg.jpg');
+            background-color: #2AACBF;
+            background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url('wbg.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
         }
 
+        /* Light overlay */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3));
+            background: transparent;
             z-index: 0;
             pointer-events: none;
         }
@@ -56,10 +57,9 @@
 
         /* -- NAVBAR -- */
         .glass-nav {
-            background: #1a3a5c;
-            border-radius: 24px;
-            margin: 16px 20px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: #2AACBF;
+            border-bottom: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
         .glass-nav h1,
@@ -83,13 +83,13 @@
         }
 
         .glass-card:hover {
-            border-color: rgba(26, 58, 92, 0.3);
+            border-color: rgba(42, 172, 191, 0.4);
             transform: translateY(-2px);
         }
 
         .announce-card {
             background: #ffffff;
-            border: 1px solid #3B82F6;
+            border: 1px solid #2AACBF;
             border-radius: 20px;
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -100,11 +100,11 @@
         .announce-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
-            border-color: #1E3A8A;
+            border-color: #1a9aaa;
         }
 
         .card-author-name { color: #1a3a5c; font-weight: 700; font-size: 15px; }
-        .card-meta        { color: #6b7c8f; font-size: 12px; }
+        .card-meta        { color: var(--muted); font-size: 12px; }
         .card-title       { color: #1a2a3a; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .card-desc        { color: #374151; font-size: 13px; line-height: 1.6; }
 
@@ -126,13 +126,13 @@
             display: flex;
             gap: 16px;
             padding: 8px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(26, 58, 92, 0.08);
+            border-bottom: 1px solid rgba(26, 58, 92, 0.08);
             color: var(--muted);
             font-size: 13px;
         }
         .post-stats span { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
-        .post-stats span:hover { color: #93c5fd; }
+        .post-stats span:hover { color: #1a3a5c; }
 
         .action-buttons {
             display: flex;
@@ -155,12 +155,12 @@
             transition: all 0.2s;
             font-family: inherit;
         }
-        .action-btn:hover { background: rgba(255, 255, 255, 0.06); color: #93C5FD; }
-        .action-btn.liked { color: #f87171; }
+        .action-btn:hover { background: #e0f7fa; color: #1a3a5c; }
+        .action-btn.liked { color: #dc2626; }
 
         .comments-section {
             padding: 0 20px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(26, 58, 92, 0.08);
             display: none;
         }
         .comments-section.show { display: block; }
@@ -172,18 +172,18 @@
         .comment-input-row input {
             flex: 1;
             padding: 9px 14px;
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: #f8fafc;
+            border: 1px solid rgba(26, 58, 92, 0.15);
             border-radius: 30px;
             outline: none;
             font-size: 13px;
-            color: #f1f5f9;
+            color: var(--page-text);
             font-family: inherit;
         }
-        .comment-input-row input:focus { border-color: #6366f1; }
+        .comment-input-row input:focus { border-color: #2AACBF; }
         .comment-input-row input::placeholder { color: var(--muted-light); }
         .comment-input-row button {
-            background: linear-gradient(135deg, #3B82F6, #6366f1);
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             border: none;
             padding: 0 18px;
             border-radius: 30px;
@@ -198,21 +198,21 @@
             display: flex;
             gap: 10px;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(26, 58, 92, 0.08);
             font-size: 13px;
         }
         .comment-item:last-child { border-bottom: none; }
         .comment-avatar {
             width: 30px; height: 30px;
-            background: rgba(99, 102, 241, 0.2);
+            background: #e0f7fa;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: #93c5fd;
+            color: #2AACBF;
             font-size: 12px;
             flex-shrink: 0;
         }
-        .comment-author { font-weight: 700; color: #c7d2fe; }
-        .comment-text   { color: #e2e8f0; margin-top: 2px; }
+        .comment-author { font-weight: 700; color: #1a3a5c; }
+        .comment-text   { color: var(--page-text); margin-top: 2px; }
         .comment-time   { font-size: 10px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px 0; text-align: center; color: var(--muted-light); font-size: 12px; }
 
@@ -223,7 +223,7 @@
             font-size: 10px;
             font-weight: 700;
         }
-        .cat-exam       { background: #e3f2fd; color: #1976d2; }
+        .cat-exam       { background: #e0f7fa; color: #2AACBF; }
         .cat-suspension { background: #ffebee; color: #c62828; }
         .cat-event      { background: #e8f5e9; color: #2e7d32; }
         .cat-default    { background: #e0e7ff; color: #4f46e5; }
@@ -235,88 +235,68 @@
             border-radius: 12px;
             background: rgba(26, 58, 92, 0.05);
             border: 1px solid rgba(26, 58, 92, 0.1);
-            color: #374151;
+            color: var(--page-text);
             font-size: 13px;
         }
         .history-item:hover {
-            background: #e8f0fe;
+            background: #e0f7fa;
             transform: translateX(4px);
-            border-color: rgba(26, 58, 92, 0.25);
+            border-color: rgba(42, 172, 191, 0.35);
             color: #1a3a5c;
         }
 
         .search-input {
-            background: rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(4px);
-            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
             transition: all 0.2s;
             color: #ffffff;
         }
         .search-input:focus {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.28);
             border-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
             outline: none;
         }
         .search-input::placeholder { color: rgba(255, 255, 255, 0.6); }
 
         .filter-select {
-            background: rgba(15, 25, 55, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #e2e8f0;
+            background: #f8fafc;
+            border: 1px solid rgba(26, 58, 92, 0.2);
+            color: var(--page-text);
         }
-        .filter-select:focus { border-color: #6366f1; outline: none; }
+        .filter-select:focus { border-color: #2AACBF; outline: none; }
+        .filter-select option { background: #ffffff; color: var(--page-text); }
 
-        /* Flatpickr dark override */
+        /* Flatpickr light override */
         .flatpickr-calendar {
-            background: #1e293b !important;
-            border-color: rgba(255,255,255,0.1) !important;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+            background: #ffffff !important;
+            border-color: rgba(42,172,191,0.3) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
         }
-        .flatpickr-day { color: #e2e8f0 !important; }
-        .flatpickr-day:hover { background: rgba(99,102,241,0.3) !important; }
-        .flatpickr-day.selected { background: #6366f1 !important; border-color: #6366f1 !important; }
+        .flatpickr-day { color: #1a2a3a !important; }
+        .flatpickr-day:hover { background: #e0f7fa !important; }
+        .flatpickr-day.selected { background: #2AACBF !important; border-color: #2AACBF !important; color: #fff !important; }
         .flatpickr-months .flatpickr-month,
         .flatpickr-weekdays,
-        span.flatpickr-weekday { background: #1e293b !important; color: #93c5fd !important; fill: #93c5fd !important; }
+        span.flatpickr-weekday { background: #f0fafb !important; color: #1a3a5c !important; fill: #1a3a5c !important; }
         .flatpickr-current-month input.cur-year,
-        .flatpickr-current-month .flatpickr-monthDropdown-months { color: #e2e8f0 !important; }
-        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #93c5fd !important; }
+        .flatpickr-current-month .flatpickr-monthDropdown-months { color: #1a2a3a !important; }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #2AACBF !important; }
 
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(26,58,92,0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(42,172,191,0.4); border-radius: 10px; }
 
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
 
         /* Section titles */
-        .section-title { color: #93c5fd !important; }
-        .result-count  { color: #93c5fd !important; background: rgba(15,25,55,0.75) !important; border-color: rgba(255,255,255,0.1) !important; }
-
-        /* Dark mode variables */
-        body.dark-mode {
-            --page-text: #e4e6eb;
-            --surface: rgba(15, 25, 55, 0.85);
-            --surface-strong: rgba(15, 25, 55, 0.92);
-            --surface-soft: rgba(255, 255, 255, 0.07);
-            --border: rgba(255, 255, 255, 0.1);
-            --primary: #818cf8;
-            --primary-2: #6366f1;
-            --muted: #94a3b8;
-            --muted-light: #64748b;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --active-bg: rgba(99, 102, 241, 0.18);
-            background-color: #0F172A;
-            background-image: url('bg.jpg');
-            color: var(--page-text);
-        }
-        body.dark-mode::before {
-            background: linear-gradient(135deg, rgba(10, 15, 40, 0.92) 0%, rgba(15, 23, 60, 0.92) 100%);
-        }
+        .section-title { color: #1a2a3a !important; }
+        .result-count  { color: #1a3a5c !important; background: rgba(42,172,191,0.12) !important; border-color: rgba(42,172,191,0.3) !important; }
 
         /* ══════════════════════════════════════════
-           DARK MODE OVERRIDES
-           Applied when body has class "dark-mode"
+           LIGHT MODE OVERRIDES
+           Applied when body has class "light-mode"
         ══════════════════════════════════════════ */
         body.light-mode {
             background-color: #f0f4f8;
@@ -324,10 +304,10 @@
             color: #1a2a3a;
         }
         body.light-mode::before {
-            background: linear-gradient(rgba(255,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
+            background: linear-gradient(135deg, rgba(240,244,248,0.88) 0%, rgba(220,232,248,0.88) 100%);
         }
         body.light-mode .glass-nav {
-            background: #1a3a5c;
+            background: rgba(26, 58, 92, 0.95);
         }
         body.light-mode .glass-sidebar {
             background: rgba(255,255,255,0.92);
@@ -402,6 +382,11 @@
         }
         body.light-mode .section-title { color: #1a3a5c !important; }
         body.light-mode .result-count  { color: #1a3a5c !important; background: rgba(255,255,255,0.9) !important; border-color: rgba(26,58,92,0.2) !important; }
+        body.light-mode footer {
+            border-color: rgba(26,58,92,0.1) !important;
+            color: #6b7c8f !important;
+            background: rgba(255,255,255,0.6) !important;
+        }
         body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
         body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
         body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
@@ -503,6 +488,13 @@
         .btn-info    { background: #3b82f6; color: white; }
         .btn-info:hover    { background: #2563eb; }
 
+        /* Footer */
+        footer {
+            border-color: rgba(255,255,255,0.08) !important;
+            color: var(--muted) !important;
+            background: rgba(10,15,40,0.5) !important;
+        }
+
         @media (max-width: 768px) {
             .post-stats { gap: 10px; padding: 8px 14px; font-size: 12px; flex-wrap: wrap; }
             .action-buttons { padding: 6px 14px 10px; gap: 2px; }
@@ -568,7 +560,7 @@
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
 
         <div class="relative z-10 page-content-offset">
-            <header class="glass-nav rounded-2xl">
+            <header class="glass-nav sticky top-0 z-40 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
                         <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('Student.aspx')">
@@ -630,7 +622,7 @@
                         </div>
                         <div class="flex justify-between items-center mb-4">
                             <div class="flex items-center gap-2">
-                                <i class="fas fa-newspaper text-xl" style="color:#93c5fd"></i>
+                                <i class="fas fa-newspaper text-xl" style="color:#2AACBF"></i>
                                 <h3 class="font-bold text-lg section-title">Announcements</h3>
                             </div>
                             <span id="resultCount" class="result-count glass-card px-3 py-1 rounded-full text-xs">0 items</span>
@@ -649,6 +641,11 @@
                     </div>
                 </div>
             </div>
+
+            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm">
+                <i class="far fa-copyright"></i> 2026 CampusConnect · Connecting Students to Campus Life
+            </footer>
+        </div>
 
         <!-- CONFIRMATION DIALOG -->
         <div id="confirmModal" class="modal-overlay">
@@ -798,18 +795,140 @@
             return results;
         }
 
-        function renderCommentsList(list) {
-            if (!list || !list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
-            return list.map(c =>
-                `<div class="comment-item">
-                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                    <div>
+        function renderCommentsList(list, postId) {
+            if (!Array.isArray(list) || !list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
+
+            const topLevel = list.filter(c => !c.parentCommentId);
+            const replies  = list.filter(c =>  c.parentCommentId);
+
+            if (!topLevel.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
+
+            function avatarHtml(img, size) {
+                const s = size || 30;
+                if (img) return `<div class="comment-avatar" style="overflow:hidden;width:${s}px;height:${s}px;min-width:${s}px;"><img src="${escapeHtml(img)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" /></div>`;
+                return `<div class="comment-avatar" style="width:${s}px;height:${s}px;min-width:${s}px;"><i class="fas fa-user"></i></div>`;
+            }
+
+            function buildReply(r) {
+                const liked = r.userLiked;
+                return `<div class="comment-item" style="margin-left:38px;padding:6px 0;" id="ci-r-${r.commentId}">
+                    ${avatarHtml(r.profileImage, 26)}
+                    <div style="flex:1;min-width:0;">
+                        <div class="comment-author">${escapeHtml(r.author)}</div>
+                        <div class="comment-text">${escapeHtml(r.text)}</div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
+                            <div class="comment-time">${escapeHtml(r.date || '')}</div>
+                            <button type="button" onclick="likeCommentSS(${r.commentId},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;transition:color 0.2s;">
+                                <i class="${liked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBoxSS('rb-${r.commentId}')"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;transition:color 0.2s;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="rb-${r.commentId}" style="display:none;margin-top:6px;">
+                            <div class="comment-input-row" style="margin:0;">
+                                <input type="text" placeholder="Reply to ${escapeHtml(r.author)}..." />
+                                <button type="button" onclick="submitReplySS(${r.commentId},${postId},this)">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            return topLevel.map(c => {
+                const liked = c.userLiked;
+                const childReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                return `<div class="comment-item" id="ci-${c.commentId}">
+                    ${avatarHtml(c.profileImage, 30)}
+                    <div style="flex:1;min-width:0;">
                         <div class="comment-author">${escapeHtml(c.author)}</div>
                         <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div class="comment-time">${escapeHtml(c.date || '')}</div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
+                            <div class="comment-time">${escapeHtml(c.date || '')}</div>
+                            <button type="button" onclick="likeCommentSS(${c.commentId},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;transition:color 0.2s;">
+                                <i class="${liked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBoxSS('rb-${c.commentId}')"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;transition:color 0.2s;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="rb-${c.commentId}" style="display:none;margin-top:6px;">
+                            <div class="comment-input-row" style="margin:0;">
+                                <input type="text" placeholder="Reply to ${escapeHtml(c.author)}..." />
+                                <button type="button" onclick="submitReplySS(${c.commentId},${postId},this)">Reply</button>
+                            </div>
+                        </div>
+                        ${childReplies.map(r => buildReply(r)).join('')}
                     </div>
-                </div>`
-            ).join('');
+                </div>`;
+            }).join('');
+        }
+
+        function toggleReplyBoxSS(boxId) {
+            const box = document.getElementById(boxId);
+            if (!box) return;
+            const isOpen = box.style.display === 'block';
+            box.style.display = isOpen ? 'none' : 'block';
+            if (!isOpen) { const inp = box.querySelector('input'); if (inp) inp.focus(); }
+        }
+
+        function submitReplySS(parentCommentId, postId, btn) {
+            const box = document.getElementById('rb-' + parentCommentId);
+            if (!box) return;
+            const input = box.querySelector('input');
+            const text = input ? input.value.trim() : '';
+            if (!text) { showToast('Write a reply first'); return; }
+            if (btn) { btn.disabled = true; btn.textContent = '...'; }
+            fetch('CommentHandler.ashx?action=reply', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: postId, parentCommentId: parentCommentId, comment: text })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (btn) { btn.disabled = false; btn.textContent = 'Reply'; }
+                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post reply')); return; }
+                if (input) input.value = '';
+                box.style.display = 'none';
+                reloadCommentsSS(postId);
+                showToast('Reply posted!');
+            })
+            .catch(() => { if (btn) { btn.disabled = false; btn.textContent = 'Reply'; } showToast('Could not post reply'); });
+        }
+
+        function likeCommentSS(commentId, btn) {
+            fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(res => {
+                if (!res.success) { showToast('Error'); return; }
+                if (btn) {
+                    btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                    const icon = btn.querySelector('i');
+                    if (icon) icon.className = (res.liked ? 'fas' : 'far') + ' fa-heart';
+                    const cnt = btn.querySelector('.clc');
+                    if (cnt) cnt.textContent = res.likeCount > 0 ? res.likeCount : '';
+                }
+            })
+            .catch(() => showToast('Could not update reaction'));
+        }
+
+        function reloadCommentsSS(postId) {
+            fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if (!Array.isArray(data)) return;
+                const cl = document.getElementById('cl-' + postId);
+                if (cl) cl.innerHTML = renderCommentsList(data, postId);
+                const cc = document.getElementById('cc-' + postId);
+                if (cc) cc.textContent = data.filter(c => !c.parentCommentId).length;
+            })
+            .catch(() => {});
         }
 
         function renderResults() {
@@ -835,12 +954,13 @@
                                 </div>
                             </div>
                             <div style="display:flex;align-items:center;gap:8px">
-                                <span class="cat-badge ${getCatClass(ann.category)}" style="font-size:11px;padding:3px 10px;">${getBannerText(ann.category)}</span>
-                                <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin'}"
-                                    style="flex:none;width:32px;height:32px;padding:0;border-radius:50%;background:none;border:1px solid ${pinned ? '#fb923c' : '#d1d5db'};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;color:${pinned ? '#fb923c' : '#9db0c4'}">
-                                    <i class="fas fa-thumbtack"></i>
-                                </button>
-                            </div>
+                                <div class="card-banner ${getBannerClass(ann.category)} px-3 py-1 hidden sm:block">
+                                    <p class="text-white text-xs font-bold tracking-wide">${getBannerText(ann.category)}</p>
+                                </div>
+                                <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}"
+                                    style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#fb923c' : 'rgba(148,163,184,0.5)'}">
+                                    <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
+                                </button>                            </div>
                         </div>
                         <div class="card-title">${escapeHtml(ann.title)}</div>
                         <div class="card-desc">${escapeHtml(ann.description)}</div>
@@ -1065,16 +1185,12 @@
         // Theme sync
         (function () {
             const KEY = 'campus_theme';
-
+            // SearchStudent uses teal/light as default — only apply dark class if dark
             function applyTheme(isDark) {
                 document.body.classList.toggle('dark-mode', isDark);
-                document.body.classList.toggle('light-mode', !isDark);
+                document.body.classList.remove('light-mode'); // never apply light-mode
             }
-
-            // Apply immediately on load
             applyTheme(localStorage.getItem(KEY) === 'dark');
-
-            // Sync when another tab changes the theme
             window.addEventListener('storage', e => {
                 if (e.key === KEY) applyTheme(e.newValue === 'dark');
             });
@@ -1082,4 +1198,3 @@
     </script>
 </body>
 </html>
-

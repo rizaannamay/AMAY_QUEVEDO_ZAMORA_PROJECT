@@ -16,32 +16,33 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
-        /* ── ROOT VARIABLES — dark navy matching Notifications.aspx ── */
+        /* ── ROOT VARIABLES — teal theme matching dashboard ── */
         :root {
-            --page-text: #e4e6eb;
-            --surface: rgba(15, 25, 55, 0.6);
-            --surface-strong: rgba(10, 18, 40, 0.85);
-            --surface-soft: rgba(255,255,255,0.06);
-            --border: rgba(255,255,255,0.09);
-            --primary: #93c5fd;
-            --primary-2: #6366f1;
-            --muted: #94a3b8;
-            --muted-light: #64748b;
-            --shadow: 0 8px 32px rgba(0,0,0,0.5);
-            --active-bg: rgba(99,102,241,0.18);
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
+            --muted: #6b7c8f;
+            --muted-light: #9db0c4;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --active-bg: #e0f7fa;
         }
 
-        /* ── BODY — dark navy base matching Notifications.aspx ── */
+        /* ── BODY — teal/light matching dashboard ── */
         body {
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-color: #0a0f1e;
-            background-image:
-                radial-gradient(ellipse at 15% 40%, rgba(30, 58, 138, 0.22) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 15%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 85%, rgba(14, 30, 80, 0.3) 0%, transparent 45%);
+            background-color: #2AACBF;
+            background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url('wbg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             transition: color 0.3s ease;
         }
 
@@ -75,52 +76,50 @@
 
         /* ── SIDEBAR ── */
         .glass-sidebar {
-            background: rgba(10, 18, 45, 0.7);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            border: 1px solid rgba(26, 58, 92, 0.15);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
             transition: background 0.4s ease, border-color 0.4s ease;
         }
 
         /* ── FILTER CARD ── */
         .glass-card {
-            background: rgba(10, 18, 45, 0.65);
+            background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(26, 58, 92, 0.15);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
             transition: all 0.3s ease;
         }
 
         .glass-card:hover {
-            border-color: rgba(99,102,241,0.3);
+            border-color: rgba(42, 172, 191, 0.4);
             transform: translateY(-2px);
         }
 
         /* ── ANNOUNCEMENT CARDS ── */
         .announce-card {
-            background: rgba(12, 20, 50, 0.8);
-            border: 1px solid rgba(59, 130, 246, 0.25);
+            background: #ffffff;
+            border: 1px solid #2AACBF;
             border-radius: 20px;
             transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             overflow: hidden;
             will-change: transform;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
         }
 
         .announce-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.5);
-            border-color: rgba(99, 102, 241, 0.45);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+            border-color: #1a9aaa;
         }
 
-        .card-author-name { color: #93c5fd; font-weight: 700; font-size: 15px; }
+        .card-author-name { color: #1a3a5c; font-weight: 700; font-size: 15px; }
         .card-meta        { color: var(--muted); font-size: 12px; }
-        .card-title       { color: #e2e8f0; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .card-desc        { color: #94a3b8; font-size: 13px; line-height: 1.6; }
+        .card-title       { color: #1a2a3a; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .card-desc        { color: #374151; font-size: 13px; line-height: 1.6; }
 
         .card-banner {
             background: linear-gradient(135deg,#1e3a8a,#4f46e5);
@@ -140,13 +139,13 @@
             display: flex;
             gap: 16px;
             padding: 8px 20px;
-            border-top: 1px solid rgba(255,255,255,0.07);
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-top: 1px solid rgba(26,58,92,0.08);
+            border-bottom: 1px solid rgba(26,58,92,0.08);
             color: var(--muted);
             font-size: 13px;
         }
         .post-stats span { display: flex; align-items: center; gap: 5px; cursor: pointer; transition: color 0.2s; }
-        .post-stats span:hover { color: #93c5fd; }
+        .post-stats span:hover { color: #1a3a5c; }
 
         .action-buttons {
             display: flex;
@@ -169,14 +168,14 @@
             transition: all 0.2s;
             font-family: inherit;
         }
-        .action-btn:hover { background: rgba(99,102,241,0.15); color: #93c5fd; }
+        .action-btn:hover { background: #e0f7fa; color: #1a3a5c; }
         .action-btn.liked { color: #dc2626; }
         .action-btn.pinned-active { color: #e65100; }
-        .action-btn.notif-active { color: #3B82F6; }
+        .action-btn.notif-active { color: #2AACBF; }
 
         .comments-section {
             padding: 0 20px 16px;
-            border-top: 1px solid rgba(255,255,255,0.07);
+            border-top: 1px solid rgba(26,58,92,0.08);
             display: none;
         }
         .comments-section.show { display: block; }
@@ -188,8 +187,8 @@
         .comment-input-row input {
             flex: 1;
             padding: 9px 14px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: #f8fafc;
+            border: 1px solid rgba(26,58,92,0.15);
             border-radius: 30px;
             outline: none;
             font-size: 13px;
@@ -197,10 +196,10 @@
             font-family: inherit;
             transition: border-color 0.2s;
         }
-        .comment-input-row input:focus { border-color: #6366f1; }
+        .comment-input-row input:focus { border-color: #2AACBF; }
         .comment-input-row input::placeholder { color: var(--muted-light); }
         .comment-input-row button {
-            background: linear-gradient(135deg, #1e3a8a, #6366f1);
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             border: none;
             padding: 0 18px;
             border-radius: 30px;
@@ -216,20 +215,20 @@
             display: flex;
             gap: 10px;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
+            border-bottom: 1px solid rgba(26,58,92,0.08);
             font-size: 13px;
         }
         .comment-item:last-child { border-bottom: none; }
         .comment-avatar {
             width: 30px; height: 30px;
-            background: var(--active-bg);
+            background: #e0f7fa;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: #93c5fd;
+            color: #2AACBF;
             font-size: 12px;
             flex-shrink: 0;
         }
-        .comment-author { font-weight: 700; color: #93c5fd; }
+        .comment-author { font-weight: 700; color: #1a3a5c; }
         .comment-text   { color: var(--page-text); margin-top: 2px; }
         .comment-time   { font-size: 10px; color: var(--muted-light); margin-top: 2px; }
         .no-comments    { padding: 12px 0; text-align: center; color: var(--muted-light); font-size: 12px; }
@@ -241,76 +240,75 @@
             font-size: 10px;
             font-weight: 700;
         }
-        .cat-exam       { background: rgba(30,58,138,0.35); color: #93C5FD; }
-        .cat-suspension { background: rgba(198,40,40,0.25); color: #ef9a9a; }
-        .cat-event      { background: rgba(22,101,52,0.3);  color: #86efac; }
-        .cat-default    { background: rgba(91,33,182,0.25); color: #c4b5fd; }
+        .cat-exam       { background: #e0f7fa; color: #2AACBF; }
+        .cat-suspension { background: #ffebee; color: #c62828; }
+        .cat-event      { background: #e8f5e9; color: #2e7d32; }
+        .cat-default    { background: #e0e7ff; color: #4f46e5; }
 
         .history-item {
             cursor: pointer;
             transition: all 0.2s ease;
             padding: 8px 12px;
             border-radius: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(26,58,92,0.05);
+            border: 1px solid rgba(26,58,92,0.1);
             color: var(--page-text);
             font-size: 13px;
         }
         .history-item:hover {
-            background: rgba(99,102,241,0.18);
+            background: #e0f7fa;
             transform: translateX(4px);
-            border-color: rgba(99,102,241,0.35);
-            color: #93c5fd;
+            border-color: rgba(42,172,191,0.35);
+            color: #1a3a5c;
         }
 
         /* ── SEARCH INPUT in navbar ── */
         .search-input {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.2);
             backdrop-filter: blur(4px);
-            border: 1.5px solid rgba(255,255,255,0.18);
+            border: 1.5px solid rgba(255,255,255,0.45);
             transition: all 0.2s;
             color: #ffffff;
         }
         .search-input:focus {
-            background: rgba(255,255,255,0.13);
-            border-color: rgba(147,197,253,0.7);
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.2);
+            background: rgba(255,255,255,0.28);
+            border-color: rgba(255,255,255,0.8);
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.15);
             outline: none;
         }
-        .search-input::placeholder { color: rgba(255,255,255,0.5); }
-        .glass-nav .fa-search { color: rgba(255,255,255,0.7) !important; }
+        .search-input::placeholder { color: rgba(255,255,255,0.65); }
+        .glass-nav .fa-search { color: rgba(255,255,255,0.8) !important; }
 
         /* ── FILTER SELECTS ── */
         .filter-select {
-            background: rgba(255,255,255,0.06);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: #f8fafc;
+            border: 1px solid rgba(26,58,92,0.2);
             color: var(--page-text);
             transition: border-color 0.2s;
         }
-        .filter-select:focus { border-color: #6366f1; outline: none; }
-        .filter-select option { background: #0d1a3a; color: var(--page-text); }
+        .filter-select:focus { border-color: #2AACBF; outline: none; }
+        .filter-select option { background: #ffffff; color: var(--page-text); }
 
-        /* Flatpickr dark override */
+        /* Flatpickr light override */
         .flatpickr-calendar {
-            background: #0d1a3a !important;
-            border: 1px solid rgba(99,102,241,0.25) !important;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+            background: #ffffff !important;
+            border: 1px solid rgba(42,172,191,0.3) !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
         }
-        .flatpickr-day { color: #e2e8f0 !important; }
-        .flatpickr-day:hover { background: rgba(99,102,241,0.3) !important; }
-        .flatpickr-day.selected { background: #4f46e5 !important; border-color: #4f46e5 !important; }
+        .flatpickr-day { color: #1a2a3a !important; }
+        .flatpickr-day:hover { background: #e0f7fa !important; }
+        .flatpickr-day.selected { background: #2AACBF !important; border-color: #2AACBF !important; color: #fff !important; }
         .flatpickr-months .flatpickr-month,
         .flatpickr-weekdays,
-        span.flatpickr-weekday { background: #0a0f1e !important; color: #93c5fd !important; fill: #93c5fd !important; }
+        span.flatpickr-weekday { background: #f0fafb !important; color: #1a3a5c !important; fill: #1a3a5c !important; }
         .flatpickr-current-month select,
-        .flatpickr-current-month input { color: #e2e8f0 !important; }
-        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #93c5fd !important; }
-        .flatpickr-day.flatpickr-disabled { color: #475569 !important; }
+        .flatpickr-current-month input { color: #1a2a3a !important; }
+        .flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #2AACBF !important; }
+        .flatpickr-day.flatpickr-disabled { color: #9db0c4 !important; }
 
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.4); border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(26,58,92,0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(42,172,191,0.4); border-radius: 10px; }
 
         #resultsContainer { display: flex; flex-direction: column; gap: 16px; }
 
@@ -412,6 +410,11 @@
         body.light-mode #emptyState {
             background: rgba(255,255,255,0.9);
             border-color: rgba(26,58,92,0.15);
+        }
+        body.light-mode footer {
+            border-color: rgba(26,58,92,0.1) !important;
+            color: #6b7c8f !important;
+            background: rgba(255,255,255,0.6) !important;
         }
         body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
         body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
@@ -577,27 +580,34 @@
         /* Cap announcement images */
         .announce-card img { max-height: 200px; object-fit: cover; width: 100%; }
 
+        /* ── FOOTER ── */
+        footer {
+            border-color: rgba(255,255,255,0.07) !important;
+            color: var(--muted) !important;
+            background: rgba(5,10,25,0.5) !important;
+        }
+
         /* ── RESULT COUNT BADGE ── */
         #resultCount {
-            background: rgba(99,102,241,0.18);
-            border: 1px solid rgba(99,102,241,0.25);
-            color: #93c5fd !important;
+            background: rgba(42,172,191,0.15);
+            border: 1px solid rgba(42,172,191,0.3);
+            color: #1a3a5c !important;
         }
 
         /* ── EMPTY STATE ── */
         #emptyState {
-            background: rgba(10,18,45,0.65);
-            border: 1px solid rgba(99,102,241,0.15);
+            background: rgba(255,255,255,0.9);
+            border: 1px solid rgba(26,58,92,0.12);
         }
 
         /* ── HEADING ICONS ── */
-        .section-icon { color: #93c5fd; }
-        .section-title { color: #e2e8f0; }
+        .section-icon { color: #2AACBF; }
+        .section-title { color: #1a2a3a; }
 
         /* ── LOGO ICON BG ── */
         .logo-icon-bg {
-            background: rgba(99,102,241,0.25);
-            border: 1px solid rgba(99,102,241,0.3);
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
         }
     </style>
 </head>
@@ -715,6 +725,12 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ═══ FOOTER ═══ -->
+            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm">
+                <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Teachers to Campus Life
+            </footer>
+        </div>
 
         <!-- ═══ CONFIRM MODAL (Clear History) ═══ -->
         <div id="confirmModal" class="modal-overlay">
@@ -1082,16 +1098,136 @@
         function renderCommentsList(id) {
             const list = comments[id] || [];
             if (!list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
-            return list.map(c => `
-                <div class="comment-item">
-                    <div class="comment-avatar"><i class="fas fa-user"></i></div>
-                    <div>
+
+            const topLevel = list.filter(c => !c.parentCommentId);
+            const replies  = list.filter(c =>  c.parentCommentId);
+
+            function avatarHtml(img) {
+                if (img) return `<div class="comment-avatar" style="overflow:hidden;"><img src="${escapeHtml(img)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" /></div>`;
+                return `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
+            }
+
+            function buildReply(r) {
+                const liked = r.userLiked;
+                return `<div class="comment-item" style="margin-left:38px;padding:6px 0;" id="ci-r-${r.commentId}">
+                    ${avatarHtml(r.profileImage)}
+                    <div style="flex:1;min-width:0;">
+                        <div class="comment-author">${escapeHtml(r.author)}</div>
+                        <div class="comment-text">${escapeHtml(r.text)}</div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
+                            <span class="comment-time">${escapeHtml(r.date || '')}</span>
+                            <button type="button" onclick="likeComment(${r.commentId},${id},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
+                                <i class="${liked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBox('rb-${r.commentId}')"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="rb-${r.commentId}" style="display:none;margin-top:6px;">
+                            <div class="comment-input-row" style="margin:0;">
+                                <input type="text" placeholder="Reply to ${escapeHtml(r.author)}..." />
+                                <button type="button" onclick="submitReply(${r.commentId},${id},this)">Reply</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            return topLevel.map(c => {
+                const liked = c.userLiked;
+                const childReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                return `<div class="comment-item" id="ci-${c.commentId}">
+                    ${avatarHtml(c.profileImage)}
+                    <div style="flex:1;min-width:0;">
                         <div class="comment-author">${escapeHtml(c.author)}</div>
                         <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div class="comment-time">${c.time}</div>
+                        <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
+                            <span class="comment-time">${escapeHtml(c.date || '')}</span>
+                            <button type="button" onclick="likeComment(${c.commentId},${id},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
+                                <i class="${liked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBox('rb-${c.commentId}')"
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="rb-${c.commentId}" style="display:none;margin-top:6px;">
+                            <div class="comment-input-row" style="margin:0;">
+                                <input type="text" placeholder="Reply to ${escapeHtml(c.author)}..." />
+                                <button type="button" onclick="submitReply(${c.commentId},${id},this)">Reply</button>
+                            </div>
+                        </div>
+                        ${childReplies.map(r => buildReply(r)).join('')}
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
+        }
+
+        function toggleReplyBox(boxId) {
+            const box = document.getElementById(boxId);
+            if (!box) return;
+            const isOpen = box.style.display === 'block';
+            box.style.display = isOpen ? 'none' : 'block';
+            if (!isOpen) { const inp = box.querySelector('input'); if (inp) inp.focus(); }
+        }
+
+        function submitReply(parentCommentId, postId, btn) {
+            const box = document.getElementById('rb-' + parentCommentId);
+            if (!box) return;
+            const input = box.querySelector('input');
+            const text = input ? input.value.trim() : '';
+            if (!text) { showToast('Write a reply first'); return; }
+            if (btn) { btn.disabled = true; btn.textContent = '...'; }
+            fetch('CommentHandler.ashx?action=reply', {
+                method: 'POST', credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ postId: postId, parentCommentId: parentCommentId, comment: text })
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (btn) { btn.disabled = false; btn.textContent = 'Reply'; }
+                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post reply')); return; }
+                if (input) input.value = '';
+                box.style.display = 'none';
+                reloadComments(postId);
+                showToast('Reply posted!');
+            })
+            .catch(() => { if (btn) { btn.disabled = false; btn.textContent = 'Reply'; } showToast('Could not post reply'); });
+        }
+
+        function likeComment(commentId, postId, btn) {
+            fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(res => {
+                if (!res.success) { showToast('Error'); return; }
+                if (btn) {
+                    btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                    const icon = btn.querySelector('i');
+                    if (icon) icon.className = (res.liked ? 'fas' : 'far') + ' fa-heart';
+                    const cnt = btn.querySelector('.clc');
+                    if (cnt) cnt.textContent = res.likeCount > 0 ? res.likeCount : '';
+                }
+            })
+            .catch(() => showToast('Could not update reaction'));
+        }
+
+        function reloadComments(postId) {
+            fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(data => {
+                if (!Array.isArray(data)) return;
+                comments[postId] = data;
+                const cl = document.getElementById('cl-' + postId);
+                if (cl) cl.innerHTML = renderCommentsList(postId);
+                const cc = document.getElementById('cc-' + postId);
+                if (cc) cc.textContent = data.filter(c => !c.parentCommentId).length;
+            })
+            .catch(() => {});
         }
 
         // ── Interactions ──
@@ -1133,6 +1269,7 @@
             if (!sec) return;
             sec.classList.toggle('show');
             if (sec.classList.contains('show')) {
+                reloadComments(id);
                 const input = document.getElementById('ci-' + id);
                 if (input) setTimeout(() => input.focus(), 50);
             }
@@ -1154,22 +1291,8 @@
                 .then(res => {
                     if (!res.success) { showToast('Error: ' + (res.error || 'Could not post comment')); return; }
                     input.value = '';
-                    fetch('CommentHandler.ashx?action=get&postId=' + id, { credentials: 'same-origin' })
-                        .then(r => r.json())
-                        .then(list => {
-                            const cl = document.getElementById('cl-' + id);
-                            if (cl) cl.innerHTML = list.map(c =>
-                                '<div class="comment-item">' +
-                                '<div class="comment-avatar"><i class="fas fa-user"></i></div>' +
-                                '<div><div class="comment-author">' + escapeHtml(c.author) + '</div>' +
-                                '<div class="comment-text">' + escapeHtml(c.text) + '</div>' +
-                                '<div class="comment-time">' + escapeHtml(c.date) + '</div></div></div>'
-                            ).join('');
-                            const cc = document.getElementById('cc-' + id);
-                            if (cc) cc.textContent = list.length;
-                        })
-                        .catch(() => { });
-                    showToast('💬 Comment posted!');
+                    reloadComments(id);
+                    showToast('Comment posted!');
                 })
                 .catch(() => showToast('Could not post comment'));
         }
@@ -1261,15 +1384,12 @@
         // ════════════════════════════════════════════════════════
         (function () {
             const KEY = 'campus_theme';
-
+            // SearchDashboard uses teal/light as default — only apply dark class if dark
             function applyTheme(isDark) {
-                document.body.classList.toggle('light-mode', !isDark);
+                document.body.classList.toggle('dark-mode', isDark);
+                document.body.classList.remove('light-mode'); // never apply light-mode
             }
-
-            // Apply immediately on load
             applyTheme(localStorage.getItem(KEY) === 'dark');
-
-            // Sync when another tab changes the theme
             window.addEventListener('storage', e => {
                 if (e.key === KEY) applyTheme(e.newValue === 'dark');
             });

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.UI;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
@@ -15,6 +17,18 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 string role = Session["Role"] != null ? Session["Role"].ToString() : "";
                 Response.Redirect(role == "Admin" ? "Splash.aspx?dest=Teacher" : "Splash.aspx?dest=Student");
+            }
+        }
+
+        // SHA-256 hash — same algorithm used in login
+        private static string HashPassword(string password)
+        {
+            using (var sha = SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
+                var sb = new StringBuilder(64);
+                foreach (byte b in bytes) sb.Append(b.ToString("x2"));
+                return sb.ToString();
             }
         }
 
@@ -51,7 +65,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 con.Open();
 
-                // ── Parameterized query — prevents SQL injection ──────────────
                 // Check for duplicate username or email
                 string checkSql = "SELECT COUNT(1) FROM Users WHERE Username = @username OR Email = @email";
                 SqlCommand checkCmd = new SqlCommand(checkSql, con);
@@ -66,14 +79,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     return;
                 }
 
-                // Insert new user — parameterized
+                // Hash password before storing
+                string hashedPassword = HashPassword(password);
+
                 string insertSql = "INSERT INTO Users (FullName, Email, Username, Password, Role) " +
                                    "VALUES (@fullName, @email, @username, @password, @role)";
                 SqlCommand insertCmd = new SqlCommand(insertSql, con);
                 insertCmd.Parameters.AddWithValue("@fullName", fullName);
                 insertCmd.Parameters.AddWithValue("@email",    email);
                 insertCmd.Parameters.AddWithValue("@username", username);
-                insertCmd.Parameters.AddWithValue("@password", password);
+                insertCmd.Parameters.AddWithValue("@password", hashedPassword);
                 insertCmd.Parameters.AddWithValue("@role",     role);
                 insertCmd.ExecuteNonQuery();
 

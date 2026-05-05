@@ -21,16 +21,29 @@
             --surface-strong: #ffffff;
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            --active-bg: #e8f0fe;
+            --active-bg: #e0f7fa;
         }
 
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            z-index: 1199;
+            pointer-events: none;
+            background: transparent;
+        }
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -50,13 +63,21 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding: 16px 20px 20px;
+            gap: 16px;
+            padding: 120px 20px 32px 16px;
+            overflow-y: visible;
+        }
+
+        /* Dashboard layout: sidebar + main side by side */
+        .dashboard-body {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            flex: 1;
         }
 
         .header {
-            flex: 0 0 auto;
-            background: #1a3a5c;
+            background: #2AACBF;
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -64,8 +85,13 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 1200;
         }
 
         form { height: auto; min-height: 100%; overflow: visible; }
@@ -197,15 +223,17 @@
         /* LEFT SIDEBAR — always visible */
         .slideout-panel {
             position: fixed;
-            top: 7px;
-            left: 3px;
-            width: 270px;
-            height: 100vh;
+            top: 120px;
+            left: 10px;
+            width: 260px;
+            height: calc(100vh - 130px);
             backdrop-filter: blur(16px);
             box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
             z-index: 1100;
             display: flex;
             flex-direction: column;
+            border-radius: 16px;
+            overflow: hidden;
             }
         .panel-header {
             padding: 24px 16px 16px;
@@ -243,7 +271,7 @@
         .panel-menu-item i {
             width: 20px;
             font-size: 16px;
-            color: var(--primary);
+            color: #2AACBF;
         }
         .panel-menu-item:hover {
             background: #e6f7f9;
@@ -275,10 +303,17 @@
             border-radius: 10px;
             transition: all 0.2s;
         }
+        .dropdown-item-panel i { color: #2AACBF; }
         .dropdown-item-panel:hover {
             background: var(--surface-soft);
             color: var(--primary);
         }
+        .dropdown-item-panel.active-filter {
+            background: #2AACBF;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .dropdown-item-panel.active-filter i { color: #ffffff; }
         .theme-toggle-row {
             display: flex;
             align-items: center;
@@ -296,7 +331,7 @@
             flex-shrink: 0;
         }
         .theme-toggle-row .toggle-switch-panel.active {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
         }
         .theme-toggle-row .toggle-switch-panel::after {
             content: '';
@@ -328,7 +363,7 @@
         }
 
         .avatar, .profile-avatar, .post-avatar {
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             color: #ffffff;
         }
 
@@ -364,9 +399,12 @@
         }
 
         .main-panel.card {
-            min-height: 600px;
+            height: calc(100vh - 140px);
+            position: sticky;
+            top: 120px;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
         .card-header {
@@ -375,6 +413,8 @@
             font-weight: 700;
             color: var(--primary);
             font-size: 16px;
+            flex-shrink: 0;
+            border-radius: 24px 24px 0 0;
         }
 
         .card-header i { margin-right: 10px; color: var(--primary); }
@@ -385,21 +425,38 @@
             overflow-y: auto;
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+
+        .announcement-board::-webkit-scrollbar { display: none; }
 
         .announcement-card {
             background: var(--surface-strong);
             border-radius: 20px;
             margin-bottom: 20px;
-            border: 1px solid #3B82F6;
+            border: 1px solid #2AACBF;
             transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
             overflow: hidden;
+            scroll-margin-top: 20px;
         }
 
         .announcement-card:hover {
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-            border-color: #1E3A8A;
+            border-color: #1a9aaa;
+        }
+
+        .announcement-card.notification-target {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22), 0 12px 28px rgba(245, 158, 11, 0.18);
+            animation: targetPulse 2s ease-in-out 2;
+        }
+
+        @keyframes targetPulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.01); }
+            100% { transform: scale(1); }
         }
 
         .post-header {
@@ -441,7 +498,7 @@
             font-weight: 600;
         }
 
-        .post-category-exam { background: #e3f2fd; color: #1976d2; }
+        .post-category-exam { background: #e0f7fa; color: #2AACBF; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event { background: #e8f5e9; color: #2e7d32; }
         .post-category-general { background: #e0e7ff; color: #4f46e5; }
@@ -546,7 +603,7 @@
 
         .comment-input button {
             padding: 10px 22px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-2));
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
             border: none;
             border-radius: 30px;
             cursor: pointer;
@@ -567,7 +624,7 @@
         .comment-avatar {
             width: 32px;
             height: 32px;
-            background: #e8f0fe;
+            background: #e0f7fa;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -607,7 +664,7 @@
             position: fixed;
             inset: 0;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 9000;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -678,6 +735,10 @@
         body.dark-mode .announcement-card:hover {
             border-color: #60a5fa;
             background: rgba(30, 41, 59, 1);
+        }
+        body.dark-mode .announcement-card.notification-target {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25), 0 12px 28px rgba(251, 191, 36, 0.18);
         }
         body.dark-mode .card               { 
             background: rgba(30, 41, 59, 0.95); 
@@ -825,17 +886,18 @@
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
-            .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; }
+            .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; padding-top: 120px; }
             .slideout-panel { display: none; }
+            .dashboard-body { display: block; }
             .content-shell { overflow: visible; }
+            .main-panel.card { height: auto; position: static; overflow: visible; }
             .announcement-board { overflow: visible; }
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="app-shell">
-            <div class="header">
+        <div class="header">
                 <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
                     <i class="fas fa-university"></i> Campus Announcement</button>
 
@@ -865,8 +927,8 @@
                     <!-- Hamburger button removed — sidebar is always visible -->
                 </div>
             </div>
-
-            <!-- PERMANENT LEFT SIDEBAR -->
+        <div class="app-shell">
+            <div class="dashboard-body">
             <div id="slideoutPanel" class="slideout-panel">
                 <div class="panel-header">
                     <h3><i class="fas fa-sliders-h"></i> Menu</h3>
@@ -910,17 +972,18 @@
                     </div>
                 </main>
             </div>
+            </div><!-- end dashboard-body -->
         </div>
 
         <!-- Profile Modal -->
         <div id="profileModal" class="modal" style="display:none;">
             <div class="modal-content" style="max-width:420px;text-align:left;">
                 <div style="text-align:center;margin-bottom:20px;">
-                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
+                    <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2AACBF,#1a9aaa);color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px;">
                         <i class="fas fa-user"></i>
                     </div>
                     <div class="modal-title" style="margin-bottom:4px;" id="pm-fullname"><%= Session["FullName"] ?? "User" %></div>
-                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#DBEAFE;color:#1E3A8A;" id="pm-role"><%= Session["Role"] ?? "Student" %></span>
+                    <span style="display:inline-block;padding:3px 14px;border-radius:20px;font-size:11px;font-weight:700;background:#e0f7fa;color:#2AACBF;" id="pm-role"><%= Session["Role"] ?? "Student" %></span>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
                     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface-soft);border-radius:12px;"><i class="fas fa-user" style="color:var(--primary);"></i><div><div style="font-size:11px;color:var(--muted);">Username</div><div style="font-weight:600;" id="pm-username"><%= Session["Username"] ?? "User" %></div></div></div>
@@ -951,10 +1014,73 @@
         function showToast(msg) {
             let t = document.createElement('div');
             t.innerText = msg;
-            t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1a3a5c;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
+            t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2AACBF;color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
             document.body.appendChild(t);
             setTimeout(() => t.remove(), 2500);
         }
+
+        // ====================== MEDIA RENDER HELPER ======================
+        var videoExts  = ['mp4','webm','ogg','mov','avi'];
+        var imageExts  = ['jpg','jpeg','png','gif','webp','bmp'];
+
+        function getExt(url) {
+            return (url.split('.').pop() || '').toLowerCase().split('?')[0];
+        }
+
+        function renderMediaHtml(mediaUrl) {
+            if (!mediaUrl) return '';
+            var urls = mediaUrl.split(',').map(function(u) { return u.trim(); }).filter(Boolean);
+            if (!urls.length) return '';
+            var html = '';
+            var images = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) !== -1; });
+            var videos = urls.filter(function(u) { return videoExts.indexOf(getExt(u)) !== -1; });
+            var files  = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
+
+            if (images.length === 1) {
+                html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
+            } else if (images.length > 1) {
+                html += `<div class="post-image" style="display:flex;flex-wrap:wrap;gap:6px;">`;
+                images.forEach(function(img) {
+                    html += `<img src="${img}" style="width:calc(50% - 3px);max-height:160px;object-fit:cover;border-radius:12px;cursor:zoom-in;flex:1 1 calc(50% - 3px);" onclick="openLightbox('${img}')" onerror="this.style.display='none'" />`;
+                });
+                html += `</div>`;
+            }
+
+            videos.forEach(function(vid) {
+                html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
+            });
+
+            files.forEach(function(f) {
+                var fname = f.split('/').pop();
+                html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-file-alt" style="color:var(--primary);font-size:18px;"></i>
+                    <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fname}</span>
+                    <a href="${f}" download="${fname}" style="padding:6px 14px;background:var(--primary);color:#fff;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;"><i class="fas fa-download" style="margin-right:4px;"></i>Download</a>
+                </div>`;
+            });
+
+            return html;
+        }
+
+        // ====================== LIGHTBOX ======================
+        function openLightbox(src) {
+            var lb = document.getElementById('imageLightbox');
+            var lbImg = document.getElementById('lightboxImg');
+            if (!lb || !lbImg) return;
+            lbImg.src = src;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            var lb = document.getElementById('imageLightbox');
+            if (lb) lb.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
 
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]); }
 
@@ -1012,8 +1138,7 @@
             // Highlight active dropdown button
             document.querySelectorAll('[data-filter]').forEach(btn => {
                 let val = btn.getAttribute('data-filter');
-                btn.style.fontWeight = val === category ? '700' : '';
-                btn.style.color = val === category ? 'var(--primary)' : '';
+                btn.classList.toggle('active-filter', val === category);
             });
         }
 
@@ -1075,7 +1200,7 @@
                         let statsSpan = card.querySelector('.post-stats span:first-child i');
                         if (statsSpan) statsSpan.className = res.liked ? 'fas fa-heart' : 'far fa-heart';
                     }
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                    showToast(res.liked ? 'Liked!' : 'Like removed');
                 })
                 .catch(err => {
                     console.error('Like error:', err);
@@ -1119,12 +1244,20 @@
             listDiv.innerHTML = '<div style="text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i></div>';
             fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
                 .then(r => r.json())
-                .then(comments => {
+                .then(data => {
+                    // API returns array on success, object with success:false on error
+                    if (!Array.isArray(data)) {
+                        listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>';
+                        return;
+                    }
+                    const comments = data;
                     if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
 
                     // Separate top-level and replies
                     const topLevel = comments.filter(c => !c.parentCommentId);
                     const replies  = comments.filter(c =>  c.parentCommentId);
+
+                    if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
 
                     listDiv.innerHTML = topLevel.map(c => {
                         let cAvatar = c.profileImage
@@ -1139,10 +1272,29 @@
                                 : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
                             return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
                                 ${rAvatar}
-                                <div>
+                                <div style="flex:1;min-width:0;">
                                     <span class="comment-author">${escapeHtml(r.author)}</span>
                                     <div class="comment-text">${escapeHtml(r.text)}</div>
-                                    <div class="comment-time">${escapeHtml(r.date)}</div>
+                                    <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                        <div class="comment-time">${escapeHtml(r.date)}</div>
+                                        <button type="button" class="comment-like-btn ${r.userLiked ? 'liked' : ''}"
+                                            onclick="likeComment(${r.commentId}, this)"
+                                            style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
+                                            <i class="${r.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                            <span class="clc">${r.likeCount > 0 ? r.likeCount : ''}</span>
+                                        </button>
+                                        <button type="button" onclick="toggleReplyBox(${r.commentId}, ${postId})"
+                                            style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
+                                            onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                                            <i class="fas fa-reply"></i> Reply
+                                        </button>
+                                    </div>
+                                    <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
+                                        <div class="comment-input" style="margin:0;">
+                                            <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                            <button type="button" onclick="submitReply(${r.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>`;
                         }).join('');
@@ -1216,7 +1368,7 @@
                     input.value = '';
                     document.getElementById('replyBox_' + commentId).style.display = 'none';
                     loadCommentsFromDB(postId);
-                    showToast('↩️ Reply posted');
+                    showToast('Reply posted');
                 } else {
                     showToast('Error: ' + (res.error || 'Could not reply'));
                 }
@@ -1237,7 +1389,7 @@
                     loadCommentsFromDB(postId);
                     let countSpan = document.querySelector(`.announcement-card[data-post-id="${postId}"] .comment-count`);
                     if (countSpan) countSpan.textContent = parseInt(countSpan.textContent || 0) + 1;
-                    showToast('💬 Comment added');
+                    showToast('Comment added');
                 } else {
                     showToast('Error: ' + (res.error || 'Could not add comment'));
                 }
@@ -1251,12 +1403,12 @@
             let url = window.location.href.split('?')[0];
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url).then(() => {
-                    showToast('🔗 Link copied!');
+                    showToast('Link copied!');
                 }).catch(() => {
-                    showToast('📤 Shared!');
+                    showToast('Shared!');
                 });
             } else {
-                showToast('📤 Shared!');
+                showToast('Shared!');
             }
             // Notify the announcement author
             fetch('NotificationHandler.ashx?action=notifyShare&postId=' + postId, { credentials: 'same-origin' })
@@ -1320,7 +1472,7 @@
                                     <div class="post-content">
                                         <div class="post-title">${escapeHtml(post.title)}</div>
                                         <div class="post-text">${escapeHtml(post.content)}</div>
-                                        ${post.imageUrl ? `<div class="post-image"><img src="${escapeHtml(post.imageUrl)}" onerror="this.style.display='none'"/></div>` : ''}
+                                        ${renderMediaHtml(post.imageUrl)}
                                     </div>
                                     <div class="post-stats">
                                         <span onclick="toggleLike(${post.id})"><i class="${liked ? 'fas' : 'far'} fa-heart" style="${liked ? 'color:#dc2626' : ''}"></i> <span class="like-count">${likeCount}</span> Likes</span>
@@ -1345,10 +1497,8 @@
                         // Update filter label and highlight active button
                         let label = document.getElementById('activeFilterLabel');
                         if (label) label.innerText = savedFilter;
-                        document.querySelectorAll('.dropdown-item-panel').forEach(btn => {
-                            let val = btn.getAttribute('data-filter');
-                            btn.style.fontWeight = val === savedFilter ? '700' : '';
-                            btn.style.color = val === savedFilter ? 'var(--primary)' : '';
+                        document.querySelectorAll('[data-filter]').forEach(btn => {
+                            btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === savedFilter);
                         });
 
                         updateNotifBadge();
@@ -1396,21 +1546,27 @@
             var params = new URLSearchParams(window.location.search);
             var pid = parseInt(params.get('postId') || '0', 10);
             if (!isNaN(pid) && pid > 0) {
-                // Wait for cards to render then scroll + highlight
                 var attempts = 0;
                 var interval = setInterval(function () {
                     var card = document.querySelector('.announcement-card[data-post-id="' + pid + '"]');
                     if (card || attempts > 20) {
                         clearInterval(interval);
                         if (card) {
-                            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            card.style.transition = 'box-shadow 0.3s, border-color 0.3s';
-                            card.style.borderColor = '#f59e0b';
-                            card.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.22), 0 12px 28px rgba(245,158,11,0.18)';
+                            // Scroll within the announcement-board container
+                            var board = document.getElementById('announcementsContainer');
+                            if (board) {
+                                var cardTop = card.offsetTop - board.offsetTop;
+                                board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
+                            } else {
+                                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                            // Apply CSS class highlight (same as Teacher.aspx)
+                            card.classList.add('notification-target');
                             // Open comments section
                             var sec = document.getElementById('commentsSection_' + pid);
-                            if (sec) sec.style.display = 'block';
-                            loadCommentsFromDB(pid);
+                            if (sec) { sec.style.display = 'block'; loadCommentsFromDB(pid); }
+                            // Remove highlight after 5 seconds
+                            setTimeout(function () { card.classList.remove('notification-target'); }, 5000);
                         }
                     }
                     attempts++;
@@ -1421,5 +1577,10 @@
         // Refresh badge every 30 seconds
         setInterval(updateNotifBadge, 30000);
     </script>
+    <!-- Image Lightbox -->
+    <div id="imageLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;padding:20px;">
+        <button onclick="closeLightbox()" style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
+        <img id="lightboxImg" src="" style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
+    </div>
 </body>
 </html>

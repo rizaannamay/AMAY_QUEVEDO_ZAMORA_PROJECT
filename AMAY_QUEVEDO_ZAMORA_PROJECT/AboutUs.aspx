@@ -38,11 +38,28 @@
             --surface-strong: #ffffff;
             --surface-soft: rgba(240, 245, 255, 0.9);
             --border: rgba(26, 58, 92, 0.12);
-            --primary: #1a3a5c;
-            --primary-2: #2c5a7a;
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
             --accent: #d97706;
             --muted: #6b7c8f;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        html, body, form { min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 199;
+            pointer-events: none;
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+                var(--bg-image) center/cover fixed no-repeat;
         }
 
         body {
@@ -51,7 +68,7 @@
             color: var(--page-text);
             background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
                 var(--bg-image) center/cover fixed no-repeat;
-            padding: 16px 20px;
+            padding: 80px 20px 16px;
             transition: background 0.4s ease, color 0.4s ease;
         }
 
@@ -108,7 +125,7 @@
 
         /* ── TOPBAR — matches dashboard dark navy header ── */
         .topbar {
-            background: #1a3a5c;
+            background: #2AACBF;
             border-radius: 24px;
             padding: 14px 24px;
             display: flex;
@@ -116,6 +133,11 @@
             justify-content: space-between;
             gap: 16px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 200;
         }
 
         .brand {
@@ -252,8 +274,8 @@
             display: flex; align-items: center; justify-content: center;
             border-radius: 14px;
             color: #ffffff;
-            background: linear-gradient(135deg, #1a3a5c, #2563eb);
-            box-shadow: 0 4px 12px rgba(26,58,92,0.3);
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            box-shadow: 0 4px 12px rgba(42,172,191,0.3);
         }
 
         .section-heading h3 {
@@ -525,11 +547,8 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 980px) {
-            body { padding: 10px; }
-            .hero { grid-template-columns: 1fr; }
-            .hero-copy, .section-card { padding: 20px; }
-            .hero-stats, .gallery-grid { grid-template-columns: 1fr; }
-            .topbar { align-items: flex-start; flex-direction: column; }
+            body { padding: 76px 10px 10px; }
+            .topbar { top: 6px; left: 6px; right: 6px; align-items: flex-start; flex-direction: column; }
             .creator-card { grid-template-columns: 1fr; text-align: center; }
             .creator-photo { margin: 0 auto; }
         }

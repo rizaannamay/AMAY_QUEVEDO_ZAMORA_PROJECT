@@ -15,6 +15,25 @@
             --border:rgba(26,58,92,0.12);
             --muted:#6b7c8f; --shadow:0 8px 24px rgba(0,0,0,0.08);
         }
+
+        html, body, form { min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 199;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)),url('wbg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
         body {
             font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
             min-height:100vh;
@@ -22,16 +41,21 @@
             background-size:cover; background-attachment:fixed;
             color:var(--primary);
         }
-        .shell { max-width:700px; margin:0 auto; padding:32px 20px 60px; display:flex; flex-direction:column; gap:20px; }
+        .shell { max-width:700px; margin:0 auto; padding:80px 20px 60px; display:flex; flex-direction:column; gap:20px; }
 
         /* topbar */
         .topbar {
-            background:var(--surface); backdrop-filter:blur(14px);
-            border:1px solid var(--border); border-radius:20px;
+            background:#2AACBF; backdrop-filter:blur(14px);
+            border:1px solid rgba(255,255,255,0.15); border-radius:20px;
             padding:14px 22px; display:flex; align-items:center;
             justify-content:space-between; box-shadow:var(--shadow);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 200;
         }
-        .brand { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; }
+        .brand { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; color:#ffffff; }
         .brand-badge {
             width:40px; height:40px; border-radius:12px;
             background:linear-gradient(135deg,#1a3a5c,#2563eb);
