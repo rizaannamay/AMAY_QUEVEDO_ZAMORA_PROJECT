@@ -36,7 +36,6 @@
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
 
-        /* Cover content that scrolls behind the fixed header */
         body::before {
             content: '';
             position: fixed;
@@ -76,7 +75,6 @@
             overflow-y: visible;
         }
 
-        /* Dashboard layout: sidebar + main side by side */
         .dashboard-body {
             display: flex;
             gap: 16px;
@@ -358,6 +356,7 @@
             color: #ffffff;
             font-weight: 700;
         }
+
         .dropdown-item-panel.active-filter i { color: #ffffff; }
 
         .avatar, .post-avatar, .create-post-avatar {
@@ -408,13 +407,12 @@
         .announcement-board {
             flex: 1 1 auto;
             overflow-y: auto;
-            scrollbar-width: none;        /* Firefox */
-            -ms-overflow-style: none;     /* IE/Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
             padding: 18px;
             background: rgba(248, 250, 252, 0.35);
         }
 
-        /* Teacher: main-panel wraps create-post + card, needs flex column */
         main.main-panel {
             display: flex;
             flex-direction: column;
@@ -440,6 +438,29 @@
             font-size: 16px;
             color: var(--primary);
             border-radius: 24px 24px 0 0;
+        }
+
+        .focus-banner {
+            background: linear-gradient(135deg, rgba(42,172,191,0.10), rgba(26,154,170,0.08));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .focus-back-btn {
+            border: none;
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-weight: 700;
         }
 
         .announcement-card {
@@ -704,29 +725,32 @@
         .btn-publish { background: var(--success); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
         .btn-cancel { background: none; border: 1px solid var(--border); padding: 10px 24px; border-radius: 40px; cursor: pointer; }
 
-        /* ── FOOTER ── */
-        /* removed */
-
-        /* Light mode — white text on dark #1a3a5c header */
         body:not(.dark-mode) .header .logo,
         body:not(.dark-mode) .header .logo i,
         body:not(.dark-mode) .header .user-name,
         body:not(.dark-mode) .header .user-role,
         body:not(.dark-mode) .header .bell-icon,
         body:not(.dark-mode) .header .search-btn { color: #ffffff; }
+
         body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
+
         body:not(.dark-mode) .header .user-info {
             background: rgba(255,255,255,0.12);
             border-color: rgba(255,255,255,0.25);
         }
+
         body:not(.dark-mode) .header .user-info .user-name,
         body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
+
         body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
+
         body:not(.dark-mode) .header .notification-bell {
             background: rgba(255,255,255,0.12);
             border-color: rgba(255,255,255,0.25);
         }
+
         body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
+
         body:not(.dark-mode) .header .search-btn:hover {
             background: rgba(255,255,255,0.18);
             border-color: rgba(255,255,255,0.6);
@@ -753,7 +777,6 @@
 
         body.dark-mode .announcement-board { background: transparent; }
 
-        /* Hide scrollbar on announcement board (Chrome/Safari) */
         .announcement-board::-webkit-scrollbar { display: none; }
 
         body:not(.dark-mode) .announcement-card {
@@ -936,91 +959,92 @@
 <body>
     <form id="form1" runat="server">
         <div class="header">
-                <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
-                    <i class="fas fa-chalkboard-teacher"></i> Campus Announcement
+            <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
+                <i class="fas fa-chalkboard-teacher"></i> Campus Announcement
+            </div>
+            <div class="search-container">
+                <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
+                    Text="Search Announcements..." OnClick="SearchButton_Click"
+                    UseSubmitBehavior="false" />
+            </div>
+            <div class="header-actions">
+                <div class="notification-bell" onclick="openNotificationDropdown()">
+                    <i class="fas fa-bell bell-icon"></i>
+                    <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
                 </div>
-                <div class="search-container">
-                    <asp:Button ID="searchButton" runat="server" CssClass="search-btn"
-                        Text="Search Announcements..." OnClick="SearchButton_Click"
-                        UseSubmitBehavior="false" />
-                </div>
-                <div class="header-actions">
-                    <div class="notification-bell" onclick="openNotificationDropdown()">
-                        <i class="fas fa-bell bell-icon"></i>
-                        <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
+                <div class="user-info" onclick="window.location.href='Profile.aspx'">
+                    <div class="avatar" id="headerAvatar" style="overflow:hidden;">
+                        <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
+                            <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
+                                 style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
+                        <% } else { %>
+                            <i class="fas fa-user"></i>
+                        <% } %>
                     </div>
-                    <div class="user-info" onclick="window.location.href='Profile.aspx'">
-                        <div class="avatar" id="headerAvatar" style="overflow:hidden;">
-                            <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
-                                <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
-                                     style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
-                            <% } else { %>
-                                <i class="fas fa-user"></i>
-                            <% } %>
-                        </div>
-                        <div class="user-details">
-                            <div class="user-name"><%= Session["Username"] ?? "User" %></div>
-                            <div class="user-role"><%= Session["Role"] ?? "Teacher" %></div>
-                        </div>
+                    <div class="user-details">
+                        <div class="user-name"><%= Session["Username"] ?? "User" %></div>
+                        <div class="user-role"><%= Session["Role"] ?? "Teacher" %></div>
                     </div>
                 </div>
             </div>
+        </div>
+
         <div class="app-shell">
             <div class="dashboard-body">
-            <div id="slideoutPanel" class="slideout-panel">
-                <div class="panel-header">
-                    <h3><i class="fas fa-sliders-h"></i> Menu</h3>
-                </div>
-                <div class="panel-menu-list">
-                    <button type="button" class="panel-menu-item" id="filterCategoryBtn">
-                        <i class="fas fa-layer-group"></i> Filter by Category
-                    </button>
-                    <div id="categoryDropdownPanel" class="category-dropdown-panel">
-                        <button type="button" class="dropdown-item-panel" data-filter="All" onclick="filterCategory('All'); event.stopPropagation();"><i class="fas fa-th-list"></i> All Announcements</button>
-                        <button type="button" class="dropdown-item-panel" data-filter="Exam" onclick="filterCategory('Exam'); event.stopPropagation();"><i class="fas fa-file-alt"></i> Exam Schedule</button>
-                        <button type="button" class="dropdown-item-panel" data-filter="Suspension" onclick="filterCategory('Suspension'); event.stopPropagation();"><i class="fas fa-cloud-rain"></i> Class Suspension</button>
-                        <button type="button" class="dropdown-item-panel" data-filter="Event" onclick="filterCategory('Event'); event.stopPropagation();"><i class="fas fa-calendar-alt"></i> Campus Events</button>
-                        <button type="button" class="dropdown-item-panel" data-filter="General" onclick="filterCategory('General'); event.stopPropagation();"><i class="fas fa-bullhorn"></i> General</button>
+                <div id="slideoutPanel" class="slideout-panel">
+                    <div class="panel-header">
+                        <h3><i class="fas fa-sliders-h"></i> Menu</h3>
                     </div>
-                    <button type="button" class="panel-menu-item" onclick="navigateWithFlip('Pinned.aspx');">
-                        <i class="fas fa-thumbtack"></i> Pinned Announcements
-                    </button>
-                    <div class="divider-light"></div>
-                    <button type="button" class="panel-menu-item" id="settingsThemeBtn">
-                        <div class="theme-toggle-row" style="width:100%;">
-                            <span><i class="fas fa-moon"></i> Dark / Light Mode</span>
-                            <div class="toggle-switch-panel" id="panelThemeToggle"></div>
+                    <div class="panel-menu-list">
+                        <button type="button" class="panel-menu-item" id="filterCategoryBtn">
+                            <i class="fas fa-layer-group"></i> Filter by Category
+                        </button>
+                        <div id="categoryDropdownPanel" class="category-dropdown-panel">
+                            <button type="button" class="dropdown-item-panel" data-filter="All" onclick="filterCategory('All'); event.stopPropagation();"><i class="fas fa-th-list"></i> All Announcements</button>
+                            <button type="button" class="dropdown-item-panel" data-filter="Exam" onclick="filterCategory('Exam'); event.stopPropagation();"><i class="fas fa-file-alt"></i> Exam Schedule</button>
+                            <button type="button" class="dropdown-item-panel" data-filter="Suspension" onclick="filterCategory('Suspension'); event.stopPropagation();"><i class="fas fa-cloud-rain"></i> Class Suspension</button>
+                            <button type="button" class="dropdown-item-panel" data-filter="Event" onclick="filterCategory('Event'); event.stopPropagation();"><i class="fas fa-calendar-alt"></i> Campus Events</button>
+                            <button type="button" class="dropdown-item-panel" data-filter="General" onclick="filterCategory('General'); event.stopPropagation();"><i class="fas fa-bullhorn"></i> General</button>
                         </div>
-                    </button>
-                    <button type="button" class="panel-menu-item" onclick="navigateWithFlip('AboutUs.aspx');">
-                        <i class="fas fa-info-circle"></i> About Us
-                    </button>
-                    <div class="divider-light"></div>
-                    <button type="button" class="panel-menu-item" onclick="navigateWithFlip('Backup.aspx');">
-                        <i class="fas fa-database"></i> Database Backup
-                    </button>
+                        <button type="button" class="panel-menu-item" onclick="navigateWithFlip('Pinned.aspx');">
+                            <i class="fas fa-thumbtack"></i> Pinned Announcements
+                        </button>
+                        <div class="divider-light"></div>
+                        <button type="button" class="panel-menu-item" id="settingsThemeBtn">
+                            <div class="theme-toggle-row" style="width:100%;">
+                                <span><i class="fas fa-moon"></i> Dark / Light Mode</span>
+                                <div class="toggle-switch-panel" id="panelThemeToggle"></div>
+                            </div>
+                        </button>
+                        <button type="button" class="panel-menu-item" onclick="navigateWithFlip('AboutUs.aspx');">
+                            <i class="fas fa-info-circle"></i> About Us
+                        </button>
+                        <div class="divider-light"></div>
+                        <button type="button" class="panel-menu-item" onclick="navigateWithFlip('Backup.aspx');">
+                            <i class="fas fa-database"></i> Database Backup
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
+                <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
 
-            <div class="content-shell">
-                <main class="main-panel">
-                    <div class="create-post-card" onclick="openCreatePostModal()">
-                        <div class="create-post-header">
-                            <div class="create-post-avatar"><i class="fas fa-plus-circle"></i></div>
-                            <div class="create-post-input">Share an announcement with students...</div>
+                <div class="content-shell">
+                    <main class="main-panel">
+                        <div class="create-post-card" onclick="openCreatePostModal()">
+                            <div class="create-post-header">
+                                <div class="create-post-avatar"><i class="fas fa-plus-circle"></i></div>
+                                <div class="create-post-input">Share an announcement with students...</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header" style="padding:18px 22px; border-bottom:1px solid var(--border); flex-shrink:0; border-radius:24px 24px 0 0;">
-                            <i class="fas fa-bullhorn"></i> Announcement Board
-                            <span style="float: right; font-size: 12px;">Showing: <span id="activeFilterLabel">All</span></span>
+                        <div class="card">
+                            <div class="card-header" style="padding:18px 22px; border-bottom:1px solid var(--border); flex-shrink:0; border-radius:24px 24px 0 0;">
+                                <i class="fas fa-bullhorn"></i> Announcement Board
+                                <span id="boardModeLabel" style="float: right; font-size: 12px;">Showing: <span id="activeFilterLabel">All</span></span>
+                            </div>
+                            <div id="announcementsContainer" class="announcement-board"></div>
                         </div>
-                        <div id="announcementsContainer" class="announcement-board"></div>
-                    </div>
-                </main>
+                    </main>
+                </div>
             </div>
-            </div><!-- end dashboard-body -->
         </div>
 
         <div id="createPostModal" class="modal">
@@ -1121,10 +1145,8 @@
                 </div>
             </div>
         </div>
-
     </form>
 
-    <!-- Image Lightbox -->
     <div id="imageLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;padding:20px;">
         <button onclick="closeLightbox()" style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
         <img id="lightboxImg" src="" style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
@@ -1151,6 +1173,7 @@
             let pid = parseInt(params.get('postId') || '0', 10);
             if (!isNaN(pid) && pid > 0) focusPostId = pid;
         })();
+
         function saveSharedState() {
             localStorage.setItem('teacher_data', JSON.stringify({
                 likes: st_likes,
@@ -1186,7 +1209,6 @@
                         st_pins = {};
                         st_announcements.forEach(a => { if (a.isPinned) st_pins[a.id] = true; });
                         renderAnnouncements();
-                        highlightFocusedPost();
                     }
                 });
         }
@@ -1206,28 +1228,95 @@
             return `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
         }
 
+        function buildRepliesMap(comments) {
+            const map = {};
+            comments.forEach(c => {
+                const key = c.parentCommentId == null ? 'root' : String(c.parentCommentId);
+                if (!map[key]) map[key] = [];
+                map[key].push(c);
+            });
+            return map;
+        }
+
+        function renderCommentNode(comment, repliesMap, postId, depth) {
+            const children = repliesMap[String(comment.commentId)] || [];
+            const indent = Math.min(depth * 28, 140);
+            const childHtml = children.map(child => renderCommentNode(child, repliesMap, postId, depth + 1)).join('');
+
+            return `
+                <div class="comment" data-comment-id="${comment.commentId}" style="${depth > 0 ? `margin-left:${indent}px;` : ''}">
+                    ${commentAvatarHtml(comment.profileImage)}
+                    <div style="flex:1;min-width:0;">
+                        <span class="comment-author">${escapeHtml(comment.author)}</span>
+                        <div>${escapeHtml(comment.text)}</div>
+                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;flex-wrap:wrap;">
+                            <small>${comment.date || ''}</small>
+                            <button type="button" class="comment-like-btn ${comment.userLiked ? 'liked' : ''}" onclick="likeComment(${comment.commentId},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${comment.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                <i class="${comment.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                <span class="clc">${comment.likeCount > 0 ? comment.likeCount : ''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBox(${comment.commentId},${postId})"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="replyBox_${comment.commentId}" style="display:none;margin-top:8px;">
+                            <div class="comment-input" style="margin:0;">
+                                <input type="text" id="replyInput_${comment.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                <button type="button" onclick="submitReply(${comment.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                            </div>
+                        </div>
+                        ${childHtml}
+                    </div>
+                </div>
+            `;
+        }
+
         function renderAnnouncements() {
             let container = document.getElementById('announcementsContainer');
             if (!container) return;
 
             let filter = localStorage.getItem('teacher_filter') || 'All';
-            document.getElementById('activeFilterLabel').innerText = filter;
+            let activeFilterLabel = document.getElementById('activeFilterLabel');
+            if (activeFilterLabel) activeFilterLabel.innerText = filter;
 
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
+
+            if (focusPostId > 0) {
+                filtered = filtered.filter(a => a.id === focusPostId);
+                let boardModeLabel = document.getElementById('boardModeLabel');
+                if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+            } else {
+                let boardModeLabel = document.getElementById('boardModeLabel');
+                if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
+            }
+
             filtered.sort((a, b) =>
                 (st_pins[a.id] && !st_pins[b.id]) ? -1 :
                 (!st_pins[a.id] && st_pins[b.id]) ? 1 :
                 b.id - a.id
             );
 
-            container.innerHTML = filtered.map(post => {
+            if (focusPostId > 0) {
+                let exists = filtered.length > 0;
+                container.innerHTML =
+                    `<div class="focus-banner">
+                        <button type="button" class="focus-back-btn" onclick="window.location.href='Teacher.aspx'">Back to All Posts</button>
+                    </div>` +
+                    (exists ? '' : `<div class="no-comments" style="padding:30px;">That announcement could not be found.</div>`);
+            } else {
+                container.innerHTML = '';
+            }
+
+            container.innerHTML += filtered.map(post => {
                 let pinned = st_pins[post.id];
                 let liked = !!post.userLiked;
                 let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' :
                     post.category === 'Suspension' ? 'post-category-suspension' :
                     post.category === 'Event' ? 'post-category-event' : 'post-category-general';
-                let commentsCount = (st_comments[post.id] || []).filter(c => !c.parentCommentId).length || post.commentCount || 0;
+                let commentsCount = (st_comments[post.id] || []).length || post.commentCount || 0;
                 let avatar = avatarHtml(post.authorImage, 50, true);
                 let targetClass = (focusPostId > 0 && focusPostId === post.id) ? ' notification-target' : '';
 
@@ -1264,7 +1353,7 @@
                         <button type="button" class="action-btn" onclick="toggleCommentSection(${post.id})">Comment</button>
                         <button type="button" class="action-btn" onclick="sharePost(${post.id})">Share</button>
                     </div>
-                    <div class="comments-section" id="commentsSection_${post.id}" style="display:none;">
+                    <div class="comments-section" id="commentsSection_${post.id}" style="${focusPostId === post.id ? 'display:block;' : 'display:none;'}">
                         <div class="comment-input">
                             <input id="commentInput_${post.id}" placeholder="Write a comment..."/>
                             <button type="button" onclick="addComment(${post.id})">Post</button>
@@ -1273,101 +1362,24 @@
                     </div>
                 </div>`;
             }).join('');
-        }
 
-        function highlightFocusedPost() {
-            if (!focusPostId || focusPostId <= 0) return;
-
-            // Remove highlight from any previously highlighted card
-            document.querySelectorAll('.announcement-card.notification-target').forEach(function(el) {
-                el.classList.remove('notification-target');
-            });
-
-            let card = document.getElementById('post_' + focusPostId);
-            if (!card) return;
-
-            setTimeout(function() {
-                // Scroll within the announcement-board container (not the page)
-                let board = document.getElementById('announcementsContainer');
-                if (board) {
-                    let cardTop = card.offsetTop - board.offsetTop;
-                    board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
-                } else {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-                card.classList.add('notification-target');
-                // Remove highlight after 5 seconds
-                setTimeout(function() { card.classList.remove('notification-target'); }, 5000);
-            }, 250);
-
-            toggleCommentSection(focusPostId);
+            if (focusPostId > 0) {
+                loadComments(focusPostId);
+            }
         }
 
         function renderCommentsList(postId) {
             let comments = st_comments[postId] || [];
             if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
-            const topLevel = comments.filter(c => !c.parentCommentId);
-            const replies = comments.filter(c => c.parentCommentId);
-            return topLevel.map(c => {
-                let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
-                    `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
-                        ${commentAvatarHtml(r.profileImage)}
-                        <div style="flex:1;min-width:0;">
-                            <span class="comment-author">${escapeHtml(r.author)}</span>
-                            <div>${escapeHtml(r.text)}</div>
-                            <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                                <small>${r.date||''}</small>
-                                <button type="button" class="comment-like-btn ${r.userLiked?'liked':''}" onclick="likeComment(${r.commentId},this)"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
-                                    <i class="${r.userLiked?'fas':'far'} fa-heart"></i>
-                                    <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
-                                </button>
-                                <button type="button" onclick="toggleReplyBox(${r.commentId},${postId})"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
-                                    <i class="fas fa-reply"></i> Reply
-                                </button>
-                            </div>
-                            <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
-                                <div class="comment-input" style="margin:0;">
-                                    <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                    <button type="button" onclick="submitReply(${r.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-                ).join('');
-                return `<div class="comment" data-comment-id="${c.commentId}">
-                    ${commentAvatarHtml(c.profileImage)}
-                    <div style="flex:1;min-width:0;">
-                        <span class="comment-author">${escapeHtml(c.author)}</span>
-                        <div>${escapeHtml(c.text)}</div>
-                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                            <small>${c.date||''}</small>
-                            <button type="button" class="comment-like-btn ${c.userLiked?'liked':''}" onclick="likeComment(${c.commentId},this)"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
-                                <i class="${c.userLiked?'fas':'far'} fa-heart"></i>
-                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
-                            </button>
-                            <button type="button" onclick="toggleReplyBox(${c.commentId},${postId})"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
-                                <i class="fas fa-reply"></i> Reply
-                            </button>
-                        </div>
-                        <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
-                            <div class="comment-input" style="margin:0;">
-                                <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                <button type="button" onclick="submitReply(${c.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
-                            </div>
-                        </div>
-                        ${rHtml}
-                    </div>
-                </div>`;
-            }).join('');
+
+            const repliesMap = buildRepliesMap(comments);
+            const rootComments = repliesMap.root || [];
+
+            return rootComments.map(comment => renderCommentNode(comment, repliesMap, postId, 0)).join('');
         }
 
-        // ====================== MEDIA RENDER HELPER ======================
-        var videoExts  = ['mp4','webm','ogg','mov','avi'];
-        var imageExts  = ['jpg','jpeg','png','gif','webp','bmp'];
+        var videoExts = ['mp4','webm','ogg','mov','avi'];
+        var imageExts = ['jpg','jpeg','png','gif','webp','bmp'];
 
         function getExt(url) {
             return (url.split('.').pop() || '').toLowerCase().split('?')[0];
@@ -1380,7 +1392,7 @@
             var html = '';
             var images = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) !== -1; });
             var videos = urls.filter(function(u) { return videoExts.indexOf(getExt(u)) !== -1; });
-            var files  = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
+            var files = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
 
             if (images.length === 1) {
                 html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
@@ -1398,7 +1410,6 @@
 
             files.forEach(function(f) {
                 var fname = f.split('/').pop();
-                var ext = getExt(f).toUpperCase();
                 html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
                     <i class="fas fa-file-alt" style="color:var(--primary);font-size:18px;"></i>
                     <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fname}</span>
@@ -1409,7 +1420,6 @@
             return html;
         }
 
-        // ====================== LIGHTBOX ======================
         function openLightbox(src) {
             var lb = document.getElementById('imageLightbox');
             var lbImg = document.getElementById('lightboxImg');
@@ -1469,7 +1479,6 @@
                     st_likeCounts[id] = res.likeCount;
                     saveSharedState();
                     renderAnnouncements();
-                    if (focusPostId) highlightFocusedPost();
                     showToast(res.liked ? 'Liked!' : 'Like removed');
                 });
         }
@@ -1482,7 +1491,6 @@
                     if (res.isPinned) st_pins[id] = true; else delete st_pins[id];
                     saveSharedState();
                     renderAnnouncements();
-                    if (focusPostId) highlightFocusedPost();
                     showToast(res.isPinned ? 'Pinned!' : 'Unpinned');
                 })
                 .catch(() => showToast('Could not update pin'));
@@ -1507,14 +1515,13 @@
             fetch(`CommentHandler.ashx?action=get&postId=${postId}`, { credentials: 'same-origin' })
                 .then(r => r.json())
                 .then(data => {
-                    // API returns array on success, object with success:false on error
                     if (!Array.isArray(data)) return;
                     const list = data;
                     st_comments[postId] = list;
                     let listDiv = document.getElementById(`commentsList_${postId}`);
                     if (listDiv) listDiv.innerHTML = renderCommentsList(postId);
                     let countSpan = document.querySelector(`.announcement-card[data-id="${postId}"] .comment-count`);
-                    if (countSpan) countSpan.textContent = list.filter(c => !c.parentCommentId).length;
+                    if (countSpan) countSpan.textContent = list.length;
                 });
         }
 
@@ -1573,9 +1580,9 @@
 
         function filterCategory(cat) {
             localStorage.setItem('teacher_filter', cat);
-            document.getElementById('activeFilterLabel').innerText = cat;
+            let activeFilterLabel = document.getElementById('activeFilterLabel');
+            if (activeFilterLabel) activeFilterLabel.innerText = cat;
             renderAnnouncements();
-            if (focusPostId) highlightFocusedPost();
             document.querySelectorAll('[data-filter]').forEach(btn => {
                 btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === cat);
             });
@@ -1594,11 +1601,10 @@
             btn.onclick = publishAnnouncement;
         }
 
-        // ── Media state for create/edit modal ──────────────────────────────
         let selectedImageFiles = [];
-        let selectedVideoFile  = null;
+        let selectedVideoFile = null;
         let selectedAttachFile = null;
-        let existingMediaUrls  = [];  // existing URLs shown in edit mode
+        let existingMediaUrls = [];
 
         function closeCreatePostModal() {
             document.getElementById('createPostModal').style.display = 'none';
@@ -1608,9 +1614,9 @@
             document.getElementById('announcementVideoFile').value = '';
             document.getElementById('announcementAttachFile').value = '';
             selectedImageFiles = [];
-            selectedVideoFile  = null;
+            selectedVideoFile = null;
             selectedAttachFile = null;
-            existingMediaUrls  = [];
+            existingMediaUrls = [];
             document.getElementById('imagePreviewContainer').style.display = 'none';
             document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('videoPreviewContainer').style.display = 'none';
@@ -1620,12 +1626,10 @@
         function previewImageFiles() {
             let input = document.getElementById('announcementImageFile');
             let newFiles = Array.from(input.files);
-            // Merge new files, skip duplicates by name+size
             newFiles.forEach(function(f) {
                 let isDupe = selectedImageFiles.some(function(e) { return e.name === f.name && e.size === f.size; });
                 if (!isDupe) selectedImageFiles.push(f);
             });
-            // Reset input so the same file can be re-added after removal
             input.value = '';
             renderImagePreviews();
         }
@@ -1667,7 +1671,6 @@
                 let url = URL.createObjectURL(file);
                 document.getElementById('previewVideo').src = url;
                 container.style.display = 'block';
-                // Restore default clear button behaviour
                 let clearBtn = container.querySelector('button');
                 if (clearBtn) clearBtn.onclick = clearVideoPreview;
             } else {
@@ -1689,7 +1692,6 @@
                 selectedAttachFile = file;
                 document.getElementById('attachFileName').textContent = file.name;
                 container.style.display = 'flex';
-                // Restore default clear button behaviour
                 let clearBtn = container.querySelector('button');
                 if (clearBtn) clearBtn.onclick = clearAttachPreview;
             } else {
@@ -1725,14 +1727,13 @@
             formData.append('content', content);
             formData.append('category', category);
 
-            // Multiple images
             for (let i = 0; i < selectedImageFiles.length; i++) {
                 formData.append('imageFile', selectedImageFiles[i]);
             }
-            // Video
+
             let videoFile = selectedVideoFile || document.getElementById('announcementVideoFile').files[0];
             if (videoFile) formData.append('videoFile', videoFile);
-            // Attachment
+
             let attachFile = selectedAttachFile || document.getElementById('announcementAttachFile').files[0];
             if (attachFile) formData.append('attachFile', attachFile);
 
@@ -1765,23 +1766,21 @@
             let post = st_announcements.find(p => p.id === id);
             if (!post) return;
 
-            document.getElementById('announcementTitle').value    = post.title;
-            document.getElementById('announcementContent').value  = post.content;
+            document.getElementById('announcementTitle').value = post.title;
+            document.getElementById('announcementContent').value = post.content;
             document.getElementById('announcementCategory').value = post.category;
 
-            // Reset new-file state
             selectedImageFiles = [];
-            selectedVideoFile  = null;
+            selectedVideoFile = null;
             selectedAttachFile = null;
-            document.getElementById('announcementImageFile').value  = '';
-            document.getElementById('announcementVideoFile').value  = '';
+            document.getElementById('announcementImageFile').value = '';
+            document.getElementById('announcementVideoFile').value = '';
             document.getElementById('announcementAttachFile').value = '';
-            document.getElementById('imagePreviewContainer').innerHTML  = '';
+            document.getElementById('imagePreviewContainer').innerHTML = '';
             document.getElementById('imagePreviewContainer').style.display = 'none';
             document.getElementById('videoPreviewContainer').style.display = 'none';
             document.getElementById('attachPreviewContainer').style.display = 'none';
 
-            // Populate existing media as removable previews
             existingMediaUrls = post.imageUrl
                 ? post.imageUrl.split(',').map(u => u.trim()).filter(Boolean)
                 : [];
@@ -1794,7 +1793,6 @@
         }
 
         function renderExistingMediaPreviews() {
-            // Images
             let imgContainer = document.getElementById('imagePreviewContainer');
             let existingImages = existingMediaUrls.filter(u => imageExts.indexOf(getExt(u)) !== -1);
             if (existingImages.length) {
@@ -1815,18 +1813,15 @@
                 });
             }
 
-            // Video
             let existingVideo = existingMediaUrls.find(u => videoExts.indexOf(getExt(u)) !== -1);
             if (existingVideo) {
                 let vc = document.getElementById('videoPreviewContainer');
                 document.getElementById('previewVideo').src = existingVideo;
                 vc.style.display = 'block';
-                // Replace the clear button to remove from existingMediaUrls
                 let clearBtn = vc.querySelector('button');
                 if (clearBtn) clearBtn.onclick = function() { removeExistingMedia(existingVideo); };
             }
 
-            // File attachment
             let existingFile = existingMediaUrls.find(u => imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1);
             if (existingFile) {
                 let fname = existingFile.split('/').pop();
@@ -1843,7 +1838,6 @@
             let ext = getExt(url);
 
             if (imageExts.indexOf(ext) !== -1) {
-                // Remove just this image thumbnail
                 let container = document.getElementById('imagePreviewContainer');
                 let wrap = container.querySelector('[data-url="' + url + '"]');
                 if (wrap) wrap.remove();
@@ -1857,22 +1851,22 @@
         }
 
         function updateAnnouncement(id) {
-            let title    = document.getElementById('announcementTitle').value;
-            let content  = document.getElementById('announcementContent').value;
+            let title = document.getElementById('announcementTitle').value;
+            let content = document.getElementById('announcementContent').value;
             let category = document.getElementById('announcementCategory').value;
             let formData = new FormData();
-            formData.append('title',    title);
-            formData.append('content',  content);
+            formData.append('title', title);
+            formData.append('content', content);
             formData.append('category', category);
-            // Tell the server which existing URLs to keep
             formData.append('keepUrls', existingMediaUrls.join(','));
 
-            // New files selected during edit
             for (let i = 0; i < selectedImageFiles.length; i++) {
                 formData.append('imageFile', selectedImageFiles[i]);
             }
+
             let videoFile = selectedVideoFile || document.getElementById('announcementVideoFile').files[0];
             if (videoFile) formData.append('videoFile', videoFile);
+
             let attachFile = selectedAttachFile || document.getElementById('announcementAttachFile').files[0];
             if (attachFile) formData.append('attachFile', attachFile);
 
@@ -1913,7 +1907,14 @@
             document.getElementById('deleteConfirmBtn').onclick = function () {
                 modal.classList.remove('active');
                 fetch(`AnnouncementHandler.ashx?action=delete&id=${id}`, { credentials: 'same-origin' })
-                    .then(() => { loadAnnouncementsFromDB(); showToast('Announcement deleted.'); });
+                    .then(() => {
+                        if (focusPostId && focusPostId === id) {
+                            window.location.href = 'Teacher.aspx';
+                            return;
+                        }
+                        loadAnnouncementsFromDB();
+                        showToast('Announcement deleted.');
+                    });
             };
         }
 
