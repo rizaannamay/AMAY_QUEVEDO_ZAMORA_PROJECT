@@ -42,7 +42,7 @@
             background-size:cover; background-attachment:fixed;
             color:var(--primary);
         }
-        .shell { max-width:700px; margin:0 auto; padding:90px 20px 60px; display:flex; flex-direction:column; gap:20px; }
+        .shell { max-width: calc(100% - 20px); margin:0 auto; padding:90px 20px 60px; display:flex; flex-direction:column; gap:20px; }
 
         /* topbar */
         .topbar {
@@ -156,8 +156,13 @@
         body.dark-mode .backup-table td {
             color: #e2e8f0 !important;
             border-color: rgba(255,255,255,0.08) !important;
+            background: rgba(30, 41, 59, 0.95) !important;
         }
-        body.dark-mode .backup-table tr:nth-child(even) td { background: rgba(51,65,85,0.40) !important; }
+        body.dark-mode .backup-table tr { background: rgba(30, 41, 59, 0.95) !important; }
+        body.dark-mode .backup-table tr:nth-child(even),
+        body.dark-mode .backup-table tr:nth-child(even) td { background: rgba(51,65,85,0.60) !important; }
+        body.dark-mode .backup-table tr:hover td { background: rgba(99,102,241,0.15) !important; }
+        body.dark-mode .backup-table { color: #e2e8f0 !important; }
         body.dark-mode .table-wrap { border-color: rgba(255,255,255,0.08) !important; }
         body.dark-mode .msg-success { background: rgba(22,101,52,0.25) !important; color: #86efac !important; border-color: rgba(134,239,172,0.30) !important; }
         body.dark-mode .msg-error   { background: rgba(153,27,27,0.25) !important; color: #fca5a5 !important; border-color: rgba(252,165,165,0.30) !important; }

@@ -370,8 +370,8 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
         image filenames below in the same project folder.</p>
         <div class="creators-grid">
             <article class="creator-card"
-                onclick="openImageModal('Amay Riza Ann.jpg','Amay Riza Ann','Creator — We built this platform to make every important school update easier to reach, understand, and trust.')">
-                <div class="creator-photo"><img src="Amay Riza Ann.jpg" alt="Amay Riza Ann" /></div>
+                onclick="openImageModal('Amay Riza Ann.jpg?v=2','Amay Riza Ann','Creator — We built this platform to make every important school update easier to reach, understand, and trust.')">
+                <div class="creator-photo"><img src="Amay Riza Ann.jpg?v=2" alt="Amay Riza Ann" /></div>
                 <div class="creator-info">
                     <h4>Amay Riza Ann</h4>
                     <div class="creator-role">Creator</div>
@@ -379,8 +379,8 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
                 </div>
             </article>
             <article class="creator-card"
-                onclick="openImageModal('Quevedo Mary Chris.jpg','Quevedo Mary Chris','Creator — Good communication creates a stronger campus community, and this portal was designed to support that every day.')">
-                <div class="creator-photo"><img src="Quevedo Mary Chris.jpg" alt="Quevedo Mary Chris" /></div>
+                onclick="openImageModal('Quevedo Mary Chris.jpg?v=2','Quevedo Mary Chris','Creator — Good communication creates a stronger campus community, and this portal was designed to support that every day.')">
+                <div class="creator-photo"><img src="Quevedo Mary Chris.jpg?v=2" alt="Quevedo Mary Chris" /></div>
                 <div class="creator-info">
                     <h4>Quevedo Mary Chris</h4>
                     <div class="creator-role">Creator</div>
@@ -388,8 +388,8 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
                 </div>
             </article>
             <article class="creator-card"
-                onclick="openImageModal('Zamora Shaira Jane.jpg','Zamora Shaira Jane','Creator — Our vision was to create a space where announcements feel clear, official, and always within reach.')">
-                <div class="creator-photo"><img src="Zamora Shaira Jane.jpg" alt="Zamora Shaira Jane" /></div>
+                onclick="openImageModal('Zamora Shaira Jane.jpg?v=2','Zamora Shaira Jane','Creator — Our vision was to create a space where announcements feel clear, official, and always within reach.')">
+                <div class="creator-photo"><img src="Zamora Shaira Jane.jpg?v=2" alt="Zamora Shaira Jane" /></div>
                 <div class="creator-info">
                     <h4>Zamora Shaira Jane</h4>
                     <div class="creator-role">Creator</div>
