@@ -3,23 +3,22 @@
  *  CAMPUS CONNECT — GLOBAL DARK MODE STYLESHEET
  *  Applied via: body.dark-mode
  *  Toggled by:  localStorage key "campus_theme" === "dark"
- *  Included in: ALL .aspx pages via <link rel="stylesheet" href="dark-mode.css">
  * ═══════════════════════════════════════════════════════════════════
  */
 
 /* ── CSS VARIABLE OVERRIDES ─────────────────────────────────────── */
 body.dark-mode {
     --page-text:      #e4e6eb;
-    --surface:        rgba(30, 41, 59, 0.95);
-    --surface-strong: rgba(30, 41, 59, 0.98);
-    --surface-soft:   rgba(51, 65, 85, 0.60);
+    --surface:        rgba(30, 30, 30, 0.95);
+    --surface-strong: rgba(35, 35, 35, 0.98);
+    --surface-soft:   rgba(45, 45, 45, 0.80);
     --border:         rgba(255, 255, 255, 0.10);
-    --primary:        #93c5fd;
-    --primary-2:      #67e8f9;
-    --muted:          #94a3b8;
-    --muted-light:    #64748b;
-    --shadow:         0 8px 32px rgba(0, 0, 0, 0.60);
-    --active-bg:      rgba(99, 102, 241, 0.18);
+    --primary:        #fcd34d;
+    --primary-2:      #fbbf24;
+    --muted:          #9ca3af;
+    --muted-light:    #6b7280;
+    --shadow:         0 8px 32px rgba(0, 0, 0, 0.70);
+    --active-bg:      rgba(201, 146, 10, 0.15);
     --bg-image:       url('bg.jpg');
     --accent:         #f59e0b;
     --danger:         #f87171;
@@ -30,8 +29,8 @@ body.dark-mode {
 
 /* ── BODY ───────────────────────────────────────────────────────── */
 body.dark-mode {
-    background-color: #0f172a;
-    background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), url('bg.jpg');
+    background-color: #121212;
+    background-image: linear-gradient(rgba(18, 18, 18, 0.92), rgba(18, 18, 18, 0.92)), url('bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -39,9 +38,8 @@ body.dark-mode {
     color: #e4e6eb;
 }
 
-/* body::before cover strip (used by several pages) */
 body.dark-mode::before {
-    background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), url('bg.jpg') !important;
+    background-image: linear-gradient(rgba(18, 18, 18, 0.92), rgba(18, 18, 18, 0.92)), url('bg.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-attachment: fixed !important;
@@ -51,10 +49,10 @@ body.dark-mode::before {
 body.dark-mode .header,
 body.dark-mode .topbar,
 body.dark-mode .glass-nav {
-    background: rgba(15, 25, 55, 0.92) !important;
+    background: rgba(25, 25, 25, 0.95) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
     border-bottom-color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.50) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.60) !important;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
 }
@@ -63,9 +61,9 @@ body.dark-mode .glass-nav {
 body.dark-mode .glass-sidebar,
 body.dark-mode .sidebar,
 body.dark-mode .slideout-panel {
-    background: rgba(10, 15, 40, 0.97) !important;
+    background: rgba(20, 20, 20, 0.98) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.50) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.60) !important;
 }
 
 /* ── CARDS & CONTAINERS ─────────────────────────────────────────── */
@@ -77,45 +75,45 @@ body.dark-mode .profile-card,
 body.dark-mode .section-card,
 body.dark-mode .hero,
 body.dark-mode .empty-state {
-    background: rgba(30, 41, 59, 0.95) !important;
+    background: rgba(30, 30, 30, 0.95) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.40) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50) !important;
 }
 
 body.dark-mode .card:hover,
 body.dark-mode .glass-card:hover {
-    border-color: rgba(99, 102, 241, 0.35) !important;
+    border-color: rgba(201, 146, 10, 0.35) !important;
 }
 
 /* ── ANNOUNCEMENT / PINNED CARDS ────────────────────────────────── */
 body.dark-mode .announcement-card,
 body.dark-mode .pinned-card,
 body.dark-mode .announce-card {
-    background: rgba(22, 36, 71, 0.95) !important;
-    border-color: rgba(59, 130, 246, 0.35) !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35) !important;
+    background: rgba(35, 35, 35, 0.95) !important;
+    border-color: rgba(201, 146, 10, 0.25) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.40) !important;
 }
 
 body.dark-mode .announcement-card:hover,
 body.dark-mode .pinned-card:hover,
 body.dark-mode .announce-card:hover {
-    border-color: rgba(99, 102, 241, 0.55) !important;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.50) !important;
+    border-color: rgba(201, 146, 10, 0.55) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.60) !important;
 }
 
 /* ── NOTIFICATION ITEMS ─────────────────────────────────────────── */
 body.dark-mode .notif-item {
-    background: rgba(30, 41, 59, 0.95) !important;
+    background: rgba(30, 30, 30, 0.95) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 body.dark-mode .notif-item:hover {
-    border-color: rgba(103, 232, 249, 0.30) !important;
+    border-color: rgba(201, 146, 10, 0.40) !important;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40) !important;
 }
 
 body.dark-mode .notif-item.unread {
-    border-left-color: #67e8f9 !important;
+    border-left-color: #fbbf24 !important;
 }
 
 /* ── TEXT ───────────────────────────────────────────────────────── */
@@ -133,7 +131,7 @@ body.dark-mode h3,
 body.dark-mode h4,
 body.dark-mode h5,
 body.dark-mode h6 {
-    color: #e0e7ff;
+    color: #f5f5f5;
 }
 
 body.dark-mode .post-author,
@@ -148,7 +146,7 @@ body.dark-mode .section-title,
 body.dark-mode .logo,
 body.dark-mode .user-name,
 body.dark-mode .brand {
-    color: #e0e7ff !important;
+    color: #f5f5f5 !important;
 }
 
 body.dark-mode .post-text,
@@ -164,18 +162,18 @@ body.dark-mode .summary-text,
 body.dark-mode .user-role,
 body.dark-mode .muted,
 body.dark-mode .empty-text {
-    color: #94a3b8 !important;
+    color: #9ca3af !important;
 }
 
 body.dark-mode .comment-author,
 body.dark-mode .notif-message,
 body.dark-mode .summary-title,
 body.dark-mode .empty-title {
-    color: #67e8f9 !important;
+    color: #ffffff !important;
 }
 
 body.dark-mode .comment-text {
-    color: #cbd5e1 !important;
+    color: #d1d5db !important;
 }
 
 /* ── BORDERS & DIVIDERS ─────────────────────────────────────────── */
@@ -192,25 +190,17 @@ body.dark-mode .divider-light {
 
 /* ── ACTION BUTTONS ─────────────────────────────────────────────── */
 body.dark-mode .action-btn {
-    color: #94a3b8 !important;
+    color: #9ca3af !important;
 }
 
 body.dark-mode .action-btn:hover {
-    background: rgba(99, 102, 241, 0.15) !important;
-    color: #c7d2fe !important;
+    background: rgba(201, 146, 10, 0.12) !important;
+    color: #fcd34d !important;
 }
 
-body.dark-mode .action-btn.liked {
-    color: #f87171 !important;
-}
-
-body.dark-mode .action-btn.pinned-active {
-    color: #fb923c !important;
-}
-
-body.dark-mode .action-btn.notif-active {
-    color: #67e8f9 !important;
-}
+body.dark-mode .action-btn.liked       { color: #f87171 !important; }
+body.dark-mode .action-btn.pinned-active { color: #fb923c !important; }
+body.dark-mode .action-btn.notif-active  { color: #fbbf24 !important; }
 
 /* ── FORM INPUTS & TEXTAREAS ────────────────────────────────────── */
 body.dark-mode input,
@@ -224,9 +214,9 @@ body.dark-mode .comment-input-row input,
 body.dark-mode .create-post-input,
 body.dark-mode .info-input,
 body.dark-mode .filter-select {
-    background: rgba(51, 65, 85, 0.70) !important;
+    background: rgba(45, 45, 45, 0.90) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
-    color: #e2e8f0 !important;
+    color: #e4e6eb !important;
 }
 
 body.dark-mode input::placeholder,
@@ -234,7 +224,7 @@ body.dark-mode textarea::placeholder,
 body.dark-mode .comment-input input::placeholder,
 body.dark-mode .comment-input-row input::placeholder,
 body.dark-mode .create-post-input::placeholder {
-    color: #64748b !important;
+    color: #6b7280 !important;
 }
 
 body.dark-mode input:focus,
@@ -246,28 +236,28 @@ body.dark-mode .form-group select:focus,
 body.dark-mode .comment-input input:focus,
 body.dark-mode .comment-input-row input:focus,
 body.dark-mode .info-input:focus {
-    border-color: #67e8f9 !important;
-    box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.15) !important;
-    background: rgba(51, 65, 85, 0.90) !important;
+    border-color: #fbbf24 !important;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18) !important;
+    background: rgba(50, 50, 50, 0.95) !important;
 }
 
 body.dark-mode select option {
-    background: #1e293b;
-    color: #e2e8f0;
+    background: #1e1e1e;
+    color: #e4e6eb;
 }
 
 /* ── COMMENT AVATARS ────────────────────────────────────────────── */
 body.dark-mode .comment-avatar,
 body.dark-mode .post-avatar {
-    background: rgba(99, 102, 241, 0.20) !important;
-    color: #93c5fd !important;
+    background: rgba(201, 146, 10, 0.18) !important;
+    color: #fcd34d !important;
 }
 
 /* ── CATEGORY BADGES ────────────────────────────────────────────── */
 body.dark-mode .post-category-exam,
 body.dark-mode .cat-exam {
-    background: rgba(25, 118, 210, 0.22) !important;
-    color: #90caf9 !important;
+    background: rgba(201, 146, 10, 0.20) !important;
+    color: #fcd34d !important;
 }
 
 body.dark-mode .post-category-suspension,
@@ -284,8 +274,8 @@ body.dark-mode .cat-event {
 
 body.dark-mode .post-category-general,
 body.dark-mode .cat-default {
-    background: rgba(99, 102, 241, 0.22) !important;
-    color: #c7d2fe !important;
+    background: rgba(80, 80, 80, 0.40) !important;
+    color: #d1d5db !important;
 }
 
 /* ── PIN BADGE ──────────────────────────────────────────────────── */
@@ -296,242 +286,235 @@ body.dark-mode .pin-badge {
 
 /* ── PROFILE ROLE BADGE ─────────────────────────────────────────── */
 body.dark-mode .profile-role-badge {
-    background: rgba(59, 130, 246, 0.25) !important;
-    color: #93c5fd !important;
+    background: rgba(201, 146, 10, 0.22) !important;
+    color: #fcd34d !important;
 }
 
 body.dark-mode .profile-role-badge.admin {
-    background: rgba(139, 92, 246, 0.25) !important;
-    color: #c4b5fd !important;
+    background: rgba(168, 120, 0, 0.28) !important;
+    color: #fde68a !important;
 }
 
 /* ── HISTORY / SEARCH ITEMS ─────────────────────────────────────── */
 body.dark-mode .history-item {
     background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
-    color: #cbd5e1 !important;
+    color: #d1d5db !important;
 }
 
 body.dark-mode .history-item:hover {
-    background: rgba(99, 102, 241, 0.18) !important;
-    border-color: rgba(99, 102, 241, 0.40) !important;
-    color: #e0e7ff !important;
+    background: rgba(201, 146, 10, 0.15) !important;
+    border-color: rgba(201, 146, 10, 0.35) !important;
+    color: #f5f5f5 !important;
 }
 
 /* ── RESULT COUNT BADGE ─────────────────────────────────────────── */
 body.dark-mode #resultCount,
 body.dark-mode .result-count {
-    background: rgba(99, 102, 241, 0.15) !important;
-    border-color: rgba(99, 102, 241, 0.30) !important;
-    color: #c7d2fe !important;
+    background: rgba(201, 146, 10, 0.15) !important;
+    border-color: rgba(201, 146, 10, 0.30) !important;
+    color: #fcd34d !important;
 }
 
 /* ── EMPTY STATE ────────────────────────────────────────────────── */
 body.dark-mode #emptyState {
-    background: rgba(30, 41, 59, 0.90) !important;
+    background: rgba(30, 30, 30, 0.90) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
-    color: #94a3b8 !important;
+    color: #9ca3af !important;
 }
 
 /* ── PANEL MENU ITEMS ───────────────────────────────────────────── */
-body.dark-mode .panel-header h3 { color: #c7d2fe !important; }
-body.dark-mode .panel-menu-item { color: #cbd5e1 !important; }
-body.dark-mode .panel-menu-item i { color: #818cf8 !important; }
+body.dark-mode .panel-header h3 { color: #fcd34d !important; }
+body.dark-mode .panel-menu-item { color: #d1d5db !important; }
+body.dark-mode .panel-menu-item i { color: #fbbf24 !important; }
 body.dark-mode .panel-menu-item:hover {
-    background: rgba(99, 102, 241, 0.15) !important;
+    background: rgba(201, 146, 10, 0.12) !important;
     color: #ffffff !important;
-    border-left-color: #818cf8 !important;
+    border-left-color: #fbbf24 !important;
 }
-body.dark-mode .dropdown-item-panel { color: #cbd5e1 !important; }
+body.dark-mode .dropdown-item-panel { color: #d1d5db !important; }
 body.dark-mode .dropdown-item-panel:hover {
-    background: rgba(99, 102, 241, 0.15) !important;
+    background: rgba(201, 146, 10, 0.12) !important;
     color: #ffffff !important;
 }
 
 /* ── EDIT TOGGLE BUTTON ─────────────────────────────────────────── */
 body.dark-mode .edit-toggle-btn {
-    background: rgba(51, 65, 85, 0.60) !important;
+    background: rgba(45, 45, 45, 0.80) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
-    color: #93c5fd !important;
+    color: #fcd34d !important;
 }
 
 body.dark-mode .edit-toggle-btn:hover {
-    background: rgba(99, 102, 241, 0.20) !important;
-    border-color: rgba(99, 102, 241, 0.40) !important;
+    background: rgba(201, 146, 10, 0.18) !important;
+    border-color: rgba(201, 146, 10, 0.40) !important;
 }
 
 body.dark-mode .btn-cancel-edit {
-    color: #94a3b8 !important;
+    color: #9ca3af !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 body.dark-mode .btn-cancel-edit:hover {
-    background: rgba(51, 65, 85, 0.60) !important;
+    background: rgba(45, 45, 45, 0.80) !important;
 }
 
 /* ── MODAL / CONFIRM CARD ───────────────────────────────────────── */
 body.dark-mode .modal-overlay {
-    background: rgba(0, 0, 0, 0.70) !important;
+    background: rgba(0, 0, 0, 0.75) !important;
 }
 
 body.dark-mode .confirm-card {
-    background: rgba(15, 25, 55, 0.97) !important;
+    background: rgba(25, 25, 25, 0.98) !important;
     border-color: rgba(255, 255, 255, 0.10) !important;
 }
 
-body.dark-mode .confirm-title   { color: #e0e7ff !important; }
-body.dark-mode .confirm-message { color: #94a3b8 !important; }
+body.dark-mode .confirm-title   { color: #f5f5f5 !important; }
+body.dark-mode .confirm-message { color: #9ca3af !important; }
 
 body.dark-mode .btn-cancel {
-    background: rgba(51, 65, 85, 0.60) !important;
-    color: #cbd5e1 !important;
-    border-color: rgba(148, 163, 184, 0.30) !important;
+    background: rgba(45, 45, 45, 0.80) !important;
+    color: #d1d5db !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 body.dark-mode .btn-cancel:hover {
-    background: rgba(99, 102, 241, 0.15) !important;
-    color: #93c5fd !important;
+    background: rgba(201, 146, 10, 0.12) !important;
+    color: #fcd34d !important;
 }
 
 /* ── IMAGE MODAL (AboutUs) ──────────────────────────────────────── */
 body.dark-mode .image-modal-content {
-    background: rgba(8, 14, 36, 0.97) !important;
-    border-color: rgba(99, 102, 241, 0.25) !important;
+    background: rgba(18, 18, 18, 0.98) !important;
+    border-color: rgba(201, 146, 10, 0.20) !important;
 }
 
-body.dark-mode .image-caption h4 { color: #93c5fd !important; }
-body.dark-mode .image-caption p  { color: #94a3b8 !important; }
+body.dark-mode .image-caption h4 { color: #fcd34d !important; }
+body.dark-mode .image-caption p  { color: #9ca3af !important; }
 
 /* ── GALLERY & CREATOR CARDS (AboutUs) ─────────────────────────── */
 body.dark-mode .gallery-card,
 body.dark-mode .creator-card {
-    background: rgba(10, 18, 45, 0.70) !important;
-    border-color: rgba(59, 130, 246, 0.20) !important;
+    background: rgba(28, 28, 28, 0.90) !important;
+    border-color: rgba(201, 146, 10, 0.18) !important;
 }
 
 body.dark-mode .gallery-card:hover,
 body.dark-mode .creator-card:hover {
-    border-color: rgba(99, 102, 241, 0.45) !important;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55) !important;
+    border-color: rgba(201, 146, 10, 0.45) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.60) !important;
 }
 
 body.dark-mode .gallery-copy h4,
-body.dark-mode .creator-info h4 { color: #93c5fd !important; }
+body.dark-mode .creator-info h4 { color: #fcd34d !important; }
 
 body.dark-mode .creator-photo {
-    border-color: rgba(147, 197, 253, 0.30) !important;
+    border-color: rgba(253, 211, 77, 0.30) !important;
 }
 
 /* ── MISSION / STAT ITEMS (AboutUs) ────────────────────────────── */
 body.dark-mode .mission-item {
-    background: rgba(99, 102, 241, 0.06) !important;
-    border-color: rgba(99, 102, 241, 0.15) !important;
+    background: rgba(35, 35, 35, 0.80) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-body.dark-mode .mission-item h4 { color: #93c5fd !important; }
+body.dark-mode .mission-item h4 { color: #fcd34d !important; }
 
 body.dark-mode .stat {
-    background: rgba(99, 102, 241, 0.08) !important;
-    border-color: rgba(99, 102, 241, 0.20) !important;
+    background: rgba(35, 35, 35, 0.80) !important;
+    border-color: rgba(201, 146, 10, 0.18) !important;
 }
 
-body.dark-mode .stat strong { color: #93c5fd !important; }
+body.dark-mode .stat strong { color: #fcd34d !important; }
 
 /* ── USER PROFILE CARD (SearchStudent) ─────────────────────────── */
 body.dark-mode .user-profile-card {
-    background: rgba(15, 25, 55, 0.80) !important;
-    border-color: rgba(99, 102, 241, 0.30) !important;
+    background: rgba(28, 28, 28, 0.90) !important;
+    border-color: rgba(201, 146, 10, 0.25) !important;
 }
 
-body.dark-mode .user-profile-card .upc-name     { color: #e0e7ff !important; }
-body.dark-mode .user-profile-card .upc-username  { color: #93c5fd !important; }
-body.dark-mode .user-profile-card .upc-badge     { background: rgba(99,102,241,0.20) !important; color: #c4b5fd !important; }
-body.dark-mode .user-profile-card .upc-posts     { color: #94a3b8 !important; }
+body.dark-mode .user-profile-card .upc-name     { color: #f5f5f5 !important; }
+body.dark-mode .user-profile-card .upc-username  { color: #fcd34d !important; }
+body.dark-mode .user-profile-card .upc-badge     { background: rgba(201,146,10,0.18) !important; color: #fde68a !important; }
+body.dark-mode .user-profile-card .upc-posts     { color: #9ca3af !important; }
 
 /* ── FOCUS BANNER ───────────────────────────────────────────────── */
 body.dark-mode .focus-banner {
-    background: rgba(99, 102, 241, 0.10) !important;
-    border-color: rgba(99, 102, 241, 0.25) !important;
+    background: rgba(201, 146, 10, 0.08) !important;
+    border-color: rgba(201, 146, 10, 0.22) !important;
 }
 
 /* ── FOOTER ─────────────────────────────────────────────────────── */
 body.dark-mode footer {
-    background: rgba(10, 15, 40, 0.60) !important;
+    background: rgba(15, 15, 15, 0.80) !important;
     border-color: rgba(255, 255, 255, 0.07) !important;
-    color: #64748b !important;
+    color: #6b7280 !important;
 }
 
 /* ── TOAST ──────────────────────────────────────────────────────── */
 body.dark-mode .toast-msg {
-    background: linear-gradient(135deg, #1e3a8a, #4f46e5) !important;
-    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.40) !important;
+    background: linear-gradient(135deg, #7a5200, #c9920a) !important;
+    box-shadow: 0 4px 20px rgba(201, 146, 10, 0.35) !important;
 }
 
 /* ── TOGGLE SWITCH ──────────────────────────────────────────────── */
 body.dark-mode .toggle-switch-panel {
-    background: linear-gradient(135deg, #2AACBF, #1a9aaa) !important;
+    background: linear-gradient(135deg, #c9920a, #a87800) !important;
 }
 
-/* ── SCROLLBAR (inner containers) ──────────────────────────────── */
-body.dark-mode .glass-sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
-body.dark-mode .glass-sidebar::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.40); }
+/* ── SCROLLBAR ──────────────────────────────────────────────────── */
+body.dark-mode .glass-sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+body.dark-mode .glass-sidebar::-webkit-scrollbar-thumb { background: rgba(201,146,10,0.35); }
 
 /* ── FLATPICKR CALENDAR ─────────────────────────────────────────── */
 body.dark-mode .flatpickr-calendar {
-    background: #1e293b !important;
-    border-color: rgba(99, 102, 241, 0.30) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.50) !important;
+    background: #1e1e1e !important;
+    border-color: rgba(201, 146, 10, 0.25) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.60) !important;
 }
 
-body.dark-mode .flatpickr-day { color: #e2e8f0 !important; }
-body.dark-mode .flatpickr-day:hover { background: rgba(99, 102, 241, 0.20) !important; }
+body.dark-mode .flatpickr-day { color: #e4e6eb !important; }
+body.dark-mode .flatpickr-day:hover { background: rgba(201, 146, 10, 0.18) !important; }
 body.dark-mode .flatpickr-day.selected {
-    background: #4f46e5 !important;
-    border-color: #4f46e5 !important;
+    background: #c9920a !important;
+    border-color: #c9920a !important;
     color: #fff !important;
 }
 body.dark-mode .flatpickr-months .flatpickr-month,
 body.dark-mode .flatpickr-weekdays,
 body.dark-mode span.flatpickr-weekday {
-    background: #0f172a !important;
-    color: #93c5fd !important;
-    fill: #93c5fd !important;
+    background: #121212 !important;
+    color: #fcd34d !important;
+    fill: #fcd34d !important;
 }
 body.dark-mode .flatpickr-current-month select,
-body.dark-mode .flatpickr-current-month input { color: #e2e8f0 !important; }
+body.dark-mode .flatpickr-current-month input { color: #e4e6eb !important; }
 body.dark-mode .flatpickr-prev-month svg,
-body.dark-mode .flatpickr-next-month svg { fill: #67e8f9 !important; }
-body.dark-mode .flatpickr-day.flatpickr-disabled { color: #475569 !important; }
+body.dark-mode .flatpickr-next-month svg { fill: #fbbf24 !important; }
+body.dark-mode .flatpickr-day.flatpickr-disabled { color: #4b5563 !important; }
 
 /* ── LOGIN / SIGNIN PAGES ───────────────────────────────────────── */
-body.dark-mode .auth-card .panel-left:not([class*="panel-left"]),
-body.dark-mode .panel-right.form-panel {
-    background: rgba(15, 25, 55, 0.85) !important;
-    border-color: rgba(255, 255, 255, 0.10) !important;
-}
-
-/* Login/Signin form inputs (use inline styles — override via attribute) */
 body.dark-mode .input-wrap input,
 body.dark-mode .input-wrap select,
 body.dark-mode .role-wrap select {
-    background: rgba(51, 65, 85, 0.80) !important;
+    background: rgba(45, 45, 45, 0.90) !important;
     border-color: rgba(255, 255, 255, 0.15) !important;
-    color: #e2e8f0 !important;
+    color: #e4e6eb !important;
 }
 
-body.dark-mode .input-wrap input::placeholder { color: #64748b !important; }
+body.dark-mode .input-wrap input::placeholder { color: #6b7280 !important; }
 
 body.dark-mode .input-wrap input:focus,
 body.dark-mode .input-wrap select:focus,
 body.dark-mode .role-wrap select:focus {
-    border-color: #67e8f9 !important;
-    box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.20) !important;
-    background: rgba(51, 65, 85, 0.95) !important;
+    border-color: #fbbf24 !important;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.18) !important;
+    background: rgba(50, 50, 50, 0.95) !important;
 }
 
 /* ── PROFILE AVATAR BORDER ──────────────────────────────────────── */
 body.dark-mode .profile-avatar {
-    border-color: rgba(30, 41, 59, 0.98) !important;
+    border-color: rgba(30, 30, 30, 0.98) !important;
 }
 
 /* ── NOTIFICATION TARGET HIGHLIGHT ─────────────────────────────── */
@@ -542,51 +525,51 @@ body.dark-mode .announcement-card.notification-target {
 
 /* ── CREATE POST CARD ───────────────────────────────────────────── */
 body.dark-mode .create-post-card {
-    background: rgba(15, 25, 55, 0.80) !important;
+    background: rgba(28, 28, 28, 0.90) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* ── SEARCH INPUT (navbar) ──────────────────────────────────────── */
 body.dark-mode .search-input {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.20) !important;
     color: #ffffff !important;
 }
 
-body.dark-mode .search-input::placeholder { color: rgba(255, 255, 255, 0.50) !important; }
+body.dark-mode .search-input::placeholder { color: rgba(255, 255, 255, 0.45) !important; }
 
 body.dark-mode .search-input:focus {
-    background: rgba(255, 255, 255, 0.18) !important;
-    border-color: rgba(255, 255, 255, 0.60) !important;
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.10) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.55) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08) !important;
 }
 
-/* ── MARK ALL / HOME BUTTONS (Notifications) ────────────────────── */
+/* ── MARK ALL / HOME BUTTONS ────────────────────────────────────── */
 body.dark-mode .mark-all-btn {
-    background: rgba(255, 255, 255, 0.08) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.07) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #e4e6eb !important;
 }
 
 body.dark-mode .mark-all-btn:hover {
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.13) !important;
 }
 
 /* ── BACK / HOME BUTTONS ────────────────────────────────────────── */
 body.dark-mode .back-btn,
 body.dark-mode .home-btn {
-    background: rgba(255, 255, 255, 0.10) !important;
-    border-color: rgba(255, 255, 255, 0.15) !important;
-    color: #e2e8f0 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #e4e6eb !important;
 }
 
 body.dark-mode .back-btn:hover,
 body.dark-mode .home-btn:hover {
-    background: rgba(255, 255, 255, 0.20) !important;
+    background: rgba(255, 255, 255, 0.16) !important;
 }
 
-/* ── SECTION HEADINGS (AboutUs) ─────────────────────────────────── */
-body.dark-mode .section-heading h3 { color: #e2e8f0 !important; }
+/* ── SECTION HEADINGS ───────────────────────────────────────────── */
+body.dark-mode .section-heading h3 { color: #f5f5f5 !important; }
 
 /* ── GLOBAL TRANSITION ──────────────────────────────────────────── */
 body.dark-mode *,

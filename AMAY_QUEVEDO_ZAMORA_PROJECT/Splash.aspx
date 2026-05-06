@@ -35,8 +35,8 @@
             height: 160px;
             object-fit: contain;
             /* subtle glow ring around the logo */
-            filter: drop-shadow(0 0 18px rgba(0, 188, 212, 0.55))
-                    drop-shadow(0 0 40px rgba(0, 188, 212, 0.25));
+            filter: drop-shadow(0 0 18px rgba(201, 146, 10, 0.55))
+                    drop-shadow(0 0 40px rgba(201, 146, 10, 0.25));
             animation: logoPulse 2s ease-in-out infinite;
         }
 
@@ -77,9 +77,9 @@
 
         /* Gentle breathing glow on the logo */
         @keyframes logoPulse {
-            0%   { filter: drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
-            50%  { filter: drop-shadow(0 0 28px rgba(0,188,212,0.75)) drop-shadow(0 0 60px rgba(0,188,212,0.35)); }
-            100% { filter: drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
+            0%   { filter: drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
+            50%  { filter: drop-shadow(0 0 28px rgba(201,146,10,0.80)) drop-shadow(0 0 60px rgba(201,146,10,0.40)); }
+            100% { filter: drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
         }
     </style>
 </head>

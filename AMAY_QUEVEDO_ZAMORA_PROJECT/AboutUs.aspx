@@ -39,7 +39,7 @@
             --surface-soft: rgba(240, 245, 255, 0.9);
             --border: rgba(26, 58, 92, 0.12);
             --primary: #1a2a3a;
-            --primary-2: #1a9aaa;
+            --primary-2: #a87800;
             --accent: #d97706;
             --muted: #6b7c8f;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -119,7 +119,7 @@ body.dark-mode {
 
         /* ── TOPBAR — matches dashboard dark navy header ── */
         .topbar {
-            background: #2AACBF;
+            background: #c9920a;
             border-radius: 24px;
             padding: 14px 24px;
             display: flex;
@@ -214,7 +214,7 @@ body.dark-mode .stat strong { color: #93c5fd; }
 /* ── SECTION CARD ── */
 .section-card { padding: 28px; }
 .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg,#2AACBF,#1a9aaa); box-shadow: 0 4px 12px rgba(42,172,191,0.3); }
+.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg,#c9920a,#a87800); box-shadow: 0 4px 12px rgba(201,146,10,0.3); }
 .section-heading h3 { color: var(--primary); font-size: 1.35rem; }
 body.dark-mode .section-heading h3 { color: #e2e8f0; }
 

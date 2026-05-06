@@ -38,7 +38,7 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-color: #2AACBF;
+            background-color: #c9920a;
             background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url('wbg.jpg');
             background-size: cover;
             background-repeat: no-repeat;
@@ -49,7 +49,7 @@
 
         /* ── NAVBAR ── */
         .glass-nav {
-            background: #2AACBF;
+            background: #c9920a;
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -65,14 +65,14 @@
         }
 
         body.dark-mode .glass-nav {
-            background: rgba(15, 25, 55, 0.92);
+            background: rgba(25, 25, 25, 0.95);
             border-color: rgba(255,255,255,0.08);
             box-shadow: 0 4px 24px rgba(0,0,0,0.5);
         }
 
         body.dark-mode {
-            background-color: #0F172A;
-            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('bg.jpg');
+            background-color: #121212;
+            background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg');
             background-size: cover;
             background-attachment: fixed;
             color: #e4e6eb;
@@ -132,7 +132,7 @@
         .card-desc        { color: #374151; font-size: 13px; line-height: 1.6; }
 
         .card-banner {
-            background: linear-gradient(135deg,#1e3a8a,#4f46e5);
+            background: linear-gradient(135deg,#7a5200,#c9920a);
             border-radius: 12px;
             min-width: 90px;
             text-align: center;
@@ -140,10 +140,10 @@
             flex-shrink: 0;
         }
         .card-banner:hover { transform: scale(1.03); }
-        .banner-exam       { background: linear-gradient(135deg,#0f2b5c,#1e4a8a,#3b82f6); }
+        .banner-exam       { background: linear-gradient(135deg,#7a5200,#c9920a,#fbbf24); }
         .banner-suspension { background: linear-gradient(135deg,#7c2d12,#b45309,#f59e0b); }
         .banner-events     { background: linear-gradient(135deg,#064e3b,#0d9488,#14b8a6); }
-        .banner-default    { background: linear-gradient(135deg,#1e1b4b,#4f46e5,#818cf8); }
+        .banner-default    { background: linear-gradient(135deg,#7a5200,#c9920a,#fbbf24); }
 
         .post-stats {
             display: flex;
@@ -253,7 +253,7 @@
         .cat-exam       { background: #e0f7fa; color: #2AACBF; }
         .cat-suspension { background: #ffebee; color: #c62828; }
         .cat-event      { background: #e8f5e9; color: #2e7d32; }
-        .cat-default    { background: #e0e7ff; color: #4f46e5; }
+        .cat-default    { background: #fef3c7; color: #92650a; }
 
         .history-item {
             cursor: pointer;
@@ -339,7 +339,7 @@
             color: #1a2a3a;
         }
         body.light-mode .glass-nav {
-            background: #2AACBF;
+            background: #c9920a;
             border-color: rgba(255,255,255,0.15);
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
@@ -362,7 +362,7 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         }
         body.light-mode .announce-card:hover {
-            border-color: rgba(99,102,241,0.6);
+            border-color: rgba(201,146,10,0.6);
             box-shadow: 0 8px 24px rgba(0,0,0,0.1);
         }
         body.light-mode .card-author-name { color: #1a3a5c; }
@@ -433,7 +433,7 @@
         body.light-mode .cat-exam       { background: #e3f2fd; color: #1976d2; }
         body.light-mode .cat-suspension { background: #ffebee; color: #c62828; }
         body.light-mode .cat-event      { background: #e8f5e9; color: #2e7d32; }
-        body.light-mode .cat-default    { background: #e0e7ff; color: #4f46e5; }
+        body.light-mode .cat-default    { background: #fef3c7; color: #92650a; }
         body.light-mode .confirm-card {
             background: #ffffff;
             border-color: rgba(26,58,92,0.15);
@@ -457,7 +457,7 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         body.dark-mode .glass-card:hover {
-            border-color: rgba(99,102,241,0.4);
+            border-color: rgba(201,146,10,0.40);
         }
         body.dark-mode .announce-card {
             background: rgba(22, 36, 71, 0.95);
@@ -465,10 +465,10 @@
             box-shadow: 0 2px 12px rgba(0,0,0,0.3);
         }
         body.dark-mode .announce-card:hover {
-            border-color: rgba(99,102,241,0.6);
+            border-color: rgba(201,146,10,0.55);
             box-shadow: 0 8px 28px rgba(0,0,0,0.45);
         }
-        body.dark-mode .card-author-name { color: #93c5fd; }
+        body.dark-mode .card-author-name { color: #fcd34d; }
         body.dark-mode .card-meta        { color: #94a3b8; }
         body.dark-mode .card-title       { color: #e0e7ff; }
         body.dark-mode .card-desc        { color: #cbd5e1; }
@@ -478,7 +478,7 @@
         }
         body.dark-mode .post-stats span:hover { color: #93c5fd; }
         body.dark-mode .action-btn { color: #94a3b8; }
-        body.dark-mode .action-btn:hover { background: rgba(99,102,241,0.15); color: #c7d2fe; }
+        body.dark-mode .action-btn:hover { background: rgba(201,146,10,0.12); color: #fcd34d; }
         body.dark-mode .action-btn.liked { color: #f87171; }
         body.dark-mode .action-btn.pinned-active { color: #fb923c; }
         body.dark-mode .action-btn.notif-active { color: #60a5fa; }
@@ -491,8 +491,8 @@
         body.dark-mode .comment-input-row input::placeholder { color: #64748b; }
         body.dark-mode .comment-input-row input:focus { border-color: #60a5fa; }
         body.dark-mode .comment-item { border-color: rgba(255,255,255,0.07); }
-        body.dark-mode .comment-avatar { background: rgba(99,102,241,0.2); color: #93c5fd; }
-        body.dark-mode .comment-author { color: #a5b4fc; }
+        body.dark-mode .comment-avatar { background: rgba(201,146,10,0.18); color: #fcd34d; }
+        body.dark-mode .comment-author { color: #fbbf24; }
         body.dark-mode .comment-text   { color: #cbd5e1; }
         body.dark-mode .comment-time   { color: #64748b; }
         body.dark-mode .no-comments    { color: #64748b; }
@@ -502,18 +502,18 @@
             color: #cbd5e1;
         }
         body.dark-mode .history-item:hover {
-            background: rgba(99,102,241,0.18);
-            border-color: rgba(99,102,241,0.4);
-            color: #e0e7ff;
+            background: rgba(201,146,10,0.15);
+            border-color: rgba(201,146,10,0.35);
+            color: #fef3c7;
         }
         body.dark-mode .filter-select {
             background: rgba(15,25,55,0.85);
             border-color: rgba(255,255,255,0.12);
             color: #e2e8f0;
         }
-        body.dark-mode .filter-select option { background: #0f172a; color: #e2e8f0; }
-        body.dark-mode .section-title { color: #e0e7ff !important; }
-        body.dark-mode .section-icon  { color: #60a5fa !important; }
+        body.dark-mode .filter-select option { background: #121212; color: #e4e6eb; }
+        body.dark-mode .section-title { color: #fcd34d !important; }
+        body.dark-mode .section-icon  { color: #fbbf24 !important; }
         body.dark-mode #resultCount {
             background: rgba(99,102,241,0.15);
             border-color: rgba(99,102,241,0.3);
@@ -524,18 +524,18 @@
             border-color: rgba(255,255,255,0.08);
             color: #94a3b8;
         }
-        body.dark-mode .cat-exam       { background: rgba(25,118,210,0.2); color: #90caf9; }
+        body.dark-mode .cat-exam       { background: rgba(201,146,10,0.20); color: #fcd34d; }
         body.dark-mode .cat-suspension { background: rgba(198,40,40,0.2);  color: #ef9a9a; }
         body.dark-mode .cat-event      { background: rgba(46,125,50,0.2);  color: #a5d6a7; }
-        body.dark-mode .cat-default    { background: rgba(99,102,241,0.2); color: #c7d2fe; }
+        body.dark-mode .cat-default    { background: rgba(80,80,80,0.35);  color: #d1d5db; }
         body.dark-mode .confirm-card {
-            background: rgba(15,25,55,0.97);
+            background: rgba(25,25,25,0.97);
             border-color: rgba(255,255,255,0.1);
         }
         body.dark-mode .confirm-title   { color: #e0e7ff; }
         body.dark-mode .confirm-message { color: #94a3b8; }
-        body.dark-mode .btn-cancel { background: rgba(51,65,85,0.6); color: #cbd5e1; border-color: rgba(148,163,184,0.3); }
-        body.dark-mode .btn-cancel:hover { background: rgba(99,102,241,0.15); color: #93c5fd; }
+        body.dark-mode .btn-cancel { background: rgba(45,45,45,0.80); color: #d1d5db; border-color: rgba(255,255,255,0.15); }
+        body.dark-mode .btn-cancel:hover { background: rgba(201,146,10,0.12); color: #fcd34d; }
         body.dark-mode footer {
             border-color: rgba(255,255,255,0.07) !important;
             color: #64748b !important;
@@ -548,7 +548,7 @@
             bottom: 28px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+            background: linear-gradient(135deg, #7a5200, #c9920a);
             color: white;
             padding: 10px 24px;
             border-radius: 30px;
@@ -647,8 +647,8 @@
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 1.25rem;
         }
-        .info-icon-wrapper i { font-size: 2rem; color: #3b82f6; }
-        .btn-info { background: linear-gradient(135deg, #1e3a8a, #4f46e5); color: white; }
+        .info-icon-wrapper i { font-size: 2rem; color: #c9920a; }
+        .btn-info { background: linear-gradient(135deg, #7a5200, #c9920a); color: white; }
         .btn-info:hover { opacity: 0.88; }
 
         @media (max-width: 480px) {
@@ -1134,8 +1134,8 @@
                     <div style="padding:18px 20px 12px">
                         <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px">
                             <div style="display:flex;align-items:center;gap:12px;flex:1">
-                                <div style="width:44px;height:44px;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;">
-                                    ${ann.authorImage ? `<img src="${escapeHtml(ann.authorImage)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" />` : `<i class="fas fa-user-tie" style="color:#93c5fd"></i>`}
+                                <div style="width:44px;height:44px;background:rgba(201,146,10,0.18);border:1px solid rgba(201,146,10,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;">
+                                    ${ann.authorImage ? `<img src="${escapeHtml(ann.authorImage)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" />` : `<i class="fas fa-user-tie" style="color:#fcd34d"></i>`}
                                 </div>
                                 <div>
                                     <div class="card-author-name">${escapeHtml(ann.professor)}</div>

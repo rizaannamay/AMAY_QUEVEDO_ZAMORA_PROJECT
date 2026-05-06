@@ -101,8 +101,8 @@
 
         .input-wrap input:focus {
             outline: none;
-            border-color: #00bcd4;
-            box-shadow: 0 0 0 3px rgba(0,188,212,0.28);
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217,119,6,0.25);
             background: #ffffff;
         }
 
@@ -151,8 +151,8 @@
         }
         .role-wrap select:focus {
             outline: none;
-            border-color: #00bcd4;
-            box-shadow: 0 0 0 3px rgba(0,188,212,0.28);
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217,119,6,0.25);
             background: #ffffff;
         }
         .role-wrap .icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #7a9aaa; font-size: 14px; pointer-events: none; }
@@ -176,7 +176,7 @@
         .btn-register {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, #005f73 0%, #00bcd4 100%);
+            background: linear-gradient(135deg, #c9920a 0%, #a87800 100%);
             color: #ffffff;
             border: none;
             border-radius: 40px;
@@ -193,7 +193,7 @@
         }
         .btn-register:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,131,143,0.45);
+            box-shadow: 0 8px 24px rgba(180,130,0,0.50);
         }
         .btn-register:active:not(:disabled) { transform: translateY(0); }
         .btn-register:disabled { opacity: 0.7; cursor: not-allowed; }
@@ -221,7 +221,7 @@
             color: rgba(255,255,255,0.75);
             text-align: center;
         }
-        .login-link a { color: #7eeeff; font-weight: 600; text-decoration: none; }
+        .login-link a { color: #fbbf24; font-weight: 600; text-decoration: none; }
         .login-link a:hover { text-decoration: underline; }
 
         /* ── RIGHT DARK TEAL PANEL ── */
@@ -245,7 +245,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, rgba(0,100,120,0.90) 0%, rgba(0,35,50,0.95) 100%);
+            background: linear-gradient(160deg, rgba(180,130,0,0.92) 0%, rgba(160,110,0,0.95) 100%);
             pointer-events: none;
         }
 
@@ -348,7 +348,7 @@
         z-index:99999;transition:opacity 0.5s ease;">
         <img src="ctu-logo.png" alt="CTU Logo" style="
             width:130px;height:130px;object-fit:contain;
-            filter:drop-shadow(0 0 18px rgba(0,188,212,0.6)) drop-shadow(0 0 40px rgba(0,188,212,0.25));
+            filter:drop-shadow(0 0 18px rgba(201,146,10,0.6)) drop-shadow(0 0 40px rgba(201,146,10,0.25));
             animation:signinLogoPulse 2s ease-in-out infinite;" />
         <div style="font-family:'Segoe UI',sans-serif;font-size:14px;font-weight:700;
                     color:rgba(255,255,255,0.55);letter-spacing:3px;text-transform:uppercase;">
@@ -361,9 +361,9 @@
     </div>
     <style>
         @keyframes signinLogoPulse {
-            0%   { filter:drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
-            50%  { filter:drop-shadow(0 0 28px rgba(0,188,212,0.80)) drop-shadow(0 0 60px rgba(0,188,212,0.35)); }
-            100% { filter:drop-shadow(0 0 14px rgba(0,188,212,0.45)) drop-shadow(0 0 36px rgba(0,188,212,0.2)); }
+            0%   { filter:drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
+            50%  { filter:drop-shadow(0 0 28px rgba(201,146,10,0.80)) drop-shadow(0 0 60px rgba(201,146,10,0.40)); }
+            100% { filter:drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
         }
     </style>
     <script>
@@ -470,22 +470,22 @@
         // Sync visible dropdown → hidden radio buttons for server-side
         function syncRole(val) {
             var rbStudent = document.getElementById('<%= rbStudent.ClientID %>');
-            var rbAdmin   = document.getElementById('<%= rbAdmin.ClientID %>');
+            var rbAdmin = document.getElementById('<%= rbAdmin.ClientID %>');
             if (!rbStudent || !rbAdmin) return;
             if (val === 'Admin') {
-                rbAdmin.checked   = true;
+                rbAdmin.checked = true;
                 rbStudent.checked = false;
             } else {
                 rbStudent.checked = true;
-                rbAdmin.checked   = false;
+                rbAdmin.checked = false;
             }
         }
 
         // Show/hide password — field 1
         (function () {
-            var btn  = document.getElementById('togglePw1');
+            var btn = document.getElementById('togglePw1');
             var icon = document.getElementById('togglePw1Icon');
-            var pw   = document.getElementById('<%= txtPassword.ClientID %>');
+            var pw = document.getElementById('<%= txtPassword.ClientID %>');
             if (!btn || !pw) return;
             btn.addEventListener('click', function () {
                 var show = pw.getAttribute('type') === 'password';
@@ -496,9 +496,9 @@
 
         // Show/hide password — field 2
         (function () {
-            var btn  = document.getElementById('togglePw2');
+            var btn = document.getElementById('togglePw2');
             var icon = document.getElementById('togglePw2Icon');
-            var cpw  = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+            var cpw = document.getElementById('<%= txtConfirmPassword.ClientID %>');
             if (!btn || !cpw) return;
             btn.addEventListener('click', function () {
                 var show = cpw.getAttribute('type') === 'password';
@@ -509,18 +509,18 @@
 
         // Password match indicator
         (function () {
-            var pw  = document.getElementById('<%= txtPassword.ClientID %>');
+            var pw = document.getElementById('<%= txtPassword.ClientID %>');
             var cpw = document.getElementById('<%= txtConfirmPassword.ClientID %>');
             if (!pw || !cpw) return;
             cpw.addEventListener('input', function () {
                 if (cpw.value.length === 0) {
                     cpw.style.borderColor = 'rgba(255,255,255,0.5)';
                 } else if (cpw.value === pw.value && pw.value.length >= 6) {
-                    cpw.style.borderColor = '#00bcd4';
-                    cpw.style.boxShadow   = '0 0 0 3px rgba(0,188,212,0.22)';
+                    cpw.style.borderColor = '#d97706';
+                    cpw.style.boxShadow = '0 0 0 3px rgba(217,119,6,0.22)';
                 } else {
                     cpw.style.borderColor = '#dc2626';
-                    cpw.style.boxShadow   = '0 0 0 3px rgba(220,38,38,0.18)';
+                    cpw.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.18)';
                 }
             });
         })();
@@ -533,22 +533,22 @@
                 setTimeout(function () {
                     btn.value = 'Creating account...';
                     btn.style.opacity = '0.75';
-                    btn.style.cursor  = 'not-allowed';
+                    btn.style.cursor = 'not-allowed';
                 }, 10);
             });
         })();
 
         // Focus ring on inputs
-        document.querySelectorAll('.input-wrap input, .role-wrap select').forEach(function(el) {
-            el.addEventListener('focus', function() {
-                this.style.borderColor = '#00bcd4';
-                this.style.boxShadow   = '0 0 0 3px rgba(0,188,212,0.28)';
-                this.style.background  = '#ffffff';
+        document.querySelectorAll('.input-wrap input, .role-wrap select').forEach(function (el) {
+            el.addEventListener('focus', function () {
+                this.style.borderColor = '#d97706';
+                this.style.boxShadow = '0 0 0 3px rgba(217,119,6,0.25)';
+                this.style.background = '#ffffff';
             });
-            el.addEventListener('blur', function() {
+            el.addEventListener('blur', function () {
                 this.style.borderColor = 'rgba(255,255,255,0.5)';
-                this.style.boxShadow   = 'none';
-                this.style.background  = 'rgba(255,255,255,0.92)';
+                this.style.boxShadow = 'none';
+                this.style.background = 'rgba(255,255,255,0.92)';
             });
         });
     </script>

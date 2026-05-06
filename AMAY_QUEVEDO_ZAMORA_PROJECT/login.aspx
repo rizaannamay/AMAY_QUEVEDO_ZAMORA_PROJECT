@@ -69,7 +69,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, rgba(0,150,170,0.88) 0%, rgba(0,80,100,0.94) 100%);
+            background: linear-gradient(160deg, rgba(180,130,0,0.92) 0%, rgba(160,110,0,0.95) 100%);
             pointer-events: none;
         }
 
@@ -212,8 +212,8 @@
         .input-wrap input:focus,
         .input-wrap select:focus {
             outline: none;
-            border-color: #00bcd4;
-            box-shadow: 0 0 0 3px rgba(0,188,212,0.28);
+            border-color: #c9920a;
+            box-shadow: 0 0 0 3px rgba(180,130,0,0.25);
             background: #ffffff;
         }
 
@@ -277,7 +277,7 @@
         .btn-login {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, #005f73 0%, #00bcd4 100%);
+            background: linear-gradient(135deg, #c9920a 0%, #a87800 100%);
             color: #ffffff;
             border: none;
             border-radius: 40px;
@@ -293,7 +293,7 @@
         }
         .btn-login:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0,131,143,0.45);
+            box-shadow: 0 8px 24px rgba(180,130,0,0.50);
         }
         .btn-login:active:not(:disabled) { transform: translateY(0); }
         .btn-login:disabled {
@@ -342,7 +342,7 @@
             text-align: center;
         }
         .signup-link a {
-            color: #7eeeff;
+            color: #c9920a;
             font-weight: 600;
             text-decoration: none;
         }
@@ -432,9 +432,9 @@
 
         // Show/hide password toggle — uses a flag so it doesn't break postback
         (function () {
-            var toggleBtn  = document.getElementById('togglePw');
+            var toggleBtn = document.getElementById('togglePw');
             var toggleIcon = document.getElementById('togglePwIcon');
-            var pwField    = document.getElementById('<%= txtPassword.ClientID %>');
+            var pwField = document.getElementById('<%= txtPassword.ClientID %>');
             if (!toggleBtn || !pwField) return;
             var visible = false;
             toggleBtn.addEventListener('click', function (e) {
@@ -457,22 +457,22 @@
                 setTimeout(function () {
                     btn.value = 'Signing in...';
                     btn.style.opacity = '0.75';
-                    btn.style.cursor  = 'not-allowed';
+                    btn.style.cursor = 'not-allowed';
                 }, 10);
             });
         })();
 
         // Focus ring on inputs
-        document.querySelectorAll('.input-wrap input, .input-wrap select').forEach(function(el) {
-            el.addEventListener('focus', function() {
-                this.style.borderColor = '#00bcd4';
-                this.style.boxShadow   = '0 0 0 3px rgba(0,188,212,0.28)';
-                this.style.background  = '#ffffff';
+        document.querySelectorAll('.input-wrap input, .input-wrap select').forEach(function (el) {
+            el.addEventListener('focus', function () {
+                this.style.borderColor = '#c9920a';
+                this.style.boxShadow = '0 0 0 3px rgba(180,130,0,0.25)';
+                this.style.background = '#ffffff';
             });
-            el.addEventListener('blur', function() {
+            el.addEventListener('blur', function () {
                 this.style.borderColor = 'rgba(255,255,255,0.5)';
-                this.style.boxShadow   = 'none';
-                this.style.background  = 'rgba(255,255,255,0.92)';
+                this.style.boxShadow = 'none';
+                this.style.background = 'rgba(255,255,255,0.92)';
             });
         });
     </script>

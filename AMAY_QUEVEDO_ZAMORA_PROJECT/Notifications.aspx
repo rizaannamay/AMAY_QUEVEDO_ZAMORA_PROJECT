@@ -17,11 +17,11 @@
     --surface-soft: #f8fafc;
     --border: rgba(26,58,92,0.12);
     --primary: #1a2a3a;
-    --primary-2: #2AACBF;
+    --primary-2: #c9920a;
     --muted: #6b7c8f;
     --muted-light: #9db0c4;
     --shadow: 0 8px 24px rgba(0,0,0,0.08);
-    --active-bg: #e0f7fa;
+    --active-bg: #fef9e7;
 }
 html, body, form { min-height: 100%; }
 body {
@@ -39,7 +39,7 @@ button { font: inherit; }
 
 /* ── Header — matches Student.aspx ── */
 .header {
-    background: #2AACBF;
+    background: #c9920a;
     backdrop-filter: blur(10px);
     border-radius: 24px;
     padding: 12px 24px;
@@ -102,7 +102,7 @@ button { font: inherit; }
 /* ── Page shell ── */
 .page-shell {
     min-height: 100vh;
-    padding: 80px 10px 24px;
+    padding: 100px 10px 24px;
 }
 .page-wrap {
     max-width: calc(100% - 0px);
@@ -130,7 +130,7 @@ button { font: inherit; }
 .summary-icon {
     width: 54px; height: 54px;
     border-radius: 16px;
-    background: linear-gradient(135deg,#2AACBF,#1a9aaa);
+    background: linear-gradient(135deg,#c9920a,#a87800);
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0;
@@ -156,15 +156,15 @@ button { font: inherit; }
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     cursor: pointer;
 }
-.notif-item:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,0.10); border-color: rgba(42,172,191,0.35); }
-.notif-item.unread { border-left: 5px solid #2AACBF; }
+.notif-item:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,0.10); border-color: rgba(201,146,10,0.35); }
+.notif-item.unread { border-left: 5px solid #c9920a; }
 .notif-row { display: flex; align-items: center; gap: 14px; padding: 20px; }
 .notif-icon { width: 54px; height: 54px; border-radius: 18px; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
 .notif-like    { background: linear-gradient(135deg,#d46565,#E28A6D); }
-.notif-comment { background: linear-gradient(135deg,#2AACBF,#1a9aaa); }
+.notif-comment { background: linear-gradient(135deg,#c9920a,#a87800); }
 .notif-reply   { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
 .notif-share   { background: linear-gradient(135deg,#E8C55E,#E28A6D); }
-.notif-default { background: linear-gradient(135deg,#2AACBF,#1a9aaa); }
+.notif-default { background: linear-gradient(135deg,#c9920a,#a87800); }
 .notif-main { flex: 1; min-width: 0; }
 .notif-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .notif-message { font-size: 15px; font-weight: 800; color: var(--primary-2); line-height: 1.45; word-break: break-word; }
@@ -181,7 +181,7 @@ button { font: inherit; }
 .empty-title { font-size: 18px; font-weight: 800; color: var(--primary-2); }
 .empty-text  { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
-.toast-msg { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #2AACBF; color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 13px; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.20); }
+.toast-msg { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #c9920a; color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 13px; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.20); }
 
         .notif-row {
             display: flex;
@@ -207,7 +207,7 @@ button { font: inherit; }
         }
 
         .notif-comment {
-            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            background: linear-gradient(135deg, #c9920a, #a87800);
         }
 
         .notif-share {
@@ -215,7 +215,7 @@ button { font: inherit; }
         }
 
         .notif-default {
-            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            background: linear-gradient(135deg, #c9920a, #a87800);
         }
 
         .notif-main {
@@ -311,7 +311,7 @@ button { font: inherit; }
             bottom: 26px;
             left: 50%;
             transform: translateX(-50%);
-            background: #2AACBF;
+            background: #c9920a;
             color: #fff;
             padding: 10px 24px;
             border-radius: 999px;
@@ -328,7 +328,7 @@ button { font: inherit; }
             --surface-soft: rgba(255, 255, 255, 0.07);
             --border: rgba(255, 255, 255, 0.1);
             --primary: #818cf8;
-            --primary-2: #67e8f9;
+            --primary-2: #fbbf24;
             --muted: #94a3b8;
             --muted-light: #cbd5e1;
             --active-bg: rgba(99, 102, 241, 0.18);
@@ -362,7 +362,7 @@ button { font: inherit; }
         }
 
 @media (max-width: 700px) {
-    .page-shell { padding: 80px 8px 24px; }
+    .page-shell { padding: 100px 8px 24px; }
     .notif-row { padding: 14px; }
     .header { padding: 10px 16px; }
 }

@@ -5,13 +5,13 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect – Database Backup</title>
+    <title>Campus Connect  Database Backup</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         :root {
-            --primary:#1a3a5c; --primary-2:#2563eb;
+            --primary:#7a5200; --primary-2:#c9920a;
             --surface:rgba(255,255,255,0.93);
             --border:rgba(26,58,92,0.12);
             --muted:#6b7c8f; --shadow:0 8px 24px rgba(0,0,0,0.08);
@@ -46,7 +46,7 @@
 
         /* topbar */
         .topbar {
-            background:#2AACBF; backdrop-filter:blur(10px);
+            background:#c9920a; backdrop-filter:blur(10px);
             border:1px solid rgba(255,255,255,0.15); border-radius:24px;
             padding:12px 24px; display:flex; align-items:center;
             justify-content:space-between; box-shadow:0 4px 20px rgba(0,0,0,0.2);
@@ -60,12 +60,12 @@
         .brand { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; color:#ffffff; }
         .brand-badge {
             width:40px; height:40px; border-radius:12px;
-            background:linear-gradient(135deg,#1a3a5c,#2563eb);
+            background:linear-gradient(135deg,#7a5200,#c9920a);
             color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px;
         }
         .back-btn {
             width:40px; height:40px; border-radius:50%;
-            background:linear-gradient(135deg,#1a3a5c,#2563eb);
+            background:linear-gradient(135deg,#7a5200,#c9920a);
             color:#fff; border:none; cursor:pointer; text-decoration:none;
             display:flex; align-items:center; justify-content:center;
             box-shadow:var(--shadow); transition:transform .2s;
@@ -104,15 +104,15 @@
         }
         .export-btn:hover { transform:translateY(-2px); }
         .btn-csv  { background:linear-gradient(135deg,#059669,#10b981); color:#fff; box-shadow:0 4px 14px rgba(5,150,105,.25); }
-        .btn-sql  { background:linear-gradient(135deg,#1a3a5c,#2563eb); color:#fff; box-shadow:0 4px 14px rgba(37,99,235,.25); }
+        .btn-sql  { background:linear-gradient(135deg,#7a5200,#c9920a); color:#fff; box-shadow:0 4px 14px rgba(201,146,10,.25); }
         .btn-csv:hover  { box-shadow:0 8px 20px rgba(5,150,105,.35); }
-        .btn-sql:hover  { box-shadow:0 8px 20px rgba(37,99,235,.35); }
+        .btn-sql:hover  { box-shadow:0 8px 20px rgba(201,146,10,.35); }
 
         /* table preview */
         .table-wrap { overflow-x:auto; margin-top:20px; border-radius:14px; border:1px solid var(--border); }
         .backup-table { width:100%; border-collapse:collapse; font-size:13px; }
         .backup-table th {
-            background:linear-gradient(135deg,#1a3a5c,#2563eb); color:#fff;
+            background:linear-gradient(135deg,#7a5200,#c9920a); color:#fff;
             padding:10px 14px; text-align:left; font-weight:600;
         }
         .backup-table td { padding:9px 14px; border-bottom:1px solid var(--border); color:#334155; }
@@ -128,40 +128,41 @@
 
         /* ── DARK MODE ── */
         body.dark-mode {
-            background-image: linear-gradient(rgba(15,23,42,.88),rgba(15,23,42,.88)), url('bg.jpg') !important;
+            background-image: linear-gradient(rgba(18,18,18,0.92),rgba(18,18,18,0.92)), url('bg.jpg') !important;
+            background-color: #121212 !important;
             background-size: cover !important;
             background-attachment: fixed !important;
             color: #e4e6eb;
         }
         body.dark-mode::before {
-            background-image: linear-gradient(rgba(15,23,42,.88),rgba(15,23,42,.88)), url('bg.jpg') !important;
+            background-image: linear-gradient(rgba(18,18,18,0.92),rgba(18,18,18,0.92)), url('bg.jpg') !important;
             background-size: cover !important;
             background-attachment: fixed !important;
         }
         body.dark-mode .card {
-            background: rgba(30,41,59,0.95) !important;
+            background: rgba(30, 30, 30, 0.95) !important;
             border-color: rgba(255,255,255,0.08) !important;
         }
         body.dark-mode .card-header {
-            color: #e0e7ff !important;
+            color: #f5f5f5 !important;
             border-color: rgba(255,255,255,0.08) !important;
         }
         body.dark-mode .stat-box {
-            background: rgba(51,65,85,0.60) !important;
+            background: rgba(45, 45, 45, 0.80) !important;
             border-color: rgba(255,255,255,0.10) !important;
         }
-        body.dark-mode .stat-num { color: #67e8f9 !important; }
+        body.dark-mode .stat-num { color: #fbbf24 !important; }
         body.dark-mode .stat-lbl { color: #94a3b8 !important; }
-        body.dark-mode .backup-table th { background: linear-gradient(135deg,#1e3a8a,#4f46e5) !important; }
+        body.dark-mode .backup-table th { background: linear-gradient(135deg,#7a5200,#c9920a) !important; }
         body.dark-mode .backup-table td {
             color: #e2e8f0 !important;
             border-color: rgba(255,255,255,0.08) !important;
-            background: rgba(30, 41, 59, 0.95) !important;
+            background: rgba(30, 30, 30, 0.95) !important;
         }
-        body.dark-mode .backup-table tr { background: rgba(30, 41, 59, 0.95) !important; }
+        body.dark-mode .backup-table tr { background: rgba(30, 30, 30, 0.95) !important; }
         body.dark-mode .backup-table tr:nth-child(even),
-        body.dark-mode .backup-table tr:nth-child(even) td { background: rgba(51,65,85,0.60) !important; }
-        body.dark-mode .backup-table tr:hover td { background: rgba(99,102,241,0.15) !important; }
+        body.dark-mode .backup-table tr:nth-child(even) td { background: rgba(45,45,45,0.80) !important; }
+        body.dark-mode .backup-table tr:hover td { background: rgba(201,146,10,0.12) !important; }
         body.dark-mode .backup-table { color: #e2e8f0 !important; }
         body.dark-mode .table-wrap { border-color: rgba(255,255,255,0.08) !important; }
         body.dark-mode .msg-success { background: rgba(22,101,52,0.25) !important; color: #86efac !important; border-color: rgba(134,239,172,0.30) !important; }
@@ -236,10 +237,10 @@
                     </p>
                     <div class="btn-row">
                         <asp:Button ID="btnExportCSV" runat="server" CssClass="export-btn btn-csv"
-                            Text="⬇ Export Announcements (CSV)"
+                            Text="Export Announcements (CSV)"
                             OnClick="btnExportCSV_Click" UseSubmitBehavior="true" />
                         <asp:Button ID="btnExportSQL" runat="server" CssClass="export-btn btn-sql"
-                            Text="⬇ Export Announcements (SQL)"
+                            Text="Export Announcements (SQL)"
                             OnClick="btnExportSQL_Click" UseSubmitBehavior="true" />
                     </div>
                 </div>
@@ -255,7 +256,7 @@
                             GridLines="None"
                             Width="100%"
                             CssClass="backup-table"
-                            HeaderStyle-BackColor="#1a3a5c"
+                            HeaderStyle-BackColor="#7a5200"
                             HeaderStyle-ForeColor="White"
                             RowStyle-BackColor="#ffffff"
                             AlternatingRowStyle-BackColor="#f8fafc">

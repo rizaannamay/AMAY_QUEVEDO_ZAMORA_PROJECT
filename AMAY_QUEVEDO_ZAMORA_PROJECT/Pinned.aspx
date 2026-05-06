@@ -18,7 +18,7 @@
             --surface-soft: #f8fafc;
             --border: rgba(26, 58, 92, 0.12);
             --primary: #1a2a3a;
-            --primary-2: #1a9aaa;
+            --primary-2: #a87800;
             --muted: #6b7c8f;
             --muted-light: #9db0c4;
             --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -57,7 +57,7 @@
 
         /* ── Header (matches dashboard) ── */
         .header {
-            background: #2AACBF;
+            background: #c9920a;
             border-radius: 24px;
             padding: 12px 24px;
             display: flex;
@@ -103,7 +103,7 @@
         .pinned-card {
             background: var(--surface-strong);
             border-radius: 20px;
-            border: 1px solid #2AACBF;
+            border: 1px solid #c9920a;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             overflow: hidden;
             transition: all 0.3s;
@@ -123,7 +123,7 @@
 
         .post-avatar {
             width: 50px; height: 50px; border-radius: 50%;
-            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            background: linear-gradient(135deg, #c9920a, #a87800);
             color: #fff; display: flex; align-items: center; justify-content: center;
             font-size: 20px; flex-shrink: 0; overflow: hidden;
         }
@@ -140,7 +140,7 @@
             font-size: 10px; font-weight: 600;
         }
 
-        .post-category-exam       { background: #e0f7fa; color: #2AACBF; }
+        .post-category-exam       { background: #fef3c7; color: #c9920a; }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event      { background: #e8f5e9; color: #2e7d32; }
         .post-category-general    { background: #e0e7ff; color: #4f46e5; }
@@ -202,7 +202,7 @@
 
         .comment-input button {
             padding: 10px 22px;
-            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            background: linear-gradient(135deg, #c9920a, #a87800);
             border: none; border-radius: 30px; cursor: pointer;
             font-weight: 600; color: white; font-family: inherit;
         }
@@ -214,7 +214,7 @@
         .comment-item:last-child { border-bottom: none; }
 
         .comment-avatar {
-            width: 32px; height: 32px; background: #e0f7fa; border-radius: 50%;
+            width: 32px; height: 32px; background: #fef3c7; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 12px; color: var(--primary); flex-shrink: 0; overflow: hidden;
         }
@@ -237,7 +237,7 @@
         /* ── Toast ── */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-            background: #2AACBF; color: #fff; padding: 10px 24px;
+            background: #c9920a; color: #fff; padding: 10px 24px;
             border-radius: 30px; font-size: 13px; z-index: 9999;
             box-shadow: 0 4px 16px rgba(0,0,0,.25); pointer-events: none;
         }
@@ -261,8 +261,8 @@
             background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), var(--bg-image);
         }
 
-        body.dark-mode .pinned-card { background: rgba(30,41,59,0.95); border-color: #3B82F6; }
-        body.dark-mode .pinned-card:hover { border-color: #60a5fa; }
+        body.dark-mode .pinned-card { background: rgba(35,35,35,0.95); border-color: rgba(201,146,10,0.30); }
+        body.dark-mode .pinned-card:hover { border-color: rgba(201,146,10,0.60); }
         body.dark-mode .post-author, body.dark-mode .post-title { color: #e0e7ff; }
         body.dark-mode .post-text { color: #e2e8f0; }
         body.dark-mode .post-stats { border-color: rgba(148,163,184,0.15); color: #cbd5e1; }
@@ -274,7 +274,7 @@
         body.dark-mode .comment-input input { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); color: #f1f5f9; }
         body.dark-mode .comment-input input::placeholder { color: #94a3b8; }
         body.dark-mode .comment-avatar { background: rgba(59,130,246,0.2); color: #93c5fd; }
-        body.dark-mode .comment-author { color: #c7d2fe; }
+        body.dark-mode .comment-author { color: #fbbf24; }
         body.dark-mode .comment-text { color: #e2e8f0; }
         body.dark-mode .comment-item { border-color: rgba(148,163,184,0.12); }
         body.dark-mode .page-title { color: #e0e7ff; }
@@ -368,7 +368,7 @@
     function showToast(msg) {
         var t = document.createElement('div');
         t.textContent = msg;
-        t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#2AACBF;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
+        t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#c9920a;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
         document.body.appendChild(t);
         setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
     }
