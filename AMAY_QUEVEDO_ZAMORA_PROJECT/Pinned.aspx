@@ -86,8 +86,9 @@
         .back-btn:hover { background: rgba(255,255,255,0.25); }
 
         /* ── Page shell ── */
-        .page-shell { padding: 80px 20px 24px; }
-        .page-wrap  { max-width: 800px; margin: 24px auto 0; }
+       .page-shell { padding: 80px 10px 24px; }
+
+        .page-wrap { max-width: calc(100% - 20px); margin: 24px auto 0; }
 
         .page-title {
             display: flex; align-items: center; gap: 12px;
