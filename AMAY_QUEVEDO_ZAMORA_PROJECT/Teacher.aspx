@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect - Teacher Dashboard</title>
+    <title>Campus Announcement Portal - Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <style>
@@ -1141,7 +1141,7 @@
                     <button class="modal-close-btn" onclick="closeAboutModal()">&times;</button>
                 </div>
                 <div class="modal-body" style="text-align:center;">
-                    <p>Campus Connect - CTU Announcement System. Teacher Edition.</p>
+                    <p>Campus Announcement Portal - CTU Announcement System. Teacher Edition.</p>
                     <button class="btn-publish" style="margin-top:16px;" onclick="closeAboutModal()">Got it</button>
                 </div>
             </div>

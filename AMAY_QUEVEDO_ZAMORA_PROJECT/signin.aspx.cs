@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Security.Cryptography;
@@ -9,7 +9,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class signin : Page
     {
-        readonly SqlConnection con = new SqlConnection(@"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        readonly SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +20,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // SHA-256 hash — same algorithm used in login
+        // SHA-256 hash � same algorithm used in login
         private static string HashPassword(string password)
         {
             using (var sha = SHA256.Create())
@@ -41,7 +41,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string confirmPassword = txtConfirmPassword.Text;
             string role            = rbAdmin.Checked ? "Admin" : "Student";
 
-            // ── Input validation ─────────────────────────────────────────────
+            // -- Input validation ---------------------------------------------
             if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
                 string.IsNullOrWhiteSpace(confirmPassword))

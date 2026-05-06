@@ -24,6 +24,22 @@
     --active-bg: #fef9e7;
 }
 html, body, form { min-height: 100%; }
+/* Cover strip — blocks content scrolling behind the fixed header */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 199;
+    pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)), var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
 body {
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -36,8 +52,6 @@ body {
 }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
-
-/* ── Header — matches Student.aspx ── */
 .header {
     background: #c9920a;
     backdrop-filter: blur(10px);
@@ -102,11 +116,11 @@ button { font: inherit; }
 /* ── Page shell ── */
 .page-shell {
     min-height: 100vh;
-    padding: 100px 10px 24px;
+    padding: 90px 10px 24px;
 }
 .page-wrap {
     max-width: calc(100% - 0px);
-    margin: 24px auto 0;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 18px;

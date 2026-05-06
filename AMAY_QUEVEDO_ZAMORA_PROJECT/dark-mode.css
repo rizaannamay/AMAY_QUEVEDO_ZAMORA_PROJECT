@@ -6,6 +6,10 @@
  * ═══════════════════════════════════════════════════════════════════
  */
 
+/* ── HIDE SCROLLBARS GLOBALLY ───────────────────────────────────── */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none; }
+
 /* ── CSS VARIABLE OVERRIDES ─────────────────────────────────────── */
 body.dark-mode {
     --page-text:      #e4e6eb;

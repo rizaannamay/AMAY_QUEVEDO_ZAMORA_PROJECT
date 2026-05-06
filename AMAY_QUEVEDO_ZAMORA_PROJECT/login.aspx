@@ -1,14 +1,16 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.login" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect — Login</title>
+    <title>Campus Announcement Portal — Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -243,19 +245,6 @@
 
         .input-wrap select option { background: #fff; color: #1a2a3a; }
 
-        /* ── FORGOT ROW ── */
-        .forgot-row {
-            width: 100%;
-            text-align: right;
-            margin-bottom: 18px;
-        }
-        .forgot-row span {
-            font-size: 12px;
-            color: rgba(255,255,255,0.80);
-            cursor: pointer;
-        }
-        .forgot-row span:hover { color: #ffffff; text-decoration: underline; }
-
         /* ── ERROR BOX ── */
         .error-box {
             width: 100%;
@@ -403,9 +392,7 @@
                     </span>
                 </div>
 
-                <div class="forgot-row">
-                    <span>Forgot Password?</span>
-                </div>
+
 
                 <!-- Error -->
                 <asp:Label ID="lblError" runat="server" CssClass="error-box" style="display:none;"></asp:Label>

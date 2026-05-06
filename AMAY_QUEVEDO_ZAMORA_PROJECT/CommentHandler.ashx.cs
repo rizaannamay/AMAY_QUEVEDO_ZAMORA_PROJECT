@@ -9,14 +9,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {
             ctx.Response.ContentType = "application/json";
             string action = ctx.Request.QueryString["action"] ?? "";
 
-            // GetComments is public — no login required
+            // GetComments is public � no login required
             if (action == "get")
             {
                 EnsureSchema();
@@ -111,7 +111,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (IsTeacher(ctx))
             {
-                // ✅ TEACHER commented → notify ALL students
+                // ? TEACHER commented ? notify ALL students
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                     "SELECT u2.UserId, @aid, " +
@@ -126,7 +126,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
-                // Student commented → notify the teacher (announcement owner)
+                // Student commented ? notify the teacher (announcement owner)
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                     "SELECT a.UserId, a.AnnouncementId, u.Username + ' commented on your announcement: ' + a.Title, 0, GETDATE() " +
@@ -183,7 +183,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (IsTeacher(ctx))
             {
-                // ✅ TEACHER replied → notify ONLY the student who owns the parent comment
+                // ? TEACHER replied ? notify ONLY the student who owns the parent comment
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                     "SELECT c.UserId, c.AnnouncementId, " +
@@ -197,7 +197,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
-                // Student replied → notify the teacher (announcement owner)
+                // Student replied ? notify the teacher (announcement owner)
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                     "SELECT a.UserId, a.AnnouncementId, u.Username + ' replied on your announcement: ' + a.Title, 0, GETDATE() " +
@@ -310,13 +310,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
                 }
             }
-        }
 
-        dr.Close();
             con.Close();
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-        js.MaxJsonLength = int.MaxValue;
+            js.MaxJsonLength = int.MaxValue;
             ctx.Response.Write(js.Serialize(list));
         }
 
@@ -374,7 +372,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 catch
                 {
-                    // Don't mark as checked on failure — allow retry next request
+                    // Don't mark as checked on failure � allow retry next request
                 }
             }
         }

@@ -21,7 +21,7 @@
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Connect - About Us</title>
+    <title>Campus Announcement Portal - About Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <style>
@@ -47,6 +47,8 @@
 
         html, body, form { min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -58,16 +60,21 @@
             height: 80px;
             z-index: 199;
             pointer-events: none;
-            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
-                var(--bg-image) center/cover fixed no-repeat;
+            background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         body {
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background: linear-gradient(rgba(255,255,255,0.3),rgba(255,255,255,0.3)),
-        var(--bg-image) center/cover fixed no-repeat;
+    background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
     padding: 90px 10px 16px;
     transition: background 0.4s ease, color 0.4s ease;
 }
@@ -85,8 +92,12 @@ body.dark-mode {
     --accent: #f59e0b;
     --muted: #cbd5e1;
     --shadow: 0 8px 32px rgba(0,0,0,0.6);
-    background: linear-gradient(rgba(15,23,42,0.85),rgba(15,23,42,0.85)),
-        url('bg.jpg') center/cover fixed no-repeat;
+    background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg');
+    background-color: #121212;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 
         /* ── PAGE SHELL ── */

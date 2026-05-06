@@ -26,6 +26,8 @@
 
         html, body, form { min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
@@ -258,7 +260,12 @@
         }
 
         body.dark-mode {
-            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), var(--bg-image);
+            background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg');
+            background-color: #121212;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         body.dark-mode .pinned-card { background: rgba(35,35,35,0.95); border-color: rgba(201,146,10,0.30); }

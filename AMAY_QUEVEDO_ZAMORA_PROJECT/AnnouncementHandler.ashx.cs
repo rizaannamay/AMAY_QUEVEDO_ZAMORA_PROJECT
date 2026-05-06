@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.SessionState;
@@ -11,7 +13,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     public class AnnouncementHandler : IHttpHandler, IRequiresSessionState
     {
         private static readonly string ConnStr =
-            @"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -198,6 +200,100 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             ctx.Response.Write(js.Serialize(new { ok = true, id = newId }));
+
+            // ── Send email to all students ──────────────────────────────
+            try { SendAnnouncementEmails(title, content, cat); } catch { /* don't fail the post if email fails */ }
+        }
+
+        private void SendAnnouncementEmails(string title, string content, string category)
+        {
+            const string fromEmail   = "rizaannamay5@gmail.com";
+            const string appPassword = "kwfiqizzglqhvvde";
+
+            var studentEmails = new List<string>();
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(
+                    "SELECT Email FROM Users WHERE Role = 'Student' AND Email IS NOT NULL AND Email <> ''", con))
+                using (var dr = cmd.ExecuteReader())
+                    while (dr.Read())
+                        studentEmails.Add(dr["Email"].ToString());
+            }
+
+            if (studentEmails.Count == 0) return;
+
+            string subject = "📢 New Announcement: " + title;
+            string body = string.Format(@"
+<div style='font-family:Segoe UI,Arial,sans-serif;max-width:560px;margin:auto;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;'>
+
+  <!-- Header -->
+  <div style='background:linear-gradient(135deg,#c9920a,#F8E473);padding:28px 32px;text-align:center;'>
+    <h1 style='margin:0;font-size:22px;color:#1a1a00;letter-spacing:0.5px;'>📢 New Announcement</h1>
+    <p style='margin:6px 0 0;font-size:13px;color:#3a2e00;'>Campus Announcement Portal — CTU</p>
+  </div>
+
+  <!-- Body -->
+  <div style='padding:28px 32px;background:#ffffff;'>
+    <table style='width:100%;border-collapse:collapse;margin-bottom:20px;'>
+      <tr>
+        <td style='padding:10px 14px;background:#fefce8;border-radius:8px;border-left:4px solid #F8E473;'>
+          <div style='font-size:11px;color:#92400e;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;'>Title</div>
+          <div style='font-size:16px;font-weight:700;color:#1a1a00;'>{0}</div>
+        </td>
+      </tr>
+    </table>
+
+    <table style='width:100%;border-collapse:collapse;margin-bottom:20px;'>
+      <tr>
+        <td style='padding:10px 14px;background:#f9fafb;border-radius:8px;border-left:4px solid #d1d5db;'>
+          <div style='font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;'>Category</div>
+          <div style='font-size:14px;color:#374151;'>{1}</div>
+        </td>
+      </tr>
+    </table>
+
+    <table style='width:100%;border-collapse:collapse;margin-bottom:28px;'>
+      <tr>
+        <td style='padding:14px;background:#f9fafb;border-radius:8px;border-left:4px solid #d1d5db;'>
+          <div style='font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;'>Message</div>
+          <div style='font-size:14px;color:#374151;line-height:1.7;'>{2}</div>
+        </td>
+      </tr>
+    </table>
+
+    <p style='font-size:12px;color:#9ca3af;text-align:center;margin:0;'>
+      You received this because you are registered as a student at CTU Campus Connect.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div style='background:#fefce8;padding:14px 32px;text-align:center;border-top:1px solid #fde68a;'>
+    <p style='margin:0;font-size:11px;color:#92400e;'>Cebu Technological University — Campus Announcement Portal</p>
+  </div>
+
+</div>", title, category, content.Replace("\n", "<br/>"));
+
+            using (var smtp = new SmtpClient("smtp.gmail.com", 587))
+            {
+                smtp.EnableSsl = true;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
+
+                foreach (var email in studentEmails)
+                {
+                    try
+                    {
+                        using (var msg = new MailMessage(fromEmail, email, subject, body))
+                        {
+                            msg.IsBodyHtml = true;
+                            smtp.Send(msg);
+                        }
+                    }
+                    catch { /* skip failed individual email */ }
+                }
+            }
         }
 
         private void Update(HttpContext ctx, JavaScriptSerializer js)
