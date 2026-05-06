@@ -23,6 +23,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - About Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="dark-mode.css" />
     <style>
         * {
             margin: 0;
@@ -445,7 +446,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
         document.body.style.overflow = '';
     }
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeModal(); });
-</script>
+    </script>
 </body>
 </html>
 

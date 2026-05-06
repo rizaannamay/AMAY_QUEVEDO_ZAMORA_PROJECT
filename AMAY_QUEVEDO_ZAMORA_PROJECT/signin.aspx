@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -122,6 +122,12 @@
             transition: color 0.2s;
         }
         .input-wrap .toggle-pw:hover { color: #00838f; }
+
+        /* Hide browser-native password reveal button */
+        .input-wrap input[type="password"]::-ms-reveal,
+        .input-wrap input[type="password"]::-ms-clear,
+        .input-wrap input::-webkit-credentials-auto-fill-button,
+        .input-wrap input::-webkit-textfield-decoration-container { display: none !important; }
 
         /* ── ROLE SELECT ── */
         .role-wrap {

@@ -9,6 +9,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -58,13 +59,23 @@
         /* -- NAVBAR -- */
         .glass-nav {
             background: #2AACBF;
-            border-bottom: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: fixed !important;
+            top: 10px !important;
+            left: 10px !important;
+            right: 10px !important;
+            width: auto !important;
+            z-index: 1200 !important;
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         body.dark-mode .glass-nav {
             background: rgba(15, 25, 55, 0.92);
+            border-color: rgba(255,255,255,0.08);
             box-shadow: 0 4px 24px rgba(0,0,0,0.5);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -620,6 +631,7 @@
         /* Sidebar offset — removed, these pages have no sidebar */
         .page-content-offset {
             padding-left: 0;
+            padding-top: 90px;
         }
 
         /* User profile card shown when searching by username */

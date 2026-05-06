@@ -1,0 +1,597 @@
+/*
+ * ═══════════════════════════════════════════════════════════════════
+ *  CAMPUS CONNECT — GLOBAL DARK MODE STYLESHEET
+ *  Applied via: body.dark-mode
+ *  Toggled by:  localStorage key "campus_theme" === "dark"
+ *  Included in: ALL .aspx pages via <link rel="stylesheet" href="dark-mode.css">
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
+/* ── CSS VARIABLE OVERRIDES ─────────────────────────────────────── */
+body.dark-mode {
+    --page-text:      #e4e6eb;
+    --surface:        rgba(30, 41, 59, 0.95);
+    --surface-strong: rgba(30, 41, 59, 0.98);
+    --surface-soft:   rgba(51, 65, 85, 0.60);
+    --border:         rgba(255, 255, 255, 0.10);
+    --primary:        #93c5fd;
+    --primary-2:      #67e8f9;
+    --muted:          #94a3b8;
+    --muted-light:    #64748b;
+    --shadow:         0 8px 32px rgba(0, 0, 0, 0.60);
+    --active-bg:      rgba(99, 102, 241, 0.18);
+    --bg-image:       url('bg.jpg');
+    --accent:         #f59e0b;
+    --danger:         #f87171;
+    --danger-hover:   #ef4444;
+    --success:        #86efac;
+    --success-hover:  #4ade80;
+}
+
+/* ── BODY ───────────────────────────────────────────────────────── */
+body.dark-mode {
+    background-color: #0f172a;
+    background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), url('bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    color: #e4e6eb;
+}
+
+/* body::before cover strip (used by several pages) */
+body.dark-mode::before {
+    background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.88)), url('bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
+
+/* ── HEADER / NAVBAR / TOPBAR ───────────────────────────────────── */
+body.dark-mode .header,
+body.dark-mode .topbar,
+body.dark-mode .glass-nav {
+    background: rgba(15, 25, 55, 0.92) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.50) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── SIDEBAR ────────────────────────────────────────────────────── */
+body.dark-mode .glass-sidebar,
+body.dark-mode .sidebar,
+body.dark-mode .slideout-panel {
+    background: rgba(10, 15, 40, 0.97) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.50) !important;
+}
+
+/* ── CARDS & CONTAINERS ─────────────────────────────────────────── */
+body.dark-mode .card,
+body.dark-mode .glass-card,
+body.dark-mode .summary-card,
+body.dark-mode .info-card,
+body.dark-mode .profile-card,
+body.dark-mode .section-card,
+body.dark-mode .hero,
+body.dark-mode .empty-state {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.40) !important;
+}
+
+body.dark-mode .card:hover,
+body.dark-mode .glass-card:hover {
+    border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+/* ── ANNOUNCEMENT / PINNED CARDS ────────────────────────────────── */
+body.dark-mode .announcement-card,
+body.dark-mode .pinned-card,
+body.dark-mode .announce-card {
+    background: rgba(22, 36, 71, 0.95) !important;
+    border-color: rgba(59, 130, 246, 0.35) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35) !important;
+}
+
+body.dark-mode .announcement-card:hover,
+body.dark-mode .pinned-card:hover,
+body.dark-mode .announce-card:hover {
+    border-color: rgba(99, 102, 241, 0.55) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.50) !important;
+}
+
+/* ── NOTIFICATION ITEMS ─────────────────────────────────────────── */
+body.dark-mode .notif-item {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .notif-item:hover {
+    border-color: rgba(103, 232, 249, 0.30) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40) !important;
+}
+
+body.dark-mode .notif-item.unread {
+    border-left-color: #67e8f9 !important;
+}
+
+/* ── TEXT ───────────────────────────────────────────────────────── */
+body.dark-mode,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode div,
+body.dark-mode li {
+    color: #e4e6eb;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6 {
+    color: #e0e7ff;
+}
+
+body.dark-mode .post-author,
+body.dark-mode .post-title,
+body.dark-mode .card-title,
+body.dark-mode .card-author-name,
+body.dark-mode .profile-name,
+body.dark-mode .info-value,
+body.dark-mode .info-card-title,
+body.dark-mode .page-title,
+body.dark-mode .section-title,
+body.dark-mode .logo,
+body.dark-mode .user-name,
+body.dark-mode .brand {
+    color: #e0e7ff !important;
+}
+
+body.dark-mode .post-text,
+body.dark-mode .card-desc,
+body.dark-mode .post-meta,
+body.dark-mode .post-stats,
+body.dark-mode .card-meta,
+body.dark-mode .comment-time,
+body.dark-mode .no-comments,
+body.dark-mode .notif-time,
+body.dark-mode .notif-state,
+body.dark-mode .summary-text,
+body.dark-mode .user-role,
+body.dark-mode .muted,
+body.dark-mode .empty-text {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .comment-author,
+body.dark-mode .notif-message,
+body.dark-mode .summary-title,
+body.dark-mode .empty-title {
+    color: #67e8f9 !important;
+}
+
+body.dark-mode .comment-text {
+    color: #cbd5e1 !important;
+}
+
+/* ── BORDERS & DIVIDERS ─────────────────────────────────────────── */
+body.dark-mode .post-stats,
+body.dark-mode .comments-section,
+body.dark-mode .comment-item,
+body.dark-mode .info-row,
+body.dark-mode .info-card-header,
+body.dark-mode .edit-actions,
+body.dark-mode .card-header,
+body.dark-mode .divider-light {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── ACTION BUTTONS ─────────────────────────────────────────────── */
+body.dark-mode .action-btn {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .action-btn:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #c7d2fe !important;
+}
+
+body.dark-mode .action-btn.liked {
+    color: #f87171 !important;
+}
+
+body.dark-mode .action-btn.pinned-active {
+    color: #fb923c !important;
+}
+
+body.dark-mode .action-btn.notif-active {
+    color: #67e8f9 !important;
+}
+
+/* ── FORM INPUTS & TEXTAREAS ────────────────────────────────────── */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select,
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+body.dark-mode .form-group select,
+body.dark-mode .comment-input input,
+body.dark-mode .comment-input-row input,
+body.dark-mode .create-post-input,
+body.dark-mode .info-input,
+body.dark-mode .filter-select {
+    background: rgba(51, 65, 85, 0.70) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark-mode .comment-input input::placeholder,
+body.dark-mode .comment-input-row input::placeholder,
+body.dark-mode .create-post-input::placeholder {
+    color: #64748b !important;
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus,
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus,
+body.dark-mode .form-group select:focus,
+body.dark-mode .comment-input input:focus,
+body.dark-mode .comment-input-row input:focus,
+body.dark-mode .info-input:focus {
+    border-color: #67e8f9 !important;
+    box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.15) !important;
+    background: rgba(51, 65, 85, 0.90) !important;
+}
+
+body.dark-mode select option {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+/* ── COMMENT AVATARS ────────────────────────────────────────────── */
+body.dark-mode .comment-avatar,
+body.dark-mode .post-avatar {
+    background: rgba(99, 102, 241, 0.20) !important;
+    color: #93c5fd !important;
+}
+
+/* ── CATEGORY BADGES ────────────────────────────────────────────── */
+body.dark-mode .post-category-exam,
+body.dark-mode .cat-exam {
+    background: rgba(25, 118, 210, 0.22) !important;
+    color: #90caf9 !important;
+}
+
+body.dark-mode .post-category-suspension,
+body.dark-mode .cat-suspension {
+    background: rgba(198, 40, 40, 0.22) !important;
+    color: #ef9a9a !important;
+}
+
+body.dark-mode .post-category-event,
+body.dark-mode .cat-event {
+    background: rgba(46, 125, 50, 0.22) !important;
+    color: #a5d6a7 !important;
+}
+
+body.dark-mode .post-category-general,
+body.dark-mode .cat-default {
+    background: rgba(99, 102, 241, 0.22) !important;
+    color: #c7d2fe !important;
+}
+
+/* ── PIN BADGE ──────────────────────────────────────────────────── */
+body.dark-mode .pin-badge {
+    background: rgba(251, 146, 60, 0.20) !important;
+    color: #fdba74 !important;
+}
+
+/* ── PROFILE ROLE BADGE ─────────────────────────────────────────── */
+body.dark-mode .profile-role-badge {
+    background: rgba(59, 130, 246, 0.25) !important;
+    color: #93c5fd !important;
+}
+
+body.dark-mode .profile-role-badge.admin {
+    background: rgba(139, 92, 246, 0.25) !important;
+    color: #c4b5fd !important;
+}
+
+/* ── HISTORY / SEARCH ITEMS ─────────────────────────────────────── */
+body.dark-mode .history-item {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .history-item:hover {
+    background: rgba(99, 102, 241, 0.18) !important;
+    border-color: rgba(99, 102, 241, 0.40) !important;
+    color: #e0e7ff !important;
+}
+
+/* ── RESULT COUNT BADGE ─────────────────────────────────────────── */
+body.dark-mode #resultCount,
+body.dark-mode .result-count {
+    background: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.30) !important;
+    color: #c7d2fe !important;
+}
+
+/* ── EMPTY STATE ────────────────────────────────────────────────── */
+body.dark-mode #emptyState {
+    background: rgba(30, 41, 59, 0.90) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #94a3b8 !important;
+}
+
+/* ── PANEL MENU ITEMS ───────────────────────────────────────────── */
+body.dark-mode .panel-header h3 { color: #c7d2fe !important; }
+body.dark-mode .panel-menu-item { color: #cbd5e1 !important; }
+body.dark-mode .panel-menu-item i { color: #818cf8 !important; }
+body.dark-mode .panel-menu-item:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #ffffff !important;
+    border-left-color: #818cf8 !important;
+}
+body.dark-mode .dropdown-item-panel { color: #cbd5e1 !important; }
+body.dark-mode .dropdown-item-panel:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #ffffff !important;
+}
+
+/* ── EDIT TOGGLE BUTTON ─────────────────────────────────────────── */
+body.dark-mode .edit-toggle-btn {
+    background: rgba(51, 65, 85, 0.60) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #93c5fd !important;
+}
+
+body.dark-mode .edit-toggle-btn:hover {
+    background: rgba(99, 102, 241, 0.20) !important;
+    border-color: rgba(99, 102, 241, 0.40) !important;
+}
+
+body.dark-mode .btn-cancel-edit {
+    color: #94a3b8 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+body.dark-mode .btn-cancel-edit:hover {
+    background: rgba(51, 65, 85, 0.60) !important;
+}
+
+/* ── MODAL / CONFIRM CARD ───────────────────────────────────────── */
+body.dark-mode .modal-overlay {
+    background: rgba(0, 0, 0, 0.70) !important;
+}
+
+body.dark-mode .confirm-card {
+    background: rgba(15, 25, 55, 0.97) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+body.dark-mode .confirm-title   { color: #e0e7ff !important; }
+body.dark-mode .confirm-message { color: #94a3b8 !important; }
+
+body.dark-mode .btn-cancel {
+    background: rgba(51, 65, 85, 0.60) !important;
+    color: #cbd5e1 !important;
+    border-color: rgba(148, 163, 184, 0.30) !important;
+}
+
+body.dark-mode .btn-cancel:hover {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #93c5fd !important;
+}
+
+/* ── IMAGE MODAL (AboutUs) ──────────────────────────────────────── */
+body.dark-mode .image-modal-content {
+    background: rgba(8, 14, 36, 0.97) !important;
+    border-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+body.dark-mode .image-caption h4 { color: #93c5fd !important; }
+body.dark-mode .image-caption p  { color: #94a3b8 !important; }
+
+/* ── GALLERY & CREATOR CARDS (AboutUs) ─────────────────────────── */
+body.dark-mode .gallery-card,
+body.dark-mode .creator-card {
+    background: rgba(10, 18, 45, 0.70) !important;
+    border-color: rgba(59, 130, 246, 0.20) !important;
+}
+
+body.dark-mode .gallery-card:hover,
+body.dark-mode .creator-card:hover {
+    border-color: rgba(99, 102, 241, 0.45) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55) !important;
+}
+
+body.dark-mode .gallery-copy h4,
+body.dark-mode .creator-info h4 { color: #93c5fd !important; }
+
+body.dark-mode .creator-photo {
+    border-color: rgba(147, 197, 253, 0.30) !important;
+}
+
+/* ── MISSION / STAT ITEMS (AboutUs) ────────────────────────────── */
+body.dark-mode .mission-item {
+    background: rgba(99, 102, 241, 0.06) !important;
+    border-color: rgba(99, 102, 241, 0.15) !important;
+}
+
+body.dark-mode .mission-item h4 { color: #93c5fd !important; }
+
+body.dark-mode .stat {
+    background: rgba(99, 102, 241, 0.08) !important;
+    border-color: rgba(99, 102, 241, 0.20) !important;
+}
+
+body.dark-mode .stat strong { color: #93c5fd !important; }
+
+/* ── USER PROFILE CARD (SearchStudent) ─────────────────────────── */
+body.dark-mode .user-profile-card {
+    background: rgba(15, 25, 55, 0.80) !important;
+    border-color: rgba(99, 102, 241, 0.30) !important;
+}
+
+body.dark-mode .user-profile-card .upc-name     { color: #e0e7ff !important; }
+body.dark-mode .user-profile-card .upc-username  { color: #93c5fd !important; }
+body.dark-mode .user-profile-card .upc-badge     { background: rgba(99,102,241,0.20) !important; color: #c4b5fd !important; }
+body.dark-mode .user-profile-card .upc-posts     { color: #94a3b8 !important; }
+
+/* ── FOCUS BANNER ───────────────────────────────────────────────── */
+body.dark-mode .focus-banner {
+    background: rgba(99, 102, 241, 0.10) !important;
+    border-color: rgba(99, 102, 241, 0.25) !important;
+}
+
+/* ── FOOTER ─────────────────────────────────────────────────────── */
+body.dark-mode footer {
+    background: rgba(10, 15, 40, 0.60) !important;
+    border-color: rgba(255, 255, 255, 0.07) !important;
+    color: #64748b !important;
+}
+
+/* ── TOAST ──────────────────────────────────────────────────────── */
+body.dark-mode .toast-msg {
+    background: linear-gradient(135deg, #1e3a8a, #4f46e5) !important;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.40) !important;
+}
+
+/* ── TOGGLE SWITCH ──────────────────────────────────────────────── */
+body.dark-mode .toggle-switch-panel {
+    background: linear-gradient(135deg, #2AACBF, #1a9aaa) !important;
+}
+
+/* ── SCROLLBAR (inner containers) ──────────────────────────────── */
+body.dark-mode .glass-sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
+body.dark-mode .glass-sidebar::-webkit-scrollbar-thumb { background: rgba(99,102,241,0.40); }
+
+/* ── FLATPICKR CALENDAR ─────────────────────────────────────────── */
+body.dark-mode .flatpickr-calendar {
+    background: #1e293b !important;
+    border-color: rgba(99, 102, 241, 0.30) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.50) !important;
+}
+
+body.dark-mode .flatpickr-day { color: #e2e8f0 !important; }
+body.dark-mode .flatpickr-day:hover { background: rgba(99, 102, 241, 0.20) !important; }
+body.dark-mode .flatpickr-day.selected {
+    background: #4f46e5 !important;
+    border-color: #4f46e5 !important;
+    color: #fff !important;
+}
+body.dark-mode .flatpickr-months .flatpickr-month,
+body.dark-mode .flatpickr-weekdays,
+body.dark-mode span.flatpickr-weekday {
+    background: #0f172a !important;
+    color: #93c5fd !important;
+    fill: #93c5fd !important;
+}
+body.dark-mode .flatpickr-current-month select,
+body.dark-mode .flatpickr-current-month input { color: #e2e8f0 !important; }
+body.dark-mode .flatpickr-prev-month svg,
+body.dark-mode .flatpickr-next-month svg { fill: #67e8f9 !important; }
+body.dark-mode .flatpickr-day.flatpickr-disabled { color: #475569 !important; }
+
+/* ── LOGIN / SIGNIN PAGES ───────────────────────────────────────── */
+body.dark-mode .auth-card .panel-left:not([class*="panel-left"]),
+body.dark-mode .panel-right.form-panel {
+    background: rgba(15, 25, 55, 0.85) !important;
+    border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* Login/Signin form inputs (use inline styles — override via attribute) */
+body.dark-mode .input-wrap input,
+body.dark-mode .input-wrap select,
+body.dark-mode .role-wrap select {
+    background: rgba(51, 65, 85, 0.80) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .input-wrap input::placeholder { color: #64748b !important; }
+
+body.dark-mode .input-wrap input:focus,
+body.dark-mode .input-wrap select:focus,
+body.dark-mode .role-wrap select:focus {
+    border-color: #67e8f9 !important;
+    box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.20) !important;
+    background: rgba(51, 65, 85, 0.95) !important;
+}
+
+/* ── PROFILE AVATAR BORDER ──────────────────────────────────────── */
+body.dark-mode .profile-avatar {
+    border-color: rgba(30, 41, 59, 0.98) !important;
+}
+
+/* ── NOTIFICATION TARGET HIGHLIGHT ─────────────────────────────── */
+body.dark-mode .announcement-card.notification-target {
+    border-color: #fbbf24 !important;
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25), 0 12px 28px rgba(251, 191, 36, 0.18) !important;
+}
+
+/* ── CREATE POST CARD ───────────────────────────────────────────── */
+body.dark-mode .create-post-card {
+    background: rgba(15, 25, 55, 0.80) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ── SEARCH INPUT (navbar) ──────────────────────────────────────── */
+body.dark-mode .search-input {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .search-input::placeholder { color: rgba(255, 255, 255, 0.50) !important; }
+
+body.dark-mode .search-input:focus {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.60) !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.10) !important;
+}
+
+/* ── MARK ALL / HOME BUTTONS (Notifications) ────────────────────── */
+body.dark-mode .mark-all-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .mark-all-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ── BACK / HOME BUTTONS ────────────────────────────────────────── */
+body.dark-mode .back-btn,
+body.dark-mode .home-btn {
+    background: rgba(255, 255, 255, 0.10) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+body.dark-mode .back-btn:hover,
+body.dark-mode .home-btn:hover {
+    background: rgba(255, 255, 255, 0.20) !important;
+}
+
+/* ── SECTION HEADINGS (AboutUs) ─────────────────────────────────── */
+body.dark-mode .section-heading h3 { color: #e2e8f0 !important; }
+
+/* ── GLOBAL TRANSITION ──────────────────────────────────────────── */
+body.dark-mode *,
+body.dark-mode *::before,
+body.dark-mode *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+                color 0.3s ease, box-shadow 0.3s ease;
+}

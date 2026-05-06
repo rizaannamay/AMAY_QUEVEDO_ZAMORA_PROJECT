@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect - My Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="dark-mode.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -54,7 +55,7 @@
             background-position: center; background-attachment: fixed;
         }
 
-        .page-shell { min-height: 100vh; padding: 80px 32px 48px; }
+        .page-shell { min-height: 100vh; padding: 90px 32px 48px; }
         .page-wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 
         /* Single column layout */
@@ -69,13 +70,15 @@
         /* Topbar — matches dashboard header */
         .topbar {
             background: #2AACBF;
+            backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
             position: fixed;
             top: 10px;
             left: 10px;
@@ -105,7 +108,7 @@
         }
         .profile-banner {
             height: 120px;
-            background: linear-gradient(135deg, #2AACBF 0%, #1a9aaa 55%, #7c3aed 100%);
+            background: linear-gradient(135deg, #2AACBF 0%, #1a9aaa 55%, #0e7490 100%);
             position: relative;
         }
         .profile-avatar-wrap {
@@ -276,8 +279,8 @@
         body.dark-mode .edit-toggle-btn { color: #93c5fd; }
 
         @media (max-width: 700px) {
-            .topbar { top: 6px; left: 6px; right: 6px; padding: 10px 16px; }
-            .page-shell { padding: 76px 12px 40px; }
+            .topbar { top: 0; left: 0; right: 0; padding: 10px 16px; }
+            .page-shell { padding: 66px 12px 40px; }
             .profile-body { padding: 60px 18px 22px; }
             .profile-banner { height: 100px; }
             .info-row { padding: 12px 16px; }

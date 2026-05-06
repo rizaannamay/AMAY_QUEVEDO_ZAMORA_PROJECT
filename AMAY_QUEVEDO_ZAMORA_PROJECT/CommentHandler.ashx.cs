@@ -280,43 +280,43 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             con.Open();
 
-                using (var cmd = new SqlCommand(
-                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
-                    "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
-                    "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
-                    "FROM Comments c " +
-                    "JOIN Users u ON u.UserId = c.UserId " +
-                    "WHERE c.AnnouncementId = @aid " +
-                    "ORDER BY c.CreatedDate ASC", con))
-                {
-                    cmd.Parameters.AddWithValue("@aid", announcementId);
-                    cmd.Parameters.AddWithValue("@uid", currentUserId);
+            using (var cmd = new SqlCommand(
+                "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
+                "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
+                "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
+                "FROM Comments c " +
+                "JOIN Users u ON u.UserId = c.UserId " +
+                "WHERE c.AnnouncementId = @aid " +
+                "ORDER BY c.CreatedDate ASC", con))
+            {
+                cmd.Parameters.AddWithValue("@aid", announcementId);
+                cmd.Parameters.AddWithValue("@uid", currentUserId);
 
-                    using (var dr = cmd.ExecuteReader())
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
                     {
-                        while (dr.Read())
+                        list.Add(new
                         {
-                            list.Add(new
-                            {
-                                commentId = Convert.ToInt32(dr["CommentId"]),
-                                parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
-                                author = dr["Username"].ToString(),
-                                text = dr["CommentText"].ToString(),
-                                date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
-                                likeCount = Convert.ToInt32(dr["LikeCount"]),
-                                userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
-                                profileImage = dr["ProfileImage"].ToString()
-                            });
-                        }
+                            commentId = Convert.ToInt32(dr["CommentId"]),
+                            parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
+                            author = dr["Username"].ToString(),
+                            text = dr["CommentText"].ToString(),
+                            date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
+                            likeCount = Convert.ToInt32(dr["LikeCount"]),
+                            userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
+                            profileImage = dr["ProfileImage"].ToString()
+                        });
                     }
                 }
             }
+        }
 
-            dr.Close();
+        dr.Close();
             con.Close();
 
             JavaScriptSerializer js = new JavaScriptSerializer();
-            js.MaxJsonLength = int.MaxValue;
+        js.MaxJsonLength = int.MaxValue;
             ctx.Response.Write(js.Serialize(list));
         }
 

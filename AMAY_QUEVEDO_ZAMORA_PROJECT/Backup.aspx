@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Connect – Database Backup</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="dark-mode.css" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         :root {
@@ -41,19 +42,20 @@
             background-size:cover; background-attachment:fixed;
             color:var(--primary);
         }
-        .shell { max-width:700px; margin:0 auto; padding:80px 20px 60px; display:flex; flex-direction:column; gap:20px; }
+        .shell { max-width:700px; margin:0 auto; padding:90px 20px 60px; display:flex; flex-direction:column; gap:20px; }
 
         /* topbar */
         .topbar {
-            background:#2AACBF; backdrop-filter:blur(14px);
-            border:1px solid rgba(255,255,255,0.15); border-radius:20px;
-            padding:14px 22px; display:flex; align-items:center;
-            justify-content:space-between; box-shadow:var(--shadow);
+            background:#2AACBF; backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.15); border-radius:24px;
+            padding:12px 24px; display:flex; align-items:center;
+            justify-content:space-between; box-shadow:0 4px 20px rgba(0,0,0,0.2);
             position: fixed;
             top: 10px;
             left: 10px;
             right: 10px;
             z-index: 200;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
         .brand { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; color:#ffffff; }
         .brand-badge {
@@ -124,11 +126,53 @@
         .msg-success { background:#dcfce7; color:#166534; border:1px solid #bbf7d0; }
         .msg-error   { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; }
 
-        /* dark mode */
-        .dark-mode body { background-image:linear-gradient(rgba(15,23,42,.85),rgba(15,23,42,.85)),url('bg.jpg'); }
+        /* ── DARK MODE ── */
+        body.dark-mode {
+            background-image: linear-gradient(rgba(15,23,42,.88),rgba(15,23,42,.88)), url('bg.jpg') !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            color: #e4e6eb;
+        }
+        body.dark-mode::before {
+            background-image: linear-gradient(rgba(15,23,42,.88),rgba(15,23,42,.88)), url('bg.jpg') !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+        }
+        body.dark-mode .card {
+            background: rgba(30,41,59,0.95) !important;
+            border-color: rgba(255,255,255,0.08) !important;
+        }
+        body.dark-mode .card-header {
+            color: #e0e7ff !important;
+            border-color: rgba(255,255,255,0.08) !important;
+        }
+        body.dark-mode .stat-box {
+            background: rgba(51,65,85,0.60) !important;
+            border-color: rgba(255,255,255,0.10) !important;
+        }
+        body.dark-mode .stat-num { color: #67e8f9 !important; }
+        body.dark-mode .stat-lbl { color: #94a3b8 !important; }
+        body.dark-mode .backup-table th { background: linear-gradient(135deg,#1e3a8a,#4f46e5) !important; }
+        body.dark-mode .backup-table td {
+            color: #e2e8f0 !important;
+            border-color: rgba(255,255,255,0.08) !important;
+        }
+        body.dark-mode .backup-table tr:nth-child(even) td { background: rgba(51,65,85,0.40) !important; }
+        body.dark-mode .table-wrap { border-color: rgba(255,255,255,0.08) !important; }
+        body.dark-mode .msg-success { background: rgba(22,101,52,0.25) !important; color: #86efac !important; border-color: rgba(134,239,172,0.30) !important; }
+        body.dark-mode .msg-error   { background: rgba(153,27,27,0.25) !important; color: #fca5a5 !important; border-color: rgba(252,165,165,0.30) !important; }
     </style>
 </head>
 <body>
+    <script>
+        (function () {
+            document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme')
+                    document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+            });
+        })();
+    </script>
     <form id="form1" runat="server">
         <div class="shell">
 

@@ -9,6 +9,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="dark-mode.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -46,31 +47,26 @@
             transition: color 0.3s ease;
         }
 
-        /* ── WAVE SVG BACKGROUND (fixed, decorative) ── */
-        #waveBg {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.22;
-        }
-
         /* ── NAVBAR ── */
         .glass-nav {
             background: #2AACBF;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: fixed !important;
+            top: 10px !important;
+            left: 10px !important;
+            right: 10px !important;
+            width: auto !important;
+            z-index: 1200 !important;
             transition: background 0.3s ease, box-shadow 0.3s ease;
         }
 
         body.dark-mode .glass-nav {
             background: rgba(15, 25, 55, 0.92);
-            border-bottom-color: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.08);
             box-shadow: 0 4px 24px rgba(0,0,0,0.5);
         }
 
@@ -446,7 +442,6 @@
         body.light-mode .confirm-message { color: #6b7c8f; }
         body.light-mode .btn-cancel { background: rgba(26,58,92,0.08); color: #374151; border-color: rgba(26,58,92,0.15); }
         body.light-mode .btn-cancel:hover { background: rgba(26,58,92,0.14); }
-        body.light-mode #waveBg { opacity: 0.08; }
 
         /* ══════════════════════════════════════════
            DARK MODE OVERRIDES
@@ -692,6 +687,7 @@
         /* Sidebar offset — removed, these pages have no sidebar */
         .page-content-offset {
             padding-left: 0;
+            padding-top: 90px;
         }
 
         /* Cap announcement images */
@@ -729,20 +725,6 @@
     </style>
 </head>
 <body class="antialiased relative">
-
-    <!-- Fixed wave decoration matching Notifications.aspx -->
-    <svg id="waveBg" viewBox="0 0 1440 500" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0,280 C200,200 400,360 600,260 C800,160 1000,320 1200,240 C1320,200 1400,260 1440,280"
-              fill="none" stroke="#3b82f6" stroke-width="1.5"/>
-        <path d="M0,320 C240,240 480,380 720,300 C900,240 1100,360 1300,280 C1380,250 1420,300 1440,320"
-              fill="none" stroke="#6366f1" stroke-width="1.2"/>
-        <path d="M0,360 C180,300 360,400 540,340 C720,280 900,380 1080,320 C1260,260 1380,340 1440,360"
-              fill="none" stroke="#818cf8" stroke-width="0.9"/>
-        <path d="M0,240 C300,160 600,320 900,200 C1080,140 1260,260 1440,220"
-              fill="none" stroke="#2563eb" stroke-width="1"/>
-        <path d="M0,400 C360,340 720,420 1080,360 C1260,330 1380,390 1440,400"
-              fill="none" stroke="#4f46e5" stroke-width="0.7"/>
-    </svg>
 
     <form id="form1" runat="server">
         <asp:HiddenField ID="lastSearchTerm" runat="server" />
