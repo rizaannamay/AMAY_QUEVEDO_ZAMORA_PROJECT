@@ -56,6 +56,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
+        // Helper: check if current user is a Teacher (Admin role)
+        private bool IsTeacher(HttpContext ctx)
+        {
+            string role = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "";
+            return string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase);
+        }
+
         private void AddComment(HttpContext ctx)
         {
             Dictionary<string, object> data = ReadJson(ctx);
@@ -79,6 +86,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             con.Open();
 
+            // Insert the comment
             SqlCommand cmd1 = new SqlCommand(
                 "INSERT INTO Comments (AnnouncementId, UserId, CommentText, CreatedDate) VALUES (@aid, @uid, @txt, GETDATE())", con);
             cmd1.Parameters.AddWithValue("@aid", announcementId);
@@ -86,22 +94,40 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             cmd1.Parameters.AddWithValue("@txt", commentText);
             cmd1.ExecuteNonQuery();
 
+            // Update comment count
             SqlCommand cmd2 = new SqlCommand(
-                "UPDATE Announcements " +
-                "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
-                "WHERE AnnouncementId=@aid", con);
+                "UPDATE Announcements SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) WHERE AnnouncementId=@aid", con);
             cmd2.Parameters.AddWithValue("@aid", announcementId);
             cmd2.ExecuteNonQuery();
 
-            SqlCommand notifCmd = new SqlCommand(
-                "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                "SELECT a.UserId, a.AnnouncementId, u.Username + ' commented on your announcement: ' + a.Title, 0, GETDATE() " +
-                "FROM Announcements a " +
-                "JOIN Users u ON u.UserId = @uid " +
-                "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con);
-            notifCmd.Parameters.AddWithValue("@aid", announcementId);
-            notifCmd.Parameters.AddWithValue("@uid", userId);
-            notifCmd.ExecuteNonQuery();
+            if (IsTeacher(ctx))
+            {
+                // ✅ TEACHER commented → notify ALL students
+                SqlCommand notifCmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT u2.UserId, @aid, " +
+                    "   (SELECT u.Username FROM Users u WHERE u.UserId = @uid) + ' (Teacher) commented on: ' + " +
+                    "   LEFT((SELECT a.Title FROM Announcements a WHERE a.AnnouncementId = @aid), 60), " +
+                    "   0, GETDATE() " +
+                    "FROM Users u2 " +
+                    "WHERE u2.Role = 'Student' AND u2.UserId <> @uid", con);
+                notifCmd.Parameters.AddWithValue("@aid", announcementId);
+                notifCmd.Parameters.AddWithValue("@uid", userId);
+                notifCmd.ExecuteNonQuery();
+            }
+            else
+            {
+                // Student commented → notify the teacher (announcement owner)
+                SqlCommand notifCmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' commented on your announcement: ' + a.Title, 0, GETDATE() " +
+                    "FROM Announcements a " +
+                    "JOIN Users u ON u.UserId = @uid " +
+                    "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con);
+                notifCmd.Parameters.AddWithValue("@aid", announcementId);
+                notifCmd.Parameters.AddWithValue("@uid", userId);
+                notifCmd.ExecuteNonQuery();
+            }
 
             con.Close();
             ctx.Response.Write("{\"success\":true}");
@@ -131,6 +157,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             con.Open();
 
+            // Insert the reply
             SqlCommand cmd = new SqlCommand(
                 "INSERT INTO Comments (AnnouncementId, UserId, CommentText, ParentCommentId, CreatedDate) VALUES (@aid, @uid, @txt, @pid, GETDATE())", con);
             cmd.Parameters.AddWithValue("@aid", announcementId);
@@ -139,12 +166,39 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             cmd.Parameters.AddWithValue("@pid", parentCommentId);
             cmd.ExecuteNonQuery();
 
+            // Update comment count
             SqlCommand countCmd = new SqlCommand(
-                "UPDATE Announcements " +
-                "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
-                "WHERE AnnouncementId=@aid", con);
+                "UPDATE Announcements SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) WHERE AnnouncementId=@aid", con);
             countCmd.Parameters.AddWithValue("@aid", announcementId);
             countCmd.ExecuteNonQuery();
+
+            if (IsTeacher(ctx))
+            {
+                // ✅ TEACHER replied → notify ONLY the student who owns the parent comment
+                SqlCommand notifCmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT c.UserId, c.AnnouncementId, " +
+                    "   (SELECT u.Username FROM Users u WHERE u.UserId = @uid) + ' (Teacher) replied to your comment: ' + LEFT(c.CommentText, 50), " +
+                    "   0, GETDATE() " +
+                    "FROM Comments c " +
+                    "WHERE c.CommentId = @parentCommentId AND c.UserId <> @uid", con);
+                notifCmd.Parameters.AddWithValue("@uid", userId);
+                notifCmd.Parameters.AddWithValue("@parentCommentId", parentCommentId);
+                notifCmd.ExecuteNonQuery();
+            }
+            else
+            {
+                // Student replied → notify the teacher (announcement owner)
+                SqlCommand notifCmd = new SqlCommand(
+                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' replied on your announcement: ' + a.Title, 0, GETDATE() " +
+                    "FROM Announcements a " +
+                    "JOIN Users u ON u.UserId = @uid " +
+                    "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con);
+                notifCmd.Parameters.AddWithValue("@aid", announcementId);
+                notifCmd.Parameters.AddWithValue("@uid", userId);
+                notifCmd.ExecuteNonQuery();
+            }
 
             con.Close();
             ctx.Response.Write("{\"success\":true}");
@@ -170,6 +224,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (alreadyLiked)
             {
+                // Unlike — no notification
                 SqlCommand del = new SqlCommand(
                     "DELETE FROM CommentLikes WHERE CommentId=@cid AND UserId=@uid", con);
                 del.Parameters.AddWithValue("@cid", commentId);
@@ -178,13 +233,44 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
+                // New like — insert
                 SqlCommand ins = new SqlCommand(
                     "INSERT INTO CommentLikes (CommentId, UserId, CreatedDate) VALUES (@cid, @uid, GETDATE())", con);
                 ins.Parameters.AddWithValue("@cid", commentId);
                 ins.Parameters.AddWithValue("@uid", userId);
                 ins.ExecuteNonQuery();
+
+                if (IsTeacher(ctx))
+                {
+                    // ✅ TEACHER liked → notify ONLY the student who owns that comment
+                    SqlCommand notifCmd = new SqlCommand(
+                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                        "SELECT c.UserId, c.AnnouncementId, " +
+                        "   (SELECT u.Username FROM Users u WHERE u.UserId = @uid) + ' (Teacher) liked your comment: ' + LEFT(c.CommentText, 50), " +
+                        "   0, GETDATE() " +
+                        "FROM Comments c " +
+                        "WHERE c.CommentId = @cid AND c.UserId <> @uid", con);
+                    notifCmd.Parameters.AddWithValue("@cid", commentId);
+                    notifCmd.Parameters.AddWithValue("@uid", userId);
+                    notifCmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    // Student liked a teacher's comment → notify the teacher
+                    SqlCommand notifCmd = new SqlCommand(
+                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                        "SELECT c.UserId, c.AnnouncementId, u.Username + ' liked your comment: ' + LEFT(c.CommentText, 50), 0, GETDATE() " +
+                        "FROM Comments c " +
+                        "JOIN Users u ON u.UserId = @uid " +
+                        "JOIN Users cu ON cu.UserId = c.UserId " +
+                        "WHERE c.CommentId = @cid AND c.UserId <> @uid AND cu.Role = 'Admin'", con);
+                    notifCmd.Parameters.AddWithValue("@cid", commentId);
+                    notifCmd.Parameters.AddWithValue("@uid", userId);
+                    notifCmd.ExecuteNonQuery();
+                }
             }
 
+            // Update like count
             SqlCommand upd = new SqlCommand(
                 "UPDATE Comments SET LikeCount = (SELECT COUNT(*) FROM CommentLikes WHERE CommentId=@cid) WHERE CommentId=@cid", con);
             upd.Parameters.AddWithValue("@cid", commentId);
@@ -329,22 +415,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         private string GetTimeAgo(DateTime date)
         {
             TimeSpan ts = DateTime.Now - date;
-
-            if (ts.TotalSeconds < 60)
-                return "Just now";
-
-            if (ts.TotalMinutes < 60)
-                return (int)ts.TotalMinutes + "m ago";
-
-            if (ts.TotalHours < 24)
-                return (int)ts.TotalHours + "h ago";
-
-            if (ts.TotalDays < 7)
-                return (int)ts.TotalDays + "d ago";
-
-            if (ts.TotalDays < 30)
-                return ((int)(ts.TotalDays / 7)) + "w ago";
-
+            if (ts.TotalSeconds < 60) return "Just now";
+            if (ts.TotalMinutes < 60) return (int)ts.TotalMinutes + "m ago";
+            if (ts.TotalHours < 24) return (int)ts.TotalHours + "h ago";
+            if (ts.TotalDays < 7) return (int)ts.TotalDays + "d ago";
+            if (ts.TotalDays < 30) return ((int)(ts.TotalDays / 7)) + "w ago";
             return date.ToString("MMM dd");
         }
 
