@@ -8,6 +8,7 @@
     <title>Campus Announcement Portal - My Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -279,18 +280,24 @@
         body.dark-mode .edit-toggle-btn { color: #93c5fd; }
 
         @media (max-width: 700px) {
-            .topbar { top: 0; left: 0; right: 0; padding: 10px 16px; }
-            .page-shell { padding: 66px 12px 40px; }
+            .topbar { top: 0; left: 0; right: 0; padding: 10px 16px; border-radius: 0 0 18px 18px; }
+            .page-shell { padding: 70px 12px 40px; }
             .profile-body { padding: 60px 18px 22px; }
             .profile-banner { height: 100px; }
             .info-row { padding: 12px 16px; }
             .profile-columns { grid-template-columns: 1fr; }
         }
+        @media (max-width: 480px) {
+            .page-shell { padding: 66px 10px 32px; }
+            .profile-name { font-size: 20px; }
+            .info-value { font-size: 13px; }
+            .upload-btn { font-size: 12px; padding: 8px 16px; }
+        }
     </style>
 </head>
 <body>
     <form id="form1" runat="server" enctype="multipart/form-data">
-        <div class="page-shell">
+        <div class="page-shell profile-shell">
             <div class="page-wrap">
 
                 <!-- Topbar -->

@@ -339,9 +339,16 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 640px) {
-            .auth-card { flex-direction: column; max-width: 420px; }
-            .panel-left { width: 100%; padding: 36px 28px; }
-            .panel-right { padding: 32px 24px; }
+            .auth-card { flex-direction: column; max-width: 100%; border-radius: 20px; margin: 8px; }
+            .panel-left { width: 100%; padding: 28px 20px; min-height: unset; }
+            .panel-right { padding: 24px 16px; }
+            .panel-left h2 { font-size: 26px; }
+            .panel-right h1 { font-size: 24px; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .panel-right h1 { font-size: 22px; }
+            .btn-login { font-size: 14px; }
         }
     </style>
 </head>

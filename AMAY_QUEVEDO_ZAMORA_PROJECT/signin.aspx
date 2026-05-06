@@ -334,9 +334,16 @@
 
         /* ── RESPONSIVE ── */
         @media (max-width: 640px) {
-            .auth-card { flex-direction: column-reverse; max-width: 420px; }
-            .panel-right { width: 100%; padding: 36px 28px; }
-            .panel-left { padding: 32px 24px; }
+            .auth-card { flex-direction: column-reverse; max-width: 100%; border-radius: 20px; margin: 8px; }
+            .panel-right { width: 100%; padding: 28px 20px; min-height: unset; }
+            .panel-left { padding: 24px 16px; }
+            .panel-right h2 { font-size: 26px; }
+            .panel-left h1 { font-size: 24px; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .panel-left h1 { font-size: 22px; }
+            .btn-register { font-size: 14px; }
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }

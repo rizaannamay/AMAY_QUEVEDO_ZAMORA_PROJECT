@@ -1,0 +1,334 @@
+/*
+ * ═══════════════════════════════════════════════════════════════════
+ *  CAMPUS CONNECT — GLOBAL RESPONSIVE STYLESHEET
+ *  Breakpoints:
+ *    xs  : ≤ 480px   (small phones)
+ *    sm  : ≤ 640px   (phones)
+ *    md  : ≤ 768px   (large phones / small tablets)
+ *    lg  : ≤ 980px   (tablets / small laptops)
+ * ═══════════════════════════════════════════════════════════════════
+ */
+
+/* ── HAMBURGER BUTTON (mobile sidebar toggle) ───────────────────── */
+.hamburger-btn {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    transition: background 0.2s;
+}
+.hamburger-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+/* ── MOBILE OVERLAY (behind open sidebar) ───────────────────────── */
+#mobileOverlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1099;
+    backdrop-filter: blur(2px);
+}
+#mobileOverlay.show { display: block; }
+
+/* ── SIDEBAR OPEN STATE ON MOBILE ───────────────────────────────── */
+.slideout-panel.mobile-open {
+    display: flex !important;
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LARGE TABLET / SMALL LAPTOP  (≤ 980px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 980px) {
+
+    /* Sidebar hidden, hamburger shown */
+    .slideout-panel {
+        display: none;
+        position: fixed;
+        top: 80px !important;
+        left: 10px !important;
+        width: 260px !important;
+        height: calc(100vh - 90px) !important;
+        z-index: 1100;
+        transform: translateX(-20px);
+        opacity: 0;
+        transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .hamburger-btn { display: flex; }
+
+    /* Header — tighten padding */
+    .header {
+        padding: 10px 16px !important;
+        top: 6px !important;
+        left: 6px !important;
+        right: 6px !important;
+    }
+
+    /* Search button — shrink */
+    .search-btn {
+        max-width: 220px !important;
+        font-size: 13px !important;
+        padding: 8px 14px !important;
+    }
+
+    /* User info — hide role label */
+    .user-role { display: none; }
+
+    /* Notification badge */
+    .badge-red { font-size: 9px; padding: 1px 5px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABLET / LARGE PHONE  (≤ 768px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* Header */
+    .header,
+    .topbar {
+        padding: 10px 14px !important;
+        top: 6px !important;
+        left: 6px !important;
+        right: 6px !important;
+        border-radius: 18px !important;
+    }
+
+    /* Logo text — shorter */
+    .logo { font-size: 17px !important; }
+    .brand { font-size: 16px !important; }
+
+    /* Search container — hide on small screens, use icon only */
+    .search-container { display: none !important; }
+
+    /* Header actions — tighter */
+    .header-actions { gap: 8px !important; }
+
+    /* Announcement cards */
+    .post-header { padding: 14px 16px 10px !important; }
+    .post-content { padding: 0 16px 14px !important; }
+    .post-stats {
+        padding: 8px 16px !important;
+        gap: 12px !important;
+        font-size: 12px !important;
+        flex-wrap: wrap !important;
+    }
+    .action-buttons { padding: 6px 16px !important; gap: 2px !important; }
+    .action-btn { font-size: 13px !important; padding: 8px 4px !important; }
+    .post-title { font-size: 16px !important; }
+    .post-text  { font-size: 13px !important; }
+    .post-avatar { width: 42px !important; height: 42px !important; font-size: 17px !important; }
+
+    /* Comment input */
+    .comment-input { flex-direction: column !important; gap: 8px !important; }
+    .comment-input button { border-radius: 12px !important; padding: 10px !important; }
+    .comment-input-row { flex-direction: column !important; }
+    .comment-input-row button { padding: 10px !important; border-radius: 12px !important; }
+
+    /* Card header */
+    .card-header { font-size: 14px !important; padding: 14px 16px !important; }
+
+    /* Page shell padding */
+    .page-shell { padding: 90px 10px 24px !important; }
+    .profile-banner { height: 100px !important; }
+    .profile-body { padding: 60px 16px 20px !important; }
+    .info-row { padding: 12px 14px !important; }
+    .profile-name { font-size: 20px !important; }
+
+    /* AboutUs hero — stack vertically */
+    .hero { grid-template-columns: 1fr !important; }
+    .hero-visual { min-height: 180px !important; }
+    .hero-copy { padding: 24px 20px !important; }
+    .hero-stats { grid-template-columns: 1fr 1fr !important; }
+
+    /* AboutUs gallery — single column */
+    .gallery-grid { grid-template-columns: 1fr !important; }
+    .gallery-card img { height: 180px !important; }
+
+    /* AboutUs creator cards — stack */
+    .creator-card {
+        grid-template-columns: 1fr !important;
+        text-align: center !important;
+    }
+    .creator-photo { margin: 0 auto !important; }
+
+    /* Notifications */
+    .notif-row { padding: 14px !important; gap: 10px !important; }
+    .notif-icon { width: 44px !important; height: 44px !important; font-size: 18px !important; }
+    .notif-message { font-size: 13px !important; }
+    .header-actions { flex-wrap: nowrap !important; }
+    .mark-all-btn { padding: 8px 12px !important; font-size: 12px !important; }
+
+    /* Pinned page */
+    .page-wrap { margin-top: 16px !important; }
+
+    /* Teacher create-post card */
+    .create-post-card { padding: 12px 14px !important; }
+    .create-post-input { font-size: 13px !important; padding: 8px 14px !important; }
+
+    /* Modal */
+    .modal-content { padding: 20px !important; border-radius: 20px !important; }
+    .modal-header { padding: 16px 20px !important; }
+    .modal-body { padding: 16px 20px !important; }
+
+    /* Delete modal */
+    .delete-modal-card { padding: 24px 20px 18px !important; }
+
+    /* SearchStudent — hide banner column */
+    .card-banner { display: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHONE  (≤ 640px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+
+    /* Auth pages (login / signin) */
+    .auth-card {
+        flex-direction: column !important;
+        max-width: 100% !important;
+        border-radius: 20px !important;
+    }
+
+    /* Login — left panel on top */
+    .auth-card .panel-left {
+        width: 100% !important;
+        padding: 28px 20px !important;
+        min-height: unset !important;
+    }
+
+    /* Signin — right panel on top (reversed) */
+    .auth-card.signin-card { flex-direction: column-reverse !important; }
+    .auth-card .panel-right {
+        width: 100% !important;
+        padding: 28px 20px !important;
+    }
+
+    /* Form panels */
+    .panel-right,
+    .panel-left.form-panel { padding: 24px 16px !important; }
+
+    /* Header — very small */
+    .header, .topbar {
+        padding: 8px 12px !important;
+        gap: 8px !important;
+    }
+
+    .logo { font-size: 15px !important; }
+    .logo i { margin-right: 5px !important; }
+
+    /* User info — icon only */
+    .user-name { display: none; }
+    .user-info { padding: 6px 10px !important; gap: 6px !important; }
+
+    /* Notification bell */
+    .notification-bell { width: 36px !important; height: 36px !important; }
+
+    /* Announcement card */
+    .post-header { padding: 12px 14px 8px !important; }
+    .post-content { padding: 0 14px 12px !important; }
+    .post-stats { padding: 8px 14px !important; gap: 8px !important; }
+    .action-buttons { padding: 4px 14px !important; }
+    .action-btn { font-size: 12px !important; gap: 4px !important; }
+
+    /* Post image */
+    .post-image img { max-height: 160px !important; }
+
+    /* AboutUs hero stats — single column */
+    .hero-stats { grid-template-columns: 1fr !important; }
+
+    /* Profile — page shell (topbar is flush to top on mobile) */
+    .page-shell.profile-shell { padding: 70px 10px 32px !important; }
+    .profile-columns { gap: 14px !important; }
+
+    /* Notifications header */
+    .header-title { font-size: 16px !important; }
+    .header-sub { display: none; }
+
+    /* Summary card */
+    .summary-card { padding: 14px 16px !important; }
+    .summary-icon { width: 44px !important; height: 44px !important; font-size: 18px !important; }
+    .summary-title { font-size: 14px !important; }
+
+    /* Pinned page title */
+    .page-title { font-size: 18px !important; }
+
+    /* SearchStudent */
+    .page-content-offset { padding-top: 84px !important; }
+
+    /* Teacher modal */
+    .modal { padding: 12px !important; }
+    .modal-content { max-width: 100% !important; border-radius: 18px !important; }
+
+    /* Focus banner */
+    .focus-banner { padding: 10px 14px !important; gap: 8px !important; }
+    .focus-back-btn { padding: 8px 12px !important; font-size: 13px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMALL PHONE  (≤ 480px)
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+    /* Auth card */
+    .auth-card { margin: 8px !important; }
+    .panel-left h2, .panel-right h2 { font-size: 24px !important; }
+    .panel-right h1 { font-size: 22px !important; }
+
+    /* Header */
+    .header, .topbar { border-radius: 14px !important; }
+
+    /* Post stats — wrap to 2 per row */
+    .post-stats { gap: 6px !important; }
+    .post-stats span { font-size: 11px !important; }
+
+    /* Action buttons — icon only on very small screens */
+    .action-btn span { display: none; }
+
+    /* Notification items */
+    .notif-row { padding: 12px 10px !important; gap: 8px !important; }
+    .notif-icon { width: 38px !important; height: 38px !important; font-size: 16px !important; border-radius: 12px !important; }
+    .notif-message { font-size: 12px !important; }
+    .notif-time { font-size: 11px !important; }
+
+    /* AboutUs topbar */
+    .topbar { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+    .top-actions { align-self: flex-end !important; }
+
+    /* Profile info rows */
+    .info-icon { width: 36px !important; height: 36px !important; font-size: 14px !important; border-radius: 10px !important; }
+    .info-value { font-size: 13px !important; }
+    .info-label { font-size: 10px !important; }
+
+    /* Logout button */
+    .logout-btn { font-size: 13px !important; padding: 12px !important; }
+
+    /* Teacher create post */
+    .create-post-header { gap: 8px !important; }
+    .create-post-avatar { width: 36px !important; height: 36px !important; font-size: 15px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITY — ensure images never overflow
+═══════════════════════════════════════════════════════════════════ */
+img { max-width: 100%; height: auto; }
+
+/* Prevent horizontal scroll — scoped only to pages that need it via class */
+
+/* Touch-friendly tap targets — only navigation/form controls, not inline buttons */
+@media (max-width: 768px) {
+    .btn-login, .btn-register, .btn-save, .logout-btn,
+    .mark-all-btn, .back-btn, .home-btn, .hamburger-btn,
+    .panel-menu-item, .edit-toggle-btn, .upload-btn {
+        min-height: 44px;
+    }
+}

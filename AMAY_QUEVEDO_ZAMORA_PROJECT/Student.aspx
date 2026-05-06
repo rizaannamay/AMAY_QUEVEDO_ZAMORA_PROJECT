@@ -7,6 +7,7 @@
 <title>Campus Announcement Portal - Student Portal</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <link rel="stylesheet" href="dark-mode.css" />
+<link rel="stylesheet" href="responsive.css" />
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
@@ -284,18 +285,49 @@ body.dark-mode .announcement-board { background: rgba(18,18,18,0.60); }
 body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: rgba(201,146,10,0.22); }
 @media (max-width: 980px) {
     html, body { overflow: auto; }
-    .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; padding-top: 120px; }
+    .app-shell {
+        height: auto !important;
+        min-height: 100%;
+        overflow: visible !important;
+        padding-left: 20px !important;
+        padding-top: 120px !important;
+        padding-right: 20px !important;
+    }
     .slideout-panel { display: none; }
-    .dashboard-body { display: block; }
-    .content-shell { overflow: visible; }
-    .main-panel.card { height: auto; position: static; overflow: visible; }
-    .announcement-board { overflow: visible; }
+    .dashboard-body { display: block !important; }
+    .content-shell { overflow: visible !important; height: auto !important; }
+    .main-panel.card {
+        height: auto !important;
+        min-height: unset !important;
+        position: static !important;
+        overflow: visible !important;
+    }
+    /* Break the flex-collapse: announcement-board uses flex:1 1 auto
+       which collapses to 0 when parent has no fixed height */
+    .announcement-board {
+        flex: none !important;
+        overflow: visible !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: none !important;
+    }
+}
+@media (max-width: 768px) {
+    #mobileSearchBtn { display: flex !important; }
+    .app-shell {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-top: 120px !important;
+    }
 }
 </style>
 </head>
 <body>
 <form id="form1" runat="server">
 <div class="header">
+    <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+    </button>
     <button type="button" class="logo" onclick="navigateWithFlip('Student.aspx')">
         <i class="fas fa-university"></i> Campus Announcement
     </button>
@@ -304,6 +336,12 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
             OnClientClick="navigateWithFlip('SearchStudent.aspx'); return false;" UseSubmitBehavior="false" />
     </div>
     <div class="header-actions">
+        <button type="button" class="notification-bell" id="mobileSearchBtn"
+            style="display:none;"
+            onclick="navigateWithFlip('SearchStudent.aspx')"
+            title="Search">
+            <i class="fas fa-search bell-icon"></i>
+        </button>
         <button type="button" class="notification-bell" onclick="navigateWithFlip('Notifications.aspx')">
             <i class="fas fa-bell bell-icon"></i>
             <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
@@ -374,6 +412,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
         </div>
 
         <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
+        <div id="mobileOverlay" onclick="closeSidebar()"></div>
 
         <div class="content-shell">
             <main class="main-panel card">
@@ -942,6 +981,30 @@ function updateNotifBadge() {
 }
 
 function navigateWithFlip(url) { window.location.href = url; }
+
+// ====================== MOBILE SIDEBAR ======================
+(function () {
+    var btn = document.getElementById('hamburgerBtn');
+    var panel = document.getElementById('slideoutPanel');
+    var overlay = document.getElementById('mobileOverlay');
+    if (!btn || !panel) return;
+    btn.addEventListener('click', function () {
+        var isOpen = panel.classList.contains('mobile-open');
+        if (isOpen) { closeSidebar(); } else { openSidebar(); }
+    });
+    function openSidebar() {
+        panel.classList.add('mobile-open');
+        panel.style.display = 'flex';
+        if (overlay) overlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    window.closeSidebar = function () {
+        panel.classList.remove('mobile-open');
+        panel.style.display = '';
+        if (overlay) overlay.classList.remove('show');
+        document.body.style.overflow = '';
+    };
+})();
 
 // ====================== INITIALIZE ======================
 renderAnnouncements();

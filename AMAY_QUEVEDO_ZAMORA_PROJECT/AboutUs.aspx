@@ -24,6 +24,7 @@
     <title>Campus Announcement Portal - About Us</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <style>
         * {
             margin: 0;
@@ -294,9 +295,17 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
         /* ── RESPONSIVE ── */
         @media (max-width: 980px) {
             body { padding: 76px 10px 10px; }
-            .topbar { top: 6px; left: 6px; right: 6px; align-items: flex-start; flex-direction: column; }
+            .topbar { top: 6px; left: 6px; right: 6px; }
             .creator-card { grid-template-columns: 1fr; text-align: center; }
             .creator-photo { margin: 0 auto; }
+        }
+        @media (max-width: 640px) {
+            body { padding: 70px 8px 10px; }
+            .topbar { flex-direction: row; flex-wrap: wrap; }
+            .brand-sub { display: none; }
+            .hero { grid-template-columns: 1fr; }
+            .hero-visual { min-height: 160px; }
+            .gallery-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>

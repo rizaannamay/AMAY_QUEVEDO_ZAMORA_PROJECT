@@ -8,6 +8,7 @@
     <title>Campus Announcement Portal - Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <style>
         * {
             margin: 0;
@@ -723,7 +724,7 @@
             border-radius: 16px;
         }
 
-        .btn-publish { background: var(--success); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
+        .btn-publish { background: linear-gradient(135deg, #c9920a, #a87800); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
         .btn-cancel { background: none; border: 1px solid var(--border); padding: 10px 24px; border-radius: 40px; cursor: pointer; }
 
         body:not(.dark-mode) .header .logo,
@@ -875,14 +876,57 @@
 
         @media (max-width: 980px) {
             html, body { overflow: auto; }
-            .app-shell { height: auto; min-height: 100%; overflow-y: auto; padding-left: 20px; padding-top: 120px; }
+            .app-shell {
+                height: auto !important;
+                min-height: 100%;
+                overflow: visible !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                padding-top: 120px !important;
+            }
             .slideout-panel { display: none; }
-            .dashboard-body { display: block; }
-            .content-shell { overflow: visible; }
-            .main-panel.card { height: auto; position: static; overflow: visible; }
-            main.main-panel { height: auto; position: static; }
-            main.main-panel > .card { overflow: visible; }
-            .announcement-board { overflow: visible; }
+            .dashboard-body { display: block !important; }
+            .content-shell { overflow: visible !important; height: auto !important; }
+
+            /* Release the fixed-height flex container */
+            main.main-panel {
+                height: auto !important;
+                min-height: unset !important;
+                position: static !important;
+                overflow: visible !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            main.main-panel > .card {
+                height: auto !important;
+                min-height: unset !important;
+                overflow: visible !important;
+                position: static !important;
+                flex: none !important;
+            }
+            /* Student.aspx pattern */
+            .main-panel.card {
+                height: auto !important;
+                min-height: unset !important;
+                position: static !important;
+                overflow: visible !important;
+            }
+            /* The board itself: break out of flex-shrink collapse */
+            .announcement-board {
+                flex: none !important;
+                overflow: visible !important;
+                height: auto !important;
+                min-height: unset !important;
+                max-height: none !important;
+            }
+        }
+        @media (max-width: 768px) {
+            #mobileSearchBtn { display: flex !important; }
+            .app-shell {
+                padding-left: 12px !important;
+                padding-right: 12px !important;
+                padding-top: 120px !important;
+            }
         }
 
         .delete-modal-overlay {
@@ -960,6 +1004,9 @@
 <body>
     <form id="form1" runat="server">
         <div class="header">
+            <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="logo" onclick="navigateWithFlip('Teacher.aspx')">
                 <i class="fas fa-chalkboard-teacher"></i> Campus Announcement
             </div>
@@ -969,6 +1016,12 @@
                     UseSubmitBehavior="false" />
             </div>
             <div class="header-actions">
+                <button type="button" class="notification-bell" id="mobileSearchBtn"
+                    style="display:none;"
+                    onclick="navigateWithFlip('SearchDashboard.aspx')"
+                    title="Search">
+                    <i class="fas fa-search bell-icon"></i>
+                </button>
                 <div class="notification-bell" onclick="openNotificationDropdown()">
                     <i class="fas fa-bell bell-icon"></i>
                     <span id="notificationBadge" class="badge-red" style="display:none;">0</span>
@@ -1027,6 +1080,7 @@
                     </div>
                 </div>
                 <div id="overlay" class="overlay-black" style="display:none!important;pointer-events:none;"></div>
+                <div id="mobileOverlay" onclick="closeSidebar()"></div>
 
                 <div class="content-shell">
                     <main class="main-panel">
@@ -1100,7 +1154,7 @@
                             <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
                             <input type="file" id="announcementAttachFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" onchange="previewAttachFile()" style="display:none;" />
                         </label>
-                        <div id="attachPreviewContainer" style="display:none;margin-top:8px;padding:10px 14px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;gap:10px;">
+                        <div id="attachPreviewContainer" style="display:none;margin-top:8px;padding:10px 14px;background:var(--surface-soft);border-radius:12px;border:1px solid var(--border);align-items:center;gap:10px;">
                             <i class="fas fa-file" style="color:var(--primary);font-size:18px;"></i>
                             <span id="attachFileName" style="font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></span>
                             <button type="button" onclick="clearAttachPreview()" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;">&times;</button>
@@ -1109,7 +1163,7 @@
                 </div>
                 <div style="padding:14px 24px 20px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border);">
                     <button type="button" class="btn-cancel" onclick="closeCreatePostModal()" style="padding:10px 22px;border-radius:40px;border:1px solid var(--border);background:none;cursor:pointer;font-size:14px;">Cancel</button>
-                    <button type="button" id="postBtn" class="btn-publish" onclick="publishAnnouncement()" style="padding:10px 28px;border-radius:40px;border:none;background:var(--success);color:#fff;cursor:pointer;font-size:14px;font-weight:600;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post</button>
+                    <button type="button" id="postBtn" class="btn-publish" onclick="publishAnnouncement()" style="padding:10px 28px;border-radius:40px;border:none;background:linear-gradient(135deg,#c9920a,#a87800);color:#fff;cursor:pointer;font-size:14px;font-weight:600;"><i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post</button>
                 </div>
             </div>
         </div>
@@ -1940,6 +1994,30 @@
         function closeAboutModal() { document.getElementById('aboutModal').style.display = 'none'; }
         function logout() { window.location.href = 'Logout.aspx'; }
         function navigateWithFlip(url) { window.location.href = url; }
+
+        // ── MOBILE SIDEBAR ──────────────────────────────────────────
+        (function () {
+            var btn = document.getElementById('hamburgerBtn');
+            var panel = document.getElementById('slideoutPanel');
+            var overlay = document.getElementById('mobileOverlay');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', function () {
+                var isOpen = panel.classList.contains('mobile-open');
+                if (isOpen) { closeSidebar(); } else { openSidebar(); }
+            });
+            function openSidebar() {
+                panel.classList.add('mobile-open');
+                panel.style.display = 'flex';
+                if (overlay) overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            window.closeSidebar = function () {
+                panel.classList.remove('mobile-open');
+                panel.style.display = '';
+                if (overlay) overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            };
+        })();
 
         function toggleTheme() {
             let isDark = !document.body.classList.contains('dark-mode');

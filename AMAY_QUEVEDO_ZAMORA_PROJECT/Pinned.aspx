@@ -7,6 +7,7 @@
     <title>Pinned Announcements - Campus Connect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
