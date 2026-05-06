@@ -17,6 +17,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             ctx.Response.ContentType = "application/json";
             var js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
             string action = ctx.Request["action"] ?? "";
 
             try
@@ -66,7 +67,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
 
                 string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
-                             "a.LikeCount, a.CommentCount, a.ShareCount, a.IsPinned, u.Username, u.FullName, " +
+                             "(SELECT COUNT(*) FROM UserLikes  ul WHERE ul.AnnouncementId = a.AnnouncementId) AS LikeCount, " +
+                             "(SELECT COUNT(*) FROM Comments   c  WHERE c.AnnouncementId  = a.AnnouncementId) AS CommentCount, " +
+                             "a.ShareCount, a.IsPinned, u.Username, u.FullName, " +
                              "ISNULL(u.ProfileImage, '') AS AuthorImage " +
                              "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";
 

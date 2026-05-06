@@ -2,137 +2,433 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Campus Connect - Student Portal</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-    --bg-image: url('wbg.jpg');
-    --page-text: #1a2a3a;
-    --surface: rgba(255, 255, 255, 0.92);
-    --surface-strong: #ffffff;
-    --surface-soft: #f8fafc;
-    --border: rgba(26, 58, 92, 0.12);
-    --primary: #1a2a3a;
-    --primary-2: #1a9aaa;
-    --muted: #6b7c8f;
-    --muted-light: #9db0c4;
-    --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-    --active-bg: #e0f7fa;
-}
-html, body, form { height: auto; min-height: 100%; }
-html, body { overflow: auto; }
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 10px;
-    z-index: 1199;
-    pointer-events: none;
-    background: transparent;
-}
-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--page-text);
-    background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    transition: background 0.4s ease, color 0.4s ease;
-}
-a { color: inherit; text-decoration: none; }
-button, input, textarea { font: inherit; }
-.app-shell {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 120px 20px 32px 16px;
-    overflow-y: visible;
-}
-.dashboard-body { display: flex; gap: 16px; align-items: flex-start; flex: 1; }
-.header {
-    background: #2AACBF;
-    backdrop-filter: blur(10px);
-    border-radius: 24px;
-    padding: 12px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.15);
-    position: fixed;
-    top: 10px; left: 10px; right: 10px;
-    z-index: 1200;
-}
-form { height: auto; min-height: 100%; overflow: visible; }
-.logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; background: none; border: none; }
-.logo i { color: var(--primary); margin-right: 8px; }
-.search-container {
-    display: flex; gap: 10px; align-items: center;
-    flex: 1; justify-content: center; min-width: 0; overflow: hidden;
-    position: relative; top: 1px; left: 0px; height: 54px;
-}
-.search-box { background: var(--surface-soft); border-radius: 30px; padding: 10px 18px; width: min(100%, 320px); display: flex; align-items: center; gap: 10px; border: 1px solid rgba(26,58,92,0.2); }
-.search-box input { background: none; border: none; outline: none; width: 100%; font-size: 14px; color: var(--page-text); }
-.search-box input::placeholder { color: var(--muted-light); }
-.search-box i, .bell-icon { color: var(--primary); }
-.search-btn {
-    background: none;
-    border: 1px solid rgba(26,58,92,0.25);
-    border-radius: 30px; padding: 10px 22px;
-    color: var(--primary); font-weight: 600; cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%; max-width: 340px;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    position: relative; z-index: 1;
-}
-.search-btn::before { font-family: "Font Awesome 6 Free"; font-weight: 900; content: "\f002"; margin-right: 8px; }
-.search-btn:hover { border-color: rgba(26,58,92,0.4); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.header-actions { display: flex; gap: 15px; align-items: center; white-space: nowrap; position: relative; z-index: 2; flex-shrink: 0; }
-.notification-bell { position: relative; cursor: pointer; background: var(--surface-soft); width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(26,58,92,0.15); transition: background 0.3s; }
-.notification-bell:hover { background: var(--active-bg); }
-.badge-red { position: absolute; top: -5px; right: -5px; background: #dc2626; color: #ffffff; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 50%; min-width: 18px; text-align: center; }
-.user-info { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.85); padding: 6px 18px; border-radius: 40px; border: 1.5px solid rgba(26,58,92,0.18); cursor: pointer; position: relative; transition: background 0.2s; }
-.user-info:hover { background: rgba(255,255,255,1); }
-.slideout-panel { position: fixed; top: 120px; left: 10px; width: 260px; height: calc(100vh - 130px); backdrop-filter: blur(16px); box-shadow: 4px 0 24px rgba(0,0,0,0.08); z-index: 1100; display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; }
-.panel-header { padding: 24px 16px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; }
-.panel-header h3 { font-size: 18px; font-weight: 700; color: var(--primary); margin: 0; }
-.panel-menu-list { flex: 1; overflow-y: auto; padding: 12px 0; }
-.panel-menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; cursor: pointer; width: 100%; border: none; background: none; text-align: left; font-size: 14px; font-weight: 500; color: var(--page-text); transition: all 0.2s; border-left: 3px solid transparent; }
-.panel-menu-item i { width: 20px; font-size: 16px; color: #2AACBF; }
-.panel-menu-item:hover { background: #e6f7f9; color: #007a8a; border-left-color: #00bcd4; }
-.panel-menu-item.active { background: linear-gradient(135deg, #005f73, #00bcd4); color: #ffffff; border-left-color: transparent; }
-.panel-menu-item.active i { color: #ffffff; }
-.category-dropdown-panel { margin-left: 44px; margin-bottom: 8px; display: none; flex-direction: column; gap: 4px; }
-.dropdown-item-panel { background: none; border: none; text-align: left; padding: 7px 10px; cursor: pointer; width: 100%; font-size: 13px; color: var(--page-text); border-radius: 10px; transition: all 0.2s; }
-.dropdown-item-panel i { color: #2AACBF; }
-.dropdown-item-panel:hover { background: var(--surface-soft); color: var(--primary); }
-.dropdown-item-panel.active-filter { background: #2AACBF; color: #ffffff; font-weight: 700; }
-.dropdown-item-panel.active-filter i { color: #ffffff; }
-.theme-toggle-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
-.theme-toggle-row .toggle-switch-panel { width: 40px; height: 20px; background: #dce4ec; border-radius: 30px; position: relative; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
-.theme-toggle-row .toggle-switch-panel.active { background: linear-gradient(135deg, #2AACBF, #1a9aaa); }
-.theme-toggle-row .toggle-switch-panel::after { content: ''; width: 16px; height: 16px; background: #ffffff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: all 0.3s; }
-.theme-toggle-row .toggle-switch-panel.active::after { left: 22px; }
-.divider-light { height: 1px; background: var(--border); margin: 6px 16px; }
-.overlay-black { display: none !important; pointer-events: none !important; }
-.app-shell { padding-left: 286px; }
-.avatar, .profile-avatar, .post-avatar { background: linear-gradient(135deg, #2AACBF, #1a9aaa); color: #ffffff; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-.user-name { font-size: 14px; font-weight: 600; }
-.user-role, .profile-email, .post-meta, .comment-time { color: var(--muted); }
-.content-shell { flex: 1 1 0; min-height: 0; display: grid; grid-template-columns: 1fr; gap: 25px; align-items: stretch; }
-.card { background: var(--surface); backdrop-filter: blur(10px); border-radius: 24px; border: 1px solid var(--border); box-shadow: 0 4px 16px rgba(0,0,0,0.12); overflow: visible; }
-.main-panel.card { height: calc(100vh - 140px); position: sticky; top: 120px; display: flex; flex-direction: column; overflow: hidden; }
-.card-header { padding: 18px 22px; border-bottom: 1px solid rgba(26,58,92,0.08); font-weight: 700; color: var(--primary); font-size: 16px; flex-shrink: 0; border-radius: 24px 24px 0 0; }
-.card-header i { margin-right: 10px; color: var(--primary); }
-.announcement-board { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 18px; background: rgba(248,250,252,0.35); scrollbar-width: none; -ms-overflow-style: none; }
-.announcement-board::-webkit-scrollbar { display: none; }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Connect - Student Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: #f8fafc;
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
+            --muted: #6b7c8f;
+            --muted-light: #9db0c4;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --active-bg: #e0f7fa;
+        }
+
+        html, body, form { height: auto; min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            z-index: 1199;
+            pointer-events: none;
+            background: transparent;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--page-text);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), var(--bg-image);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button, input, textarea { font: inherit; }
+
+        .app-shell {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 120px 20px 32px 16px;
+            overflow-y: visible;
+        }
+
+        /* Dashboard layout: sidebar + main side by side */
+        .dashboard-body {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            flex: 1;
+        }
+
+        .header {
+            background: #2AACBF;
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 1200;
+        }
+
+        form { height: auto; min-height: 100%; overflow: visible; }
+
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); white-space: nowrap; cursor: pointer; background: none; border: none; }
+        .logo i { color: var(--primary); margin-right: 8px; }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+            min-width: 0;
+            overflow: hidden;
+            position: relative;
+            top: 1px;
+            left: 0px;
+            height: 54px;
+        }
+
+        .search-box {
+            background: var(--surface-soft);
+            border-radius: 30px;
+            padding: 10px 18px;
+            width: min(100%, 320px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(26,58,92,0.2);
+        }
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: var(--page-text);
+        }
+
+        .search-box input::placeholder { color: var(--muted-light); }
+        .search-box i, .bell-icon { color: var(--primary); }
+
+        .search-btn {
+            background: none;
+            border: 1px solid rgba(26,58,92,0.25);
+            border-radius: 30px;
+            padding: 10px 22px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f002";
+            margin-right: 8px;
+        }
+
+        .search-btn:hover {
+            border-color: rgba(26,58,92,0.4);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            background: var(--surface-soft);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(26,58,92,0.15);
+            transition: background 0.3s;
+        }
+
+        .notification-bell:hover { background: var(--active-bg); }
+
+        .badge-red {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #dc2626;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.85);
+            padding: 6px 18px;
+            border-radius: 40px;
+            border: 1.5px solid rgba(26,58,92,0.18);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .user-info:hover { background: rgba(255,255,255,1); }
+
+        /* LEFT SIDEBAR — always visible */
+        .slideout-panel {
+            position: fixed;
+            top: 120px;
+            left: 10px;
+            width: 260px;
+            height: calc(100vh - 130px);
+            backdrop-filter: blur(16px);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            border-radius: 16px;
+            overflow: hidden;
+            }
+        .panel-header {
+            padding: 24px 16px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+        }
+        .panel-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0;
+        }
+        .panel-menu-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px 0;
+        }
+        .panel-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            background: none;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--page-text);
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .panel-menu-item i {
+            width: 20px;
+            font-size: 16px;
+            color: #2AACBF;
+        }
+        .panel-menu-item:hover {
+            background: #e6f7f9;
+            color: #007a8a;
+            border-left-color: #00bcd4;
+        }
+        .panel-menu-item.active {
+            background: linear-gradient(135deg, #005f73, #00bcd4);
+            color: #ffffff;
+            border-left-color: transparent;
+        }
+        .panel-menu-item.active i { color: #ffffff; }
+        .category-dropdown-panel {
+            margin-left: 44px;
+            margin-bottom: 8px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .dropdown-item-panel {
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 7px 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 13px;
+            color: var(--page-text);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .dropdown-item-panel i { color: #2AACBF; }
+        .dropdown-item-panel:hover {
+            background: var(--surface-soft);
+            color: var(--primary);
+        }
+        .dropdown-item-panel.active-filter {
+            background: #2AACBF;
+            color: #ffffff;
+            font-weight: 700;
+        }
+        .dropdown-item-panel.active-filter i { color: #ffffff; }
+        .theme-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .theme-toggle-row .toggle-switch-panel {
+            width: 40px;
+            height: 20px;
+            background: #dce4ec;
+            border-radius: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+        .theme-toggle-row .toggle-switch-panel.active {
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+        }
+        .theme-toggle-row .toggle-switch-panel::after {
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s;
+        }
+        .theme-toggle-row .toggle-switch-panel.active::after {
+            left: 22px;
+        }
+        .divider-light {
+            height: 1px;
+            background: var(--border);
+            margin: 6px 16px;
+        }
+        .overlay-black {
+            display: none !important;
+            pointer-events: none !important;
+        }
+
+        /* Dashboard always offset by sidebar width */
+        .app-shell {
+            padding-left: 286px;
+        }
+
+        .avatar, .profile-avatar, .post-avatar {
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            color: #ffffff;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-name { font-size: 14px; font-weight: 600; }
+        .user-role, .profile-email, .post-meta, .comment-time { color: var(--muted); }
+
+        .content-shell {
+            flex: 1 1 0;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+            align-items: stretch;
+        }
+
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            overflow: visible;
+        }
+
+        .main-panel.card {
+            height: calc(100vh - 140px);
+            position: sticky;
+            top: 120px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid rgba(26,58,92,0.08);
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 16px;
+            flex-shrink: 0;
+            border-radius: 24px 24px 0 0;
+        }
+
+        .card-header i { margin-right: 10px; color: var(--primary); }
+
+        .announcement-board {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 18px;
+            background: rgba(248, 250, 252, 0.35);
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .announcement-board::-webkit-scrollbar { display: none; }
 
 /* ✅ Focus banner — shown when viewing a single post from a notification */
 .focus-banner {
@@ -158,139 +454,402 @@ form { height: auto; min-height: 100%; overflow: visible; }
     font-size: 14px;
 }
 
-.announcement-card { background: var(--surface-strong); border-radius: 20px; margin-bottom: 20px; border: 1px solid #2AACBF; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.03); overflow: hidden; scroll-margin-top: 20px; }
-.announcement-card:hover { box-shadow: 0 8px 18px rgba(0,0,0,0.08); border-color: #1a9aaa; }
-.announcement-card.notification-target { border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,0.22), 0 12px 28px rgba(245,158,11,0.18); animation: targetPulse 2s ease-in-out 2; }
-@keyframes targetPulse { 0% { transform: scale(1); } 50% { transform: scale(1.01); } 100% { transform: scale(1); } }
-.post-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 12px; }
-.post-header-left { display: flex; align-items: center; gap: 15px; }
-.post-avatar { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; flex-shrink: 0; }
-.post-author { font-weight: 700; font-size: 16px; color: var(--primary); }
-.post-meta { display: flex; gap: 12px; font-size: 12px; margin-top: 4px; flex-wrap: wrap; }
-.post-category { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
-.post-category-exam { background: #e0f7fa; color: #2AACBF; }
-.post-category-suspension { background: #ffebee; color: #c62828; }
-.post-category-event { background: #e8f5e9; color: #2e7d32; }
-.post-category-general { background: #e0e7ff; color: #4f46e5; }
-.pin-btn-top { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--muted-light); padding: 8px; border-radius: 50%; transition: all 0.3s; width: 36px; height: 36px; }
-.pin-btn-top:hover { background: #f0f2f5; }
-.pin-btn-top.pinned { color: #e65100; }
-.post-content { padding: 0 22px 16px; }
-.post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
-.post-text, .comment-text, .notification-text { color: var(--page-text); line-height: 1.5; }
-.post-image { margin-top: 12px; border-radius: 16px; overflow: hidden; max-width: 100%; }
-.post-image img { width: 100%; max-height: 200px; object-fit: cover; border-radius: 16px; display: block; }
-.post-stats { display: flex; gap: 20px; padding: 10px 22px; border-top: 1px solid rgba(26,58,92,0.08); border-bottom: 1px solid rgba(26,58,92,0.08); color: var(--muted); font-size: 13px; }
-.post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
-.post-stats span:hover { color: var(--primary); }
-.action-buttons { display: flex; gap: 5px; padding: 8px 22px; }
-.action-btn { flex: 1; background: none; border: none; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 14px; color: var(--muted); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
-.action-btn.liked { color: #dc2626; }
-.action-btn.liked i { font-weight: 900; }
-.comments-section { padding: 0 22px 18px; border-top: 1px solid rgba(26,58,92,0.08); display: none; }
-.comments-section.show { display: block; }
-.comment-input { display: flex; gap: 10px; margin: 15px 0; }
-.comment-input input { flex: 1; padding: 10px 16px; background: var(--surface-soft); border: 1px solid rgba(26,58,92,0.15); border-radius: 30px; outline: none; font-size: 13px; color: var(--page-text); }
-.comment-input button { padding: 10px 22px; background: linear-gradient(135deg, #2AACBF, #1a9aaa); border: none; border-radius: 30px; cursor: pointer; font-weight: 600; color: white; }
-.comment { padding: 10px 0; font-size: 13px; border-bottom: 1px solid rgba(26,58,92,0.08); display: flex; gap: 10px; }
-.comment:last-child { border-bottom: none; }
-.comment-avatar { width: 32px; height: 32px; background: #e0f7fa; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--primary); font-weight: bold; flex-shrink: 0; }
-.comment-author { font-weight: bold; color: var(--primary); }
-.no-comments { padding: 15px; text-align: center; color: var(--muted-light); font-size: 12px; }
-.notification-dropdown { position: absolute; top: 84px; right: 20px; width: 320px; background: var(--surface-strong); border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); border: 1px solid var(--border); z-index: 200; display: none; }
-.notification-dropdown.show { display: block; }
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9000; align-items: center; justify-content: center; padding: 20px; }
-.modal-content { background: var(--surface-strong); border-radius: 24px; max-width: 400px; width: 100%; padding: 30px; text-align: center; }
-body:not(.dark-mode) .header .logo,
-body:not(.dark-mode) .header .logo i,
-body:not(.dark-mode) .header .user-name,
-body:not(.dark-mode) .header .user-role,
-body:not(.dark-mode) .header .bell-icon,
-body:not(.dark-mode) .header .search-btn { color: #ffffff; }
-body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
-body:not(.dark-mode) .header .user-info { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
-body:not(.dark-mode) .header .user-info .user-name,
-body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
-body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
-body:not(.dark-mode) .header .notification-bell { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.25); }
-body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
-body:not(.dark-mode) .header .search-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.6); color: #ffffff; }
-.dark-mode {
-    --bg-image: url('bg.jpg');
-    --page-text: #e4e6eb;
-    --surface: rgba(30,41,59,0.95);
-    --surface-strong: rgba(30,41,59,0.98);
-    --surface-soft: rgba(51,65,85,0.6);
-    --border: rgba(148,163,184,0.2);
-    --primary: #93c5fd;
-    --primary-2: #60a5fa;
-    --muted: #cbd5e1;
-    --muted-light: #94a3b8;
-    --shadow: 0 8px 32px rgba(0,0,0,0.6);
-    --active-bg: rgba(59,130,246,0.2);
-}
-body.dark-mode { background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('bg.jpg'); background-color: #0f172a; color: var(--page-text); }
-body.dark-mode .announcement-card { background: rgba(30,41,59,0.95); border-color: #3B82F6; }
-body.dark-mode .announcement-card:hover { border-color: #60a5fa; background: rgba(30,41,59,1); }
-body.dark-mode .announcement-card.notification-target { border-color: #fbbf24; box-shadow: 0 0 0 3px rgba(251,191,36,0.25), 0 12px 28px rgba(251,191,36,0.18); }
-body.dark-mode .card { background: rgba(30,41,59,0.95); border-color: rgba(148,163,184,0.2); }
-body.dark-mode .header { background: rgba(30,41,59,0.95); border-color: rgba(148,163,184,0.2); }
-body.dark-mode .post-author, body.dark-mode .post-title { color: #e0e7ff; }
-body.dark-mode .post-text, body.dark-mode .comment-text, body.dark-mode .notification-text { color: #e2e8f0; }
-body.dark-mode .post-meta, body.dark-mode .post-stats, body.dark-mode .post-stats span, body.dark-mode .action-btn, body.dark-mode .comment-time, body.dark-mode .no-comments { color: #cbd5e1; }
-body.dark-mode .comment-author { color: #c7d2fe; }
-body.dark-mode .card-header { color: #e0e7ff; border-bottom-color: rgba(148,163,184,0.2); }
-body.dark-mode .logo { color: #e0e7ff; }
-body.dark-mode .user-name { color: #f1f5f9; }
-body.dark-mode .user-role { color: #cbd5e1; }
-body.dark-mode .modal-content { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
-body.dark-mode .modal-title, body.dark-mode #pm-fullname { color: #e0e7ff; }
-body.dark-mode #pm-username, body.dark-mode #pm-email, body.dark-mode #pm-role { color: #e2e8f0; }
-body.dark-mode .action-btn.liked { color: #f87171; }
-body.dark-mode .pin-btn-top { color: rgba(148,163,184,0.5); }
-body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
-body.dark-mode .slideout-panel { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
-body.dark-mode .panel-header h3 { color: #e0e7ff; }
-body.dark-mode .panel-menu-item { color: #e2e8f0; }
-body.dark-mode .panel-menu-item i { color: #93c5fd; }
-body.dark-mode .panel-menu-item:hover { background: rgba(59,130,246,0.2); color: #ffffff; border-left-color: #93c5fd; }
-body.dark-mode .dropdown-item-panel { color: #e2e8f0; }
-body.dark-mode .dropdown-item-panel:hover { background: rgba(59,130,246,0.2); color: #ffffff; }
-body.dark-mode .divider-light { background: rgba(148,163,184,0.2); }
-body.dark-mode .comment-input input { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); color: #f1f5f9; }
-body.dark-mode .comment-input input::placeholder { color: #94a3b8; }
-body.dark-mode .search-box { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); }
-body.dark-mode .search-box input { color: #f1f5f9; }
-body.dark-mode .search-box input::placeholder { color: #94a3b8; }
-body.dark-mode .post-category-exam { background: rgba(59,130,246,0.25); color: #93c5fd; }
-body.dark-mode .post-category-suspension { background: rgba(239,68,68,0.25); color: #fca5a5; }
-body.dark-mode .post-category-event { background: rgba(34,197,94,0.25); color: #86efac; }
-body.dark-mode .post-category-general { background: rgba(139,92,246,0.25); color: #c4b5fd; }
-body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
-body.dark-mode .search-btn { border-color: rgba(148,163,184,0.3); color: #e2e8f0; background: rgba(51,65,85,0.4); }
-body.dark-mode .search-btn:hover { background: rgba(59,130,246,0.2); border-color: #3B82F6; }
-body.dark-mode .notification-bell { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); }
-body.dark-mode .notification-bell:hover { background: rgba(59,130,246,0.2); }
-body.dark-mode .user-info { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); }
-body.dark-mode .user-info:hover { background: rgba(51,65,85,0.8); }
-body.dark-mode .modal-content { background: rgba(30,41,59,0.98); border: 1px solid rgba(148,163,184,0.2); }
-body.dark-mode .modal-title { color: #e0e7ff; }
-body.dark-mode .modal-text { color: #cbd5e1; }
-body.dark-mode .action-btn:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
-body.dark-mode .comment-avatar { background: rgba(59,130,246,0.2); color: #93c5fd; }
-body.dark-mode .post-avatar { background: linear-gradient(135deg, #3B82F6, #60a5fa); }
-body.dark-mode .announcement-board { background: rgba(15,23,42,0.4); }
-body.dark-mode .focus-banner { background: rgba(30,41,59,0.6); border-color: rgba(148,163,184,0.2); }
-@media (max-width: 980px) {
-    html, body { overflow: auto; }
-    .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; padding-top: 120px; }
-    .slideout-panel { display: none; }
-    .dashboard-body { display: block; }
-    .content-shell { overflow: visible; }
-    .main-panel.card { height: auto; position: static; overflow: visible; }
-    .announcement-board { overflow: visible; }
-}
-</style>
+        .post-category-exam { background: #e0f7fa; color: #2AACBF; }
+        .post-category-suspension { background: #ffebee; color: #c62828; }
+        .post-category-event { background: #e8f5e9; color: #2e7d32; }
+        .post-category-general { background: #e0e7ff; color: #4f46e5; }
+
+        .pin-btn-top {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--muted-light);
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            width: 36px;
+            height: 36px;
+        }
+
+        .pin-btn-top:hover { background: #f0f2f5; }
+        .pin-btn-top.pinned { color: #e65100; }
+
+        .post-content { padding: 0 22px 16px; }
+        .post-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--primary); }
+        .post-text, .comment-text, .notification-text { color: var(--page-text); line-height: 1.5; }
+
+        .post-image {
+            margin-top: 12px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .post-image img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 16px;
+            display: block;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 20px;
+            padding: 10px 22px;
+            border-top: 1px solid rgba(26,58,92,0.08);
+            border-bottom: 1px solid rgba(26,58,92,0.08);
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .post-stats span { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .post-stats span:hover { color: var(--primary); }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            padding: 8px 22px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .action-btn.liked { color: #dc2626; }
+        .action-btn.liked i { font-weight: 900; }
+
+        .comments-section {
+            padding: 0 22px 18px;
+            border-top: 1px solid rgba(26,58,92,0.08);
+            display: none;
+        }
+
+        .comments-section.show { display: block; }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 10px 16px;
+            background: var(--surface-soft);
+            border: 1px solid rgba(26,58,92,0.15);
+            border-radius: 30px;
+            outline: none;
+            font-size: 13px;
+            color: var(--page-text);
+        }
+
+        .comment-input button {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+        }
+
+        .comment {
+            padding: 10px 0;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(26,58,92,0.08);
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment:last-child { border-bottom: none; }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            background: #e0f7fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .comment-author { font-weight: bold; color: var(--primary); }
+
+        .no-comments {
+            padding: 15px;
+            text-align: center;
+            color: var(--muted-light);
+            font-size: 12px;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 84px;
+            right: 20px;
+            width: 320px;
+            background: var(--surface-strong);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+            z-index: 200;
+            display: none;
+        }
+
+        .notification-dropdown.show { display: block; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--surface-strong);
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+
+        /* Light mode — white text on dark #1a3a5c header */
+        body:not(.dark-mode) .header .logo,
+        body:not(.dark-mode) .header .logo i,
+        body:not(.dark-mode) .header .user-name,
+        body:not(.dark-mode) .header .user-role,
+        body:not(.dark-mode) .header .bell-icon,
+        body:not(.dark-mode) .header .search-btn { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn { border-color: rgba(255,255,255,0.35); }
+        body:not(.dark-mode) .header .user-info {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .user-info .user-name,
+        body:not(.dark-mode) .header .user-info .user-role { color: #ffffff; }
+        body:not(.dark-mode) .header .user-info:hover { background: rgba(255,255,255,0.2); }
+        body:not(.dark-mode) .header .notification-bell {
+            background: rgba(255,255,255,0.12);
+            border-color: rgba(255,255,255,0.25);
+        }
+        body:not(.dark-mode) .header .notification-bell .bell-icon { color: #ffffff; }
+        body:not(.dark-mode) .header .search-btn:hover {
+            background: rgba(255,255,255,0.18);
+            border-color: rgba(255,255,255,0.6);
+            color: #ffffff;
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            --bg-image: url('bg.jpg');
+            --page-text: #e4e6eb;
+            --surface: rgba(30, 41, 59, 0.95);
+            --surface-strong: rgba(30, 41, 59, 0.98);
+            --surface-soft: rgba(51, 65, 85, 0.6);
+            --border: rgba(148, 163, 184, 0.2);
+            --primary: #93c5fd;
+            --primary-2: #60a5fa;
+            --muted: #cbd5e1;
+            --muted-light: #94a3b8;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --active-bg: rgba(59, 130, 246, 0.2);
+        }
+
+        body.dark-mode {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('bg.jpg');
+            background-color: #0f172a;
+            color: var(--page-text);
+        }
+
+        /* Cards & surfaces */
+        body.dark-mode .announcement-card  { 
+            background: rgba(30, 41, 59, 0.95); 
+            border-color: #3B82F6;
+        }
+        body.dark-mode .announcement-card:hover {
+            border-color: #60a5fa;
+            background: rgba(30, 41, 59, 1);
+        }
+        body.dark-mode .announcement-card.notification-target {
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25), 0 12px 28px rgba(251, 191, 36, 0.18);
+        }
+        body.dark-mode .card               { 
+            background: rgba(30, 41, 59, 0.95); 
+            border-color: rgba(148, 163, 184, 0.2); 
+        }
+        body.dark-mode .header             { 
+            background: rgba(30, 41, 59, 0.95); 
+            border-color: rgba(148, 163, 184, 0.2); 
+        }
+
+        /* Text */
+        body.dark-mode .post-author,
+        body.dark-mode .post-title         { color: #e0e7ff; }
+        body.dark-mode .post-text,
+        body.dark-mode .comment-text,
+        body.dark-mode .notification-text  { color: #e2e8f0; }
+        body.dark-mode .post-meta,
+        body.dark-mode .post-stats,
+        body.dark-mode .post-stats span,
+        body.dark-mode .action-btn,
+        body.dark-mode .comment-time,
+        body.dark-mode .no-comments        { color: #cbd5e1; }
+        body.dark-mode .comment-author     { color: #c7d2fe; }
+        body.dark-mode .card-header        { color: #e0e7ff; border-bottom-color: rgba(148, 163, 184, 0.2); }
+        body.dark-mode .logo               { color: #e0e7ff; }
+        body.dark-mode .user-name          { color: #f1f5f9; }
+        body.dark-mode .user-role          { color: #cbd5e1; }
+        /* Modal text */
+        body.dark-mode .modal-content      { background: rgba(30,41,59,0.98); border-color: rgba(148,163,184,0.2); }
+        body.dark-mode .modal-title,
+        body.dark-mode #pm-fullname        { color: #e0e7ff; }
+        body.dark-mode #pm-username,
+        body.dark-mode #pm-email,
+        body.dark-mode #pm-role            { color: #e2e8f0; }
+        /* Like button active */
+        body.dark-mode .action-btn.liked   { color: #f87171; }
+        /* Pin button unpinned in dark */
+        body.dark-mode .pin-btn-top        { color: rgba(148,163,184,0.5); }
+        body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
+        body.dark-mode .slideout-panel     { 
+            background: rgba(30, 41, 59, 0.98); 
+            border-color: rgba(148, 163, 184, 0.2); 
+        }
+        body.dark-mode .panel-header h3    { color: #e0e7ff; }
+        body.dark-mode .panel-menu-item    { color: #e2e8f0; }
+        body.dark-mode .panel-menu-item i  { color: #93c5fd; }
+        body.dark-mode .panel-menu-item:hover { 
+            background: rgba(59, 130, 246, 0.2); 
+            color: #ffffff; 
+            border-left-color: #93c5fd;
+        }
+        body.dark-mode .dropdown-item-panel { color: #e2e8f0; }
+        body.dark-mode .dropdown-item-panel:hover { 
+            background: rgba(59, 130, 246, 0.2); 
+            color: #ffffff; 
+        }
+        body.dark-mode .divider-light      { background: rgba(148, 163, 184, 0.2); }
+
+        /* Inputs & comment box */
+        body.dark-mode .comment-input input { 
+            background: rgba(51, 65, 85, 0.6); 
+            border-color: rgba(148, 163, 184, 0.3); 
+            color: #f1f5f9; 
+        }
+        body.dark-mode .comment-input input::placeholder { color: #94a3b8; }
+        
+        body.dark-mode .search-box {
+            background: rgba(51, 65, 85, 0.6);
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+        body.dark-mode .search-box input {
+            color: #f1f5f9;
+        }
+        body.dark-mode .search-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Category badges */
+        body.dark-mode .post-category-exam       { background: rgba(59, 130, 246, 0.25);  color: #93c5fd; }
+        body.dark-mode .post-category-suspension { background: rgba(239, 68, 68, 0.25);   color: #fca5a5; }
+        body.dark-mode .post-category-event      { background: rgba(34, 197, 94, 0.25);   color: #86efac; }
+        body.dark-mode .post-category-general    { background: rgba(139, 92, 246, 0.25);  color: #c4b5fd; }
+        body.dark-mode .pin-btn-top.pinned        { color: #fb923c; }
+
+        /* Search button */
+        body.dark-mode .search-btn { 
+            border-color: rgba(148, 163, 184, 0.3); 
+            color: #e2e8f0;
+            background: rgba(51, 65, 85, 0.4);
+        }
+        body.dark-mode .search-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3B82F6;
+        }
+
+        /* Notification bell */
+        body.dark-mode .notification-bell {
+            background: rgba(51, 65, 85, 0.6);
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+        body.dark-mode .notification-bell:hover {
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        /* User info */
+        body.dark-mode .user-info {
+            background: rgba(51, 65, 85, 0.6);
+            border-color: rgba(148, 163, 184, 0.3);
+        }
+        body.dark-mode .user-info:hover {
+            background: rgba(51, 65, 85, 0.8);
+        }
+        
+        /* Hamburger menu — removed (sidebar is always visible) */
+
+        /* Profile modal */
+        body.dark-mode .modal-content  { 
+            background: rgba(30, 41, 59, 0.98); 
+            border: 1px solid rgba(148, 163, 184, 0.2); 
+        }
+        body.dark-mode .modal-title    { color: #e0e7ff; }
+        body.dark-mode .modal-text     { color: #cbd5e1; }
+        
+        /* Action buttons in dark mode */
+        body.dark-mode .action-btn:hover {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+        }
+        
+        /* Comment avatar */
+        body.dark-mode .comment-avatar {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+        
+        /* Post avatar */
+        body.dark-mode .post-avatar {
+            background: linear-gradient(135deg, #3B82F6, #60a5fa);
+        }
+        
+        /* Announcement board background */
+        body.dark-mode .announcement-board {
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        @media (max-width: 980px) {
+            html, body { overflow: auto; }
+            .app-shell { height: auto; min-height: 100%; overflow: visible; padding-left: 20px; padding-top: 120px; }
+            .slideout-panel { display: none; }
+            .dashboard-body { display: block; }
+            .content-shell { overflow: visible; }
+            .main-panel.card { height: auto; position: static; overflow: visible; }
+            .announcement-board { overflow: visible; }
+        }
+    </style>
 </head>
 <body>
 <form id="form1" runat="server">
@@ -626,86 +1185,102 @@ body.dark-mode .focus-banner { background: rgba(30,41,59,0.6); border-color: rgb
         }
     }
 
-    function loadCommentsFromDB(postId) {
-        let listDiv = document.getElementById('commentsList_' + postId);
-        if (!listDiv) return;
-        listDiv.innerHTML = '<div style="text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i></div>';
-        fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
-            .then(r => r.json()).then(data => {
-                if (!Array.isArray(data)) { listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>'; return; }
-                const comments = data;
-                if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                const topLevel = comments.filter(c => !c.parentCommentId);
-                const replies = comments.filter(c => c.parentCommentId);
-                if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                listDiv.innerHTML = topLevel.map(c => {
-                    let cAvatar = c.profileImage
-                        ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                        : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
-                    let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
-                    let repliesHtml = commentReplies.map(r => {
-                        let rAvatar = r.profileImage
-                            ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                            : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
-                        return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
-                        ${rAvatar}
-                        <div style="flex:1;min-width:0;">
-                            <span class="comment-author">${escapeHtml(r.author)}</span>
-                            <div class="comment-text">${escapeHtml(r.text)}</div>
-                            <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                                <div class="comment-time">${escapeHtml(r.date)}</div>
-                                <button type="button" class="comment-like-btn ${r.userLiked ? 'liked' : ''}"
-                                    onclick="likeComment(${r.commentId}, this)"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
-                                    <i class="${r.userLiked ? 'fas' : 'far'} fa-heart"></i>
-                                    <span class="clc">${r.likeCount > 0 ? r.likeCount : ''}</span>
-                                </button>
-                                <button type="button" onclick="toggleReplyBox(${r.commentId}, ${postId})"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
-                                    onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
-                                    <i class="fas fa-reply"></i> Reply
-                                </button>
-                            </div>
-                            <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
-                                <div class="comment-input" style="margin:0;">
-                                    <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                    <button type="button" onclick="submitReply(${r.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+        function loadCommentsFromDB(postId) {
+            let listDiv = document.getElementById('commentsList_' + postId);
+            if (!listDiv) return;
+            listDiv.innerHTML = '<div style="text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i></div>';
+            fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(data => {
+                    // API returns array on success, object with success:false on error
+                    if (!Array.isArray(data)) {
+                        listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>';
+                        return;
+                    }
+                    const comments = data;
+                    if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+
+                    // Separate top-level and replies
+                    const topLevel = comments.filter(c => !c.parentCommentId);
+                    const replies  = comments.filter(c =>  c.parentCommentId);
+
+                    if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+
+                    listDiv.innerHTML = topLevel.map(c => {
+                        let cAvatar = c.profileImage
+                            ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                            : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
+
+                        // Replies for this comment
+                        let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                        let repliesHtml = commentReplies.map(r => {
+                            let rAvatar = r.profileImage
+                                ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                                : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
+                            return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+                                ${rAvatar}
+                                <div style="flex:1;min-width:0;">
+                                    <span class="comment-author">${escapeHtml(r.author)}</span>
+                                    <div class="comment-text">${escapeHtml(r.text)}</div>
+                                    <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                        <div class="comment-time">${escapeHtml(r.date)}</div>
+                                        <button type="button" class="comment-like-btn ${r.userLiked ? 'liked' : ''}"
+                                            onclick="likeComment(${r.commentId}, this)"
+                                            style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
+                                            <i class="${r.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                            <span class="clc">${r.likeCount > 0 ? r.likeCount : ''}</span>
+                                        </button>
+                                        <button type="button" onclick="toggleReplyBox(${r.commentId}, ${postId})"
+                                            style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
+                                            onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                                            <i class="fas fa-reply"></i> Reply
+                                        </button>
+                                    </div>
+                                    <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
+                                        <div class="comment-input" style="margin:0;">
+                                            <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                            <button type="button" onclick="submitReply(${r.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>`;
+                        }).join('');
+
+                        return `<div class="comment" data-comment-id="${c.commentId}">
+                            ${cAvatar}
+                            <div style="flex:1;min-width:0;">
+                                <span class="comment-author">${escapeHtml(c.author)}</span>
+                                <div class="comment-text">${escapeHtml(c.text)}</div>
+                                <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                    <div class="comment-time">${escapeHtml(c.date)}</div>
+                                    <button type="button" class="comment-like-btn ${c.userLiked ? 'liked' : ''}"
+                                        onclick="likeComment(${c.commentId}, this)"
+                                        style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
+                                        <i class="${c.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                        <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
+                                    </button>
+                                    <button type="button" onclick="toggleReplyBox(${c.commentId}, ${postId})"
+                                        style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
+                                        onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                                        <i class="fas fa-reply"></i> Reply
+                                    </button>
+                                </div>
+                                <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
+                                    <div class="comment-input" style="margin:0;">
+                                        <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                        <button type="button" onclick="submitReply(${c.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                    </div>
+                                </div>
+                                ${repliesHtml}
                             </div>
-                        </div>
-                    </div>`;
+                        </div>`;
                     }).join('');
-                    return `<div class="comment" data-comment-id="${c.commentId}">
-                    ${cAvatar}
-                    <div style="flex:1;min-width:0;">
-                        <span class="comment-author">${escapeHtml(c.author)}</span>
-                        <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                            <div class="comment-time">${escapeHtml(c.date)}</div>
-                            <button type="button" class="comment-like-btn ${c.userLiked ? 'liked' : ''}"
-                                onclick="likeComment(${c.commentId}, this)"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
-                                <i class="${c.userLiked ? 'fas' : 'far'} fa-heart"></i>
-                                <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
-                            </button>
-                            <button type="button" onclick="toggleReplyBox(${c.commentId}, ${postId})"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
-                                onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
-                                <i class="fas fa-reply"></i> Reply
-                            </button>
-                        </div>
-                        <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
-                            <div class="comment-input" style="margin:0;">
-                                <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                <button type="button" onclick="submitReply(${c.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
-                            </div>
-                        </div>
-                        ${repliesHtml}
-                    </div>
-                </div>`;
-                }).join('');
-            }).catch(() => { listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>'; });
-    }
+                })
+                .catch(err => {
+                    console.error('Load comments error:', err);
+                    listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>';
+                });
+        }
 
     function likeComment(commentId, btn) {
         fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
@@ -794,12 +1369,8 @@ body.dark-mode .focus-banner { background: rgba(30,41,59,0.6); border-color: rgb
                 if (post.isPinned) st_pins[post.id] = true;
             });
 
-            // ✅ If focusPostId is set, only show that one post
-            let displayList = focusPostId > 0
-                ? announcements.filter(post => post.id === focusPostId)
-                : announcements;
-
-            let savedFilter = localStorage.getItem('student_filter') || 'All';
+                    setTimeout(function () {
+                        let savedFilter = localStorage.getItem('student_filter') || 'All';
 
             // ✅ Update board mode label
             let boardModeLabel = document.getElementById('boardModeLabel');
@@ -910,12 +1481,12 @@ body.dark-mode .focus-banner { background: rgba(30,41,59,0.6); border-color: rgb
                 });
             }
 
-            updateNotifBadge();
-
-        }).catch(() => {
-            container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
-        });
-    }
+                        updateNotifBadge();
+                    });
+                }).catch(() => {
+                    container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
+                });
+        }
 
     function markNotificationRead(el, id) {
         if (el) el.classList.remove('unread');
@@ -942,21 +1513,51 @@ body.dark-mode .focus-banner { background: rgba(30,41,59,0.6); border-color: rgb
 
     function navigateWithFlip(url) { window.location.href = url; }
 
-    // ====================== INITIALIZE ======================
-    renderAnnouncements();
-    updateNotifBadge();
-    setInterval(updateNotifBadge, 30000);
-</script>
+        // Initialize
+        renderAnnouncements();
+        updateNotifBadge();
 
-<!-- Image Lightbox -->
-<div id="imageLightbox" onclick="if(event.target===this)closeLightbox()"
-    style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;padding:20px;">
-    <button onclick="closeLightbox()"
-        style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
-    <img id="lightboxImg" src=""
-        style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
-</div>
+        // ── Highlight post from notification link (?postId=X) ──────────────
+        (function () {
+            var params = new URLSearchParams(window.location.search);
+            var pid = parseInt(params.get('postId') || '0', 10);
+            if (!isNaN(pid) && pid > 0) {
+                var attempts = 0;
+                var interval = setInterval(function () {
+                    var card = document.querySelector('.announcement-card[data-post-id="' + pid + '"]');
+                    if (card || attempts > 20) {
+                        clearInterval(interval);
+                        if (card) {
+                            // Scroll within the announcement-board container
+                            var board = document.getElementById('announcementsContainer');
+                            if (board) {
+                                var cardTop = card.offsetTop - board.offsetTop;
+                                board.scrollTo({ top: cardTop - 20, behavior: 'smooth' });
+                            } else {
+                                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                            // Apply CSS class highlight (same as Teacher.aspx)
+                            card.classList.add('notification-target');
+                            // Open comments section
+                            var sec = document.getElementById('commentsSection_' + pid);
+                            if (sec) { sec.style.display = 'block'; loadCommentsFromDB(pid); }
+                            // Remove highlight after 5 seconds
+                            setTimeout(function () { card.classList.remove('notification-target'); }, 5000);
+                        }
+                    }
+                    attempts++;
+                }, 150);
+            }
+        })();
 
+        // Refresh badge every 30 seconds
+        setInterval(updateNotifBadge, 30000);
+    </script>
+    <!-- Image Lightbox -->
+    <div id="imageLightbox" onclick="if(event.target===this)closeLightbox()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9998;align-items:center;justify-content:center;padding:20px;">
+        <button onclick="closeLightbox()" style="position:absolute;top:18px;right:22px;background:rgba(255,255,255,0.15);border:none;color:#fff;font-size:28px;width:44px;height:44px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;">&times;</button>
+        <img id="lightboxImg" src="" style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
+    </div>
 </body>
 </html>
 

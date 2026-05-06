@@ -14,6 +14,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             ctx.Response.ContentType = "application/json";
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
 
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] || ctx.Session["UserId"] == null)
             {
@@ -86,10 +87,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 insCmd.Parameters.AddWithValue("@uid", userId);
                 insCmd.ExecuteNonQuery();
 
-                SqlCommand updCmd = new SqlCommand(
-                    "UPDATE Announcements SET LikeCount = LikeCount + 1 WHERE AnnouncementId=@pid", con);
-                updCmd.Parameters.AddWithValue("@pid", postId);
-                updCmd.ExecuteNonQuery();
+                    using (var updCmd = new SqlCommand(
+                        "UPDATE Announcements SET LikeCount = LikeCount + 1 WHERE AnnouncementId=@pid", con))
+                    {
+                        updCmd.Parameters.AddWithValue("@pid", postId);
+                        updCmd.ExecuteNonQuery();
+                    }
 
                 SqlCommand notifCmd = new SqlCommand(
                     "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +

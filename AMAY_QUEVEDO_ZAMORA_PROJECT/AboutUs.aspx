@@ -1,60 +1,75 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" %>
 <script runat="server">
-protected string BackUrl {
-    get {
-        string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
-        return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
+    protected string BackUrl {
+        get {
+
+
+
+            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
+        }
     }
-}
-protected string BackLabel {
-    get {
-        string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
-        return source == "teacher" ? "Back to Teacher" : "Back to Student";
+    protected string BackLabel {
+        get {
+            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
+            return source == "teacher" ? "Back to Teacher" : "Back to Student";
+        }
     }
-}
 </script>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Campus Connect - About Us</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-    --bg-image: url('wbg.jpg');
-    --page-text: #1a2a3a;
-    --surface: rgba(255,255,255,0.92);
-    --surface-strong: #ffffff;
-    --surface-soft: rgba(240,245,255,0.9);
-    --border: rgba(26,58,92,0.12);
-    --primary: #1a2a3a;
-    --primary-2: #1a9aaa;
-    --accent: #d97706;
-    --muted: #6b7c8f;
-    --shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-html, body, form { min-height: 100%; }
-html, body { overflow: auto; }
-body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 80px;
-    z-index: 199;
-    pointer-events: none;
-    background: transparent;
-}
-body {
-    min-height: 100vh;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--page-text);
-    background: linear-gradient(rgba(255,255,255,0.3),rgba(255,255,255,0.3)),
-        var(--bg-image) center/cover fixed no-repeat;
-    padding: 90px 10px 16px;
-    transition: background 0.4s ease, color 0.4s ease;
-}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Campus Connect - About Us</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+                        :root {
+            --bg-image: url('wbg.jpg');
+            --page-text: #1a2a3a;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-strong: #ffffff;
+            --surface-soft: rgba(240, 245, 255, 0.9);
+            --border: rgba(26, 58, 92, 0.12);
+            --primary: #1a2a3a;
+            --primary-2: #1a9aaa;
+            --accent: #d97706;
+            --muted: #6b7c8f;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        html, body, form { min-height: 100%; }
+        html, body { overflow: auto; }
+
+        /* Cover content that scrolls behind the fixed header */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            z-index: 199;
+            pointer-events: none;
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+                var(--bg-image) center/cover fixed no-repeat;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--page-text);
+            background: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)),
+                var(--bg-image) center/cover fixed no-repeat;
+            padding: 80px 20px 16px;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
 
 a { color: inherit; text-decoration: none; }
 
@@ -73,27 +88,90 @@ body.dark-mode {
         url('bg.jpg') center/cover fixed no-repeat;
 }
 
-/* ── TOPBAR ── */
-.topbar {
-    background: #2AACBF;
-    border-radius: 24px;
-    padding: 12px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.15);
-    position: fixed;
-    top: 10px; left: 10px; right: 10px;
-    z-index: 1200;
-}
-.brand { display: flex; align-items: center; gap: 14px; font-size: 22px; font-weight: 800; color: #ffffff; }
-.brand-badge { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); color: #ffffff; font-size: 20px; }
-.brand-sub { font-size: 12px; color: rgba(255,255,255,0.75); font-weight: 500; }
-.top-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-.action-link { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #ffffff; transition: background 0.2s; }
-.action-link:hover { background: rgba(255,255,255,0.25); }
+        /* ── PAGE SHELL ── */
+        .page-shell {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            gap: 22px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── SHARED CARD STYLE ── */
+        .hero,
+        .section-card {
+            background: var(--surface);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* dark mode card hover glow */
+        body.dark-mode .section-card:hover {
+            border-color: rgba(99, 102, 241, 0.32);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99,102,241,0.15);
+        }
+
+        /* ── TOPBAR — matches dashboard dark navy header ── */
+        .topbar {
+            background: #2AACBF;
+            border-radius: 24px;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            z-index: 200;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .brand-badge {
+            width: 44px; height: 44px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.15);
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        .brand-sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.65);
+            font-weight: 500;
+        }
+
+        .top-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #ffffff;
+            transition: background 0.2s;
+        }
+
+        .action-link:hover { background: rgba(255,255,255,0.25); }
 
 /* ── PAGE SHELL ── */
 .page-shell {
@@ -194,36 +272,35 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
 
 *, *::before, *::after { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; }
 
-@media (max-width: 980px) {
-    body { padding: 90px 10px 10px; }
-    .topbar { top: 6px; left: 6px; right: 6px; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-visual { min-height: 220px; }
-    .creator-card { grid-template-columns: 1fr; text-align: center; }
-    .creator-photo { margin: 0 auto; }
-    .gallery-grid { grid-template-columns: 1fr; }
-}
-
-</style>
+        /* ── RESPONSIVE ── */
+        @media (max-width: 980px) {
+            body { padding: 76px 10px 10px; }
+            .topbar { top: 6px; left: 6px; right: 6px; align-items: flex-start; flex-direction: column; }
+            .creator-card { grid-template-columns: 1fr; text-align: center; }
+            .creator-photo { margin: 0 auto; }
+        }
+    </style>
 </head>
 <body>
 <form id="form1" runat="server">
 
-<!-- ✅ Topbar is now OUTSIDE page-shell so it sits on top correctly -->
-<div class="topbar">
-    <div class="brand">
-        <div class="brand-badge"><i class="fas fa-university"></i></div>
-        <div>
-            <div>Campus Connect</div>
-            <div class="brand-sub">Cebu Technological University Announcement Portal</div>
-        </div>
-    </div>
-    <div class="top-actions">
-        <a class="action-link" href="<%= BackUrl %>" title="Back to Portal">
-            <i class="fas fa-home" style="font-size:18px;"></i>
-        </a>
-    </div>
-</div>
+            <!-- ═══ TOPBAR ═══ -->
+            <div class="topbar">
+                <div class="brand">
+                    <div class="brand-badge">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div>
+                        <div>Campus Connect</div>
+                        <div class="brand-sub">Cebu Technological University Announcement Portal</div>
+                    </div>
+                </div>
+                <div class="top-actions">
+                    <a class="action-link" href="<%= BackUrl %>" title="Back to Portal">
+                        <i class="fas fa-home" style="font-size:18px;"></i>
+                    </a>
+                </div>
+            </div>
 
 <div class="page-shell">
 
@@ -331,14 +408,17 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
     </div>
 </div>
 
-<script>
-    (function () {
-        function applyTheme(val) { document.body.classList.toggle('dark-mode', val === 'dark'); }
-        applyTheme(localStorage.getItem('campus_theme') || 'light');
-        window.addEventListener('storage', function (e) {
-            if (e.key === 'campus_theme') applyTheme(e.newValue || 'light');
-        });
-    })();
+    <script>
+        // ── Theme sync — reads campus_theme set by other pages ──
+        (function () {
+            function applyTheme(val) {
+                document.body.classList.toggle('dark-mode', val === 'dark');
+            }
+            applyTheme(localStorage.getItem('campus_theme') || 'light');
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'campus_theme') applyTheme(e.newValue || 'light');
+            });
+        })();
 
     function openImageModal(src, title, text) {
         document.getElementById('imageModalPreview').src = src;
@@ -361,3 +441,5 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
 </script>
 </body>
 </html>
+
+

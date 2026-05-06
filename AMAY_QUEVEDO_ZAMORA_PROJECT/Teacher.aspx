@@ -35,6 +35,8 @@
 
         html, body, form { height: auto; min-height: 100%; }
         html, body { overflow: auto; }
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         body::before {
             content: '';
@@ -700,7 +702,11 @@
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
+
+        .modal-content::-webkit-scrollbar { display: none; }
 
         .modal-title {
             font-size: 20px;
@@ -772,12 +778,21 @@
 
         body.dark-mode {
             background-color: #0F172A;
+            background-image: linear-gradient(rgba(15,23,42,0.85), rgba(15,23,42,0.85)), url('bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--page-text);
         }
 
         body.dark-mode .announcement-board { background: transparent; }
 
         .announcement-board::-webkit-scrollbar { display: none; }
+
+        /* Hide page scrollbar globally */
+        html::-webkit-scrollbar { display: none; }
+        html { scrollbar-width: none; -ms-overflow-style: none; }
 
         body:not(.dark-mode) .announcement-card {
             border-color: #2AACBF;
@@ -1187,7 +1202,7 @@
             try {
                 var data = JSON.parse(localStorage.getItem('teacher_data') || '{}');
                 st_likes = data.likes || {};
-                st_likeCounts = data.likeCounts || {};
+                st_likeCounts = {};  // always use DB counts, never cache
                 st_pins = data.pins || {};
                 st_comments = data.comments || {};
             } catch (e) {
@@ -1312,7 +1327,7 @@
             container.innerHTML += filtered.map(post => {
                 let pinned = st_pins[post.id];
                 let liked = !!post.userLiked;
-                let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
+                let likeCount = post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' :
                     post.category === 'Suspension' ? 'post-category-suspension' :
                     post.category === 'Event' ? 'post-category-event' : 'post-category-general';
@@ -1371,11 +1386,63 @@
         function renderCommentsList(postId) {
             let comments = st_comments[postId] || [];
             if (!comments.length) return '<div class="no-comments">No comments yet.</div>';
-
-            const repliesMap = buildRepliesMap(comments);
-            const rootComments = repliesMap.root || [];
-
-            return rootComments.map(comment => renderCommentNode(comment, repliesMap, postId, 0)).join('');
+            const topLevel = comments.filter(c => !c.parentCommentId);
+            const replies = comments.filter(c => c.parentCommentId);
+            return topLevel.map(c => {
+                let rHtml = replies.filter(r => r.parentCommentId === c.commentId).map(r =>
+                    `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+                        ${commentAvatarHtml(r.profileImage)}
+                        <div style="flex:1;min-width:0;">
+                            <span class="comment-author">${escapeHtml(r.author)}</span>
+                            <div>${escapeHtml(r.text)}</div>
+                            <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                                <small>${r.date||''}</small>
+                                <button type="button" class="comment-like-btn ${r.userLiked?'liked':''}" onclick="likeComment(${r.commentId},this)"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                    <i class="${r.userLiked?'fas':'far'} fa-heart"></i>
+                                    <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
+                                </button>
+                                <button type="button" onclick="toggleReplyBox(${r.commentId},${postId})"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
+                                    <i class="fas fa-reply"></i> Reply
+                                </button>
+                            </div>
+                            <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
+                                <div class="comment-input" style="margin:0;">
+                                    <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                    <button type="button" onclick="submitReply(${r.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+                ).join('');
+                return `<div class="comment" data-comment-id="${c.commentId}">
+                    ${commentAvatarHtml(c.profileImage)}
+                    <div style="flex:1;min-width:0;">
+                        <span class="comment-author">${escapeHtml(c.author)}</span>
+                        <div>${escapeHtml(c.text)}</div>
+                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
+                            <small>${c.date||''}</small>
+                            <button type="button" class="comment-like-btn ${c.userLiked?'liked':''}" onclick="likeComment(${c.commentId},this)"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                <i class="${c.userLiked?'fas':'far'} fa-heart"></i>
+                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
+                            </button>
+                            <button type="button" onclick="toggleReplyBox(${c.commentId},${postId})"
+                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                        <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
+                            <div class="comment-input" style="margin:0;">
+                                <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                <button type="button" onclick="submitReply(${c.commentId},${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                            </div>
+                        </div>
+                        ${rHtml}
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         var videoExts = ['mp4','webm','ogg','mov','avi'];

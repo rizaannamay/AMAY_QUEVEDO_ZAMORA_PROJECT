@@ -15,6 +15,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             ctx.Response.ContentType = "application/json";
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
 
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"])
             {

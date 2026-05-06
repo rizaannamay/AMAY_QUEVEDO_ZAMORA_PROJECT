@@ -182,33 +182,183 @@ button { font: inherit; }
 
 .toast-msg { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #2AACBF; color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 13px; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.20); }
 
-/* ── Dark Mode ── */
-.dark-mode {
-    --bg-image: url('bg.jpg');
-    --page-text: #e4e6eb;
-    --surface: rgba(15,25,55,0.82);
-    --surface-strong: rgba(15,25,55,0.92);
-    --surface-soft: rgba(255,255,255,0.07);
-    --border: rgba(255,255,255,0.1);
-    --primary: #818cf8;
-    --primary-2: #67e8f9;
-    --muted: #94a3b8;
-    --muted-light: #cbd5e1;
-    --active-bg: rgba(99,102,241,0.18);
-}
-body.dark-mode { background-color: #0F172A; color: var(--page-text); }
-body.dark-mode .header { background: rgba(15,25,55,0.95); border-color: rgba(255,255,255,0.08); }
-body.dark-mode .summary-card,
-body.dark-mode .notif-item,
-body.dark-mode .empty-state { background: rgba(15,25,55,0.88); border-color: rgba(255,255,255,0.08); }
-body.dark-mode .notif-message,
-body.dark-mode .summary-title { color: #67e8f9; }
-body.dark-mode .summary-text,
-body.dark-mode .notif-time,
-body.dark-mode .notif-state,
-body.dark-mode .empty-text { color: #cbd5e1; }
-body.dark-mode .mark-all-btn { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.07); color: #67e8f9; }
-body.dark-mode .mark-all-btn:hover { background: rgba(255,255,255,0.15); }
+        .notif-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 20px;
+        }
+
+        .notif-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 22px;
+        }
+
+        .notif-like {
+            background: linear-gradient(135deg, #d46565, #E28A6D);
+        }
+
+        .notif-comment {
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+        }
+
+        .notif-share {
+            background: linear-gradient(135deg, #E8C55E, #E28A6D);
+        }
+
+        .notif-default {
+            background: linear-gradient(135deg, #2AACBF, #1a9aaa);
+        }
+
+        .notif-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .notif-message {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary-2);
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .notif-time {
+            font-size: 12px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .notif-sub {
+            margin-top: 7px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .notif-state {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .notif-unread-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220,38,38,0.14);
+            flex-shrink: 0;
+        }
+
+        .notif-item:not(.unread) .notif-unread-dot {
+            display: none;
+        }
+
+        .notif-chevron {
+            color: var(--muted-light);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .empty-state {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 64px 20px;
+            text-align: center;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--primary-2);
+            opacity: 0.35;
+            display: block;
+            margin-bottom: 14px;
+        }
+
+        .empty-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary-2);
+        }
+
+        .empty-text {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 8px;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2AACBF;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+        }
+
+        .dark-mode {
+            --bg-image: url('bg.jpg');
+            --page-text: #e4e6eb;
+            --surface: rgba(15, 25, 55, 0.82);
+            --surface-strong: rgba(15, 25, 55, 0.92);
+            --surface-soft: rgba(255, 255, 255, 0.07);
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #818cf8;
+            --primary-2: #67e8f9;
+            --muted: #94a3b8;
+            --muted-light: #cbd5e1;
+            --active-bg: rgba(99, 102, 241, 0.18);
+        }
+
+        body.dark-mode {
+            background-color: #0F172A;
+            color: var(--page-text);
+        }
+
+        body.dark-mode .topbar,
+        body.dark-mode .summary-card,
+        body.dark-mode .notif-item,
+        body.dark-mode .empty-state {
+            background: rgba(15,25,55,0.88);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        body.dark-mode .notif-message,
+        body.dark-mode .summary-title,
+        body.dark-mode .topbar-title {
+            color: #67e8f9;
+        }
+
+        body.dark-mode .summary-text,
+        body.dark-mode .notif-time,
+        body.dark-mode .notif-state,
+        body.dark-mode .topbar-sub,
+        body.dark-mode .empty-text {
+            color: #cbd5e1;
+        }
 
 @media (max-width: 700px) {
     .page-shell { padding: 80px 8px 24px; }

@@ -16,6 +16,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             ctx.Response.ContentType = "application/json";
             string action = ctx.Request.QueryString["action"] ?? "";
 
+            // GetComments is public — no login required
+            if (action == "get")
+            {
+                EnsureSchema();
+                try { GetComments(ctx); }
+                catch (Exception ex)
+                {
+                    ctx.Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
+                }
+                return;
+            }
+
+            // All other actions require login
             if (ctx.Session["IsLoggedIn"] == null || !(bool)ctx.Session["IsLoggedIn"] || ctx.Session["UserId"] == null)
             {
                 ctx.Response.Write("{\"success\":false,\"error\":\"Not logged in\"}");
@@ -34,10 +47,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                     case "reply":
                         ReplyComment(ctx);
-                        break;
-
-                    case "get":
-                        GetComments(ctx);
                         break;
 
                     case "likeComment":
@@ -224,7 +233,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (alreadyLiked)
             {
-                // Unlike — no notification
                 SqlCommand del = new SqlCommand(
                     "DELETE FROM CommentLikes WHERE CommentId=@cid AND UserId=@uid", con);
                 del.Parameters.AddWithValue("@cid", commentId);
@@ -233,41 +241,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
-                // New like — insert
                 SqlCommand ins = new SqlCommand(
                     "INSERT INTO CommentLikes (CommentId, UserId, CreatedDate) VALUES (@cid, @uid, GETDATE())", con);
                 ins.Parameters.AddWithValue("@cid", commentId);
                 ins.Parameters.AddWithValue("@uid", userId);
                 ins.ExecuteNonQuery();
-
-                if (IsTeacher(ctx))
-                {
-                    // ✅ TEACHER liked → notify ONLY the student who owns that comment
-                    SqlCommand notifCmd = new SqlCommand(
-                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                        "SELECT c.UserId, c.AnnouncementId, " +
-                        "   (SELECT u.Username FROM Users u WHERE u.UserId = @uid) + ' (Teacher) liked your comment: ' + LEFT(c.CommentText, 50), " +
-                        "   0, GETDATE() " +
-                        "FROM Comments c " +
-                        "WHERE c.CommentId = @cid AND c.UserId <> @uid", con);
-                    notifCmd.Parameters.AddWithValue("@cid", commentId);
-                    notifCmd.Parameters.AddWithValue("@uid", userId);
-                    notifCmd.ExecuteNonQuery();
-                }
-                else
-                {
-                    // Student liked a teacher's comment → notify the teacher
-                    SqlCommand notifCmd = new SqlCommand(
-                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                        "SELECT c.UserId, c.AnnouncementId, u.Username + ' liked your comment: ' + LEFT(c.CommentText, 50), 0, GETDATE() " +
-                        "FROM Comments c " +
-                        "JOIN Users u ON u.UserId = @uid " +
-                        "JOIN Users cu ON cu.UserId = c.UserId " +
-                        "WHERE c.CommentId = @cid AND c.UserId <> @uid AND cu.Role = 'Admin'", con);
-                    notifCmd.Parameters.AddWithValue("@cid", commentId);
-                    notifCmd.Parameters.AddWithValue("@uid", userId);
-                    notifCmd.ExecuteNonQuery();
-                }
             }
 
             // Update like count
@@ -294,42 +272,51 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            int currentUserId = Convert.ToInt32(ctx.Session["UserId"]);
+            int currentUserId = 0;
+            if (ctx.Session["UserId"] != null)
+                currentUserId = Convert.ToInt32(ctx.Session["UserId"]);
+
             List<object> list = new List<object>();
 
             con.Open();
 
-            SqlCommand cmd = new SqlCommand(
-                "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
-                "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
-                "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
-                "FROM Comments c " +
-                "JOIN Users u ON u.UserId = c.UserId " +
-                "WHERE c.AnnouncementId = @aid " +
-                "ORDER BY c.CreatedDate ASC", con);
-            cmd.Parameters.AddWithValue("@aid", announcementId);
-            cmd.Parameters.AddWithValue("@uid", currentUserId);
-
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                list.Add(new
+                using (var cmd = new SqlCommand(
+                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
+                    "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
+                    "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
+                    "FROM Comments c " +
+                    "JOIN Users u ON u.UserId = c.UserId " +
+                    "WHERE c.AnnouncementId = @aid " +
+                    "ORDER BY c.CreatedDate ASC", con))
                 {
-                    commentId = Convert.ToInt32(dr["CommentId"]),
-                    parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
-                    author = dr["Username"].ToString(),
-                    text = dr["CommentText"].ToString(),
-                    date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
-                    likeCount = Convert.ToInt32(dr["LikeCount"]),
-                    userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
-                    profileImage = dr["ProfileImage"].ToString()
-                });
+                    cmd.Parameters.AddWithValue("@aid", announcementId);
+                    cmd.Parameters.AddWithValue("@uid", currentUserId);
+
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            list.Add(new
+                            {
+                                commentId = Convert.ToInt32(dr["CommentId"]),
+                                parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
+                                author = dr["Username"].ToString(),
+                                text = dr["CommentText"].ToString(),
+                                date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
+                                likeCount = Convert.ToInt32(dr["LikeCount"]),
+                                userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
+                                profileImage = dr["ProfileImage"].ToString()
+                            });
+                        }
+                    }
+                }
             }
 
             dr.Close();
             con.Close();
 
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
             ctx.Response.Write(js.Serialize(list));
         }
 
@@ -387,7 +374,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 catch
                 {
-                    _schemaChecked = true;
+                    // Don't mark as checked on failure — allow retry next request
                 }
             }
         }
@@ -401,6 +388,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             JavaScriptSerializer js = new JavaScriptSerializer();
+            js.MaxJsonLength = int.MaxValue;
             try
             {
                 return js.Deserialize<Dictionary<string, object>>(json);
