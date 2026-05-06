@@ -9,8 +9,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        private static readonly string ConnStr =
-            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+        SqlConnection con = new SqlConnection(@"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -62,6 +61,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             catch (Exception ex)
             {
                 ctx.Response.Write("{\"success\":false,\"error\":\"" + EscapeJson(ex.Message) + "\"}");
+                if (con.State == System.Data.ConnectionState.Open) con.Close();
             }
         }
 
@@ -86,41 +86,33 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            using (var con = new SqlConnection(ConnStr))
-            {
-                con.Open();
+            con.Open();
 
-                using (var cmd1 = new SqlCommand(
-                    "INSERT INTO Comments (AnnouncementId, UserId, CommentText, CreatedDate) VALUES (@aid, @uid, @txt, GETDATE())", con))
-                {
-                    cmd1.Parameters.AddWithValue("@aid", announcementId);
-                    cmd1.Parameters.AddWithValue("@uid", userId);
-                    cmd1.Parameters.AddWithValue("@txt", commentText);
-                    cmd1.ExecuteNonQuery();
-                }
+            SqlCommand cmd1 = new SqlCommand(
+                "INSERT INTO Comments (AnnouncementId, UserId, CommentText, CreatedDate) VALUES (@aid, @uid, @txt, GETDATE())", con);
+            cmd1.Parameters.AddWithValue("@aid", announcementId);
+            cmd1.Parameters.AddWithValue("@uid", userId);
+            cmd1.Parameters.AddWithValue("@txt", commentText);
+            cmd1.ExecuteNonQuery();
 
-                using (var cmd2 = new SqlCommand(
-                    "UPDATE Announcements " +
-                    "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
-                    "WHERE AnnouncementId=@aid", con))
-                {
-                    cmd2.Parameters.AddWithValue("@aid", announcementId);
-                    cmd2.ExecuteNonQuery();
-                }
+            SqlCommand cmd2 = new SqlCommand(
+                "UPDATE Announcements " +
+                "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
+                "WHERE AnnouncementId=@aid", con);
+            cmd2.Parameters.AddWithValue("@aid", announcementId);
+            cmd2.ExecuteNonQuery();
 
-                using (var notifCmd = new SqlCommand(
-                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' commented on your announcement: ' + a.Title, 0, GETDATE() " +
-                    "FROM Announcements a " +
-                    "JOIN Users u ON u.UserId = @uid " +
-                    "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con))
-                {
-                    notifCmd.Parameters.AddWithValue("@aid", announcementId);
-                    notifCmd.Parameters.AddWithValue("@uid", userId);
-                    notifCmd.ExecuteNonQuery();
-                }
-            }
+            SqlCommand notifCmd = new SqlCommand(
+                "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                "SELECT a.UserId, a.AnnouncementId, u.Username + ' commented on your announcement: ' + a.Title, 0, GETDATE() " +
+                "FROM Announcements a " +
+                "JOIN Users u ON u.UserId = @uid " +
+                "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con);
+            notifCmd.Parameters.AddWithValue("@aid", announcementId);
+            notifCmd.Parameters.AddWithValue("@uid", userId);
+            notifCmd.ExecuteNonQuery();
 
+            con.Close();
             ctx.Response.Write("{\"success\":true}");
         }
 
@@ -146,56 +138,24 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            using (var con = new SqlConnection(ConnStr))
-            {
-                con.Open();
+            con.Open();
 
-                using (var cmd = new SqlCommand(
-                    "INSERT INTO Comments (AnnouncementId, UserId, CommentText, ParentCommentId, CreatedDate) VALUES (@aid, @uid, @txt, @pid, GETDATE())", con))
-                {
-                    cmd.Parameters.AddWithValue("@aid", announcementId);
-                    cmd.Parameters.AddWithValue("@uid", userId);
-                    cmd.Parameters.AddWithValue("@txt", commentText);
-                    cmd.Parameters.AddWithValue("@pid", parentCommentId);
-                    cmd.ExecuteNonQuery();
-                }
+            SqlCommand cmd = new SqlCommand(
+                "INSERT INTO Comments (AnnouncementId, UserId, CommentText, ParentCommentId, CreatedDate) VALUES (@aid, @uid, @txt, @pid, GETDATE())", con);
+            cmd.Parameters.AddWithValue("@aid", announcementId);
+            cmd.Parameters.AddWithValue("@uid", userId);
+            cmd.Parameters.AddWithValue("@txt", commentText);
+            cmd.Parameters.AddWithValue("@pid", parentCommentId);
+            cmd.ExecuteNonQuery();
 
-                using (var countCmd = new SqlCommand(
-                    "UPDATE Announcements " +
-                    "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
-                    "WHERE AnnouncementId=@aid", con))
-                {
-                    countCmd.Parameters.AddWithValue("@aid", announcementId);
-                    countCmd.ExecuteNonQuery();
-                }
+            SqlCommand countCmd = new SqlCommand(
+                "UPDATE Announcements " +
+                "SET CommentCount = (SELECT COUNT(*) FROM Comments WHERE AnnouncementId=@aid) " +
+                "WHERE AnnouncementId=@aid", con);
+            countCmd.Parameters.AddWithValue("@aid", announcementId);
+            countCmd.ExecuteNonQuery();
 
-                // Notify the post author (teacher) that someone commented
-                using (var postAuthorNotif = new SqlCommand(
-                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                    "SELECT a.UserId, a.AnnouncementId, u.Username + ' replied on your announcement: ' + a.Title, 0, GETDATE() " +
-                    "FROM Announcements a " +
-                    "JOIN Users u ON u.UserId = @uid " +
-                    "WHERE a.AnnouncementId = @aid AND a.UserId <> @uid", con))
-                {
-                    postAuthorNotif.Parameters.AddWithValue("@aid", announcementId);
-                    postAuthorNotif.Parameters.AddWithValue("@uid", userId);
-                    postAuthorNotif.ExecuteNonQuery();
-                }
-
-                // Notify the original comment author (student) that someone replied to their comment
-                using (var commentAuthorNotif = new SqlCommand(
-                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                    "SELECT c.UserId, c.AnnouncementId, u.Username + ' replied to your comment', 0, GETDATE() " +
-                    "FROM Comments c " +
-                    "JOIN Users u ON u.UserId = @uid " +
-                    "WHERE c.CommentId = @pid AND c.UserId <> @uid", con))
-                {
-                    commentAuthorNotif.Parameters.AddWithValue("@pid", parentCommentId);
-                    commentAuthorNotif.Parameters.AddWithValue("@uid", userId);
-                    commentAuthorNotif.ExecuteNonQuery();
-                }
-            }
-
+            con.Close();
             ctx.Response.Write("{\"success\":true}");
         }
 
@@ -209,20 +169,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             int userId = Convert.ToInt32(ctx.Session["UserId"]);
-            bool alreadyLiked;
-            int newCount;
+            con.Open();
 
-            using (var con = new SqlConnection(ConnStr))
-            {
-                con.Open();
-
-                using (var chk = new SqlCommand(
-                    "SELECT COUNT(1) FROM CommentLikes WHERE CommentId=@cid AND UserId=@uid", con))
-                {
-                    chk.Parameters.AddWithValue("@cid", commentId);
-                    chk.Parameters.AddWithValue("@uid", userId);
-                    alreadyLiked = Convert.ToInt32(chk.ExecuteScalar()) > 0;
-                }
+            SqlCommand chk = new SqlCommand(
+                "SELECT COUNT(1) FROM CommentLikes WHERE CommentId=@cid AND UserId=@uid", con);
+            chk.Parameters.AddWithValue("@cid", commentId);
+            chk.Parameters.AddWithValue("@uid", userId);
+            bool alreadyLiked = Convert.ToInt32(chk.ExecuteScalar()) > 0;
 
                 if (alreadyLiked)
                 {
@@ -243,36 +196,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         ins.Parameters.AddWithValue("@uid", userId);
                         ins.ExecuteNonQuery();
                     }
-
-                    // Notify the comment author that someone liked their comment
-                    using (var notifCmd = new SqlCommand(
-                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                        "SELECT c.UserId, c.AnnouncementId, u.Username + ' liked your comment', 0, GETDATE() " +
-                        "FROM Comments c " +
-                        "JOIN Users u ON u.UserId = @uid " +
-                        "WHERE c.CommentId = @cid AND c.UserId <> @uid", con))
-                    {
-                        notifCmd.Parameters.AddWithValue("@cid", commentId);
-                        notifCmd.Parameters.AddWithValue("@uid", userId);
-                        notifCmd.ExecuteNonQuery();
-                    }
                 }
 
-                using (var upd = new SqlCommand(
-                    "UPDATE Comments SET LikeCount = (SELECT COUNT(*) FROM CommentLikes WHERE CommentId=@cid) WHERE CommentId=@cid", con))
-                {
-                    upd.Parameters.AddWithValue("@cid", commentId);
-                    upd.ExecuteNonQuery();
-                }
+            SqlCommand upd = new SqlCommand(
+                "UPDATE Comments SET LikeCount = (SELECT COUNT(*) FROM CommentLikes WHERE CommentId=@cid) WHERE CommentId=@cid", con);
+            upd.Parameters.AddWithValue("@cid", commentId);
+            upd.ExecuteNonQuery();
 
-                using (var cnt = new SqlCommand(
-                    "SELECT ISNULL(LikeCount, 0) FROM Comments WHERE CommentId=@cid", con))
-                {
-                    cnt.Parameters.AddWithValue("@cid", commentId);
-                    newCount = Convert.ToInt32(cnt.ExecuteScalar());
-                }
-            }
+            SqlCommand cnt = new SqlCommand(
+                "SELECT ISNULL(LikeCount, 0) FROM Comments WHERE CommentId=@cid", con);
+            cnt.Parameters.AddWithValue("@cid", commentId);
+            int newCount = Convert.ToInt32(cnt.ExecuteScalar());
 
+            con.Close();
             ctx.Response.Write("{\"success\":true,\"liked\":" + (!alreadyLiked ? "true" : "false") + ",\"likeCount\":" + newCount + "}");
         }
 
@@ -291,13 +227,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             List<object> list = new List<object>();
 
-            using (var con = new SqlConnection(ConnStr))
-            {
-                con.Open();
+            con.Open();
 
                 using (var cmd = new SqlCommand(
-                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, " +
-                    "ISNULL(c.LikeCount, 0) AS LikeCount, " +
+                    "SELECT c.CommentId, c.ParentCommentId, c.CommentText, c.CreatedDate, ISNULL(c.LikeCount, 0) AS LikeCount, " +
                     "u.Username, ISNULL(u.ProfileImage,'') AS ProfileImage, " +
                     "ISNULL((SELECT COUNT(1) FROM CommentLikes cl WHERE cl.CommentId=c.CommentId AND cl.UserId=@uid),0) AS UserLiked " +
                     "FROM Comments c " +
@@ -312,29 +245,24 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     {
                         while (dr.Read())
                         {
-                            object rawParent = dr["ParentCommentId"];
-                            int? parentId = null;
-                            if (rawParent != DBNull.Value)
-                            {
-                                int p = Convert.ToInt32(rawParent);
-                                if (p > 0) parentId = p;
-                            }
-
                             list.Add(new
                             {
-                                commentId       = Convert.ToInt32(dr["CommentId"]),
-                                parentCommentId = parentId,
-                                author          = dr["Username"].ToString(),
-                                text            = dr["CommentText"].ToString(),
-                                date            = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
-                                likeCount       = Convert.ToInt32(dr["LikeCount"]),
-                                userLiked       = Convert.ToInt32(dr["UserLiked"]) > 0,
-                                profileImage    = dr["ProfileImage"].ToString()
+                                commentId = Convert.ToInt32(dr["CommentId"]),
+                                parentCommentId = dr["ParentCommentId"] == DBNull.Value ? (int?)null : Convert.ToInt32(dr["ParentCommentId"]),
+                                author = dr["Username"].ToString(),
+                                text = dr["CommentText"].ToString(),
+                                date = GetTimeAgo(Convert.ToDateTime(dr["CreatedDate"])),
+                                likeCount = Convert.ToInt32(dr["LikeCount"]),
+                                userLiked = Convert.ToInt32(dr["UserLiked"]) > 0,
+                                profileImage = dr["ProfileImage"].ToString()
                             });
                         }
                     }
                 }
             }
+
+            dr.Close();
+            con.Close();
 
             JavaScriptSerializer js = new JavaScriptSerializer();
             js.MaxJsonLength = int.MaxValue;
@@ -354,7 +282,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                 try
                 {
-                    using (SqlConnection c = new SqlConnection(ConnStr))
+                    using (SqlConnection c = new SqlConnection(con.ConnectionString))
                     {
                         c.Open();
 

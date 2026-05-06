@@ -15,7 +15,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     public class UploadProfilePhoto : IHttpHandler, IRequiresSessionState
     {
         private static readonly string ConnStr =
-            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+            @"Data Source=LAPTOP-GPJQLLD4\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
 
         public bool IsReusable => false;
 
