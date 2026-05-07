@@ -29,11 +29,16 @@ html, body { overflow: auto; }
 body::before {
     content: '';
     position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 10px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
     z-index: 1199;
     pointer-events: none;
-    background: transparent;
+    background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;

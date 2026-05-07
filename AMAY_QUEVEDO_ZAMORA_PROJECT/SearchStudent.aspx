@@ -1082,7 +1082,7 @@
                                 </div>
                                 <button type="button" onclick="togglePin(${ann.id})" title="${pinned ? 'Unpin' : 'Pin this announcement'}"
                                     style="flex:none;width:34px;height:34px;padding:0;border-radius:50%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all 0.2s;color:${pinned ? '#fb923c' : 'rgba(148,163,184,0.5)'}">
-                                    <i class="${pinned ? 'fas' : 'far'} fa-thumbtack"></i>
+                                    <i class="fas fa-thumbtack" style="${pinned ? '' : 'opacity:0.4'}"></i>
                                 </button>                            </div>
                         </div>
                         <div class="card-title">${escapeHtml(ann.title)}</div>
