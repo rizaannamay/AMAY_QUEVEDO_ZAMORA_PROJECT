@@ -167,6 +167,8 @@
         body.dark-mode .table-wrap { border-color: rgba(255,255,255,0.08) !important; }
         body.dark-mode .msg-success { background: rgba(22,101,52,0.25) !important; color: #86efac !important; border-color: rgba(134,239,172,0.30) !important; }
         body.dark-mode .msg-error   { background: rgba(153,27,27,0.25) !important; color: #fca5a5 !important; border-color: rgba(252,165,165,0.30) !important; }
+        body.dark-mode input[type="file"] { background: rgba(45,45,45,0.80) !important; border-color: rgba(255,255,255,0.12) !important; color: #e2e8f0 !important; }
+        body.dark-mode code { background: rgba(255,255,255,0.08) !important; color: #fbbf24 !important; }
     </style>
 </head>
 <body>
@@ -242,6 +244,62 @@
                         <asp:Button ID="btnExportSQL" runat="server" CssClass="export-btn btn-sql"
                             Text="Export Announcements (SQL)"
                             OnClick="btnExportSQL_Click" UseSubmitBehavior="true" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Recovery -->
+            <div class="card">
+                <div class="card-header"><i class="fas fa-upload"></i> Data Recovery</div>
+                <div class="card-body">
+                    <asp:Label ID="lblImportMsg" runat="server" CssClass="msg-box" style="display:none;"></asp:Label>
+
+                    <p style="font-size:14px;color:var(--muted);margin-bottom:20px;">
+                        Restore announcements from a previously exported backup file.
+                        Supported formats: <strong>CSV</strong> (exported from this page) and <strong>SQL</strong> INSERT scripts.
+                    </p>
+
+                    <!-- CSV Import -->
+                    <div style="margin-bottom:24px;">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#059669,#10b981);display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-file-csv" style="color:#fff;font-size:14px;"></i>
+                            </div>
+                            <span style="font-size:14px;font-weight:700;color:var(--primary);">Import from CSV</span>
+                        </div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+                            Upload a CSV file with columns: <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">Title, Category, Content, DatePosted</code>
+                            (matches the exported format).
+                        </p>
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;">
+                            <asp:FileUpload ID="fuCSV" runat="server"
+                                style="font-size:13px;padding:8px 12px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,0.7);color:var(--primary);max-width:340px;" />
+                            <asp:Button ID="btnImportCSV" runat="server" CssClass="export-btn btn-csv"
+                                Text="Import CSV"
+                                OnClick="btnImportCSV_Click" UseSubmitBehavior="true" />
+                        </div>
+                    </div>
+
+                    <!-- SQL Import -->
+                    <div>
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                            <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#7a5200,#c9920a);display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-file-code" style="color:#fff;font-size:14px;"></i>
+                            </div>
+                            <span style="font-size:14px;font-weight:700;color:var(--primary);">Import from SQL</span>
+                        </div>
+                        <p style="font-size:12px;color:var(--muted);margin-bottom:10px;">
+                            Upload a <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">.sql</code> file containing
+                            <code style="background:rgba(0,0,0,0.06);padding:1px 6px;border-radius:4px;">INSERT INTO Announcements</code> statements
+                            (matches the exported format).
+                        </p>
+                        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;">
+                            <asp:FileUpload ID="fuSQL" runat="server"
+                                style="font-size:13px;padding:8px 12px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,0.7);color:var(--primary);max-width:340px;" />
+                            <asp:Button ID="btnImportSQL" runat="server" CssClass="export-btn btn-sql"
+                                Text="Import SQL"
+                                OnClick="btnImportSQL_Click" UseSubmitBehavior="true" />
+                        </div>
                     </div>
                 </div>
             </div>

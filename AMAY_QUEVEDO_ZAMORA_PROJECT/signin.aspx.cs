@@ -20,7 +20,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
         }
 
-        // SHA-256 hash — same algorithm used in login
+        // SHA-256 hash ï¿½ same algorithm used in login
         private static string HashPassword(string password)
         {
             using (var sha = SHA256.Create())

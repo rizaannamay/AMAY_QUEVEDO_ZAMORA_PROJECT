@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.UI;
 
-#pragma warning disable IDE1006 // Naming rule violations — class and method names match ASPX Inherits/event wiring
+#pragma warning disable IDE1006 // Naming rule violations ï¿½ class and method names match ASPX Inherits/event wiring
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
@@ -13,7 +13,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     {
         private readonly string connectionString = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
 
-        // SHA-256 hash — must match the algorithm used in signin.aspx.cs
+        // SHA-256 hash ï¿½ must match the algorithm used in signin.aspx.cs
         private static string HashPassword(string password)
         {
             using (var sha = SHA256.Create())

@@ -44,6 +44,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             BackUrl  = string.Equals(Role, "Admin", StringComparison.OrdinalIgnoreCase)
                        ? "Teacher.aspx" : "Student.aspx";
 
+            // Load image first so postback handlers can override it
+            LoadProfileImage();
+
             if (IsPostBack)
             {
                 string action = hfAction != null ? hfAction.Value : "";
@@ -54,14 +57,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 else
                 {
-                    // Photo upload
-                    var upload = FindControl("photoUpload") as FileUpload;
+                    // Photo upload — check both the declared control and FindControl
+                    FileUpload upload = photoUpload;
+                    if (upload == null)
+                        upload = FindControl("photoUpload") as FileUpload;
+
                     if (upload != null && upload.HasFile)
                         ProcessUpload(upload);
                 }
             }
-
-            LoadProfileImage();
         }
 
         // ── Update Full Name / Username / Email ───────────────────────────────
@@ -231,7 +235,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
 
                 Session["ProfileImage"] = relativePath;
-                ProfileImage = relativePath;
+                ProfileImage = relativePath + "?v=" + DateTime.Now.Ticks;
                 UploadMessage = "Profile photo updated successfully!";
             }
             catch (Exception ex)
