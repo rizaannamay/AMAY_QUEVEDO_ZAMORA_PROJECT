@@ -146,8 +146,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         // ─────────────────────────────────────────────────────────────
         // GET USER PINS — returns IDs pinned by this user
         // Admin: returns globally pinned IDs (IsPinned = 1)
-        // Student: returns IDs from UserPins for this user
-        //          PLUS any globally pinned IDs (admin pins are always shown)
+        // Student: returns ONLY their own pins from UserPins table
+        //          (teacher's global pins are separate)
         // ─────────────────────────────────────────────────────────────
         private void GetUserPins(HttpContext ctx, JavaScriptSerializer js)
         {
@@ -173,11 +173,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 else
                 {
-                    // Student sees their own pins + any globally pinned posts
+                    // Student sees ONLY their own pins from UserPins table
+                    // Teacher's global pins (IsPinned = 1) are NOT included
                     using (var cmd = new SqlCommand(
-                        @"SELECT AnnouncementId FROM Announcements WHERE IsPinned = 1
-                          UNION
-                          SELECT AnnouncementId FROM UserPins WHERE UserId = @uid", con))
+                        "SELECT AnnouncementId FROM UserPins WHERE UserId = @uid", con))
                     {
                         cmd.Parameters.AddWithValue("@uid", userId);
                         using (var dr = cmd.ExecuteReader())

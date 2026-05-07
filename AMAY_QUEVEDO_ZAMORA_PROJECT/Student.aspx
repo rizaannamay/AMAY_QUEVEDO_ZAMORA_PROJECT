@@ -830,8 +830,15 @@ function renderAnnouncements() {
         if (pinRes.ok && pinRes.pinnedIds) {
             pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
         }
-        announcements.forEach(function(post) {
-            if (post.isPinned) st_pins[post.id] = true;
+
+        // ✅ Sort announcements: admin-pinned posts (isPinned=true) appear first
+        announcements.sort(function(a, b) {
+            let aPinned = a.isPinned === true;
+            let bPinned = b.isPinned === true;
+            if (aPinned && !bPinned) return -1;  // a is pinned, comes first
+            if (!aPinned && bPinned) return 1;   // b is pinned, comes first
+            // If both or neither are pinned, sort by date (newest first)
+            return new Date(b.date) - new Date(a.date);
         });
 
         // ✅ If focusPostId is set, only show that one post
@@ -860,13 +867,14 @@ function renderAnnouncements() {
         }
 
         container.innerHTML = bannerHtml + displayList.map(post => {
-            let isPinned  = !!st_pins[post.id];
-            let liked     = !!post.userLiked;
-            let likeCount = post.likeCount || 0;
-            let catClass  = post.category === 'Exam'       ? 'post-category-exam'
-                          : post.category === 'Suspension' ? 'post-category-suspension'
-                          : post.category === 'Event'      ? 'post-category-event'
-                          : 'post-category-general';
+            let isPinned     = !!st_pins[post.id];
+            let isAdminPin   = post.isPinned === true;  // Pinned by admin (global)
+            let liked        = !!post.userLiked;
+            let likeCount    = post.likeCount || 0;
+            let catClass     = post.category === 'Exam'       ? 'post-category-exam'
+                             : post.category === 'Suspension' ? 'post-category-suspension'
+                             : post.category === 'Event'      ? 'post-category-event'
+                             : 'post-category-general';
 
             // In normal mode, respect the saved filter
             let visible = focusPostId > 0 || savedFilter === 'All' || post.category === savedFilter;
@@ -874,6 +882,11 @@ function renderAnnouncements() {
             let postAvatar = post.authorImage
                 ? `<div class="post-avatar" style="overflow:hidden;"><img src="${post.authorImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
                 : `<div class="post-avatar"><i class="fas fa-user-tie"></i></div>`;
+
+            // Admin-pinned badge
+            let adminPinBadge = isAdminPin 
+                ? `<span class="post-category" style="background:#fff0db;color:#d97706;"><i class="fas fa-thumbtack" style="margin-right:4px;"></i>Pinned</span>` 
+                : '';
 
             return `<div class="announcement-card${focusPostId === post.id ? ' notification-target' : ''}"
                         data-post-id="${post.id}" data-category="${post.category}"
@@ -886,6 +899,7 @@ function renderAnnouncements() {
                             <div class="post-meta">
                                 <span>${escapeHtml(timeAgo(post.date))}</span>
                                 <span class="post-category ${catClass}">${escapeHtml(post.category)}</span>
+                                ${adminPinBadge}
                             </div>
                         </div>
                     </div>

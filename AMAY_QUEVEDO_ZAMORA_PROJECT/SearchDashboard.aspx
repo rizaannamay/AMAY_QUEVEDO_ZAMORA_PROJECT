@@ -10,7 +10,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="dark-mode.css">
-    <link rel="stylesheet" href="responsive.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -996,17 +995,17 @@
             if (isNaN(date)) return dateStr;
             var now = new Date();
             var sec = Math.floor((now - date) / 1000);
-            if (sec < 60)  return 'Just now';
+            if (sec < 60) return 'Just now';
             var min = Math.floor(sec / 60);
-            if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
+            if (min < 60) return min + (min === 1 ? ' min ago' : ' mins ago');
             var hr = Math.floor(min / 60);
-            if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+            if (hr < 24) return hr + (hr === 1 ? ' hour ago' : ' hours ago');
             var day = Math.floor(hr / 24);
-            if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
+            if (day < 7) return day + (day === 1 ? ' day ago' : ' days ago');
             var wk = Math.floor(day / 7);
-            if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+            if (wk < 5) return wk + (wk === 1 ? ' week ago' : ' weeks ago');
             var mo = Math.floor(day / 30);
-            if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
+            if (mo < 12) return mo + (mo === 1 ? ' month ago' : ' months ago');
             var yr = Math.floor(day / 365);
             return yr + (yr === 1 ? ' year ago' : ' years ago');
         }
@@ -1200,7 +1199,7 @@
             if (!list.length) return '<div class="no-comments">No comments yet. Be the first!</div>';
 
             const topLevel = list.filter(c => !c.parentCommentId);
-            const replies  = list.filter(c =>  c.parentCommentId);
+            const replies = list.filter(c => c.parentCommentId);
 
             function avatarHtml(img) {
                 if (img) return `<div class="comment-avatar" style="overflow:hidden;"><img src="${escapeHtml(img)}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'" /></div>`;
@@ -1217,9 +1216,9 @@
                         <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
                             <span class="comment-time">${escapeHtml(r.date || '')}</span>
                             <button type="button" onclick="likeComment(${r.commentId},${id},this)"
-                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
-                                <i class="${liked?'fas':'far'} fa-heart"></i>
-                                <span class="clc">${r.likeCount>0?r.likeCount:''}</span>
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
+                                <i class="${liked ? 'fas' : 'far'} fa-heart"></i>
+                                <span class="clc">${r.likeCount > 0 ? r.likeCount : ''}</span>
                             </button>
                             <button type="button" onclick="toggleReplyBox('rb-${r.commentId}')"
                                 style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;">
@@ -1247,9 +1246,9 @@
                         <div style="display:flex;align-items:center;gap:10px;margin-top:3px;">
                             <span class="comment-time">${escapeHtml(c.date || '')}</span>
                             <button type="button" onclick="likeComment(${c.commentId},${id},this)"
-                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked?'#dc2626':'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
-                                <i class="${liked?'fas':'far'} fa-heart"></i>
-                                <span class="clc">${c.likeCount>0?c.likeCount:''}</span>
+                                style="background:none;border:none;cursor:pointer;font-size:11px;color:${liked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:3px;padding:0;">
+                                <i class="${liked ? 'fas' : 'far'} fa-heart"></i>
+                                <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
                             </button>
                             <button type="button" onclick="toggleReplyBox('rb-${c.commentId}')"
                                 style="background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:0;">
@@ -1288,46 +1287,46 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ postId: postId, parentCommentId: parentCommentId, comment: text })
             })
-            .then(r => r.json())
-            .then(res => {
-                if (btn) { btn.disabled = false; btn.textContent = 'Reply'; }
-                if (!res.success) { showToast('Error: ' + (res.error || 'Could not post reply')); return; }
-                if (input) input.value = '';
-                box.style.display = 'none';
-                reloadComments(postId);
-                showToast('Reply posted!');
-            })
-            .catch(() => { if (btn) { btn.disabled = false; btn.textContent = 'Reply'; } showToast('Could not post reply'); });
+                .then(r => r.json())
+                .then(res => {
+                    if (btn) { btn.disabled = false; btn.textContent = 'Reply'; }
+                    if (!res.success) { showToast('Error: ' + (res.error || 'Could not post reply')); return; }
+                    if (input) input.value = '';
+                    box.style.display = 'none';
+                    reloadComments(postId);
+                    showToast('Reply posted!');
+                })
+                .catch(() => { if (btn) { btn.disabled = false; btn.textContent = 'Reply'; } showToast('Could not post reply'); });
         }
 
         function likeComment(commentId, postId, btn) {
             fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
-            .then(r => r.json())
-            .then(res => {
-                if (!res.success) { showToast('Error'); return; }
-                if (btn) {
-                    btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
-                    const icon = btn.querySelector('i');
-                    if (icon) icon.className = (res.liked ? 'fas' : 'far') + ' fa-heart';
-                    const cnt = btn.querySelector('.clc');
-                    if (cnt) cnt.textContent = res.likeCount > 0 ? res.likeCount : '';
-                }
-            })
-            .catch(() => showToast('Could not update reaction'));
+                .then(r => r.json())
+                .then(res => {
+                    if (!res.success) { showToast('Error'); return; }
+                    if (btn) {
+                        btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                        const icon = btn.querySelector('i');
+                        if (icon) icon.className = (res.liked ? 'fas' : 'far') + ' fa-heart';
+                        const cnt = btn.querySelector('.clc');
+                        if (cnt) cnt.textContent = res.likeCount > 0 ? res.likeCount : '';
+                    }
+                })
+                .catch(() => showToast('Could not update reaction'));
         }
 
         function reloadComments(postId) {
             fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
-            .then(r => r.json())
-            .then(data => {
-                if (!Array.isArray(data)) return;
-                comments[postId] = data;
-                const cl = document.getElementById('cl-' + postId);
-                if (cl) cl.innerHTML = renderCommentsList(postId);
-                const cc = document.getElementById('cc-' + postId);
-                if (cc) cc.textContent = data.filter(c => !c.parentCommentId).length;
-            })
-            .catch(() => {});
+                .then(r => r.json())
+                .then(data => {
+                    if (!Array.isArray(data)) return;
+                    comments[postId] = data;
+                    const cl = document.getElementById('cl-' + postId);
+                    if (cl) cl.innerHTML = renderCommentsList(postId);
+                    const cc = document.getElementById('cc-' + postId);
+                    if (cc) cc.textContent = data.filter(c => !c.parentCommentId).length;
+                })
+                .catch(() => { });
         }
 
         // ── Interactions ──

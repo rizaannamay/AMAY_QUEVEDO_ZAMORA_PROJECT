@@ -436,14 +436,33 @@
 
     // ── Load from DB ─────────────────────────────────────────────────
     function loadFromDB() {
-        fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' })
-            .then(function (r) { return r.json(); })
-            .then(function (res) {
+        // For students: fetch their personal pinned announcement IDs
+        // For teachers: show globally pinned posts
+        var pinnedIds = [];
+
+        Promise.all([
+            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(function (r) { return r.json(); }),
+            fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(function (r) { return r.json(); })
+        ])
+            .then(function (results) {
+                var res = results[0];
+                var pinRes = results[1];
+
                 if (!res.ok) { renderPinned([]); return; }
 
-                // ✅ Only show globally pinned posts (IsPinned = true from DB)
+                // Get pinned IDs for this user
+                if (pinRes.ok && pinRes.pinnedIds) {
+                    pinnedIds = pinRes.pinnedIds;
+                }
+
+                // Filter announcements based on role
                 pinnedDB = res.data
-                    .filter(function (a) { return a.isPinned === true; })
+                    .filter(function (a) {
+                        // Teachers see globally pinned posts
+                        if (isTeacher) return a.isPinned === true;
+                        // Students see their personal pinned posts
+                        return pinnedIds.indexOf(a.id) !== -1;
+                    })
                     .map(function (a) {
                         likeCounts[a.id] = a.likeCount || 0;
                         return {
@@ -488,12 +507,18 @@
             }).catch(function () { showToast('Could not update like'); });
     }
 
-    // ── Unpin (teacher only) ─────────────────────────────────────────
+    // ── Unpin ─────────────────────────────────────────────────────────
+    // Teacher: toggles global IsPinned on Announcements table (via AnnouncementHandler)
+    // Student: toggles personal pin in UserPins table (via UserPinHandler)
     function unpinPost(id) {
-        fetch('AnnouncementHandler.ashx?action=togglePin&id=' + id, { credentials: 'same-origin' })
+        var url = isTeacher
+            ? 'AnnouncementHandler.ashx?action=togglePin&id=' + id
+            : 'UserPinHandler.ashx?action=toggle&announcementId=' + id;
+
+        fetch(url, { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (res) {
-                if (!res.ok) { showToast('Error: ' + (res.error || 'Could not unpin')); return; }
+                if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
                 showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
                 // Reload to reflect the change
                 loadFromDB();
@@ -597,7 +622,7 @@
                 + '<i class="fas fa-thumbtack" style="font-size:40px;color:var(--muted-light);display:block;margin-bottom:14px;"></i>'
                 + '<p style="font-size:16px;font-weight:600;color:var(--muted);">No pinned announcements yet.</p>'
                 + '<p style="font-size:13px;margin-top:6px;color:var(--muted-light);">'
-                + (isTeacher ? 'Pin announcements from the board to show them here.' : 'The teacher has not pinned any announcements yet.')
+                + (isTeacher ? 'Pin announcements from the board to show them here.' : 'Pin announcements from the Student Portal to save them here for quick access.')
                 + '</p></div>';
             return;
         }
@@ -615,12 +640,10 @@
                 ? '<div class="post-avatar"><img src="' + escapeHtml(ann.authorImage) + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>'
                 : '<div class="post-avatar"><i class="fas fa-user-tie"></i></div>';
 
-            // ✅ Unpin button only visible to teachers
+            // ✅ Pin/Unpin button - visible to both teachers and students
             var pinControls = '<span class="pin-badge"><i class="fas fa-thumbtack"></i> Pinned</span>';
-            if (isTeacher) {
-                pinControls += '<button class="unpin-btn" onclick="unpinPost(' + ann.id + ')" title="Unpin this post">'
-                    + '<i class="fas fa-thumbtack"></i></button>';
-            }
+            pinControls += '<button class="unpin-btn" onclick="unpinPost(' + ann.id + ')" title="Unpin this post">'
+                + '<i class="fas fa-thumbtack"></i></button>';
 
             return '<div class="pinned-card" data-post-id="' + ann.id + '">'
                 + '<div class="post-header">'
