@@ -12,6 +12,10 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root {
     --bg-image: url('wbg.jpg');
+    --uni-overlay: rgba(255,255,255,0);
+    --uni-header-bg: #c9920a;
+    --uni-accent: #c9920a;
+    --uni-accent-dark: #a87800;
     --page-text: #1a2a3a;
     --surface: rgba(255,255,255,0.92);
     --surface-strong: #ffffff;
@@ -35,7 +39,7 @@ body::before {
     height: 80px;
     z-index: 199;
     pointer-events: none;
-    background-image: linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)), var(--bg-image);
+    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -45,7 +49,7 @@ body {
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background-image: linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)), var(--bg-image);
+    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -54,7 +58,7 @@ body {
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 .header {
-    background: #c9920a;
+    background: var(--uni-header-bg);
     backdrop-filter: blur(10px);
     border-radius: 24px;
     padding: 12px 24px;
@@ -145,7 +149,7 @@ button { font: inherit; }
 .summary-icon {
     width: 54px; height: 54px;
     border-radius: 16px;
-    background: linear-gradient(135deg,#c9920a,#a87800);
+    background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0;
@@ -176,10 +180,10 @@ button { font: inherit; }
 .notif-row { display: flex; align-items: center; gap: 14px; padding: 20px; }
 .notif-icon { width: 54px; height: 54px; border-radius: 18px; color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
 .notif-like    { background: linear-gradient(135deg,#d46565,#E28A6D); }
-.notif-comment { background: linear-gradient(135deg,#c9920a,#a87800); }
+.notif-comment { background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); }
 .notif-reply   { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
 .notif-share   { background: linear-gradient(135deg,#E8C55E,#E28A6D); }
-.notif-default { background: linear-gradient(135deg,#c9920a,#a87800); }
+.notif-default { background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); }
 .notif-main { flex: 1; min-width: 0; }
 .notif-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .notif-message { font-size: 15px; font-weight: 800; color: var(--primary-2); line-height: 1.45; word-break: break-word; }
@@ -196,7 +200,7 @@ button { font: inherit; }
 .empty-title { font-size: 18px; font-weight: 800; color: var(--primary-2); }
 .empty-text  { font-size: 13px; color: var(--muted); margin-top: 8px; }
 
-.toast-msg { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: #c9920a; color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 13px; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.20); }
+.toast-msg { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%); background: var(--uni-accent); color: #fff; padding: 10px 24px; border-radius: 999px; font-size: 13px; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.20); }
 
         .notif-row {
             display: flex;
@@ -222,7 +226,7 @@ button { font: inherit; }
         }
 
         .notif-comment {
-            background: linear-gradient(135deg, #c9920a, #a87800);
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
         }
 
         .notif-share {
@@ -230,7 +234,7 @@ button { font: inherit; }
         }
 
         .notif-default {
-            background: linear-gradient(135deg, #c9920a, #a87800);
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
         }
 
         .notif-main {
@@ -326,7 +330,7 @@ button { font: inherit; }
             bottom: 26px;
             left: 50%;
             transform: translateX(-50%);
-            background: #c9920a;
+            background: var(--uni-accent);
             color: #fff;
             padding: 10px 24px;
             border-radius: 999px;
@@ -435,13 +439,16 @@ button { font: inherit; }
 
 <script>
 var userRole  = '<%= Session["Role"] != null ? Session["Role"].ToString() : "Student" %>';
-var isTeacher = userRole.toLowerCase() === 'admin';
-var homeUrl   = isTeacher ? 'Teacher.aspx' : 'Student.aspx';
-var portalUrl = isTeacher ? 'Teacher.aspx' : 'Student.aspx';
+var isAdmin   = userRole.toLowerCase() === 'admin';
+var isTeacher = userRole.toLowerCase() === 'teacher';
+var homeUrl   = isAdmin ? 'Admin.aspx' : isTeacher ? 'Teacher.aspx' : 'Student.aspx';
+var portalUrl = homeUrl;
 
 document.getElementById('homeBtn').onclick = function () { window.location.href = homeUrl; };
 
-document.getElementById('topbarSub').textContent = isTeacher
+document.getElementById('topbarSub').textContent = isAdmin
+    ? 'Admin notifications — approvals, user activity, and system alerts appear here.'
+    : isTeacher
     ? 'Student reactions to your announcements appear here.'
     : 'Teacher comments, replies, and likes on your activity appear here.';
 
@@ -455,6 +462,36 @@ document.getElementById('summaryText').textContent = isTeacher
     window.addEventListener('storage', function (e) {
         if (e.key === 'campus_theme')
             document.body.classList.toggle('dark-mode', e.newValue === 'dark');
+    });
+})();
+
+// ── University Theme ─────────────────────────────────────────
+(function () {
+    var UNIVERSITY_THEMES = {
+        'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+        'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+        'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+        'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+        'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
+        'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
+        'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+    };
+    function applyUniversityTheme(name) {
+        var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+        document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+        document.documentElement.style.setProperty('--uni-header-bg', t.header);
+        document.documentElement.style.setProperty('--uni-accent', t.accent);
+        document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+        localStorage.setItem('campus_uni_theme', name);
+    }
+    var saved = localStorage.getItem('campus_uni_theme');
+    if (saved) applyUniversityTheme(saved);
+    fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+        .then(function(r) { return r.json(); })
+        .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+        .catch(function() {});
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
     });
 })();
 

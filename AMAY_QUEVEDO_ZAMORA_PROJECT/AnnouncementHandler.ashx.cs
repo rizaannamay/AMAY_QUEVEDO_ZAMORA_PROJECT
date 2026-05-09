@@ -13,7 +13,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     public class AnnouncementHandler : IHttpHandler, IRequiresSessionState
     {
         private static readonly string ConnStr =
-            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+            @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;";
 
         public void ProcessRequest(HttpContext ctx)
         {
@@ -52,6 +52,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             var likedIds = new System.Collections.Generic.HashSet<int>();
             int currentUserId = ctx.Session["UserId"] != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
+            string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "";
+            bool isAdmin   = string.Equals(sessionRole, "Admin",   StringComparison.OrdinalIgnoreCase);
+            bool isTeacher = string.Equals(sessionRole, "Teacher", StringComparison.OrdinalIgnoreCase);
 
             using (var con = new SqlConnection(ConnStr))
             {
@@ -68,20 +71,43 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
                 }
 
-                string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
-                             "(SELECT COUNT(*) FROM UserLikes  ul WHERE ul.AnnouncementId = a.AnnouncementId) AS LikeCount, " +
-                             "(SELECT COUNT(*) FROM Comments   c  WHERE c.AnnouncementId  = a.AnnouncementId) AS CommentCount, " +
-                             "a.ShareCount, a.IsPinned, u.Username, u.FullName, " +
-                             "ISNULL(u.ProfileImage, '') AS AuthorImage " +
-                             "FROM Announcements a JOIN Users u ON u.UserId = a.UserId";
+                // Build WHERE clause based on role:
+                // Admin  → sees all posts
+                // Teacher → sees Approved posts + their own pending/rejected posts
+                // Student → sees only Approved posts
+                string statusFilter;
+                if (isAdmin)
+                    statusFilter = "";
+                else if (isTeacher)
+                    statusFilter = " AND (ISNULL(a.Status,'Approved')='Approved' OR a.UserId=@myId)";
+                else
+                    statusFilter = " AND ISNULL(a.Status,'Approved')='Approved'";
 
-                if (filterCat) sql += " WHERE a.Category = @cat";
-                if (filterDate) sql += (filterCat ? " AND" : " WHERE") + " CAST(a.Date_Posted AS DATE) = @date";
+                // IsPinned meaning differs by role:
+                //   Admin   → global IsPinned flag on the Announcements row
+                //   Teacher/Student → personal pin row in UserPins for this user
+                // We LEFT JOIN UserPins so we can compute the correct value in one query.
+                string sql = "SELECT a.AnnouncementId, a.Title, a.Content, a.Category, a.ImageUrl, a.Date_Posted, " +
+                             "ISNULL(a.Status,'Approved') AS Status, " +
+                             "(SELECT COUNT(*) FROM UserLikes ul WHERE ul.AnnouncementId = a.AnnouncementId) AS LikeCount, " +
+                             "(SELECT COUNT(*) FROM Comments  c  WHERE c.AnnouncementId  = a.AnnouncementId) AS CommentCount, " +
+                             "a.ShareCount, a.IsPinned, " +
+                             "CASE WHEN up.AnnouncementId IS NOT NULL THEN 1 ELSE 0 END AS UserIsPinned, " +
+                             "u.Username, u.FullName, " +
+                             "ISNULL(u.ProfileImage, '') AS AuthorImage " +
+                             "FROM Announcements a JOIN Users u ON u.UserId = a.UserId " +
+                             "LEFT JOIN UserPins up ON up.AnnouncementId = a.AnnouncementId AND up.UserId = @currentUid " +
+                             "WHERE 1=1" + statusFilter;
+
+                if (filterCat) sql += " AND a.Category = @cat";
+                if (filterDate) sql += " AND CAST(a.Date_Posted AS DATE) = @date";
                 sql += " ORDER BY a.IsPinned DESC, a.Date_Posted DESC";
 
                 using (var cmd = new SqlCommand(sql, con))
                 {
-                    if (filterCat) cmd.Parameters.AddWithValue("@cat", category);
+                    cmd.Parameters.AddWithValue("@currentUid", currentUserId > 0 ? (object)currentUserId : DBNull.Value);
+                    if (isTeacher) cmd.Parameters.AddWithValue("@myId", currentUserId);
+                    if (filterCat)  cmd.Parameters.AddWithValue("@cat",  category);
                     if (filterDate) cmd.Parameters.AddWithValue("@date", date);
 
                     using (var dr = cmd.ExecuteReader())
@@ -89,22 +115,27 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         while (dr.Read())
                         {
                             int annId = Convert.ToInt32(dr["AnnouncementId"]);
+                            // Admins use the global IsPinned flag; everyone else uses their personal UserPins row.
+                            bool isPinned = isAdmin
+                                ? Convert.ToBoolean(dr["IsPinned"])
+                                : Convert.ToInt32(dr["UserIsPinned"]) == 1;
                             list.Add(new
                             {
-                                id = annId,
-                                title = dr["Title"].ToString(),
-                                content = dr["Content"].ToString(),
-                                category = dr["Category"].ToString(),
-                                imageUrl = dr["ImageUrl"] != DBNull.Value ? dr["ImageUrl"].ToString() : "",
-                                date = Convert.ToDateTime(dr["Date_Posted"]).ToString("yyyy-MM-ddTHH:mm:ss"),
-                                likeCount = Convert.ToInt32(dr["LikeCount"]),
+                                id           = annId,
+                                title        = dr["Title"].ToString(),
+                                content      = dr["Content"].ToString(),
+                                category     = dr["Category"].ToString(),
+                                imageUrl     = dr["ImageUrl"] != DBNull.Value ? dr["ImageUrl"].ToString() : "",
+                                date         = Convert.ToDateTime(dr["Date_Posted"]).ToString("yyyy-MM-ddTHH:mm:ss"),
+                                status       = dr["Status"].ToString(),
+                                likeCount    = Convert.ToInt32(dr["LikeCount"]),
                                 commentCount = Convert.ToInt32(dr["CommentCount"]),
-                                shareCount = Convert.ToInt32(dr["ShareCount"]),
-                                isPinned = Convert.ToBoolean(dr["IsPinned"]),
-                                author = dr["Username"].ToString(),
+                                shareCount   = Convert.ToInt32(dr["ShareCount"]),
+                                isPinned     = isPinned,
+                                author       = dr["Username"].ToString(),
                                 authorFullName = dr["FullName"].ToString(),
-                                authorImage = dr["AuthorImage"].ToString(),
-                                userLiked = likedIds.Contains(annId)
+                                authorImage  = dr["AuthorImage"].ToString(),
+                                userLiked    = likedIds.Contains(annId)
                             });
                         }
                     }
@@ -151,17 +182,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
             string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+            bool isAdmin   = string.Equals(sessionRole, "Admin",   StringComparison.OrdinalIgnoreCase);
+            bool isTeacher = string.Equals(sessionRole, "Teacher", StringComparison.OrdinalIgnoreCase);
 
-            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            if (!isLoggedIn || (!isAdmin && !isTeacher))
             {
-                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized (role=" + sessionRole + ", loggedIn=" + isLoggedIn + ")" }));
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
                 return;
             }
 
-            string title = ctx.Request.Form["title"] != null ? ctx.Request.Form["title"].Trim() : "";
-            string content = ctx.Request.Form["content"] != null ? ctx.Request.Form["content"].Trim() : "";
-            string cat = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
-            int uid = Convert.ToInt32(ctx.Session["UserId"]);
+            string title   = ctx.Request.Form["title"]    != null ? ctx.Request.Form["title"].Trim()    : "";
+            string content = ctx.Request.Form["content"]  != null ? ctx.Request.Form["content"].Trim()  : "";
+            string cat     = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
+            int uid        = Convert.ToInt32(ctx.Session["UserId"]);
             string mediaUrls = SaveUploadedFiles(ctx);
 
             if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(content))
@@ -170,39 +203,62 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
+            // Admin posts go live immediately; Teacher posts need approval
+            string postStatus = isAdmin ? "Approved" : "Pending";
+
             int newId = 0;
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
 
-                // Insert the announcement and get the new ID
                 using (var cmd = new SqlCommand(
-                    "INSERT INTO Announcements (UserId, Title, Content, Category, ImageUrl) " +
-                    "OUTPUT INSERTED.AnnouncementId VALUES (@uid, @title, @content, @cat, @img)", con))
+                    "INSERT INTO Announcements (UserId, Title, Content, Category, ImageUrl, Status) " +
+                    "OUTPUT INSERTED.AnnouncementId VALUES (@uid, @title, @content, @cat, @img, @status)", con))
                 {
-                    cmd.Parameters.AddWithValue("@uid", uid);
-                    cmd.Parameters.AddWithValue("@title", title);
-                    cmd.Parameters.AddWithValue("@content", content);
-                    cmd.Parameters.AddWithValue("@cat", cat);
-                    cmd.Parameters.AddWithValue("@img", mediaUrls);
+                    cmd.Parameters.AddWithValue("@uid",    uid);
+                    cmd.Parameters.AddWithValue("@title",  title);
+                    cmd.Parameters.AddWithValue("@content",content);
+                    cmd.Parameters.AddWithValue("@cat",    cat);
+                    cmd.Parameters.AddWithValue("@img",    mediaUrls);
+                    cmd.Parameters.AddWithValue("@status", postStatus);
                     newId = (int)cmd.ExecuteScalar();
                 }
 
-                // ✅ Notify all students — now includes AnnouncementId so clicking works
-                using (var notifCmd = new SqlCommand(
-                    "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
-                    "SELECT UserId, @aid, @msg, 0, GETDATE() FROM Users WHERE Role = 'Student'", con))
+                if (isAdmin)
                 {
-                    notifCmd.Parameters.AddWithValue("@aid", newId);
-                    notifCmd.Parameters.AddWithValue("@msg", "New announcement: " + title);
-                    notifCmd.ExecuteNonQuery();
+                    // Admin post: notify all students immediately
+                    using (var notifCmd = new SqlCommand(
+                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                        "SELECT UserId, @aid, @msg, 0, GETDATE() FROM Users WHERE Role = 'Student'", con))
+                    {
+                        notifCmd.Parameters.AddWithValue("@aid", newId);
+                        notifCmd.Parameters.AddWithValue("@msg", "New announcement: " + title);
+                        notifCmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    // Teacher post: notify admin that a post needs review
+                    using (var notifCmd = new SqlCommand(
+                        "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
+                        "SELECT UserId, @aid, @msg, 0, GETDATE() FROM Users WHERE Role = 'Admin'", con))
+                    {
+                        notifCmd.Parameters.AddWithValue("@aid", newId);
+                        notifCmd.Parameters.AddWithValue("@msg", "New post pending approval: " + title);
+                        notifCmd.ExecuteNonQuery();
+                    }
                 }
             }
 
-            ctx.Response.Write(js.Serialize(new { ok = true, id = newId }));
+            string responseMsg = isTeacher
+                ? "Your post has been submitted and is pending admin approval."
+                : "";
 
-            // ── Send email to all students ──────────────────────────────
-            try { SendAnnouncementEmails(title, content, cat); } catch { /* don't fail the post if email fails */ }
+            ctx.Response.Write(js.Serialize(new { ok = true, id = newId, status = postStatus, message = responseMsg }));
+
+            // Send email only for approved (admin) posts
+            if (isAdmin)
+                try { SendAnnouncementEmails(title, content, cat); } catch { }
         }
 
         private void SendAnnouncementEmails(string title, string content, string category)
@@ -300,19 +356,22 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
             string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+            bool isAdmin   = string.Equals(sessionRole, "Admin",   StringComparison.OrdinalIgnoreCase);
+            bool isTeacher = string.Equals(sessionRole, "Teacher", StringComparison.OrdinalIgnoreCase);
+            int currentUserId = ctx.Session["UserId"] != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
 
-            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            if (!isLoggedIn || (!isAdmin && !isTeacher))
             {
-                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized (role=" + sessionRole + ")" }));
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
                 return;
             }
 
-            int id = Convert.ToInt32(ctx.Request["id"]);
-            string title = ctx.Request.Form["title"] != null ? ctx.Request.Form["title"].Trim() : "";
-            string content = ctx.Request.Form["content"] != null ? ctx.Request.Form["content"].Trim() : "";
-            string cat = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
+            int id      = Convert.ToInt32(ctx.Request["id"]);
+            string title   = ctx.Request.Form["title"]    != null ? ctx.Request.Form["title"].Trim()    : "";
+            string content = ctx.Request.Form["content"]  != null ? ctx.Request.Form["content"].Trim()  : "";
+            string cat     = ctx.Request.Form["category"] != null ? ctx.Request.Form["category"].Trim() : "General";
 
-            string keepUrls = ctx.Request.Form["keepUrls"] ?? "";
+            string keepUrls    = ctx.Request.Form["keepUrls"] ?? "";
             string newMediaUrls = SaveUploadedFiles(ctx);
 
             var finalParts = new List<string>();
@@ -334,15 +393,26 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
-                using (var cmd = new SqlCommand(
-                    "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img WHERE AnnouncementId=@id", con))
+
+                // Teachers can only edit their own posts; editing resets to Pending
+                string sql = isAdmin
+                    ? "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img WHERE AnnouncementId=@id"
+                    : "UPDATE Announcements SET Title=@title, Content=@content, Category=@cat, ImageUrl=@img, Status='Pending' WHERE AnnouncementId=@id AND UserId=@uid";
+
+                using (var cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.AddWithValue("@title", title);
+                    cmd.Parameters.AddWithValue("@title",   title);
                     cmd.Parameters.AddWithValue("@content", content);
-                    cmd.Parameters.AddWithValue("@cat", cat);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@img", finalMediaUrls);
-                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@cat",     cat);
+                    cmd.Parameters.AddWithValue("@id",      id);
+                    cmd.Parameters.AddWithValue("@img",     finalMediaUrls);
+                    if (!isAdmin) cmd.Parameters.AddWithValue("@uid", currentUserId);
+                    int rows = cmd.ExecuteNonQuery();
+                    if (rows == 0 && !isAdmin)
+                    {
+                        ctx.Response.Write(js.Serialize(new { ok = false, error = "Not authorized to edit this post." }));
+                        return;
+                    }
                 }
             }
 
@@ -353,17 +423,38 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
             string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString().Trim() : "";
+            bool isAdmin   = string.Equals(sessionRole, "Admin",   StringComparison.OrdinalIgnoreCase);
+            bool isTeacher = string.Equals(sessionRole, "Teacher", StringComparison.OrdinalIgnoreCase);
+            int currentUserId = ctx.Session["UserId"] != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
 
-            if (!isLoggedIn || !sessionRole.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+            if (!isLoggedIn || (!isAdmin && !isTeacher))
             {
                 ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
                 return;
             }
 
             int id = Convert.ToInt32(ctx.Request["id"]);
+
             using (var con = new SqlConnection(ConnStr))
             {
                 con.Open();
+
+                // Teachers can only delete their own posts
+                if (!isAdmin)
+                {
+                    using (var chk = new SqlCommand(
+                        "SELECT COUNT(1) FROM Announcements WHERE AnnouncementId=@id AND UserId=@uid", con))
+                    {
+                        chk.Parameters.AddWithValue("@id",  id);
+                        chk.Parameters.AddWithValue("@uid", currentUserId);
+                        if ((int)chk.ExecuteScalar() == 0)
+                        {
+                            ctx.Response.Write(js.Serialize(new { ok = false, error = "Not authorized to delete this post." }));
+                            return;
+                        }
+                    }
+                }
+
                 using (var c1 = new SqlCommand("DELETE FROM Comments      WHERE AnnouncementId=@id", con))
                 { c1.Parameters.AddWithValue("@id", id); c1.ExecuteNonQuery(); }
 

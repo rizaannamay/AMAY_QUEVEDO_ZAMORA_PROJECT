@@ -13,6 +13,10 @@
 
         :root {
             --bg-image: url('wbg.jpg');
+            --uni-overlay: rgba(255,255,255,0);
+            --uni-header-bg: #c9920a;
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.92);
             --surface-strong: #ffffff;
@@ -40,7 +44,7 @@
             height: 80px;
             z-index: 199;
             pointer-events: none;
-            background-image: var(--bg-image);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -50,7 +54,7 @@
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover; background-repeat: no-repeat;
             background-position: center; background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
@@ -60,7 +64,7 @@
 
         /* ── Header (matches dashboard) ── */
         .header {
-            background: #c9920a;
+            background: var(--uni-header-bg);
             border-radius: 24px;
             padding: 12px 24px;
             display: flex;
@@ -106,7 +110,7 @@
         .pinned-card {
             background: var(--surface-strong);
             border-radius: 20px;
-            border: 1px solid #c9920a;
+            border: 1px solid var(--uni-header-bg);
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             overflow: hidden;
             transition: all 0.3s;
@@ -126,7 +130,7 @@
 
         .post-avatar {
             width: 50px; height: 50px; border-radius: 50%;
-            background: linear-gradient(135deg, #c9920a, #a87800);
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
             color: #fff; display: flex; align-items: center; justify-content: center;
             font-size: 20px; flex-shrink: 0; overflow: hidden;
         }
@@ -143,7 +147,7 @@
             font-size: 10px; font-weight: 600;
         }
 
-        .post-category-exam       { background: #fef3c7; color: #c9920a; }
+        .post-category-exam       { background: #fef3c7; color: var(--uni-accent); }
         .post-category-suspension { background: #ffebee; color: #c62828; }
         .post-category-event      { background: #e8f5e9; color: #2e7d32; }
         .post-category-general    { background: #e0e7ff; color: #4f46e5; }
@@ -205,7 +209,7 @@
 
         .comment-input button {
             padding: 10px 22px;
-            background: linear-gradient(135deg, #c9920a, #a87800);
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
             border: none; border-radius: 30px; cursor: pointer;
             font-weight: 600; color: white; font-family: inherit;
         }
@@ -240,7 +244,7 @@
         /* ── Toast ── */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-            background: #c9920a; color: #fff; padding: 10px 24px;
+            background: var(--uni-accent); color: #fff; padding: 10px 24px;
             border-radius: 30px; font-size: 13px; z-index: 9999;
             box-shadow: 0 4px 16px rgba(0,0,0,.25); pointer-events: none;
         }
@@ -269,8 +273,8 @@
             background-attachment: fixed;
         }
 
-        body.dark-mode .pinned-card { background: rgba(35,35,35,0.95); border-color: rgba(201,146,10,0.30); }
-        body.dark-mode .pinned-card:hover { border-color: rgba(201,146,10,0.60); }
+        body.dark-mode .pinned-card { background: rgba(35,35,35,0.95); border-color: var(--uni-header-bg); }
+        body.dark-mode .pinned-card:hover { border-color: var(--uni-header-bg); opacity: 0.85; }
         body.dark-mode .post-author, body.dark-mode .post-title { color: #e0e7ff; }
         body.dark-mode .post-text { color: #e2e8f0; }
         body.dark-mode .post-stats { border-color: rgba(148,163,184,0.15); color: #cbd5e1; }
@@ -376,7 +380,7 @@
     function showToast(msg) {
         var t = document.createElement('div');
         t.textContent = msg;
-        t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#c9920a;color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
+        t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background: var(--uni-accent);color:#fff;padding:10px 24px;border-radius:30px;font-size:13px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.25);pointer-events:none;';
         document.body.appendChild(t);
         setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2500);
     }
@@ -705,6 +709,34 @@
     }
     window.addEventListener('storage', function (e) {
         if (e.key === THEME_KEY) applyStoredTheme();
+    });
+
+    // ── University Theme ─────────────────────────────────────────────
+    var UNIVERSITY_THEMES = {
+        'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+        'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+        'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+        'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+        'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
+        'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
+        'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+    };
+    function applyUniversityTheme(name) {
+        var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+        document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+        document.documentElement.style.setProperty('--uni-header-bg', t.header);
+        document.documentElement.style.setProperty('--uni-accent', t.accent);
+        document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+        localStorage.setItem('campus_uni_theme', name);
+    }
+    var savedUniTheme = localStorage.getItem('campus_uni_theme');
+    if (savedUniTheme) applyUniversityTheme(savedUniTheme);
+    fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+        .then(function(r) { return r.json(); })
+        .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+        .catch(function() {});
+    window.addEventListener('storage', function(e) {
+        if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
     });
 
     // ── Init ─────────────────────────────────────────────────────────

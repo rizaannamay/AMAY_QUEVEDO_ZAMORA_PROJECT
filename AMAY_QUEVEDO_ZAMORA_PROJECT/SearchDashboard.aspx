@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchDashboard.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchDashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="SearchDashboard.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.SearchDashboard" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,6 +19,10 @@
 
         /* ── ROOT VARIABLES — teal theme matching dashboard ── */
         :root {
+            --uni-overlay: rgba(255,255,255,0);
+            --uni-header-bg: #c9920a;
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.92);
             --surface-strong: #ffffff;
@@ -38,8 +42,8 @@
             position: relative;
             overflow-x: hidden;
             color: var(--page-text);
-            background-color: #c9920a;
-            background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), url('wbg.jpg');
+            background-color: var(--uni-header-bg);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), url('wbg.jpg');
             background-size: cover;
             background-repeat: no-repeat;
             background-position: center;
@@ -49,7 +53,7 @@
 
         /* ── NAVBAR ── */
         .glass-nav {
-            background: #c9920a;
+            background: var(--uni-header-bg);
             border: 1px solid rgba(255,255,255,0.15);
             border-radius: 24px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -132,7 +136,7 @@
         .card-desc        { color: #374151; font-size: 13px; line-height: 1.6; }
 
         .card-banner {
-            background: linear-gradient(135deg,#7a5200,#c9920a);
+            background: linear-gradient(135deg, var(--uni-accent-dark), var(--uni-accent));
             border-radius: 12px;
             min-width: 90px;
             text-align: center;
@@ -339,7 +343,7 @@
             color: #1a2a3a;
         }
         body.light-mode .glass-nav {
-            background: #c9920a;
+            background: var(--uni-accent);
             border-color: rgba(255,255,255,0.15);
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
         }
@@ -548,7 +552,7 @@
             bottom: 28px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #7a5200, #c9920a);
+            background: linear-gradient(135deg, var(--uni-accent-dark), var(--uni-accent));
             color: white;
             padding: 10px 24px;
             border-radius: 30px;
@@ -647,8 +651,8 @@
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 1.25rem;
         }
-        .info-icon-wrapper i { font-size: 2rem; color: #c9920a; }
-        .btn-info { background: linear-gradient(135deg, #7a5200, #c9920a); color: white; }
+        .info-icon-wrapper i { font-size: 2rem; color: var(--uni-accent); }
+        .btn-info { background: linear-gradient(135deg, var(--uni-accent-dark), var(--uni-accent)); color: white; }
         .btn-info:hover { opacity: 0.88; }
 
         @media (max-width: 480px) {
@@ -741,7 +745,7 @@
                             </div>
                             <div>
                                 <h1 class="font-extrabold text-xl md:text-2xl tracking-tight text-white">CampusAnnouncement</h1>
-                                <p class="text-xs font-medium hidden sm:block" style="color:rgba(255,255,255,0.55)">Teacher Portal</p>
+                                <p class="text-xs font-medium hidden sm:block" style="color:rgba(255,255,255,0.55)"><%= Session["Role"] != null && Session["Role"].ToString() == "Admin" ? "Admin Portal" : "Teacher Portal" %></p>
                             </div>
                         </div>
                         <div class="flex-1 max-w-md mx-4">
@@ -751,7 +755,8 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 md:gap-4">
-                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Teacher.aspx"
+                            <asp:HyperLink ID="homeLink" runat="server"
+                                NavigateUrl="Admin.aspx"
                                 CssClass="p-2 rounded-full transition-all text-white" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12)">
                                 <i class="fas fa-home text-xl"></i>
                             </asp:HyperLink>
@@ -1491,6 +1496,34 @@
             applyTheme(localStorage.getItem(KEY) === 'dark');
             window.addEventListener('storage', e => {
                 if (e.key === KEY) applyTheme(e.newValue === 'dark');
+            });
+
+            // ── University Theme ─────────────────────────────────────
+            var UNIVERSITY_THEMES = {
+                'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+                'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+                'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+                'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+                'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
+                'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
+                'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+            };
+            function applyUniversityTheme(name) {
+                var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+                document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+                document.documentElement.style.setProperty('--uni-header-bg', t.header);
+                document.documentElement.style.setProperty('--uni-accent', t.accent);
+                document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                localStorage.setItem('campus_uni_theme', name);
+            }
+            var saved = localStorage.getItem('campus_uni_theme');
+            if (saved) applyUniversityTheme(saved);
+            fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+                .catch(function() {});
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
             });
         })();
 

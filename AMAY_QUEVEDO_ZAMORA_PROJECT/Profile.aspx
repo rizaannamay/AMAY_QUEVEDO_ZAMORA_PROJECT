@@ -14,6 +14,10 @@
 
         :root {
             --bg-image: url('wbg.jpg');
+            --uni-overlay: rgba(255,255,255,0);
+            --uni-header-bg: #c9920a;
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.93);
             --surface-strong: #ffffff;
@@ -41,7 +45,7 @@
             height: 80px;
             z-index: 199;
             pointer-events: none;
-            background-image: var(--bg-image);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -51,7 +55,7 @@
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(rgba(255,255,255,0.18), rgba(255,255,255,0.18)), var(--bg-image);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover; background-repeat: no-repeat;
             background-position: center; background-attachment: fixed;
         }
@@ -70,7 +74,7 @@
 
         /* Topbar — matches dashboard header */
         .topbar {
-            background: #c9920a;
+            background: var(--uni-header-bg);
             backdrop-filter: blur(10px);
             border-radius: 24px;
             padding: 12px 24px;
@@ -109,7 +113,7 @@
         }
         .profile-banner {
             height: 120px;
-            background: linear-gradient(135deg, #c9920a 0%, #a87800 55%, #7a5200 100%);
+            background: linear-gradient(135deg, var(--uni-accent) 0%, var(--uni-accent-dark) 55%, var(--uni-header-bg) 100%);
             position: relative;
         }
         .profile-avatar-wrap {
@@ -118,7 +122,7 @@
         }
         .profile-avatar {
             width: 100px; height: 100px; border-radius: 50%;
-            background: linear-gradient(135deg, #c9920a, #a87800);
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));
             border: 4px solid #ffffff;
             display: flex; align-items: center; justify-content: center;
             font-size: 40px; color: #fff;
@@ -139,14 +143,14 @@
         .profile-name { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 6px; }
         .profile-role-badge {
             display: inline-block; padding: 4px 16px; border-radius: 20px;
-            font-size: 12px; font-weight: 700; background: #fef3c7; color: #c9920a; margin-bottom: 6px;
+            font-size: 12px; font-weight: 700; background: #fef3c7; color: var(--uni-accent); margin-bottom: 6px;
         }
         .profile-role-badge.admin { background: #EDE9FE; color: #5B21B6; }
         .profile-tagline { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
 
         .upload-btn {
             display: inline-flex; align-items: center; gap: 8px; position: relative;
-            background: linear-gradient(135deg, #c9920a, #a87800); color: #fff;
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff;
             border-radius: 40px; padding: 10px 22px; font-size: 13px; font-weight: 600;
             cursor: pointer; box-shadow: 0 4px 14px rgba(201,146,10,0.25);
             transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; border: none;
@@ -173,7 +177,7 @@
             color: var(--primary); cursor: pointer; transition: all 0.2s;
         }
         .edit-toggle-btn:hover { background: #fef3c7; border-color: var(--primary-2); }
-        .edit-toggle-btn.active { background: linear-gradient(135deg,#c9920a,#a87800); color: #fff; border-color: transparent; }
+        .edit-toggle-btn.active { background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff; border-color: transparent; }
 
         .info-row {
             display: flex; align-items: center; gap: 16px;
@@ -182,7 +186,7 @@
         .info-row:last-child { border-bottom: none; }
         .info-icon {
             width: 42px; height: 42px; border-radius: 12px;
-            background: linear-gradient(135deg, #c9920a, #a87800); color: #fff;
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 16px; flex-shrink: 0;
         }
@@ -212,7 +216,7 @@
         }
         .btn-save {
             padding: 10px 24px; border: none; border-radius: 40px;
-            background: linear-gradient(135deg,#c9920a,#a87800); color: #fff;
+            background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff;
             font-size: 13px; font-weight: 700; cursor: pointer;
             box-shadow: 0 4px 12px rgba(201,146,10,0.25); transition: all 0.2s;
         }
@@ -237,7 +241,7 @@
         /* Toast */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-            background: #c9920a; color: #fff; padding: 10px 24px; border-radius: 30px;
+            background: var(--uni-accent); color: #fff; padding: 10px 24px; border-radius: 30px;
             font-size: 13px; z-index: 9999; box-shadow: 0 4px 16px rgba(0,0,0,.25);
             animation: toastFade 2.6s ease forwards; pointer-events: none;
         }
@@ -455,6 +459,36 @@
             });
         })();
 
+        // ── University Theme ─────────────────────────────────────────
+        (function () {
+            var UNIVERSITY_THEMES = {
+                'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+                'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+                'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+                'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+                'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
+                'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
+                'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+            };
+            function applyUniversityTheme(name) {
+                var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+                document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+                document.documentElement.style.setProperty('--uni-header-bg', t.header);
+                document.documentElement.style.setProperty('--uni-accent', t.accent);
+                document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                localStorage.setItem('campus_uni_theme', name);
+            }
+            var saved = localStorage.getItem('campus_uni_theme');
+            if (saved) applyUniversityTheme(saved);
+            fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+                .catch(function() {});
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
+            });
+        })();
+
         // ── Toast ──────────────────────────────────────────────
         function showToast(msg) {
             var t = document.createElement('div');
@@ -524,32 +558,90 @@
                 if (!file.type.startsWith('image/')) { showToast('Please select an image file.'); return; }
                 if (file.size > 2 * 1024 * 1024) { showToast('Image must be smaller than 2MB.'); return; }
 
+                // Show local preview immediately
                 var reader = new FileReader();
                 reader.onload = function (ev) {
-                    var circle = document.getElementById('avatarCircle');
-                    if (circle) {
-                        var icon = circle.querySelector('#avatarIcon');
-                        if (icon) icon.style.display = 'none';
-                        var img = circle.querySelector('#avatarImg');
-                        if (img) { img.src = ev.target.result; }
-                        else {
-                            var newImg = document.createElement('img');
-                            newImg.id = 'avatarImg'; newImg.alt = 'Profile Photo';
-                            newImg.src = ev.target.result;
-                            newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;';
-                            circle.insertBefore(newImg, circle.firstChild);
-                        }
-                    }
+                    updateAvatarSrc(ev.target.result);
                 };
                 reader.readAsDataURL(file);
 
+                // Show uploading status
                 var status = document.getElementById('uploadStatus');
                 if (status) {
                     status.style.display = 'block';
+                    status.style.color = 'var(--muted)';
                     status.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Uploading...';
                 }
-                document.getElementById('form1').submit();
+
+                // Upload via AJAX — no page reload
+                var fd = new FormData();
+                fd.append('photo', file);
+
+                fetch('UploadProfilePhoto.ashx', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body: fd
+                })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok) {
+                        // Update avatar with the real server path + cache-bust
+                        var finalSrc = res.imagePath + '?v=' + Date.now();
+                        updateAvatarSrc(finalSrc);
+
+                        if (status) {
+                            status.style.color = '#16a34a';
+                            status.innerHTML = '<i class="fas fa-check-circle" style="margin-right:6px;"></i>Profile photo updated!';
+                            setTimeout(function() { status.style.display = 'none'; }, 3000);
+                        }
+                        showToast('✅ Profile photo updated!');
+
+                        // Also update the header avatar on this page if it exists
+                        var headerAvatar = document.getElementById('headerAvatar');
+                        if (headerAvatar) {
+                            var hImg = headerAvatar.querySelector('img');
+                            if (hImg) { hImg.src = finalSrc; }
+                            else {
+                                headerAvatar.innerHTML = '<img src="' + finalSrc + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
+                            }
+                        }
+                    } else {
+                        if (status) {
+                            status.style.color = '#dc2626';
+                            status.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>' + (res.error || 'Upload failed.');
+                        }
+                        showToast('❌ ' + (res.error || 'Upload failed.'));
+                    }
+                })
+                .catch(function(err) {
+                    if (status) {
+                        status.style.color = '#dc2626';
+                        status.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>Network error. Please try again.';
+                    }
+                    showToast('❌ Network error. Please try again.');
+                });
+
+                // Reset input so same file can be re-selected
+                photoInput.value = '';
             });
+        }
+
+        function updateAvatarSrc(src) {
+            var circle = document.getElementById('avatarCircle');
+            if (!circle) return;
+            var icon = circle.querySelector('#avatarIcon');
+            if (icon) icon.style.display = 'none';
+            var img = circle.querySelector('#avatarImg');
+            if (img) {
+                img.src = src;
+            } else {
+                var newImg = document.createElement('img');
+                newImg.id = 'avatarImg';
+                newImg.alt = 'Profile Photo';
+                newImg.src = src;
+                newImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;';
+                circle.insertBefore(newImg, circle.firstChild);
+            }
         }
     </script>
 </body>

@@ -78,13 +78,13 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         protected global::System.Web.UI.WebControls.RadioButton rbStudent;
 
         /// <summary>
-        /// rbAdmin control.
+        /// rbTeacher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton rbAdmin;
+        protected global::System.Web.UI.WebControls.RadioButton rbTeacher;
 
         /// <summary>
         /// lblMessage control.

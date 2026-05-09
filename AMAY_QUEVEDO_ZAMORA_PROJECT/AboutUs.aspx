@@ -2,17 +2,20 @@
 <script runat="server">
     protected string BackUrl {
         get {
-
-
-
-            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
-            return source == "teacher" ? "Teacher.aspx" : "Student.aspx";
+            string role   = (Session["Role"] ?? "").ToString().ToLowerInvariant();
+            string source = (Request.QueryString["source"] ?? "").ToLowerInvariant();
+            if (role == "admin")   return "Admin.aspx";
+            if (role == "teacher" || source == "teacher") return "Teacher.aspx";
+            return "Student.aspx";
         }
     }
     protected string BackLabel {
         get {
-            string source = (Request.QueryString["source"] ?? string.Empty).ToLowerInvariant();
-            return source == "teacher" ? "Back to Teacher" : "Back to Student";
+            string role   = (Session["Role"] ?? "").ToString().ToLowerInvariant();
+            string source = (Request.QueryString["source"] ?? "").ToLowerInvariant();
+            if (role == "admin")   return "Back to Admin";
+            if (role == "teacher" || source == "teacher") return "Back to Teacher";
+            return "Back to Student";
         }
     }
 </script>
@@ -34,6 +37,10 @@
 
                         :root {
             --bg-image: url('wbg.jpg');
+            --uni-overlay: rgba(255,255,255,0);
+            --uni-header-bg: #c9920a;
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
             --page-text: #1a2a3a;
             --surface: rgba(255, 255, 255, 0.92);
             --surface-strong: #ffffff;
@@ -61,7 +68,7 @@
             height: 80px;
             z-index: 199;
             pointer-events: none;
-            background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -71,7 +78,7 @@
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background-image: linear-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3)), var(--bg-image);
+    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -131,7 +138,7 @@ body.dark-mode {
 
         /* ── TOPBAR — matches dashboard dark navy header ── */
         .topbar {
-            background: #c9920a;
+            background: var(--uni-header-bg);
             border-radius: 24px;
             padding: 14px 24px;
             display: flex;
@@ -226,7 +233,7 @@ body.dark-mode .stat strong { color: #93c5fd; }
 /* ── SECTION CARD ── */
 .section-card { padding: 28px; }
 .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg,#c9920a,#a87800); box-shadow: 0 4px 12px rgba(201,146,10,0.3); }
+.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); box-shadow: 0 4px 12px rgba(201,146,10,0.3); }
 .section-heading h3 { color: var(--primary); font-size: 1.35rem; }
 body.dark-mode .section-heading h3 { color: #e2e8f0; }
 
@@ -445,6 +452,36 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
             applyTheme(localStorage.getItem('campus_theme') || 'light');
             window.addEventListener('storage', function (e) {
                 if (e.key === 'campus_theme') applyTheme(e.newValue || 'light');
+            });
+        })();
+
+        // ── University Theme ─────────────────────────────────────────
+        (function () {
+            var UNIVERSITY_THEMES = {
+                'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+                'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+                'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+                'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+                'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
+                'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
+                'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+            };
+            function applyUniversityTheme(name) {
+                var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+                document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+                document.documentElement.style.setProperty('--uni-header-bg', t.header);
+                document.documentElement.style.setProperty('--uni-accent', t.accent);
+                document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                localStorage.setItem('campus_uni_theme', name);
+            }
+            var saved = localStorage.getItem('campus_uni_theme');
+            if (saved) applyUniversityTheme(saved);
+            fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+                .catch(function() {});
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
             });
         })();
 

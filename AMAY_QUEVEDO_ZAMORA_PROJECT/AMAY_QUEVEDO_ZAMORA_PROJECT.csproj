@@ -85,6 +85,9 @@
     <Content Include="UploadProfilePhoto.ashx" />
     <Content Include="CommentHandler.ashx" />
     <Content Include="NotificationHandler.ashx" />
+    <Content Include="UserMgmtHandler.ashx" />
+    <Content Include="CalendarHandler.ashx" />
+    <Content Include="ApprovalHandler.ashx" />
     <Content Include="login.aspx" />
     <Content Include="Quevedo Mary Chris.jpg" />
     <Content Include="School Announcent Campaign.jpg" />
@@ -97,6 +100,7 @@
     <Content Include="Students activities.jpg" />
     <Content Include="wbg.jpg" />
     <Content Include="signin.aspx" />
+    <Content Include="Admin.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
     <Content Include="Zamora Shaira Jane.jpg" />
@@ -134,6 +138,15 @@
     </Compile>
     <Compile Include="NotificationHandler.ashx.cs">
       <DependentUpon>NotificationHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="UserMgmtHandler.ashx.cs">
+      <DependentUpon>UserMgmtHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="CalendarHandler.ashx.cs">
+      <DependentUpon>CalendarHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ApprovalHandler.ashx.cs">
+      <DependentUpon>ApprovalHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Comments.aspx.cs">
       <DependentUpon>Comments.aspx</DependentUpon>
@@ -199,6 +212,14 @@
     <Compile Include="Teacher.aspx.designer.cs">
       <DependentUpon>Teacher.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Admin.aspx.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin.aspx.designer.cs">
+      <DependentUpon>Admin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CalendarReminderHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

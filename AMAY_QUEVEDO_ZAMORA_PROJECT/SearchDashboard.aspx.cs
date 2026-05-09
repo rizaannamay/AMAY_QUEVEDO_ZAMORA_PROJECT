@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
@@ -14,15 +15,20 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
-            // Only Admin can use the teacher search dashboard
-            if (!string.Equals(
-                    Session["Role"] != null ? Session["Role"].ToString() : "",
-                    "Admin", StringComparison.OrdinalIgnoreCase))
+            // Only Admin and Teacher can use the search dashboard
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "";
+            bool isAdmin   = string.Equals(role, "Admin",   StringComparison.OrdinalIgnoreCase);
+            bool isTeacher = string.Equals(role, "Teacher", StringComparison.OrdinalIgnoreCase);
+
+            if (!isAdmin && !isTeacher)
             {
                 Response.Redirect("SearchStudent.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
+
+            // Set home button URL based on role
+            homeLink.NavigateUrl = isAdmin ? "Admin.aspx" : "Teacher.aspx";
 
             if (!IsPostBack)
             {

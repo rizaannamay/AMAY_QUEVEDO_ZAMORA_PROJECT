@@ -12,6 +12,11 @@
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
         html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
+        :root {
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url('ctu.png');
@@ -178,7 +183,7 @@
         .btn-register {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, #c9920a 0%, #a87800 100%);
+            background: linear-gradient(135deg, var(--uni-accent) 0%, var(--uni-accent-dark) 100%);
             color: #ffffff;
             border: none;
             border-radius: 40px;
@@ -422,7 +427,7 @@
                 <div class="input-wrap">
                     <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"
                         style="width:100%;padding:12px 46px 12px 18px;background:rgba(255,255,255,0.92);border:1.5px solid rgba(255,255,255,0.5);border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;transition:border-color 0.2s,box-shadow 0.2s;"
-                        placeholder="Password (min. 6 characters)"></asp:TextBox>
+                        placeholder="Password (min. 8 chars, A-Z, 0-9, !@#$)"></asp:TextBox>
                     <span class="icon toggle-pw" id="togglePw1" title="Show/hide password">
                         <i class="fas fa-eye" id="togglePw1Icon"></i>
                     </span>
@@ -438,16 +443,32 @@
                     </span>
                 </div>
 
-                <!-- Role dropdown -->
+                <!-- Role dropdown — Student & Teacher only; Admin is created by existing admins -->
                 <div class="role-wrap">
                     <select id="roleSelect" onchange="syncRole(this.value)">
                         <option value="Student">Student</option>
-                        <option value="Admin">Admin</option>
+                        <option value="Teacher">Teacher</option>
                     </select>
                     <span class="icon"><i class="fas fa-chevron-down"></i></span>
                     <!-- Hidden radio buttons kept for server-side compatibility -->
                     <asp:RadioButton ID="rbStudent" runat="server" GroupName="Role" Checked="true" style="display:none;" />
-                    <asp:RadioButton ID="rbAdmin"   runat="server" GroupName="Role" style="display:none;" />
+                    <asp:RadioButton ID="rbTeacher" runat="server" GroupName="Role" style="display:none;" />
+                </div>
+                <!-- Teacher pending notice -->
+                <div id="teacherNotice" style="display:none;width:100%;padding:9px 14px;background:rgba(251,191,36,0.18);border-left:3px solid #f59e0b;border-radius:10px;font-size:12px;color:#92400e;margin-bottom:10px;">
+                    <i class="fas fa-info-circle"></i> Teacher accounts require <strong>admin approval</strong> before activation.
+                </div>
+                <!-- Password strength indicator -->
+                <div id="pwStrengthBar" style="width:100%;height:4px;border-radius:4px;background:#e5e7eb;margin-bottom:8px;overflow:hidden;display:none;">
+                    <div id="pwStrengthFill" style="height:100%;width:0%;transition:width 0.3s,background 0.3s;border-radius:4px;"></div>
+                </div>
+                <div id="pwStrengthLabel" style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:8px;display:none;"></div>
+                <div id="pwRules" style="font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:10px;display:none;line-height:1.8;">
+                    <span id="r8" style="margin-right:10px;">&#x25CB; 8+ chars</span>
+                    <span id="rU" style="margin-right:10px;">&#x25CB; Uppercase</span>
+                    <span id="rL" style="margin-right:10px;">&#x25CB; Lowercase</span>
+                    <span id="rN" style="margin-right:10px;">&#x25CB; Number</span>
+                    <span id="rS">&#x25CB; Special (!@#$...)</span>
                 </div>
 
                 <!-- Message -->
@@ -479,23 +500,75 @@
         // Sync visible dropdown → hidden radio buttons for server-side
         function syncRole(val) {
             var rbStudent = document.getElementById('<%= rbStudent.ClientID %>');
-            var rbAdmin = document.getElementById('<%= rbAdmin.ClientID %>');
-            if (!rbStudent || !rbAdmin) return;
-            if (val === 'Admin') {
-                rbAdmin.checked = true;
+            var rbTeacher = document.getElementById('<%= rbTeacher.ClientID %>');
+            if (!rbStudent || !rbTeacher) return;
+            if (val === 'Teacher') {
+                rbTeacher.checked = true;
                 rbStudent.checked = false;
+                document.getElementById('teacherNotice').style.display = 'block';
             } else {
                 rbStudent.checked = true;
-                rbAdmin.checked = false;
+                rbTeacher.checked = false;
+                document.getElementById('teacherNotice').style.display = 'none';
             }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(pw) {
+            var rules = {
+                len:     pw.length >= 8,
+                upper:   /[A-Z]/.test(pw),
+                lower:   /[a-z]/.test(pw),
+                number:  /[0-9]/.test(pw),
+                special: /[^A-Za-z0-9]/.test(pw)
+            };
+            var score = Object.values(rules).filter(Boolean).length;
+            var bar   = document.getElementById('pwStrengthFill');
+            var lbl   = document.getElementById('pwStrengthLabel');
+            var colors = ['#ef4444','#f97316','#eab308','#22c55e','#16a34a'];
+            var labels = ['Very Weak','Weak','Fair','Strong','Very Strong'];
+            bar.style.width     = (score * 20) + '%';
+            bar.style.background = colors[score - 1] || '#e5e7eb';
+            lbl.textContent     = score > 0 ? labels[score - 1] : '';
+
+            function mark(id, ok) {
+                var el = document.getElementById(id);
+                if (!el) return;
+                el.innerHTML = (ok ? '&#x2714; ' : '&#x25CB; ') + el.textContent.replace(/^[✔○] /, '');
+                el.style.color = ok ? '#4ade80' : 'rgba(255,255,255,0.65)';
+            }
+            mark('r8', rules.len);
+            mark('rU', rules.upper);
+            mark('rL', rules.lower);
+            mark('rN', rules.number);
+            mark('rS', rules.special);
+            return rules;
         }
 
         // Show/hide password — field 1
         (function () {
-            var btn = document.getElementById('togglePw1');
+            var btn  = document.getElementById('togglePw1');
             var icon = document.getElementById('togglePw1Icon');
-            var pw = document.getElementById('<%= txtPassword.ClientID %>');
+            var pw   = document.getElementById('<%= txtPassword.ClientID %>');
             if (!btn || !pw) return;
+
+            // Show strength bar when typing
+            pw.addEventListener('input', function () {
+                var bar   = document.getElementById('pwStrengthBar');
+                var lbl   = document.getElementById('pwStrengthLabel');
+                var rules = document.getElementById('pwRules');
+                if (pw.value.length > 0) {
+                    bar.style.display   = 'block';
+                    lbl.style.display   = 'block';
+                    rules.style.display = 'block';
+                } else {
+                    bar.style.display   = 'none';
+                    lbl.style.display   = 'none';
+                    rules.style.display = 'none';
+                }
+                checkPasswordStrength(pw.value);
+            });
+
             btn.addEventListener('click', function () {
                 var show = pw.getAttribute('type') === 'password';
                 pw.setAttribute('type', show ? 'text' : 'password');
@@ -505,9 +578,9 @@
 
         // Show/hide password — field 2
         (function () {
-            var btn = document.getElementById('togglePw2');
+            var btn  = document.getElementById('togglePw2');
             var icon = document.getElementById('togglePw2Icon');
-            var cpw = document.getElementById('<%= txtConfirmPassword.ClientID %>');
+            var cpw  = document.getElementById('<%= txtConfirmPassword.ClientID %>');
             if (!btn || !cpw) return;
             btn.addEventListener('click', function () {
                 var show = cpw.getAttribute('type') === 'password';
@@ -518,18 +591,19 @@
 
         // Password match indicator
         (function () {
-            var pw = document.getElementById('<%= txtPassword.ClientID %>');
+            var pw  = document.getElementById('<%= txtPassword.ClientID %>');
             var cpw = document.getElementById('<%= txtConfirmPassword.ClientID %>');
             if (!pw || !cpw) return;
             cpw.addEventListener('input', function () {
                 if (cpw.value.length === 0) {
                     cpw.style.borderColor = 'rgba(255,255,255,0.5)';
-                } else if (cpw.value === pw.value && pw.value.length >= 6) {
-                    cpw.style.borderColor = '#d97706';
-                    cpw.style.boxShadow = '0 0 0 3px rgba(217,119,6,0.22)';
+                    cpw.style.boxShadow   = 'none';
+                } else if (cpw.value === pw.value) {
+                    cpw.style.borderColor = '#22c55e';
+                    cpw.style.boxShadow   = '0 0 0 3px rgba(34,197,94,0.22)';
                 } else {
                     cpw.style.borderColor = '#dc2626';
-                    cpw.style.boxShadow = '0 0 0 3px rgba(220,38,38,0.18)';
+                    cpw.style.boxShadow   = '0 0 0 3px rgba(220,38,38,0.18)';
                 }
             });
         })();
@@ -540,9 +614,9 @@
             if (!btn) return;
             btn.addEventListener('click', function () {
                 setTimeout(function () {
-                    btn.value = 'Creating account...';
+                    btn.value  = 'Creating account...';
                     btn.style.opacity = '0.75';
-                    btn.style.cursor = 'not-allowed';
+                    btn.style.cursor  = 'not-allowed';
                 }, 10);
             });
         })();
@@ -551,13 +625,13 @@
         document.querySelectorAll('.input-wrap input, .role-wrap select').forEach(function (el) {
             el.addEventListener('focus', function () {
                 this.style.borderColor = '#d97706';
-                this.style.boxShadow = '0 0 0 3px rgba(217,119,6,0.25)';
-                this.style.background = '#ffffff';
+                this.style.boxShadow   = '0 0 0 3px rgba(217,119,6,0.25)';
+                this.style.background  = '#ffffff';
             });
             el.addEventListener('blur', function () {
                 this.style.borderColor = 'rgba(255,255,255,0.5)';
-                this.style.boxShadow = 'none';
-                this.style.background = 'rgba(255,255,255,0.92)';
+                this.style.boxShadow   = 'none';
+                this.style.background  = 'rgba(255,255,255,0.92)';
             });
         });
     </script>

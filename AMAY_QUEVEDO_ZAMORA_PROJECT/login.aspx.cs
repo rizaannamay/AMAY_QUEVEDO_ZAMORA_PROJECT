@@ -11,7 +11,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public partial class login : Page
     {
-        private readonly string connectionString = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
+        private readonly string connectionString = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;Connect Timeout=30;TrustServerCertificate=True;";
 
         // SHA-256 hash � must match the algorithm used in signin.aspx.cs
         private static string HashPassword(string password)
@@ -35,7 +35,12 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 if (Session["IsLoggedIn"] != null && (bool)Session["IsLoggedIn"])
                 {
                     string role = Session["Role"] != null ? Session["Role"].ToString() : "";
-                    Response.Redirect(role == "Admin" ? "Splash.aspx?dest=Teacher" : "Splash.aspx?dest=Student");
+                    if (role == "Admin")
+                        Response.Redirect("Splash.aspx?dest=Admin");
+                    else if (role == "Teacher")
+                        Response.Redirect("Splash.aspx?dest=Teacher");
+                    else
+                        Response.Redirect("Splash.aspx?dest=Student");
                     return;
                 }
 
@@ -67,7 +72,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     con.Open();
 
                     // First try hashed password (new accounts)
-                    string sql = "SELECT UserId, FullName, Email, Role, Username, ProfileImage, Password FROM Users WHERE Username = @u AND Role = @r";
+                    string sql = "SELECT UserId, FullName, Email, Role, Username, ProfileImage, Password, ISNULL(AccountStatus,'Active') AS AccountStatus FROM Users WHERE Username = @u AND Role = @r";
                     using (var cmd = new SqlCommand(sql, con))
                     {
                         cmd.Parameters.AddWithValue("@u", username);
@@ -92,8 +97,26 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                 string email       = dr["Email"].ToString();
                                 string matchedRole = dr["Role"].ToString();
                                 string profileImg  = dr["ProfileImage"] != DBNull.Value ? dr["ProfileImage"].ToString() : string.Empty;
+                                string acctStatus  = dr["AccountStatus"] != DBNull.Value ? dr["AccountStatus"].ToString() : "Active";
 
                                 dr.Close();
+
+                                // Block pending/suspended/rejected accounts
+                                if (acctStatus == "Pending")
+                                {
+                                    ShowError("Your account is pending admin approval. Please wait for activation.");
+                                    return;
+                                }
+                                if (acctStatus == "Suspended")
+                                {
+                                    ShowError("Your account has been suspended. Please contact the administrator.");
+                                    return;
+                                }
+                                if (acctStatus == "Rejected")
+                                {
+                                    ShowError("Your account registration was not approved. Please contact the administrator.");
+                                    return;
+                                }
 
                                 // Auto-upgrade plain-text password to hash on first login
                                 if (isPlainMatch && !isHashMatch)
@@ -116,6 +139,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                 Session["IsLoggedIn"]   = true;
 
                                 if (matchedRole == "Admin")
+                                    Response.Redirect("Splash.aspx?dest=Admin");
+                                else if (matchedRole == "Teacher")
                                     Response.Redirect("Splash.aspx?dest=Teacher");
                                 else
                                     Response.Redirect("Splash.aspx?dest=Student");

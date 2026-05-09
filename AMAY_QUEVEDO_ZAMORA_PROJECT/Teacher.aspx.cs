@@ -14,19 +14,35 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
-            if (!string.Equals(Session["Role"]?.ToString(), "Admin", StringComparison.OrdinalIgnoreCase))
+            string role = Session["Role"] != null ? Session["Role"].ToString() : "";
+            bool isTeacher = string.Equals(role, "Teacher", StringComparison.OrdinalIgnoreCase);
+            bool isAdmin   = string.Equals(role, "Admin",   StringComparison.OrdinalIgnoreCase);
+
+            // Only Teacher and Admin can access this page
+            if (!isTeacher && !isAdmin)
             {
                 Response.Redirect("Student.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
+            // Admin should be on Admin.aspx, not Teacher.aspx
+            if (isAdmin)
+            {
+                Response.Redirect("Admin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+
             if (!IsPostBack)
             {
-                string fullName = Session["FullName"]?.ToString() ?? "Admin";
-                string email = Session["Email"]?.ToString() ?? "";
-                string role = Session["Role"]?.ToString() ?? "Admin";
-                string username = Session["Username"]?.ToString() ?? "";
+                // Send 1-day-ahead reminders for any calendar events scheduled for tomorrow.
+                int userId = Session["UserId"] != null ? Convert.ToInt32(Session["UserId"]) : 0;
+                CalendarReminderHelper.SendReminders(userId);
+
+                string fullName = Session["FullName"] != null ? Session["FullName"].ToString() : "Teacher";
+                string email    = Session["Email"]    != null ? Session["Email"].ToString()    : "";
+                string username = Session["Username"] != null ? Session["Username"].ToString() : "";
 
                 string fn = System.Web.HttpUtility.JavaScriptStringEncode(fullName);
                 string em = System.Web.HttpUtility.JavaScriptStringEncode(email);

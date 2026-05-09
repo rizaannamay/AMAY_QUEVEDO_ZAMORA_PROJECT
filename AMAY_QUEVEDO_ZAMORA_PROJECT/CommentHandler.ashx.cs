@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Web;
@@ -9,14 +9,14 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 {
     public class CommentHandler : IHttpHandler, IRequiresSessionState
     {
-        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;");
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;");
 
         public void ProcessRequest(HttpContext ctx)
         {
             ctx.Response.ContentType = "application/json";
             string action = ctx.Request.QueryString["action"] ?? "";
 
-            // GetComments is public � no login required
+            // GetComments is public ? no login required
             if (action == "get")
             {
                 EnsureSchema();
@@ -372,7 +372,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
                 catch
                 {
-                    // Don't mark as checked on failure � allow retry next request
+                    // Don't mark as checked on failure ? allow retry next request
                 }
             }
         }

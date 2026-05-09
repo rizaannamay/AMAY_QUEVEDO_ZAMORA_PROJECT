@@ -42,6 +42,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             Email    = Session["Email"]    != null ? Session["Email"].ToString()    : "";
             Role     = Session["Role"]     != null ? Session["Role"].ToString()     : "Student";
             BackUrl  = string.Equals(Role, "Admin", StringComparison.OrdinalIgnoreCase)
+                       ? "Admin.aspx"
+                       : string.Equals(Role, "Teacher", StringComparison.OrdinalIgnoreCase)
                        ? "Teacher.aspx" : "Student.aspx";
 
             // Load image first so postback handlers can override it
@@ -90,7 +92,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;";
                 using (var con = new SqlConnection(cs))
                 {
                     con.Open();
@@ -158,7 +160,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             try
             {
-                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;";
                 using (var con = new SqlConnection(cs))
                 {
                     con.Open();
@@ -221,7 +223,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 postedFile.SaveAs(fullPath);
 
                 // Save the relative path to the database
-                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CAPdb;User ID=CampusAnnouncementPortal;Password=campus123;";
+                string cs = @"Data Source=DESKTOP-O39NPLV\SQLEXPRESS1;Initial Catalog=CampusAnnouncementPortalDB;User ID=CampusAnnouncementPortall;Password=campus123;";
                 using (var con = new SqlConnection(cs))
                 {
                     con.Open();

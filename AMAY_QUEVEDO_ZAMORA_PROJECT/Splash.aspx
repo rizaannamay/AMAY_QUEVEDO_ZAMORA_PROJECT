@@ -98,7 +98,8 @@
             }
 
             var dest = getParam('dest');
-            var target = dest === 'Teacher' ? 'Teacher.aspx'
+            var target = dest === 'Admin'   ? 'Admin.aspx'
+                       : dest === 'Teacher' ? 'Teacher.aspx'
                        : dest === 'Student' ? 'Student.aspx'
                        : 'login.aspx?from=splash';
 

@@ -9,10 +9,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             get
             {
-                return string.Equals(
-                    Session["Role"] != null ? Session["Role"].ToString() : "",
-                    "Admin", StringComparison.OrdinalIgnoreCase)
-                    ? "Teacher.aspx" : "Student.aspx";
+                string role = Session["Role"] != null ? Session["Role"].ToString() : "";
+                if (string.Equals(role, "Admin",   StringComparison.OrdinalIgnoreCase)) return "Admin.aspx";
+                if (string.Equals(role, "Teacher", StringComparison.OrdinalIgnoreCase)) return "Teacher.aspx";
+                return "Student.aspx";
             }
         }
 
@@ -20,10 +20,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             get
             {
-                return string.Equals(
-                    Session["Role"] != null ? Session["Role"].ToString() : "",
-                    "Admin", StringComparison.OrdinalIgnoreCase)
-                    ? "Back to Teacher Portal" : "Back to Student Portal";
+                string role = Session["Role"] != null ? Session["Role"].ToString() : "";
+                if (string.Equals(role, "Admin",   StringComparison.OrdinalIgnoreCase)) return "Back to Admin";
+                if (string.Equals(role, "Teacher", StringComparison.OrdinalIgnoreCase)) return "Back to Teacher Portal";
+                return "Back to Student Portal";
             }
         }
 

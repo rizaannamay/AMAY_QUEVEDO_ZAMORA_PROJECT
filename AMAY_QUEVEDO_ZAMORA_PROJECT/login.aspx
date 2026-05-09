@@ -12,6 +12,11 @@
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
         html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
+        :root {
+            --uni-accent: #c9920a;
+            --uni-accent-dark: #a87800;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-image: url('ctu.png');
@@ -71,7 +76,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, rgba(180,130,0,0.92) 0%, rgba(160,110,0,0.95) 100%);
+            background: linear-gradient(160deg, var(--uni-accent) 0%, var(--uni-accent-dark) 100%);
+            opacity: 0.93;
             pointer-events: none;
         }
 
@@ -376,6 +382,7 @@
                     <asp:DropDownList ID="txtRole" runat="server"
                         style="width:100%;padding:13px 46px 13px 18px;background:rgba(255,255,255,0.92);border:1.5px solid rgba(255,255,255,0.5);border-radius:12px;font-size:14px;color:#1a2a3a;font-family:inherit;appearance:none;-webkit-appearance:none;transition:border-color 0.2s,box-shadow 0.2s;">
                         <asp:ListItem Text="Student" Value="Student" />
+                        <asp:ListItem Text="Teacher" Value="Teacher" />
                         <asp:ListItem Text="Admin"   Value="Admin"   />
                     </asp:DropDownList>
                     <span class="icon"><i class="fas fa-chevron-down"></i></span>
@@ -469,6 +476,34 @@
                 this.style.background = 'rgba(255,255,255,0.92)';
             });
         });
+    </script>
+    <script>
+        // ── University Theme ─────────────────────────────────────────
+        (function () {
+            var UNIVERSITY_THEMES = {
+                'Default':       { accent: '#c9920a', accentDark: '#a87800' },
+                'Intramurals':   { accent: '#b91c1c', accentDark: '#991b1b' },
+                'FoundationWeek':{ accent: '#a87800', accentDark: '#7a5200' },
+                'WomensMonth':   { accent: '#7c3aed', accentDark: '#5b21b6' },
+                'UniversityWeek':{ accent: '#1d4ed8', accentDark: '#1e3a8a' },
+                'Christmas':     { accent: '#15803d', accentDark: '#14532d' },
+                'Graduation':    { accent: '#1e3a8a', accentDark: '#1e40af' }
+            };
+            function applyUniversityTheme(name) {
+                var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+                document.documentElement.style.setProperty('--uni-accent', t.accent);
+                document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+            }
+            var saved = localStorage.getItem('campus_uni_theme');
+            if (saved) applyUniversityTheme(saved);
+            fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
+                .catch(function() {});
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
+            });
+        })();
     </script>
 </body>
 </html>

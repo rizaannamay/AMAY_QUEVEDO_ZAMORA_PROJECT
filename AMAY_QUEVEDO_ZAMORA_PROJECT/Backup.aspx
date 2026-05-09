@@ -190,7 +190,7 @@
                     <div class="brand-badge"><i class="fas fa-university"></i></div>
                     <span>Database Backup</span>
                 </div>
-                <a class="back-btn" href="Teacher.aspx" title="Back to Dashboard">
+                <a class="back-btn" href="Admin.aspx" title="Back to Dashboard">
                     <i class="fas fa-home" style="font-size:16px;"></i>
                 </a>
             </div>

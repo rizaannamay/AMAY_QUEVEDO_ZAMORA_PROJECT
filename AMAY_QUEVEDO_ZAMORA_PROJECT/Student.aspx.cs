@@ -14,15 +14,25 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
-            if (!string.Equals(Session["Role"]?.ToString(), "Student", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(Session["Role"] != null ? Session["Role"].ToString() : "", "Student", StringComparison.OrdinalIgnoreCase))
             {
-                Response.Redirect("Teacher.aspx", false);
+                string r = Session["Role"] != null ? Session["Role"].ToString() : "";
+                if (string.Equals(r, "Admin", StringComparison.OrdinalIgnoreCase))
+                    Response.Redirect("Admin.aspx", false);
+                else
+                    Response.Redirect("Teacher.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
                 return;
             }
 
             if (!IsPostBack)
+            {
+                // Send 1-day-ahead reminders for any calendar events scheduled for tomorrow.
+                int userId = Session["UserId"] != null ? Convert.ToInt32(Session["UserId"]) : 0;
+                CalendarReminderHelper.SendReminders(userId);
+
                 LoadUserInfo();
+            }
         }
 
         protected void SearchButton_Click(object sender, EventArgs e)
@@ -32,10 +42,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         private void LoadUserInfo()
         {
-            string fullName = Session["FullName"]?.ToString() ?? "Student";
-            string email    = Session["Email"]?.ToString()    ?? "";
-            string role     = Session["Role"]?.ToString()     ?? "Student";
-            string username = Session["Username"]?.ToString() ?? "";
+            string fullName = Session["FullName"] != null ? Session["FullName"].ToString() : "Student";
+            string email    = Session["Email"]    != null ? Session["Email"].ToString()    : "";
+            string role     = Session["Role"]     != null ? Session["Role"].ToString()     : "Student";
+            string username = Session["Username"] != null ? Session["Username"].ToString() : "";
 
             string fn = HttpUtility.JavaScriptStringEncode(fullName);
             string em = HttpUtility.JavaScriptStringEncode(email);
