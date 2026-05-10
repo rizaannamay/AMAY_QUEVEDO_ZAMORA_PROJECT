@@ -472,9 +472,7 @@ document.getElementById('summaryText').textContent = isTeacher
         'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
         'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
         'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-        'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
-        'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
-        'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+        'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
     };
     function applyUniversityTheme(name) {
         var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
@@ -512,6 +510,7 @@ function showToast(msg) {
 
 function getNotifType(message) {
     var text = (message || '').toLowerCase();
+    if (text.indexOf('reminder:') !== -1 || text.indexOf('⏰') !== -1) return 'reminder';
     if (text.indexOf('(teacher) liked your comment') !== -1)    return 'like';
     if (text.indexOf('(teacher) replied to your comment') !== -1) return 'reply';
     if (text.indexOf('(teacher) commented on') !== -1)           return 'comment';
@@ -526,6 +525,7 @@ function getNotifType(message) {
 }
 
 function getNotifIcon(type) {
+    if (type === 'reminder') return 'fa-calendar-alt';
     if (type === 'like')    return 'fa-heart';
     if (type === 'comment') return 'fa-comment';
     if (type === 'reply')   return 'fa-reply';
@@ -534,6 +534,7 @@ function getNotifIcon(type) {
 }
 
 function getNotifClass(type) {
+    if (type === 'reminder') return 'notif-default';
     if (type === 'like')    return 'notif-like';
     if (type === 'comment') return 'notif-comment';
     if (type === 'reply')   return 'notif-reply';
@@ -571,7 +572,7 @@ function renderNotifications(list) {
         var iconClass = getNotifClass(type);
         var stateText = item.isRead ? 'Read' : 'Unread';
         return '<div class="notif-item' + (item.isRead ? '' : ' unread') + '" '
-            + 'onclick="openNotification(' + item.id + ',' + item.announcementId + ')">'
+            + 'onclick="openNotification(' + item.id + ',' + item.announcementId + ',\'' + getNotifType(item.message) + '\')">'
             + '<div class="notif-row">'
             + '<div class="notif-icon ' + iconClass + '"><i class="fas ' + icon + '"></i></div>'
             + '<div class="notif-main">'
@@ -612,11 +613,14 @@ function loadNotifications() {
         });
 }
 
-function openNotification(notificationId, announcementId) {
+function openNotification(notificationId, announcementId, notifType) {
     fetch('NotificationHandler.ashx?action=markRead&id=' + encodeURIComponent(notificationId), {
         credentials: 'same-origin'
     }).finally(function () {
-        if (announcementId && announcementId > 0) {
+        // Reminder notifications → open the calendar on the home page
+        if (notifType === 'reminder') {
+            window.location.href = homeUrl + '?openCalendar=1';
+        } else if (announcementId && announcementId > 0) {
             window.location.href = portalUrl + '?postId=' + encodeURIComponent(announcementId);
         } else {
             window.location.href = portalUrl;

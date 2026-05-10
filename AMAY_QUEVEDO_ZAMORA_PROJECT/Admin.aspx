@@ -1448,20 +1448,10 @@
                             <div class="theme-name">Women's Month</div>
                             <div class="theme-desc">Empowerment & equality</div>
                         </div>
-                        <div class="theme-card" data-theme="UniversityWeek" onclick="selectTheme('UniversityWeek',this)">
-                            <div class="theme-icon">🎓</div>
-                            <div class="theme-name">University Week</div>
-                            <div class="theme-desc">Academic excellence</div>
-                        </div>
                         <div class="theme-card" data-theme="Christmas" onclick="selectTheme('Christmas',this)">
                             <div class="theme-icon">🎄</div>
                             <div class="theme-name">Christmas</div>
                             <div class="theme-desc">Holiday season</div>
-                        </div>
-                        <div class="theme-card" data-theme="Graduation" onclick="selectTheme('Graduation',this)">
-                            <div class="theme-icon">🎓</div>
-                            <div class="theme-name">Graduation</div>
-                            <div class="theme-desc">Commencement ceremony</div>
                         </div>
                     </div>
                     <div style="margin-top:20px;display:flex;justify-content:flex-end;gap:10px;">
@@ -1565,6 +1555,10 @@
             let params = new URLSearchParams(window.location.search);
             let pid = parseInt(params.get('postId') || '0', 10);
             if (!isNaN(pid) && pid > 0) focusPostId = pid;
+            // Open calendar panel if redirected from a reminder notification
+            if (params.get('openCalendar') === '1') {
+                window.addEventListener('load', function () { openAdminPanel('calendar'); });
+            }
         })();
 
         function saveSharedState() {
@@ -2383,9 +2377,7 @@
             'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
             'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
             'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-            'UniversityWeek':{ overlay: 'rgba(37,99,235,0.18)',     header: '#1d4ed8', accent: '#1d4ed8', accentDark: '#1e3a8a' },
-            'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' },
-            'Graduation':    { overlay: 'rgba(30,58,138,0.18)',     header: '#1e3a8a', accent: '#1e3a8a', accentDark: '#1e40af' }
+            'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
         };
 
         function applyUniversityTheme(name) {
@@ -2422,6 +2414,20 @@
         loadAnnouncementsFromDB();
         updateNotifBadge();
         setInterval(updateNotifBadge, 30000);
+
+        // ── 5-minute calendar reminder polling ───────────────────────
+        function pollCalendarReminders() {
+            fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
+                .then(function(r) { return r.json(); })
+                .then(function(res) {
+                    if (res.ok && res.triggered > 0) {
+                        updateNotifBadge(); // refresh badge immediately
+                    }
+                })
+                .catch(function() {});
+        }
+        pollCalendarReminders();
+        setInterval(pollCalendarReminders, 60000); // check every 60 seconds
 
         function updateNotifBadge() {
             fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })

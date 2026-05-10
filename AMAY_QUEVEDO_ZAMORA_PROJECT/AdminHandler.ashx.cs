@@ -246,9 +246,31 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 ctx.Response.Write(js.Serialize(new { ok = false, error = "Invalid status" }));
                 return;
             }
+
+            string userEmail = "";
+            string userFullName = "";
+            string userRole = "";
+
             using (var con = new SqlConnection(Conn))
             {
                 con.Open();
+
+                // Fetch user info before updating (for email notification)
+                using (var infoCmd = new SqlCommand(
+                    "SELECT Email, FullName, Role FROM Users WHERE UserId=@id", con))
+                {
+                    infoCmd.Parameters.AddWithValue("@id", userId);
+                    using (var dr = infoCmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            userEmail    = dr["Email"].ToString();
+                            userFullName = dr["FullName"].ToString();
+                            userRole     = dr["Role"].ToString();
+                        }
+                    }
+                }
+
                 using (var cmd = new SqlCommand("UPDATE Users SET AccountStatus=@s WHERE UserId=@id", con))
                 {
                     cmd.Parameters.AddWithValue("@s",  status);
@@ -256,7 +278,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     cmd.ExecuteNonQuery();
                 }
                 string msg = null;
-                if (status == "Active")    msg = "Your account has been approved and activated.";
+                if (status == "Active")         msg = "Your account has been approved and activated.";
                 else if (status == "Suspended") msg = "Your account has been suspended. Contact admin.";
                 else if (status == "Rejected")  msg = "Your account registration was not approved.";
                 if (msg != null)
@@ -270,6 +292,16 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     }
                 }
             }
+
+            // Send Gmail notification to teacher when account is approved or rejected
+            if (string.Equals(userRole, "Teacher", StringComparison.OrdinalIgnoreCase))
+            {
+                if (status == "Active")
+                    EmailHelper.SendAccountDecision(userEmail, userFullName, approved: true);
+                else if (status == "Rejected")
+                    EmailHelper.SendAccountDecision(userEmail, userFullName, approved: false);
+            }
+
             ctx.Response.Write(js.Serialize(new { ok = true }));
         }
 
@@ -297,7 +329,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
         {
             string theme = (ctx.Request["theme"] != null) ? ctx.Request["theme"] : "Default";
             var allowed = new System.Collections.Generic.HashSet<string>
-                { "Default","Intramurals","FoundationWeek","WomensMonth","UniversityWeek","Christmas","Graduation" };
+                { "Default","Intramurals","FoundationWeek","WomensMonth","Christmas" };
             if (!allowed.Contains(theme)) theme = "Default";
             using (var con = new SqlConnection(Conn))
             {

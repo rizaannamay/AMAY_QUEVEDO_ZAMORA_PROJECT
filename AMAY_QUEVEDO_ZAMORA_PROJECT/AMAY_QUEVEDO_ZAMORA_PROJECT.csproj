@@ -88,6 +88,8 @@
     <Content Include="UserMgmtHandler.ashx" />
     <Content Include="CalendarHandler.ashx" />
     <Content Include="ApprovalHandler.ashx" />
+    <Content Include="AdminHandler.ashx" />
+    <Content Include="ReminderCheckHandler.ashx" />
     <Content Include="login.aspx" />
     <Content Include="Quevedo Mary Chris.jpg" />
     <Content Include="School Announcent Campaign.jpg" />
@@ -220,6 +222,13 @@
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
     <Compile Include="CalendarReminderHelper.cs" />
+    <Compile Include="EmailHelper.cs" />
+    <Compile Include="AdminHandler.ashx.cs">
+      <DependentUpon>AdminHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="ReminderCheckHandler.ashx.cs">
+      <DependentUpon>ReminderCheckHandler.ashx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

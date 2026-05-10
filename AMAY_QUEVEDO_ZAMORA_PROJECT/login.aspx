@@ -485,9 +485,7 @@
                 'Intramurals':   { accent: '#b91c1c', accentDark: '#991b1b' },
                 'FoundationWeek':{ accent: '#a87800', accentDark: '#7a5200' },
                 'WomensMonth':   { accent: '#7c3aed', accentDark: '#5b21b6' },
-                'UniversityWeek':{ accent: '#1d4ed8', accentDark: '#1e3a8a' },
-                'Christmas':     { accent: '#15803d', accentDark: '#14532d' },
-                'Graduation':    { accent: '#1e3a8a', accentDark: '#1e40af' }
+                'Christmas':     { accent: '#15803d', accentDark: '#14532d' }
             };
             function applyUniversityTheme(name) {
                 var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];

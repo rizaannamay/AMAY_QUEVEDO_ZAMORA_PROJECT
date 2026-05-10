@@ -152,6 +152,27 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         ? "Your announcement has been approved and is now live."
                         : "Your announcement was rejected" + (string.IsNullOrEmpty(reason) ? "." : ": " + reason);
 
+                    // Fetch author email, name, and title for the email notification
+                    string authorEmail = "";
+                    string authorName  = "";
+                    string postTitle   = "";
+                    using (var infoCmd = new SqlCommand(
+                        "SELECT u.Email, u.FullName, a.Title " +
+                        "FROM Announcements a JOIN Users u ON u.UserId = a.UserId " +
+                        "WHERE a.AnnouncementId = @id", con))
+                    {
+                        infoCmd.Parameters.AddWithValue("@id", announcementId);
+                        using (var dr = infoCmd.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                authorEmail = dr["Email"].ToString();
+                                authorName  = dr["FullName"].ToString();
+                                postTitle   = dr["Title"].ToString();
+                            }
+                        }
+                    }
+
                     using (var notifCmd = new SqlCommand(
                         "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                         "SELECT a.UserId, a.AnnouncementId, @msg, 0, GETDATE() " +
@@ -162,18 +183,17 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         notifCmd.ExecuteNonQuery();
                     }
 
+                    // Send Gmail notification to the post author
+                    EmailHelper.SendAnnouncementDecision(
+                        authorEmail,
+                        authorName,
+                        postTitle,
+                        newStatus == "Approved",
+                        reason);
+
                     // When approved, also notify all students
                     if (newStatus == "Approved")
                     {
-                        string postTitle = "";
-                        using (var titleCmd = new SqlCommand(
-                            "SELECT Title FROM Announcements WHERE AnnouncementId=@id", con))
-                        {
-                            titleCmd.Parameters.AddWithValue("@id", announcementId);
-                            var r = titleCmd.ExecuteScalar();
-                            if (r != null) postTitle = r.ToString();
-                        }
-
                         using (var studentNotif = new SqlCommand(
                             "INSERT INTO Notifications (UserId, AnnouncementId, Message, IsRead, CreatedDate) " +
                             "SELECT UserId, @aid, @msg, 0, GETDATE() FROM Users WHERE Role='Student'", con))
