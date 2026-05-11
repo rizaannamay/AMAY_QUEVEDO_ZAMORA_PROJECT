@@ -43,27 +43,45 @@
         html, body { overflow: auto; }
 
         body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 120px;
-            z-index: 1199;
-            pointer-events: none;
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
+    display:none;
+}
+
+/* Default theme */
+body:not(.dark-mode)::before {
+    background: linear-gradient(135deg, rgba(201,146,10,0.15), rgba(168,120,0,0.08));
+}
+
+/* Dark mode */
+body.dark-mode::before {
+    background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+}
+
+/* Foundation Week theme */
+body.theme-foundation::before {
+    background: linear-gradient(135deg, rgba(245,183,0,0.25), rgba(234,179,8,0.12));
+}
+
+/* Intramurals theme */
+body.theme-intramurals::before {
+    background: linear-gradient(135deg, rgba(255,122,0,0.25), rgba(194,65,12,0.15));
+}
+
+/* Women's Month theme */
+body.theme-womens::before {
+    background: linear-gradient(135deg, rgba(126,34,206,0.2), rgba(168,85,247,0.1));
+}
+
+/* Christmas theme */
+body.theme-christmas::before {
+    background: linear-gradient(135deg, rgba(21,128,61,0.2), rgba(34,197,94,0.08));
+}
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center center;
             background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
@@ -1112,6 +1130,467 @@
         body.dark-mode .cal-day.selected { border-color: var(--uni-accent); background:rgba(201,146,10,0.16); }
         body.dark-mode .cal-event-item { background:rgba(255,255,255,0.05); }
         body.dark-mode .cal-event-item .ev-title { color:#e2e8f0; }
+
+        /* ===== EVENT THEME DESIGNS ===== */
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+}
+
+.logo::after {
+    content: var(--theme-label);
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    color: rgba(255,255,255,0.92);
+    margin-left: 32px;
+    margin-top: 3px;
+}
+
+.header {
+    background: var(--uni-header-bg) !important;
+    border: 1px solid rgba(255,255,255,0.28);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.20);
+}
+
+.card,
+.admin-stat-box,
+.create-post-card,
+.announcement-card,
+.approval-card,
+.slideout-panel {
+    border: 1.5px solid var(--border);
+}
+
+/* Intramurals */
+body.theme-intramurals {
+    color: #fff;
+}
+
+body.theme-intramurals .slideout-panel,
+body.theme-intramurals .card,
+body.theme-intramurals .admin-stat-box,
+body.theme-intramurals .create-post-card {
+    background: rgba(10,10,10,0.76);
+    color: #fff;
+    box-shadow: 0 12px 34px rgba(0,0,0,0.35);
+}
+
+body.theme-intramurals .announcement-card {
+    background:
+        linear-gradient(90deg, rgba(0,0,0,0.88), rgba(0,0,0,0.62)),
+        radial-gradient(circle at 82% 45%, rgba(255,122,0,0.18), transparent 28%);
+    border-color: rgba(255,122,0,0.75);
+    color: #fff;
+}
+
+body.theme-intramurals .panel-header h3,
+body.theme-intramurals .panel-menu-item,
+body.theme-intramurals .card-header,
+body.theme-intramurals .post-author,
+body.theme-intramurals .post-title,
+body.theme-intramurals .post-text {
+    color: #fff;
+}
+
+body.theme-intramurals .panel-menu-item i,
+body.theme-intramurals .admin-stat-num,
+body.theme-intramurals .action-btn:hover,
+body.theme-intramurals .post-stats span:hover {
+    color: #ff7a00;
+}
+
+body.theme-intramurals .post-meta,
+body.theme-intramurals .post-stats,
+body.theme-intramurals .action-btn,
+body.theme-intramurals .admin-stat-lbl {
+    color: #d1d5db;
+}
+
+/* Intramurals — Admin Panels & Modals (LIGHT) */
+body.theme-intramurals:not(.dark-mode) .admin-panel-box,
+body.theme-intramurals:not(.dark-mode) .modal-content {
+    background: rgba(255, 245, 235, 0.98) !important;
+    border: 1px solid rgba(255,122,0,0.25) !important;
+    color: #1a1a1a !important;
+}
+body.theme-intramurals:not(.dark-mode) .admin-panel-header { border-bottom-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals:not(.dark-mode) .admin-panel-header h2,
+body.theme-intramurals:not(.dark-mode) .modal-header h2,
+body.theme-intramurals:not(.dark-mode) .modal-title { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .approval-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(255,122,0,0.20) !important; color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .approval-card.border-pending  { border-left-color: #f59e0b !important; }
+body.theme-intramurals:not(.dark-mode) .approval-card.border-approved { border-left-color: #10b981 !important; }
+body.theme-intramurals:not(.dark-mode) .approval-card.border-rejected { border-left-color: #ef4444 !important; }
+body.theme-intramurals:not(.dark-mode) .approval-head,
+body.theme-intramurals:not(.dark-mode) .approval-body { color: #333333 !important; }
+body.theme-intramurals:not(.dark-mode) .user-table th { color: #c2410c !important; border-bottom-color: rgba(255,122,0,0.25) !important; }
+body.theme-intramurals:not(.dark-mode) .user-table td { color: #1a1a1a !important; border-bottom-color: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .user-table tr:hover td { background: rgba(255,122,0,0.06) !important; }
+body.theme-intramurals:not(.dark-mode) .admin-tab { background: rgba(255,245,235,0.80) !important; color: #c2410c !important; border-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals:not(.dark-mode) .admin-tab.active { background: linear-gradient(135deg, #ff7a00, #c2410c) !important; color: #fff !important; }
+body.theme-intramurals:not(.dark-mode) .theme-card { background: rgba(255,255,255,0.90) !important; border-color: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals:not(.dark-mode) .theme-card .theme-name { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .theme-card .theme-desc { color: #555 !important; }
+body.theme-intramurals:not(.dark-mode) .theme-card.selected { border-color: #ff7a00 !important; background: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day { border-color: rgba(255,122,0,0.18) !important; color: #1a1a1a !important; background: rgba(255,245,235,0.70) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day:hover { background: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day.today { border-color: #ff7a00 !important; background: rgba(255,122,0,0.14) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day.has-event::after { background: #ff7a00 !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day-hdr { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-nav-btn { border-color: rgba(255,122,0,0.28) !important; color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-nav-btn:hover { background: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) #calDayEvents { background: rgba(255,245,235,0.90) !important; border-color: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals:not(.dark-mode) .event-item { background: rgba(255,122,0,0.08) !important; border-color: rgba(255,122,0,0.20) !important; color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .search-input { background: rgba(255,255,255,0.90) !important; border-color: rgba(255,122,0,0.22) !important; color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .search-input::placeholder { color: rgba(100,60,20,0.45) !important; }
+body.theme-intramurals:not(.dark-mode) .form-group label { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .form-group input,
+body.theme-intramurals:not(.dark-mode) .form-group textarea,
+body.theme-intramurals:not(.dark-mode) .form-group select { background: rgba(255,255,255,0.90) !important; border-color: rgba(255,122,0,0.22) !important; color: #1a1a1a !important; }
+
+/* Intramurals — Admin Panels & Modals (DARK) */
+body.theme-intramurals.dark-mode .admin-panel-box,
+body.theme-intramurals.dark-mode .modal-content {
+    background: rgba(18, 10, 5, 0.97) !important;
+    border: 1px solid rgba(255,122,0,0.30) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode .admin-panel-header { border-bottom-color: rgba(255,122,0,0.25) !important; }
+body.theme-intramurals.dark-mode .admin-panel-header h2,
+body.theme-intramurals.dark-mode .modal-header h2,
+body.theme-intramurals.dark-mode .modal-title { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .approval-card { background: rgba(30,15,5,0.92) !important; border-color: rgba(255,122,0,0.25) !important; color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .approval-card.border-pending  { border-left-color: #f59e0b !important; }
+body.theme-intramurals.dark-mode .approval-card.border-approved { border-left-color: #10b981 !important; }
+body.theme-intramurals.dark-mode .approval-card.border-rejected { border-left-color: #ef4444 !important; }
+body.theme-intramurals.dark-mode .approval-head,
+body.theme-intramurals.dark-mode .approval-body { color: #e0e0e0 !important; }
+body.theme-intramurals.dark-mode .user-table th { color: #ff9a3c !important; border-bottom-color: rgba(255,122,0,0.25) !important; }
+body.theme-intramurals.dark-mode .user-table td { color: #e0e0e0 !important; border-bottom-color: rgba(255,122,0,0.12) !important; }
+body.theme-intramurals.dark-mode .user-table tr:hover td { background: rgba(255,122,0,0.08) !important; }
+body.theme-intramurals.dark-mode .admin-tab { background: rgba(30,15,5,0.80) !important; color: #d1d5db !important; border-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals.dark-mode .admin-tab.active { background: linear-gradient(135deg, #ff7a00, #c2410c) !important; color: #fff !important; }
+body.theme-intramurals.dark-mode .theme-card { background: rgba(30,15,5,0.85) !important; border-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals.dark-mode .theme-card .theme-name { color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .theme-card .theme-desc { color: #aaa !important; }
+body.theme-intramurals.dark-mode .theme-card.selected { border-color: #ff7a00 !important; background: rgba(255,122,0,0.15) !important; }
+body.theme-intramurals.dark-mode .cal-day { border-color: rgba(255,122,0,0.20) !important; color: #e0e0e0 !important; background: rgba(20,10,5,0.70) !important; }
+body.theme-intramurals.dark-mode .cal-day:hover { background: rgba(255,122,0,0.15) !important; }
+body.theme-intramurals.dark-mode .cal-day.today { border-color: #ff7a00 !important; background: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals.dark-mode .cal-day.has-event::after { background: #ff7a00 !important; }
+body.theme-intramurals.dark-mode .cal-day-hdr { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-nav-btn { border-color: rgba(255,122,0,0.30) !important; color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-nav-btn:hover { background: rgba(255,122,0,0.15) !important; }
+body.theme-intramurals.dark-mode #calDayEvents { background: rgba(30,15,5,0.85) !important; border-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals.dark-mode .event-item { background: rgba(255,122,0,0.10) !important; border-color: rgba(255,122,0,0.25) !important; color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .search-input { background: rgba(30,15,5,0.80) !important; border-color: rgba(255,122,0,0.25) !important; color: #e0e0e0 !important; }
+body.theme-intramurals.dark-mode .search-input::placeholder { color: rgba(255,200,150,0.45) !important; }
+body.theme-intramurals.dark-mode .form-group label { color: #d1d5db !important; }
+body.theme-intramurals.dark-mode .form-group input,
+body.theme-intramurals.dark-mode .form-group textarea,
+body.theme-intramurals.dark-mode .form-group select { background: rgba(30,15,5,0.80) !important; border-color: rgba(255,122,0,0.25) !important; color: #e0e0e0 !important; }
+
+/* Foundation Week */
+body.theme-foundation {
+    color: #152033;
+}
+
+body.theme-foundation .slideout-panel,
+body.theme-foundation .card,
+body.theme-foundation .admin-stat-box,
+body.theme-foundation .create-post-card {
+    background: rgba(255,255,255,0.90);
+    border-color: rgba(234,179,8,0.24);
+    box-shadow: 0 8px 24px rgba(120,80,0,0.08);
+}
+
+body.theme-foundation .announcement-card {
+    background:
+        linear-gradient(90deg, rgba(255,255,255,0.98), rgba(255,255,255,0.84)),
+        radial-gradient(circle at 70% 45%, rgba(250,204,21,0.24), transparent 24%);
+    border-color: rgba(234,179,8,0.58);
+}
+
+body.theme-foundation .panel-menu-item i,
+body.theme-foundation .card-header i,
+body.theme-foundation .admin-stat-num,
+body.theme-foundation .action-btn:hover,
+body.theme-foundation .post-stats span:hover {
+    color: #eab308;
+}
+
+/* Foundation Week — Admin Panels & Modals (LIGHT) */
+body.theme-foundation:not(.dark-mode) .admin-panel-box,
+body.theme-foundation:not(.dark-mode) .modal-content {
+    background: rgba(255, 252, 220, 0.98) !important;
+    border: 1px solid rgba(234,179,8,0.30) !important;
+    color: #152033 !important;
+}
+body.theme-foundation:not(.dark-mode) .admin-panel-header { border-bottom-color: rgba(234,179,8,0.25) !important; }
+body.theme-foundation:not(.dark-mode) .admin-panel-header h2,
+body.theme-foundation:not(.dark-mode) .modal-header h2,
+body.theme-foundation:not(.dark-mode) .modal-title { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .approval-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(234,179,8,0.30) !important; color: #152033 !important; }
+body.theme-foundation:not(.dark-mode) .user-table th { color: #92400e !important; border-bottom-color: rgba(234,179,8,0.30) !important; }
+body.theme-foundation:not(.dark-mode) .user-table td { color: #152033 !important; border-bottom-color: rgba(234,179,8,0.15) !important; }
+body.theme-foundation:not(.dark-mode) .user-table tr:hover td { background: rgba(234,179,8,0.08) !important; }
+body.theme-foundation:not(.dark-mode) .admin-tab { background: rgba(255,252,220,0.80) !important; color: #92400e !important; border-color: rgba(234,179,8,0.25) !important; }
+body.theme-foundation:not(.dark-mode) .theme-card { background: rgba(255,252,220,0.90) !important; border-color: rgba(234,179,8,0.25) !important; }
+body.theme-foundation:not(.dark-mode) .theme-card .theme-name { color: #152033 !important; }
+body.theme-foundation:not(.dark-mode) .cal-day { border-color: rgba(234,179,8,0.25) !important; color: #152033 !important; background: rgba(255,252,220,0.70) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day:hover { background: rgba(234,179,8,0.12) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day.today { border-color: #eab308 !important; background: rgba(234,179,8,0.18) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day-hdr { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .cal-nav-btn { border-color: rgba(234,179,8,0.35) !important; color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) #calDayEvents { background: rgba(255,252,220,0.90) !important; border-color: rgba(234,179,8,0.25) !important; }
+body.theme-foundation:not(.dark-mode) .event-item { background: rgba(234,179,8,0.10) !important; border-color: rgba(234,179,8,0.30) !important; color: #152033 !important; }
+body.theme-foundation:not(.dark-mode) .search-input { background: rgba(255,252,220,0.90) !important; border-color: rgba(234,179,8,0.30) !important; color: #152033 !important; }
+body.theme-foundation:not(.dark-mode) .form-group label { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .form-group input,
+body.theme-foundation:not(.dark-mode) .form-group textarea,
+body.theme-foundation:not(.dark-mode) .form-group select { background: rgba(255,252,220,0.90) !important; border-color: rgba(234,179,8,0.30) !important; color: #152033 !important; }
+
+/* Foundation Week — Admin Panels & Modals (DARK) */
+body.theme-foundation.dark-mode .admin-panel-box,
+body.theme-foundation.dark-mode .modal-content {
+    background: rgba(30, 22, 5, 0.97) !important;
+    border: 1px solid rgba(234,179,8,0.28) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-foundation.dark-mode .admin-panel-header { border-bottom-color: rgba(234,179,8,0.22) !important; }
+body.theme-foundation.dark-mode .admin-panel-header h2,
+body.theme-foundation.dark-mode .modal-header h2,
+body.theme-foundation.dark-mode .modal-title { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .approval-card { background: rgba(30,22,5,0.92) !important; border-color: rgba(234,179,8,0.25) !important; color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .user-table th { color: #fbbf24 !important; border-bottom-color: rgba(234,179,8,0.25) !important; }
+body.theme-foundation.dark-mode .user-table td { color: #e0e0e0 !important; border-bottom-color: rgba(234,179,8,0.12) !important; }
+body.theme-foundation.dark-mode .user-table tr:hover td { background: rgba(234,179,8,0.08) !important; }
+body.theme-foundation.dark-mode .admin-tab { background: rgba(30,22,5,0.80) !important; color: #d1d5db !important; border-color: rgba(234,179,8,0.20) !important; }
+body.theme-foundation.dark-mode .theme-card { background: rgba(30,22,5,0.85) !important; border-color: rgba(234,179,8,0.20) !important; }
+body.theme-foundation.dark-mode .theme-card .theme-name { color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .cal-day { border-color: rgba(234,179,8,0.18) !important; color: #e0e0e0 !important; background: rgba(30,22,5,0.65) !important; }
+body.theme-foundation.dark-mode .cal-day:hover { background: rgba(234,179,8,0.12) !important; }
+body.theme-foundation.dark-mode .cal-day.today { border-color: #eab308 !important; background: rgba(234,179,8,0.18) !important; }
+body.theme-foundation.dark-mode .cal-day-hdr { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .cal-nav-btn { border-color: rgba(234,179,8,0.28) !important; color: #fbbf24 !important; }
+body.theme-foundation.dark-mode #calDayEvents { background: rgba(30,22,5,0.85) !important; border-color: rgba(234,179,8,0.20) !important; }
+body.theme-foundation.dark-mode .event-item { background: rgba(234,179,8,0.10) !important; border-color: rgba(234,179,8,0.25) !important; color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .search-input { background: rgba(30,22,5,0.80) !important; border-color: rgba(234,179,8,0.25) !important; color: #e0e0e0 !important; }
+body.theme-foundation.dark-mode .form-group label { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .form-group input,
+body.theme-foundation.dark-mode .form-group textarea,
+body.theme-foundation.dark-mode .form-group select { background: rgba(30,22,5,0.80) !important; border-color: rgba(234,179,8,0.25) !important; color: #e0e0e0 !important; }
+
+/* Women's Month */
+body.theme-womens {
+    color: #172033;
+}
+
+body.theme-womens .slideout-panel,
+body.theme-womens .card,
+body.theme-womens .admin-stat-box,
+body.theme-womens .create-post-card {
+    background: rgba(255,255,255,0.90);
+    border-color: rgba(126,34,206,0.24);
+    box-shadow: 0 8px 24px rgba(88,28,135,0.10);
+}
+
+body.theme-womens .announcement-card {
+    background:
+        linear-gradient(90deg, rgba(255,255,255,0.98), rgba(250,245,255,0.88)),
+        radial-gradient(circle at 85% 20%, rgba(168,85,247,0.16), transparent 26%);
+    border-color: rgba(126,34,206,0.52);
+}
+
+body.theme-womens .panel-menu-item i,
+body.theme-womens .card-header i,
+body.theme-womens .admin-stat-num,
+body.theme-womens .action-btn:hover,
+body.theme-womens .post-stats span:hover {
+    color: #7e22ce;
+}
+
+/* Women's Month — Admin Panels & Modals (LIGHT) */
+body.theme-womens:not(.dark-mode) .admin-panel-box,
+body.theme-womens:not(.dark-mode) .modal-content {
+    background: rgba(245, 240, 255, 0.98) !important;
+    border: 1px solid rgba(126,34,206,0.25) !important;
+    color: #172033 !important;
+}
+body.theme-womens:not(.dark-mode) .admin-panel-header { border-bottom-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens:not(.dark-mode) .admin-panel-header h2,
+body.theme-womens:not(.dark-mode) .modal-header h2,
+body.theme-womens:not(.dark-mode) .modal-title { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .approval-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(126,34,206,0.25) !important; color: #172033 !important; }
+body.theme-womens:not(.dark-mode) .user-table th { color: #6d28d9 !important; border-bottom-color: rgba(126,34,206,0.25) !important; }
+body.theme-womens:not(.dark-mode) .user-table td { color: #172033 !important; border-bottom-color: rgba(126,34,206,0.12) !important; }
+body.theme-womens:not(.dark-mode) .user-table tr:hover td { background: rgba(126,34,206,0.06) !important; }
+body.theme-womens:not(.dark-mode) .admin-tab { background: rgba(245,240,255,0.80) !important; color: #6d28d9 !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens:not(.dark-mode) .theme-card { background: rgba(245,240,255,0.90) !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens:not(.dark-mode) .theme-card .theme-name { color: #172033 !important; }
+body.theme-womens:not(.dark-mode) .cal-day { border-color: rgba(126,34,206,0.20) !important; color: #172033 !important; background: rgba(245,240,255,0.70) !important; }
+body.theme-womens:not(.dark-mode) .cal-day:hover { background: rgba(126,34,206,0.10) !important; }
+body.theme-womens:not(.dark-mode) .cal-day.today { border-color: #7e22ce !important; background: rgba(126,34,206,0.15) !important; }
+body.theme-womens:not(.dark-mode) .cal-day-hdr { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .cal-nav-btn { border-color: rgba(126,34,206,0.30) !important; color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) #calDayEvents { background: rgba(245,240,255,0.90) !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens:not(.dark-mode) .event-item { background: rgba(126,34,206,0.08) !important; border-color: rgba(126,34,206,0.25) !important; color: #172033 !important; }
+body.theme-womens:not(.dark-mode) .search-input { background: rgba(245,240,255,0.90) !important; border-color: rgba(126,34,206,0.25) !important; color: #172033 !important; }
+body.theme-womens:not(.dark-mode) .form-group label { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .form-group input,
+body.theme-womens:not(.dark-mode) .form-group textarea,
+body.theme-womens:not(.dark-mode) .form-group select { background: rgba(245,240,255,0.90) !important; border-color: rgba(126,34,206,0.25) !important; color: #172033 !important; }
+
+/* Women's Month — Admin Panels & Modals (DARK) */
+body.theme-womens.dark-mode .admin-panel-box,
+body.theme-womens.dark-mode .modal-content {
+    background: rgba(20, 12, 35, 0.97) !important;
+    border: 1px solid rgba(126,34,206,0.28) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-womens.dark-mode .admin-panel-header { border-bottom-color: rgba(126,34,206,0.22) !important; }
+body.theme-womens.dark-mode .admin-panel-header h2,
+body.theme-womens.dark-mode .modal-header h2,
+body.theme-womens.dark-mode .modal-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .approval-card { background: rgba(20,12,35,0.92) !important; border-color: rgba(126,34,206,0.25) !important; color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .user-table th { color: #c084fc !important; border-bottom-color: rgba(126,34,206,0.25) !important; }
+body.theme-womens.dark-mode .user-table td { color: #e0e0e0 !important; border-bottom-color: rgba(126,34,206,0.12) !important; }
+body.theme-womens.dark-mode .user-table tr:hover td { background: rgba(126,34,206,0.08) !important; }
+body.theme-womens.dark-mode .admin-tab { background: rgba(20,12,35,0.80) !important; color: #d1d5db !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens.dark-mode .theme-card { background: rgba(20,12,35,0.85) !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens.dark-mode .theme-card .theme-name { color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .cal-day { border-color: rgba(126,34,206,0.18) !important; color: #e0e0e0 !important; background: rgba(20,12,35,0.65) !important; }
+body.theme-womens.dark-mode .cal-day:hover { background: rgba(126,34,206,0.12) !important; }
+body.theme-womens.dark-mode .cal-day.today { border-color: #7e22ce !important; background: rgba(126,34,206,0.18) !important; }
+body.theme-womens.dark-mode .cal-day-hdr { color: #c084fc !important; }
+body.theme-womens.dark-mode .cal-nav-btn { border-color: rgba(126,34,206,0.28) !important; color: #c084fc !important; }
+body.theme-womens.dark-mode #calDayEvents { background: rgba(20,12,35,0.85) !important; border-color: rgba(126,34,206,0.20) !important; }
+body.theme-womens.dark-mode .event-item { background: rgba(126,34,206,0.10) !important; border-color: rgba(126,34,206,0.25) !important; color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .search-input { background: rgba(20,12,35,0.80) !important; border-color: rgba(126,34,206,0.25) !important; color: #e0e0e0 !important; }
+body.theme-womens.dark-mode .form-group label { color: #c084fc !important; }
+body.theme-womens.dark-mode .form-group input,
+body.theme-womens.dark-mode .form-group textarea,
+body.theme-womens.dark-mode .form-group select { background: rgba(20,12,35,0.80) !important; border-color: rgba(126,34,206,0.25) !important; color: #e0e0e0 !important; }
+
+/* Christmas */
+body.theme-christmas {
+    color: #0f172a;
+}
+
+body.theme-christmas .slideout-panel,
+body.theme-christmas .card,
+body.theme-christmas .admin-stat-box,
+body.theme-christmas .create-post-card {
+    background: rgba(255,255,255,0.92);
+    border-color: rgba(21,128,61,0.24);
+    box-shadow: 0 8px 24px rgba(21,128,61,0.10);
+}
+
+body.theme-christmas .announcement-card {
+    background:
+        linear-gradient(90deg, rgba(255,255,255,0.98), rgba(240,253,244,0.88)),
+        radial-gradient(circle at 92% 18%, rgba(185,28,28,0.12), transparent 24%);
+    border-color: rgba(21,128,61,0.52);
+}
+
+body.theme-christmas .panel-menu-item i,
+body.theme-christmas .card-header i,
+body.theme-christmas .admin-stat-num,
+body.theme-christmas .action-btn:hover,
+body.theme-christmas .post-stats span:hover {
+    color: #15803d;
+}
+
+/* Christmas — Admin Panels & Modals (LIGHT) */
+body.theme-christmas:not(.dark-mode) .admin-panel-box,
+body.theme-christmas:not(.dark-mode) .modal-content {
+    background: rgba(240, 253, 244, 0.98) !important;
+    border: 1px solid rgba(21,128,61,0.25) !important;
+    color: #0f172a !important;
+}
+body.theme-christmas:not(.dark-mode) .admin-panel-header { border-bottom-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas:not(.dark-mode) .admin-panel-header h2,
+body.theme-christmas:not(.dark-mode) .modal-header h2,
+body.theme-christmas:not(.dark-mode) .modal-title { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .approval-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(21,128,61,0.25) !important; color: #0f172a !important; }
+body.theme-christmas:not(.dark-mode) .user-table th { color: #15803d !important; border-bottom-color: rgba(21,128,61,0.25) !important; }
+body.theme-christmas:not(.dark-mode) .user-table td { color: #0f172a !important; border-bottom-color: rgba(21,128,61,0.12) !important; }
+body.theme-christmas:not(.dark-mode) .user-table tr:hover td { background: rgba(21,128,61,0.06) !important; }
+body.theme-christmas:not(.dark-mode) .admin-tab { background: rgba(240,253,244,0.80) !important; color: #15803d !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas:not(.dark-mode) .theme-card { background: rgba(240,253,244,0.90) !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas:not(.dark-mode) .theme-card .theme-name { color: #0f172a !important; }
+body.theme-christmas:not(.dark-mode) .cal-day { border-color: rgba(21,128,61,0.20) !important; color: #0f172a !important; background: rgba(240,253,244,0.70) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day:hover { background: rgba(21,128,61,0.10) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day.today { border-color: #15803d !important; background: rgba(21,128,61,0.15) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day-hdr { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .cal-nav-btn { border-color: rgba(21,128,61,0.30) !important; color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) #calDayEvents { background: rgba(240,253,244,0.90) !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas:not(.dark-mode) .event-item { background: rgba(21,128,61,0.08) !important; border-color: rgba(21,128,61,0.25) !important; color: #0f172a !important; }
+body.theme-christmas:not(.dark-mode) .search-input { background: rgba(240,253,244,0.90) !important; border-color: rgba(21,128,61,0.25) !important; color: #0f172a !important; }
+body.theme-christmas:not(.dark-mode) .form-group label { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .form-group input,
+body.theme-christmas:not(.dark-mode) .form-group textarea,
+body.theme-christmas:not(.dark-mode) .form-group select { background: rgba(240,253,244,0.90) !important; border-color: rgba(21,128,61,0.25) !important; color: #0f172a !important; }
+
+/* Christmas — Admin Panels & Modals (DARK) */
+body.theme-christmas.dark-mode .admin-panel-box,
+body.theme-christmas.dark-mode .modal-content {
+    background: rgba(5, 20, 12, 0.97) !important;
+    border: 1px solid rgba(21,128,61,0.30) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-christmas.dark-mode .admin-panel-header { border-bottom-color: rgba(21,128,61,0.22) !important; }
+body.theme-christmas.dark-mode .admin-panel-header h2,
+body.theme-christmas.dark-mode .modal-header h2,
+body.theme-christmas.dark-mode .modal-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .approval-card { background: rgba(5,20,12,0.92) !important; border-color: rgba(21,128,61,0.25) !important; color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .user-table th { color: #4ade80 !important; border-bottom-color: rgba(21,128,61,0.25) !important; }
+body.theme-christmas.dark-mode .user-table td { color: #e0e0e0 !important; border-bottom-color: rgba(21,128,61,0.12) !important; }
+body.theme-christmas.dark-mode .user-table tr:hover td { background: rgba(21,128,61,0.08) !important; }
+body.theme-christmas.dark-mode .admin-tab { background: rgba(5,20,12,0.80) !important; color: #d1d5db !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas.dark-mode .theme-card { background: rgba(5,20,12,0.85) !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas.dark-mode .theme-card .theme-name { color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .cal-day { border-color: rgba(21,128,61,0.18) !important; color: #e0e0e0 !important; background: rgba(5,20,12,0.65) !important; }
+body.theme-christmas.dark-mode .cal-day:hover { background: rgba(21,128,61,0.12) !important; }
+body.theme-christmas.dark-mode .cal-day.today { border-color: #15803d !important; background: rgba(21,128,61,0.18) !important; }
+body.theme-christmas.dark-mode .cal-day-hdr { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .cal-nav-btn { border-color: rgba(21,128,61,0.28) !important; color: #4ade80 !important; }
+body.theme-christmas.dark-mode #calDayEvents { background: rgba(5,20,12,0.85) !important; border-color: rgba(21,128,61,0.20) !important; }
+body.theme-christmas.dark-mode .event-item { background: rgba(21,128,61,0.10) !important; border-color: rgba(21,128,61,0.25) !important; color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .search-input { background: rgba(5,20,12,0.80) !important; border-color: rgba(21,128,61,0.25) !important; color: #e0e0e0 !important; }
+body.theme-christmas.dark-mode .form-group label { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .form-group input,
+body.theme-christmas.dark-mode .form-group textarea,
+body.theme-christmas.dark-mode .form-group select { background: rgba(5,20,12,0.80) !important; border-color: rgba(21,128,61,0.25) !important; color: #e0e0e0 !important; }
+
+/* Shared themed controls */
+body.theme-intramurals .create-post-avatar,
+body.theme-intramurals .avatar,
+body.theme-intramurals .post-avatar {
+    background: linear-gradient(135deg, #ff7a00, #c2410c);
+}
+
+body.theme-foundation .create-post-avatar,
+body.theme-foundation .avatar,
+body.theme-foundation .post-avatar {
+    background: linear-gradient(135deg, #f5b700, #eab308);
+}
+
+body.theme-womens .create-post-avatar,
+body.theme-womens .avatar,
+body.theme-womens .post-avatar {
+    background: linear-gradient(135deg, #9333ea, #7e22ce);
+}
+
+body.theme-christmas .create-post-avatar,
+body.theme-christmas .avatar,
+body.theme-christmas .post-avatar {
+    background: linear-gradient(135deg, #15803d, #166534);
+}
+
     </style>
 </head>
 <body>
@@ -1681,8 +2160,8 @@
 
             filtered.sort((a, b) =>
                 (st_pins[a.id] && !st_pins[b.id]) ? -1 :
-                (!st_pins[a.id] && st_pins[b.id]) ? 1 :
-                b.id - a.id
+                    (!st_pins[a.id] && st_pins[b.id]) ? 1 :
+                        b.id - a.id
             );
 
             if (focusPostId > 0) {
@@ -1702,7 +2181,7 @@
                 let likeCount = st_likeCounts[post.id] || post.likeCount || 0;
                 let catClass = post.category === 'Exam' ? 'post-category-exam' :
                     post.category === 'Suspension' ? 'post-category-suspension' :
-                    post.category === 'Event' ? 'post-category-event' : 'post-category-general';
+                        post.category === 'Event' ? 'post-category-event' : 'post-category-general';
                 let commentsCount = (st_comments[post.id] || []).length || post.commentCount || 0;
                 let avatar = avatarHtml(post.authorImage, 50, true);
                 let targetClass = (focusPostId > 0 && focusPostId === post.id) ? ' notification-target' : '';
@@ -1765,8 +2244,8 @@
             return rootComments.map(comment => renderCommentNode(comment, repliesMap, postId, 0)).join('');
         }
 
-        var videoExts = ['mp4','webm','ogg','mov','avi'];
-        var imageExts = ['jpg','jpeg','png','gif','webp','bmp'];
+        var videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
+        var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
 
         function getExt(url) {
             return (url.split('.').pop() || '').toLowerCase().split('?')[0];
@@ -1774,28 +2253,28 @@
 
         function renderMediaHtml(mediaUrl) {
             if (!mediaUrl) return '';
-            var urls = mediaUrl.split(',').map(function(u) { return u.trim(); }).filter(Boolean);
+            var urls = mediaUrl.split(',').map(function (u) { return u.trim(); }).filter(Boolean);
             if (!urls.length) return '';
             var html = '';
-            var images = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) !== -1; });
-            var videos = urls.filter(function(u) { return videoExts.indexOf(getExt(u)) !== -1; });
-            var files = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
+            var images = urls.filter(function (u) { return imageExts.indexOf(getExt(u)) !== -1; });
+            var videos = urls.filter(function (u) { return videoExts.indexOf(getExt(u)) !== -1; });
+            var files = urls.filter(function (u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
 
             if (images.length === 1) {
                 html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
             } else if (images.length > 1) {
                 html += `<div class="post-image" style="display:flex;flex-wrap:wrap;gap:6px;">`;
-                images.forEach(function(img) {
+                images.forEach(function (img) {
                     html += `<img src="${img}" style="width:calc(50% - 3px);max-height:160px;object-fit:cover;border-radius:12px;cursor:zoom-in;flex:1 1 calc(50% - 3px);" onclick="openLightbox('${img}')" onerror="this.style.display='none'" />`;
                 });
                 html += `</div>`;
             }
 
-            videos.forEach(function(vid) {
+            videos.forEach(function (vid) {
                 html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
             });
 
-            files.forEach(function(f) {
+            files.forEach(function (f) {
                 var fname = f.split('/').pop();
                 html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
                     <i class="fas fa-file-alt" style="color:var(--primary);font-size:18px;"></i>
@@ -2013,8 +2492,8 @@
         function previewImageFiles() {
             let input = document.getElementById('announcementImageFile');
             let newFiles = Array.from(input.files);
-            newFiles.forEach(function(f) {
-                let isDupe = selectedImageFiles.some(function(e) { return e.name === f.name && e.size === f.size; });
+            newFiles.forEach(function (f) {
+                let isDupe = selectedImageFiles.some(function (e) { return e.name === f.name && e.size === f.size; });
                 if (!isDupe) selectedImageFiles.push(f);
             });
             input.value = '';
@@ -2026,9 +2505,9 @@
             container.innerHTML = '';
             if (!selectedImageFiles.length) { container.style.display = 'none'; return; }
             container.style.display = 'flex';
-            selectedImageFiles.forEach(function(file, idx) {
+            selectedImageFiles.forEach(function (file, idx) {
                 let reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     let wrap = document.createElement('div');
                     wrap.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;';
                     wrap.innerHTML = `
@@ -2129,24 +2608,24 @@
                 credentials: 'same-origin',
                 body: formData
             })
-            .then(r => r.json())
-            .then(res => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
-                if (res.ok) {
-                    closeCreatePostModal();
-                    loadAnnouncementsFromDB();
-                    showToast('Posted!');
-                } else {
-                    showToast('Error: ' + (res.error || 'Could not post'));
-                }
-            })
-            .catch(err => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
-                showToast('Network error. Please try again.');
-                console.error('Publish error:', err);
-            });
+                .then(r => r.json())
+                .then(res => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
+                    if (res.ok) {
+                        closeCreatePostModal();
+                        loadAnnouncementsFromDB();
+                        showToast('Posted!');
+                    } else {
+                        showToast('Error: ' + (res.error || 'Could not post'));
+                    }
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane" style="margin-right:6px;"></i>Post';
+                    showToast('Network error. Please try again.');
+                    console.error('Publish error:', err);
+                });
         }
 
         function openEditModal(id) {
@@ -2184,7 +2663,7 @@
             let existingImages = existingMediaUrls.filter(u => imageExts.indexOf(getExt(u)) !== -1);
             if (existingImages.length) {
                 imgContainer.style.display = 'flex';
-                existingImages.forEach(function(url) {
+                existingImages.forEach(function (url) {
                     let wrap = document.createElement('div');
                     wrap.style.cssText = 'position:relative;border-radius:10px;overflow:hidden;border:2px solid var(--uni-accent);flex-shrink:0;';
                     wrap.dataset.url = url;
@@ -2206,7 +2685,7 @@
                 document.getElementById('previewVideo').src = existingVideo;
                 vc.style.display = 'block';
                 let clearBtn = vc.querySelector('button');
-                if (clearBtn) clearBtn.onclick = function() { removeExistingMedia(existingVideo); };
+                if (clearBtn) clearBtn.onclick = function () { removeExistingMedia(existingVideo); };
             }
 
             let existingFile = existingMediaUrls.find(u => imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1);
@@ -2216,7 +2695,7 @@
                 let ac = document.getElementById('attachPreviewContainer');
                 ac.style.display = 'flex';
                 let clearBtn = ac.querySelector('button');
-                if (clearBtn) clearBtn.onclick = function() { removeExistingMedia(existingFile); };
+                if (clearBtn) clearBtn.onclick = function () { removeExistingMedia(existingFile); };
             }
         }
 
@@ -2266,24 +2745,24 @@
                 body: formData,
                 credentials: 'same-origin'
             })
-            .then(r => r.json())
-            .then(res => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
-                if (res.ok) {
-                    closeCreatePostModal();
-                    loadAnnouncementsFromDB();
-                    showToast('Updated');
-                } else {
-                    showToast('Error: ' + (res.error || 'Could not update'));
-                }
-            })
-            .catch(err => {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
-                showToast('Network error. Please try again.');
-                console.error('Update error:', err);
-            });
+                .then(r => r.json())
+                .then(res => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+                    if (res.ok) {
+                        closeCreatePostModal();
+                        loadAnnouncementsFromDB();
+                        showToast('Updated');
+                    } else {
+                        showToast('Error: ' + (res.error || 'Could not update'));
+                    }
+                })
+                .catch(err => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-save" style="margin-right:6px;"></i>Update';
+                    showToast('Network error. Please try again.');
+                    console.error('Update error:', err);
+                });
         }
 
         function deletePost(id) {
@@ -2373,21 +2852,123 @@
 
         // ── University Theme ─────────────────────────────────────────
         var UNIVERSITY_THEMES = {
-            'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
-            'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
-            'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
-            'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-            'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
+            'Default': {
+                bodyClass: 'theme-default',
+                label: '',
+                bg: "url('wbg.jpg')",
+                overlay: 'rgba(255,255,255,0)',
+                header: '#c9920a',
+                accent: '#c9920a',
+                accentDark: '#a87800',
+                surface: 'rgba(255,255,255,0.92)',
+                surfaceStrong: '#ffffff',
+                surfaceSoft: '#f8fafc',
+                border: 'rgba(201,146,10,0.25)',
+                text: '#1a2a3a',
+                muted: '#6b7c8f',
+                activeBg: '#fef9e7'
+            },
+
+            'Intramurals': {
+                bodyClass: 'theme-intramurals',
+                label: 'INTRAMURALS',
+                bg: "url('Intramurals_bg.jpg')",
+                overlay: 'rgba(0,0,0,0.50)',
+                header: 'linear-gradient(135deg, #f97316 0%, #c2410c 48%, #431407 100%)',
+                accent: '#ff7a00',
+                accentDark: '#c2410c',
+                surface: 'rgba(10,10,10,0.76)',
+                surfaceStrong: 'rgba(8,8,8,0.88)',
+                surfaceSoft: 'rgba(255,255,255,0.08)',
+                border: 'rgba(255,122,0,0.70)',
+                text: '#ffffff',
+                muted: '#d1d5db',
+                activeBg: 'rgba(255,122,0,0.18)'
+            },
+
+            'FoundationWeek': {
+                bodyClass: 'theme-foundation',
+                label: 'FOUNDATION WEEK 🎉',
+                bg: "url('Foundation_bg.jpg')",
+                overlay: 'rgba(255,255,255,0.68)',
+                header: 'linear-gradient(135deg, #f5b700 0%, #facc15 50%, #ffd84d 100%)',
+                accent: '#eab308',
+                accentDark: '#b77900',
+                surface: 'rgba(255,255,255,0.90)',
+                surfaceStrong: 'rgba(255,255,255,0.96)',
+                surfaceSoft: 'rgba(255,248,225,0.78)',
+                border: 'rgba(234,179,8,0.55)',
+                text: '#152033',
+                muted: '#6b5b3e',
+                activeBg: '#fff4c4'
+            },
+
+            'WomensMonth': {
+                bodyClass: 'theme-womens',
+                label: "WOMEN'S MONTH",
+                bg: "url('Womens_bg.jpg')",
+                overlay: 'rgba(243,232,255,0.34)',
+                header: 'linear-gradient(135deg, #581c87 0%, #7e22ce 48%, #a855f7 100%)',
+                accent: '#7e22ce',
+                accentDark: '#581c87',
+                surface: 'rgba(255,255,255,0.90)',
+                surfaceStrong: 'rgba(255,255,255,0.96)',
+                surfaceSoft: 'rgba(250,245,255,0.82)',
+                border: 'rgba(126,34,206,0.52)',
+                text: '#172033',
+                muted: '#64748b',
+                activeBg: '#f3e8ff'
+            },
+
+            'Christmas': {
+                bodyClass: 'theme-christmas',
+                label: 'CHRISTMAS',
+                bg: "url('Christmas_bg.jpg')",
+                overlay: 'rgba(240,253,244,0.32)',
+                header: 'linear-gradient(135deg, #b91c1c 0%, #991b1b 55%, #7f1d1d 100%)',
+                accent: '#15803d',
+                accentDark: '#166534',
+                surface: 'rgba(255,255,255,0.92)',
+                surfaceStrong: 'rgba(255,255,255,0.97)',
+                surfaceSoft: 'rgba(240,253,244,0.80)',
+                border: 'rgba(21,128,61,0.52)',
+                text: '#0f172a',
+                muted: '#475569',
+                activeBg: '#dcfce7'
+            }
         };
 
         function applyUniversityTheme(name) {
             var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+
+            document.body.classList.remove(
+                'theme-default',
+                'theme-intramurals',
+                'theme-foundation',
+                'theme-womens',
+                'theme-christmas'
+            );
+
+            document.body.classList.add(t.bodyClass);
+
+            document.documentElement.style.setProperty('--theme-label', t.label ? '"' + t.label + '"' : '""');
+            document.documentElement.style.setProperty('--bg-image', t.bg);
             document.documentElement.style.setProperty('--uni-overlay', t.overlay);
             document.documentElement.style.setProperty('--uni-header-bg', t.header);
             document.documentElement.style.setProperty('--uni-accent', t.accent);
             document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+            document.documentElement.style.setProperty('--surface', t.surface);
+            document.documentElement.style.setProperty('--surface-strong', t.surfaceStrong);
+            document.documentElement.style.setProperty('--surface-soft', t.surfaceSoft);
+            document.documentElement.style.setProperty('--border', t.border);
+            document.documentElement.style.setProperty('--page-text', t.text);
+            document.documentElement.style.setProperty('--primary', t.text);
+            document.documentElement.style.setProperty('--muted', t.muted);
+            document.documentElement.style.setProperty('--active-bg', t.activeBg);
+
             localStorage.setItem('campus_uni_theme', name);
         }
+
 
         // Apply from localStorage immediately (instant, no flash)
         var savedUniTheme = localStorage.getItem('campus_uni_theme');
@@ -2395,9 +2976,9 @@
 
         // Then confirm from DB (keeps in sync across devices/sessions)
         fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-            .then(function(r) { return r.json(); })
-            .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
-            .catch(function() {});
+            .then(function (r) { return r.json(); })
+            .then(function (res) { if (res.ok) applyUniversityTheme(res.theme); })
+            .catch(function () { });
 
         window.addEventListener('storage', function (e) {
             if (e.key === 'campus_theme') {
@@ -2418,13 +2999,13 @@
         // ── 5-minute calendar reminder polling ───────────────────────
         function pollCalendarReminders() {
             fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok && res.triggered > 0) {
                         updateNotifBadge(); // refresh badge immediately
                     }
                 })
-                .catch(function() {});
+                .catch(function () { });
         }
         pollCalendarReminders();
         setInterval(pollCalendarReminders, 60000); // check every 60 seconds
@@ -2463,7 +3044,7 @@
             else if (name === 'users') {
                 userFilter = 'All';
                 // Reset tabs — make All active
-                document.querySelectorAll('#usersPanel .admin-tab').forEach(function(b) { b.classList.remove('active'); });
+                document.querySelectorAll('#usersPanel .admin-tab').forEach(function (b) { b.classList.remove('active'); });
                 var allTab = document.querySelector('#usersPanel .admin-tab');
                 if (allTab) allTab.classList.add('active');
                 loadUsersData();
@@ -2475,29 +3056,29 @@
             document.getElementById(name + 'Panel').classList.remove('open');
         }
         // Close on backdrop click
-        ['approvalPanel','usersPanel','themePanel','calendarPanel'].forEach(function(id) {
+        ['approvalPanel', 'usersPanel', 'themePanel', 'calendarPanel'].forEach(function (id) {
             var el = document.getElementById(id);
-            if (el) el.addEventListener('click', function(e) {
-                if (e.target === el) closeAdminPanel(id.replace('Panel',''));
+            if (el) el.addEventListener('click', function (e) {
+                if (e.target === el) closeAdminPanel(id.replace('Panel', ''));
             });
         });
 
         // ── Load admin stats ─────────────────────────────────────────
         function loadAdminStats() {
             fetch('UserMgmtHandler.ashx?action=getStats', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) return;
-                    document.getElementById('statTotalPosts').textContent      = res.totalPosts;
-                    document.getElementById('statPending').textContent         = res.pendingPosts;
-                    document.getElementById('statApproved').textContent        = res.approvedPosts;
-                    document.getElementById('statUsers').textContent           = res.totalUsers;
+                    document.getElementById('statTotalPosts').textContent = res.totalPosts;
+                    document.getElementById('statPending').textContent = res.pendingPosts;
+                    document.getElementById('statApproved').textContent = res.approvedPosts;
+                    document.getElementById('statUsers').textContent = res.totalUsers;
                     document.getElementById('statPendingTeachers').textContent = res.pendingTeachers;
                     var pb = document.getElementById('pendingBadge');
                     if (pb) { pb.textContent = res.pendingPosts; pb.style.display = res.pendingPosts > 0 ? 'inline-block' : 'none'; }
                     var ub = document.getElementById('pendingUsersBadge');
                     if (ub) { ub.textContent = res.pendingTeachers; ub.style.display = res.pendingTeachers > 0 ? 'inline-block' : 'none'; }
-                }).catch(function() {});
+                }).catch(function () { });
         }
         loadAdminStats();
         setInterval(loadAdminStats, 60000);
@@ -2506,11 +3087,11 @@
         function loadApprovalData() {
             document.getElementById('approvalCardsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Loading...</div>';
             fetch('ApprovalHandler.ashx?action=getAnnouncements', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok) { adminData.announcements = res.data; renderApprovalCards(); }
                     else { document.getElementById('approvalCardsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#dc2626;">Error: ' + (res.error || 'Could not load') + '</div>'; }
-                }).catch(function() {
+                }).catch(function () {
                     document.getElementById('approvalCardsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:#dc2626;">Network error.</div>';
                 });
         }
@@ -2524,7 +3105,7 @@
 
         function renderApprovalCards() {
             var q = (document.getElementById('approvalSearch').value || '').toLowerCase();
-            var list = adminData.announcements.filter(function(a) {
+            var list = adminData.announcements.filter(function (a) {
                 var matchF = approvalFilter === 'All' || a.status === approvalFilter;
                 var matchQ = !q || a.title.toLowerCase().includes(q) || a.authorName.toLowerCase().includes(q);
                 return matchF && matchQ;
@@ -2533,18 +3114,18 @@
             if (list.length === 0) {
                 html = '<div style="text-align:center;padding:40px;color:var(--muted);"><i class="fas fa-inbox" style="font-size:36px;display:block;margin-bottom:12px;"></i>No announcements match this filter.</div>';
             } else {
-                list.forEach(function(a) {
+                list.forEach(function (a) {
                     var badgeCls = a.status === 'Pending' ? 'badge-pending' : a.status === 'Approved' ? 'badge-approved' : 'badge-rejected';
                     var borderCls = 'border-' + a.status.toLowerCase();
                     var icon = a.status === 'Pending' ? 'fa-clock' : a.status === 'Approved' ? 'fa-check-circle' : 'fa-times-circle';
-                    var dateStr = a.datePosted ? new Date(a.datePosted).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+                    var dateStr = a.datePosted ? new Date(a.datePosted).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
                     html += '<div class="approval-card ' + borderCls + '" id="acard-' + a.id + '">';
                     html += '<div class="approval-head">';
                     html += '<div><div style="font-weight:700;font-size:15px;color:var(--primary);">' + escapeHtml(a.title) + '</div>';
                     html += '<div style="font-size:12px;color:var(--muted);margin-top:3px;"><i class="fas fa-user-tie" style="margin-right:4px;"></i>' + escapeHtml(a.authorName) + ' &nbsp;·&nbsp; ' + dateStr + '</div></div>';
                     html += '<span class="status-badge ' + badgeCls + '"><i class="fas ' + icon + '"></i> ' + a.status + '</span>';
                     html += '</div>';
-                    html += '<div class="approval-body">' + escapeHtml(a.content.length > 200 ? a.content.substring(0,200) + '...' : a.content) + '</div>';
+                    html += '<div class="approval-body">' + escapeHtml(a.content.length > 200 ? a.content.substring(0, 200) + '...' : a.content) + '</div>';
                     if (a.rejectionReason) html += '<div style="margin:0 18px 10px;padding:8px 12px;background:#fee2e2;border-radius:10px;font-size:12px;color:#991b1b;"><i class="fas fa-exclamation-circle" style="margin-right:4px;"></i><strong>Rejection reason:</strong> ' + escapeHtml(a.rejectionReason) + '</div>';
                     html += '<div class="approval-actions">';
                     if (a.status !== 'Approved') html += '<button class="btn-approve-sm" onclick="reviewAnnouncement(' + a.id + ',\'Approve\',this)"><i class="fas fa-check" style="margin-right:4px;"></i>Approve</button>';
@@ -2574,22 +3155,22 @@
             if (action === 'Reject') { var inp = document.getElementById('rri-' + id); reason = inp ? inp.value.trim() : ''; }
             if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
             fetch('ApprovalHandler.ashx?action=' + action + '&id=' + id + '&reason=' + encodeURIComponent(reason), { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); if (btn) { btn.disabled = false; btn.style.opacity = ''; } return; }
                     showToast(action === 'Approve' ? 'Approved!' : action === 'Reject' ? 'Rejected.' : 'Reset to Pending.');
                     loadApprovalData();
                     loadAdminStats();
                     loadAnnouncementsFromDB();
-                }).catch(function() { if (btn) { btn.disabled = false; btn.style.opacity = ''; } });
+                }).catch(function () { if (btn) { btn.disabled = false; btn.style.opacity = ''; } });
         }
 
         // ── USER MANAGEMENT ──────────────────────────────────────────
         function loadUsersData() {
             document.getElementById('userTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Loading...</td></tr>';
             fetch('UserMgmtHandler.ashx?action=getUsers', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok) {
                         adminData.users = res.data;
                         renderUserTable();
@@ -2597,7 +3178,7 @@
                         document.getElementById('userTableBody').innerHTML =
                             '<tr><td colspan="7" style="text-align:center;padding:30px;color:#dc2626;">Error: ' + (res.error || 'Could not load users') + '</td></tr>';
                     }
-                }).catch(function() {
+                }).catch(function () {
                     document.getElementById('userTableBody').innerHTML =
                         '<tr><td colspan="7" style="text-align:center;padding:30px;color:#dc2626;">Network error loading users.</td></tr>';
                 });
@@ -2612,17 +3193,17 @@
 
         function renderUserTable() {
             var q = (document.getElementById('userSearch').value || '').toLowerCase();
-            var list = adminData.users.filter(function(u) {
-                var role   = (u.role          || '').toLowerCase();
+            var list = adminData.users.filter(function (u) {
+                var role = (u.role || '').toLowerCase();
                 var status = (u.accountStatus || '').toLowerCase();
                 var matchF = userFilter === 'All'
                     ? true
                     : userFilter === 'Pending'
                         ? (role === 'teacher' && status === 'pending')
                         : role === userFilter.toLowerCase();
-                var matchQ = !q || (u.fullName  || '').toLowerCase().includes(q)
-                                || (u.email     || '').toLowerCase().includes(q)
-                                || (u.username  || '').toLowerCase().includes(q);
+                var matchQ = !q || (u.fullName || '').toLowerCase().includes(q)
+                    || (u.email || '').toLowerCase().includes(q)
+                    || (u.username || '').toLowerCase().includes(q);
                 return matchF && matchQ;
             });
             if (list.length === 0) {
@@ -2630,10 +3211,10 @@
                 return;
             }
             var html = '';
-            list.forEach(function(u) {
+            list.forEach(function (u) {
                 var rolePill = 'pill-' + u.role.toLowerCase();
                 var statusPill = u.accountStatus === 'Active' ? 'pill-active' : u.accountStatus === 'Pending' ? 'pill-pending' : u.accountStatus === 'Suspended' ? 'pill-suspended' : 'pill-rejected';
-                var joined = u.createdDate ? new Date(u.createdDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '';
+                var joined = u.createdDate ? new Date(u.createdDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
                 html += '<tr>';
                 html += '<td><strong>' + escapeHtml(u.fullName) + '</strong></td>';
                 html += '<td>' + escapeHtml(u.username) + '</td>';
@@ -2659,54 +3240,54 @@
 
         function updateUserStatus(userId, status) {
             fetch('UserMgmtHandler.ashx?action=updateStatus&userId=' + userId + '&status=' + encodeURIComponent(status), { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
                     var labels = { Active: 'Account approved!', Suspended: 'Account suspended.', Rejected: 'Account rejected.' };
                     showToast(labels[status] || 'Updated.');
                     loadUsersData();
                     loadAdminStats();
-                }).catch(function() { showToast('Network error.'); });
+                }).catch(function () { showToast('Network error.'); });
         }
 
         // ── THEME ────────────────────────────────────────────────────
         function loadThemeData() {
             fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok) {
                         selectedTheme = res.theme;
                         pendingTheme = res.theme;
-                        document.querySelectorAll('.theme-card').forEach(function(c) {
+                        document.querySelectorAll('.theme-card').forEach(function (c) {
                             c.classList.toggle('selected', c.dataset.theme === selectedTheme);
                         });
                     }
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         function selectTheme(name, card) {
             pendingTheme = name;
-            document.querySelectorAll('.theme-card').forEach(function(c) { c.classList.remove('selected'); });
+            document.querySelectorAll('.theme-card').forEach(function (c) { c.classList.remove('selected'); });
             if (card) card.classList.add('selected');
         }
 
         function applyTheme() {
             fetch('UserMgmtHandler.ashx?action=setTheme&theme=' + encodeURIComponent(pendingTheme), { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
                     selectedTheme = pendingTheme;
                     applyUniversityTheme(selectedTheme);
                     showToast('Theme applied: ' + selectedTheme);
                     closeAdminPanel('theme');
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         // ── CALENDAR ─────────────────────────────────────────────────
         var adminCalSelectedDate = '';
         var adminCalEditingId = null; // null = adding new event; integer = editing existing event
-        var adminTypeColorMap = { Exam:'#f59e0b', Deadline:'#ef4444', Event:'#10b981', Quiz:'#3b82f6', Reminder:'#8b5cf6', General:'#c9920a' };
-        var adminTypeColorPills = { Exam:'#fef3c7|#b45309', Deadline:'#fee2e2|#991b1b', Event:'#d1fae5|#065f46', Quiz:'#dbeafe|#1e40af', Reminder:'#ede9fe|#5b21b6', General:'#f3f4f6|#374151' };
+        var adminTypeColorMap = { Exam: '#f59e0b', Deadline: '#ef4444', Event: '#10b981', Quiz: '#3b82f6', Reminder: '#8b5cf6', General: '#c9920a' };
+        var adminTypeColorPills = { Exam: '#fef3c7|#b45309', Deadline: '#fee2e2|#991b1b', Event: '#d1fae5|#065f46', Quiz: '#dbeafe|#1e40af', Reminder: '#ede9fe|#5b21b6', General: '#f3f4f6|#374151' };
 
         function fmtTime(t) {
             if (!t) return '';
@@ -2718,7 +3299,7 @@
 
         function toggleAdminCalForm(show) {
             var form = document.getElementById('calAddForm');
-            var btn  = document.getElementById('calAddToggleBtn');
+            var btn = document.getElementById('calAddToggleBtn');
             if (show) {
                 form.style.display = 'flex';
                 if (btn) btn.style.display = 'none';
@@ -2738,11 +3319,11 @@
 
         function openCalEditForm(ev) {
             adminCalEditingId = ev.eventId;
-            document.getElementById('calEventTitle').value = ev.title       || '';
-            document.getElementById('calEventDate').value  = ev.eventDate   || '';
-            document.getElementById('calEventTime').value  = ev.eventTime   || '';
-            document.getElementById('calEventType').value  = ev.eventType   || 'General';
-            document.getElementById('calEventDesc').value  = ev.description || '';
+            document.getElementById('calEventTitle').value = ev.title || '';
+            document.getElementById('calEventDate').value = ev.eventDate || '';
+            document.getElementById('calEventTime').value = ev.eventTime || '';
+            document.getElementById('calEventType').value = ev.eventType || 'General';
+            document.getElementById('calEventDesc').value = ev.description || '';
             document.getElementById('calEventPublic').checked = !!ev.isPublic;
             toggleAdminCalForm(true);
             var saveBtn = document.getElementById('calSaveBtn');
@@ -2750,16 +3331,16 @@
         }
 
         function openCalEditFormById(id) {
-            var ev = adminData.calEvents.find(function(e) { return e.eventId === id; });
+            var ev = adminData.calEvents.find(function (e) { return e.eventId === id; });
             if (ev) openCalEditForm(ev);
         }
 
         function loadCalendarEvents() {
             fetch('CalendarHandler.ashx?action=getEvents', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok) { adminData.calEvents = res.data; renderCalendar(); renderCalEventList(); }
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         function calPrevMonth() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } adminCalSelectedDate = ''; renderCalendar(); hideAdminDayEvents(); }
@@ -2767,26 +3348,26 @@
 
         function renderCalendar() {
             var label = document.getElementById('calMonthLabel');
-            var grid  = document.getElementById('calGrid');
+            var grid = document.getElementById('calGrid');
             if (!label || !grid) return;
-            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             label.textContent = months[calMonth] + ' ' + calYear;
-            var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-            var html = days.map(function(d) { return '<div class="cal-day-hdr">' + d + '</div>'; }).join('');
+            var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            var html = days.map(function (d) { return '<div class="cal-day-hdr">' + d + '</div>'; }).join('');
             var first = new Date(calYear, calMonth, 1).getDay();
             var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-            var daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+            var daysInPrev = new Date(calYear, calMonth, 0).getDate();
             var today = new Date();
             for (var i = first - 1; i >= 0; i--)
                 html += '<div class="cal-day other-month"><div class="day-num">' + (daysInPrev - i) + '</div></div>';
             for (var d = 1; d <= daysInMonth; d++) {
                 var isToday = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
-                var ds = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-                var dayEvs = adminData.calEvents.filter(function(e) { return e.eventDate === ds; });
+                var ds = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                var dayEvs = adminData.calEvents.filter(function (e) { return e.eventDate === ds; });
                 var isSelected = (ds === adminCalSelectedDate);
                 var dots = '';
                 var shown = {};
-                dayEvs.forEach(function(ev) {
+                dayEvs.forEach(function (ev) {
                     if (Object.keys(shown).length >= 3) return;
                     var color = adminTypeColorMap[ev.eventType] || '#c9920a';
                     if (!shown[ev.eventType]) {
@@ -2814,17 +3395,17 @@
         }
 
         function showAdminDayEvents(ds) {
-            var dayEvs = adminData.calEvents.filter(function(e) { return e.eventDate === ds; });
+            var dayEvs = adminData.calEvents.filter(function (e) { return e.eventDate === ds; });
             var panel = document.getElementById('calDayEvents');
             var label = document.getElementById('calDayLabel');
-            var list  = document.getElementById('calDayEventList');
+            var list = document.getElementById('calDayEventList');
             if (!panel) return;
             var d = new Date(ds + 'T00:00:00');
-            label.textContent = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+            label.textContent = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
             if (!dayEvs.length) {
                 list.innerHTML = '<div style="font-size:12px;color:var(--muted);">No events on this day.</div>';
             } else {
-                list.innerHTML = dayEvs.map(function(ev) {
+                list.innerHTML = dayEvs.map(function (ev) {
                     var tc = (adminTypeColorPills[ev.eventType] || adminTypeColorPills.General).split('|');
                     var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);"></i>' : ' <i class="fas fa-globe" style="font-size:9px;color:#10b981;"></i>';
                     return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">'
@@ -2844,19 +3425,19 @@
         }
 
         function renderCalEventList() {
-            var today = new Date().toISOString().slice(0,10);
-            var upcoming = adminData.calEvents.filter(function(e) { return e.eventDate >= today; })
-                                              .sort(function(a,b) { return a.eventDate.localeCompare(b.eventDate); })
-                                              .slice(0,8);
+            var today = new Date().toISOString().slice(0, 10);
+            var upcoming = adminData.calEvents.filter(function (e) { return e.eventDate >= today; })
+                .sort(function (a, b) { return a.eventDate.localeCompare(b.eventDate); })
+                .slice(0, 8);
             var container = document.getElementById('calEventList');
             if (!container) return;
             if (!upcoming.length) {
                 container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">No upcoming events.</div>';
                 return;
             }
-            container.innerHTML = upcoming.map(function(ev) {
+            container.innerHTML = upcoming.map(function (ev) {
                 var d = new Date(ev.eventDate + 'T00:00:00');
-                var dl = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+                var dl = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 var tc = (adminTypeColorPills[ev.eventType] || adminTypeColorPills.General).split('|');
                 var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);" title="Private"></i>' : ' <i class="fas fa-globe" style="font-size:9px;color:#10b981;" title="Public"></i>';
                 return '<div class="cal-event-item" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;" onclick="calDayClick(\'' + ev.eventDate + '\')">'
@@ -2875,10 +3456,10 @@
         }
 
         function saveCalendarEvent() {
-            var title    = document.getElementById('calEventTitle').value.trim();
-            var date     = document.getElementById('calEventDate').value;
-            var type     = document.getElementById('calEventType').value;
-            var desc     = document.getElementById('calEventDesc').value.trim();
+            var title = document.getElementById('calEventTitle').value.trim();
+            var date = document.getElementById('calEventDate').value;
+            var type = document.getElementById('calEventType').value;
+            var desc = document.getElementById('calEventDesc').value.trim();
             var isPublic = document.getElementById('calEventPublic').checked ? 1 : 0;
             if (!title || !date) { showToast('Please enter a title and date.'); return; }
 
@@ -2887,40 +3468,40 @@
                 var time = document.getElementById('calEventTime').value;
                 url = 'CalendarHandler.ashx?action=updateEvent&id=' + adminCalEditingId
                     + '&title=' + encodeURIComponent(title)
-                    + '&date='  + encodeURIComponent(date)
-                    + '&time='  + encodeURIComponent(time)
-                    + '&type='  + encodeURIComponent(type)
-                    + '&desc='  + encodeURIComponent(desc)
+                    + '&date=' + encodeURIComponent(date)
+                    + '&time=' + encodeURIComponent(time)
+                    + '&type=' + encodeURIComponent(type)
+                    + '&desc=' + encodeURIComponent(desc)
                     + '&isPublic=' + isPublic;
             } else {
                 url = 'CalendarHandler.ashx?action=addEvent&title=' + encodeURIComponent(title)
-                    + '&date='  + encodeURIComponent(date)
-                    + '&type='  + encodeURIComponent(type)
-                    + '&desc='  + encodeURIComponent(desc)
+                    + '&date=' + encodeURIComponent(date)
+                    + '&type=' + encodeURIComponent(type)
+                    + '&desc=' + encodeURIComponent(desc)
                     + '&isPublic=' + isPublic;
             }
 
             fetch(url, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
                     showToast(adminCalEditingId ? 'Event updated!' : (isPublic ? 'Public event added!' : 'Private event added!'));
                     toggleAdminCalForm(false);
                     adminCalSelectedDate = date;
                     loadCalendarEvents();
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         function deleteCalEvent(id) {
             fetch('CalendarHandler.ashx?action=deleteEvent&id=' + id, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (res.ok) { showToast('Event removed.'); loadCalendarEvents(); }
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         function toggleCalVisibility(id) {
-            var ev = adminData.calEvents.find(function(item) { return item.eventId == id; });
+            var ev = adminData.calEvents.find(function (item) { return item.eventId == id; });
             if (!ev) return;
             var isPublic = ev.isPublic ? 0 : 1;
             fetch('CalendarHandler.ashx?action=updateEvent&id=' + encodeURIComponent(ev.eventId)
@@ -2930,12 +3511,12 @@
                 + '&type=' + encodeURIComponent(ev.eventType)
                 + '&desc=' + encodeURIComponent(ev.description || '')
                 + '&isPublic=' + isPublic, { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
                     showToast(isPublic ? 'Event is now public.' : 'Event is now private.');
                     loadCalendarEvents();
-                }).catch(function() {});
+                }).catch(function () { });
         }
 
         function formatCalTime(value) {
@@ -2949,5 +3530,7 @@
             return displayHour + ':' + minute + ' ' + suffix;
         }
     </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>

@@ -36,27 +36,30 @@
 
         /* Cover content that scrolls behind the fixed header */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            z-index: 199;
-            pointer-events: none;
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
+    display: none;
+}
+/* Foundation Week theme - gold gradient */
+body.theme-foundation::before {
+    background: linear-gradient(135deg, rgba(245,183,0,0.25) 0%, rgba(234,179,8,0.1) 100%);
+}
+
+/* Default theme */
+body:not(.theme-foundation)::before {
+    background: transparent;
+}
+
+/* Dark mode */
+body.dark-mode::before {
+    background: linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.1));
+}
 
         body {
             min-height: 100vh;
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             color: var(--page-text);
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+            background-image: var(--bg-image);
             background-size: cover; background-repeat: no-repeat;
-            background-position: center; background-attachment: fixed;
+            background-position: center center; background-attachment: fixed;
             transition: background 0.4s ease, color 0.4s ease;
         }
 
@@ -725,6 +728,11 @@
         document.documentElement.style.setProperty('--uni-header-bg', t.header);
         document.documentElement.style.setProperty('--uni-accent', t.accent);
         document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+        // Apply body class for university-theme-decorations.css
+        var ALL_CLASSES = ['theme-default','theme-intramurals','theme-foundation','theme-womens','theme-christmas'];
+        ALL_CLASSES.forEach(function(c){ document.body.classList.remove(c); });
+        var clsMap = { 'Default':'theme-default','Intramurals':'theme-intramurals','FoundationWeek':'theme-foundation','WomensMonth':'theme-womens','Christmas':'theme-christmas' };
+        document.body.classList.add(clsMap[name] || 'theme-default');
         localStorage.setItem('campus_uni_theme', name);
     }
     var savedUniTheme = localStorage.getItem('campus_uni_theme');
@@ -741,6 +749,8 @@
     applyStoredTheme();
     loadFromDB();
 </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>
 

@@ -34,9 +34,9 @@
             width: 160px;
             height: 160px;
             object-fit: contain;
-            /* subtle glow ring around the logo */
-            filter: drop-shadow(0 0 18px rgba(201, 146, 10, 0.55))
-                    drop-shadow(0 0 40px rgba(201, 146, 10, 0.25));
+            /* glow ring uses theme color via CSS vars set by JS below */
+            filter: drop-shadow(0 0 18px var(--glow-color, rgba(201,146,10,0.55)))
+                    drop-shadow(0 0 40px var(--glow-color-soft, rgba(201,146,10,0.25)));
             animation: logoPulse 2s ease-in-out infinite;
         }
 
@@ -77,9 +77,9 @@
 
         /* Gentle breathing glow on the logo */
         @keyframes logoPulse {
-            0%   { filter: drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
-            50%  { filter: drop-shadow(0 0 28px rgba(201,146,10,0.80)) drop-shadow(0 0 60px rgba(201,146,10,0.40)); }
-            100% { filter: drop-shadow(0 0 14px rgba(201,146,10,0.45)) drop-shadow(0 0 36px rgba(201,146,10,0.2)); }
+            0%   { filter: drop-shadow(0 0 14px var(--glow-color, rgba(201,146,10,0.45))) drop-shadow(0 0 36px var(--glow-color-soft, rgba(201,146,10,0.2))); }
+            50%  { filter: drop-shadow(0 0 28px var(--glow-color-bright, rgba(201,146,10,0.80))) drop-shadow(0 0 60px var(--glow-color, rgba(201,146,10,0.40))); }
+            100% { filter: drop-shadow(0 0 14px var(--glow-color, rgba(201,146,10,0.45))) drop-shadow(0 0 36px var(--glow-color-soft, rgba(201,146,10,0.2))); }
         }
     </style>
 </head>
@@ -89,6 +89,26 @@
         <div class="app-name">Campus Announcement</div>
         <div class="app-sub">Cebu Technological University</div>
     </div>
+
+    <script>
+        // Apply university theme glow color from localStorage
+        (function () {
+            var THEME_GLOWS = {
+                'Default':       { c: 'rgba(201,146,10,', b: 'rgba(201,146,10,' },
+                'Intramurals':   { c: 'rgba(255,122,0,',  b: 'rgba(255,122,0,' },
+                'FoundationWeek':{ c: 'rgba(234,179,8,',  b: 'rgba(234,179,8,' },
+                'WomensMonth':   { c: 'rgba(126,34,206,', b: 'rgba(126,34,206,' },
+                'Christmas':     { c: 'rgba(21,128,61,',  b: 'rgba(21,128,61,' }
+            };
+            var saved = '';
+            try { saved = localStorage.getItem('campus_uni_theme') || 'Default'; } catch(e) {}
+            var g = THEME_GLOWS[saved] || THEME_GLOWS['Default'];
+            var r = document.documentElement;
+            r.style.setProperty('--glow-color',       g.c + '0.55)');
+            r.style.setProperty('--glow-color-soft',  g.c + '0.25)');
+            r.style.setProperty('--glow-color-bright', g.b + '0.85)');
+        })();
+    </script>
 
     <script>
         (function () {

@@ -1,0 +1,891 @@
+﻿/*
+ * university-theme-decorations.css
+ * - Background image per theme (dark/light variants)
+ * - Header color per theme
+ * - Light mode: white cards, dark readable text
+ * - Dark mode: existing dark styles preserved, text readable
+ * - Default theme: completely untouched
+ */
+
+/* ═══════════════════════════════════════════════
+   INTRAMURALS
+   ═══════════════════════════════════════════════ */
+
+/* Background dark */
+body.theme-intramurals.dark-mode {
+    background: url('Intramurals_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+/* Background light */
+body.theme-intramurals:not(.dark-mode) {
+    background: url('Intramurals_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+/* Header always orange */
+body.theme-intramurals .header,
+body.theme-intramurals .topbar,
+body.theme-intramurals .glass-nav {
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 48%, #431407 100%) !important;
+    border-color: rgba(255,123,0,0.35) !important;
+    box-shadow: 0 4px 24px rgba(255,107,0,0.30) !important;
+}
+
+/* Icons always orange */
+body.theme-intramurals .panel-menu-item i,
+body.theme-intramurals .slideout-panel i,
+body.theme-intramurals .panel-header i { color: #ff7b00 !important; }
+body.theme-intramurals .panel-header h3 { color: #ff7b00 !important; }
+body.theme-intramurals .panel-menu-item.active { border-left: 4px solid #ff7b00 !important; }
+body.theme-intramurals .panel-menu-item.active i { color: #ff7b00 !important; }
+body.theme-intramurals .admin-stat-num,
+body.theme-intramurals .stat-num { color: #ff7b00 !important; }
+body.theme-intramurals .action-btn:hover,
+body.theme-intramurals .post-stats span:hover { color: #ff7b00 !important; }
+body.theme-intramurals ::-webkit-scrollbar-thumb { background: #ff7b00 !important; border-radius: 20px; }
+
+/* LIGHT MODE — white cards, dark text */
+body.theme-intramurals:not(.dark-mode) .card,
+body.theme-intramurals:not(.dark-mode) .announcement-card,
+body.theme-intramurals:not(.dark-mode) .announce-card,
+body.theme-intramurals:not(.dark-mode) .admin-stat-box,
+body.theme-intramurals:not(.dark-mode) .create-post-card,
+body.theme-intramurals:not(.dark-mode) .stat-card,
+body.theme-intramurals:not(.dark-mode) .post-input-bar,
+body.theme-intramurals:not(.dark-mode) .slideout-panel,
+body.theme-intramurals:not(.dark-mode) .modal-content,
+body.theme-intramurals:not(.dark-mode) .approval-card,
+body.theme-intramurals:not(.dark-mode) .notif-item {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+}
+body.theme-intramurals:not(.dark-mode) .post-author,
+body.theme-intramurals:not(.dark-mode) .post-title,
+body.theme-intramurals:not(.dark-mode) .post-text,
+body.theme-intramurals:not(.dark-mode) .card-header,
+body.theme-intramurals:not(.dark-mode) .panel-menu-item,
+body.theme-intramurals:not(.dark-mode) .panel-header h3 { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .panel-header h3 { color: #ff7b00 !important; }
+body.theme-intramurals:not(.dark-mode) .post-meta,
+body.theme-intramurals:not(.dark-mode) .admin-stat-lbl,
+body.theme-intramurals:not(.dark-mode) .time-ago { color: #555555 !important; }
+body.theme-intramurals:not(.dark-mode) .action-btn { color: #333333 !important; }
+
+/* DARK MODE — dark cards, white text */
+body.theme-intramurals.dark-mode .card,
+body.theme-intramurals.dark-mode .announcement-card,
+body.theme-intramurals.dark-mode .announce-card,
+body.theme-intramurals.dark-mode .admin-stat-box,
+body.theme-intramurals.dark-mode .create-post-card,
+body.theme-intramurals.dark-mode .stat-card,
+body.theme-intramurals.dark-mode .post-input-bar,
+body.theme-intramurals.dark-mode .slideout-panel,
+body.theme-intramurals.dark-mode .modal-content,
+body.theme-intramurals.dark-mode .approval-card,
+body.theme-intramurals.dark-mode .notif-item {
+    background: rgba(20,20,20,0.92) !important;
+    border-color: rgba(255,123,0,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode .post-author,
+body.theme-intramurals.dark-mode .post-title,
+body.theme-intramurals.dark-mode .post-text,
+body.theme-intramurals.dark-mode .card-header,
+body.theme-intramurals.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .post-meta,
+body.theme-intramurals.dark-mode .admin-stat-lbl,
+body.theme-intramurals.dark-mode .time-ago { color: #aaaaaa !important; }
+body.theme-intramurals.dark-mode .action-btn { color: #dddddd !important; }
+
+/* ═══════════════════════════════════════════════
+   FOUNDATION WEEK
+   ═══════════════════════════════════════════════ */
+
+body.theme-foundation.dark-mode {
+    background:url('Foundation_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.theme-foundation:not(.dark-mode) {
+    background:url('Foundation_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+body.theme-foundation .header,
+body.theme-foundation .topbar,
+body.theme-foundation .glass-nav {
+    background: linear-gradient(135deg, #f5b700 0%, #facc15 50%, #ffd84d 100%) !important;
+    border-color: rgba(234,179,8,0.40) !important;
+    box-shadow: 0 4px 24px rgba(234,179,8,0.25) !important;
+}
+
+body.theme-foundation .panel-menu-item i,
+body.theme-foundation .slideout-panel i,
+body.theme-foundation .panel-header i { color: #eab308 !important; }
+body.theme-foundation .panel-header h3 { color: #92400e !important; }
+body.theme-foundation .panel-menu-item.active { border-left: 4px solid #eab308 !important; }
+body.theme-foundation .panel-menu-item.active i { color: #eab308 !important; }
+body.theme-foundation .admin-stat-num,
+body.theme-foundation .stat-num { color: #eab308 !important; }
+body.theme-foundation .action-btn:hover,
+body.theme-foundation .post-stats span:hover { color: #eab308 !important; }
+body.theme-foundation ::-webkit-scrollbar-thumb { background: #eab308 !important; border-radius: 20px; }
+
+/* LIGHT MODE */
+body.theme-foundation:not(.dark-mode) .card,
+body.theme-foundation:not(.dark-mode) .announcement-card,
+body.theme-foundation:not(.dark-mode) .announce-card,
+body.theme-foundation:not(.dark-mode) .admin-stat-box,
+body.theme-foundation:not(.dark-mode) .create-post-card,
+body.theme-foundation:not(.dark-mode) .stat-card,
+body.theme-foundation:not(.dark-mode) .post-input-bar,
+body.theme-foundation:not(.dark-mode) .slideout-panel,
+body.theme-foundation:not(.dark-mode) .modal-content,
+body.theme-foundation:not(.dark-mode) .approval-card,
+body.theme-foundation:not(.dark-mode) .notif-item {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+}
+body.theme-foundation:not(.dark-mode) .post-author,
+body.theme-foundation:not(.dark-mode) .post-title,
+body.theme-foundation:not(.dark-mode) .post-text,
+body.theme-foundation:not(.dark-mode) .card-header,
+body.theme-foundation:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-foundation:not(.dark-mode) .post-meta,
+body.theme-foundation:not(.dark-mode) .admin-stat-lbl,
+body.theme-foundation:not(.dark-mode) .time-ago { color: #555555 !important; }
+body.theme-foundation:not(.dark-mode) .action-btn { color: #333333 !important; }
+
+/* DARK MODE */
+body.theme-foundation.dark-mode .card,
+body.theme-foundation.dark-mode .announcement-card,
+body.theme-foundation.dark-mode .announce-card,
+body.theme-foundation.dark-mode .admin-stat-box,
+body.theme-foundation.dark-mode .create-post-card,
+body.theme-foundation.dark-mode .stat-card,
+body.theme-foundation.dark-mode .post-input-bar,
+body.theme-foundation.dark-mode .slideout-panel,
+body.theme-foundation.dark-mode .modal-content,
+body.theme-foundation.dark-mode .approval-card,
+body.theme-foundation.dark-mode .notif-item {
+    background: rgba(20,20,20,0.92) !important;
+    border-color: rgba(234,179,8,0.22) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-foundation.dark-mode .post-author,
+body.theme-foundation.dark-mode .post-title,
+body.theme-foundation.dark-mode .post-text,
+body.theme-foundation.dark-mode .card-header,
+body.theme-foundation.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .post-meta,
+body.theme-foundation.dark-mode .admin-stat-lbl,
+body.theme-foundation.dark-mode .time-ago { color: #aaaaaa !important; }
+body.theme-foundation.dark-mode .action-btn { color: #dddddd !important; }
+
+/* ═══════════════════════════════════════════════
+   WOMEN'S MONTH
+   ═══════════════════════════════════════════════ */
+
+body.theme-womens.dark-mode {
+    background: url('Womens_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.theme-womens:not(.dark-mode) {
+    background:url('Womens_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+body.theme-womens .header,
+body.theme-womens .topbar,
+body.theme-womens .glass-nav {
+    background: linear-gradient(135deg, #581c87 0%, #7e22ce 48%, #a855f7 100%) !important;
+    border-color: rgba(168,85,247,0.40) !important;
+    box-shadow: 0 4px 24px rgba(126,34,206,0.30) !important;
+}
+
+body.theme-womens .panel-menu-item i,
+body.theme-womens .slideout-panel i,
+body.theme-womens .panel-header i { color: #7e22ce !important; }
+body.theme-womens .panel-header h3 { color: #7e22ce !important; }
+body.theme-womens .panel-menu-item.active { border-left: 4px solid #7e22ce !important; }
+body.theme-womens .panel-menu-item.active i { color: #7e22ce !important; }
+body.theme-womens .admin-stat-num,
+body.theme-womens .stat-num { color: #7e22ce !important; }
+body.theme-womens .action-btn:hover,
+body.theme-womens .post-stats span:hover { color: #7e22ce !important; }
+body.theme-womens ::-webkit-scrollbar-thumb { background: #7e22ce !important; border-radius: 20px; }
+
+/* LIGHT MODE */
+body.theme-womens:not(.dark-mode) .card,
+body.theme-womens:not(.dark-mode) .announcement-card,
+body.theme-womens:not(.dark-mode) .announce-card,
+body.theme-womens:not(.dark-mode) .admin-stat-box,
+body.theme-womens:not(.dark-mode) .create-post-card,
+body.theme-womens:not(.dark-mode) .stat-card,
+body.theme-womens:not(.dark-mode) .post-input-bar,
+body.theme-womens:not(.dark-mode) .slideout-panel,
+body.theme-womens:not(.dark-mode) .modal-content,
+body.theme-womens:not(.dark-mode) .approval-card,
+body.theme-womens:not(.dark-mode) .notif-item {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+}
+body.theme-womens:not(.dark-mode) .post-author,
+body.theme-womens:not(.dark-mode) .post-title,
+body.theme-womens:not(.dark-mode) .post-text,
+body.theme-womens:not(.dark-mode) .card-header,
+body.theme-womens:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-womens:not(.dark-mode) .post-meta,
+body.theme-womens:not(.dark-mode) .admin-stat-lbl,
+body.theme-womens:not(.dark-mode) .time-ago { color: #555555 !important; }
+body.theme-womens:not(.dark-mode) .action-btn { color: #333333 !important; }
+
+/* DARK MODE */
+body.theme-womens.dark-mode .card,
+body.theme-womens.dark-mode .announcement-card,
+body.theme-womens.dark-mode .announce-card,
+body.theme-womens.dark-mode .admin-stat-box,
+body.theme-womens.dark-mode .create-post-card,
+body.theme-womens.dark-mode .stat-card,
+body.theme-womens.dark-mode .post-input-bar,
+body.theme-womens.dark-mode .slideout-panel,
+body.theme-womens.dark-mode .modal-content,
+body.theme-womens.dark-mode .approval-card,
+body.theme-womens.dark-mode .notif-item {
+    background: rgba(20,20,20,0.92) !important;
+    border-color: rgba(168,85,247,0.22) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-womens.dark-mode .post-author,
+body.theme-womens.dark-mode .post-title,
+body.theme-womens.dark-mode .post-text,
+body.theme-womens.dark-mode .card-header,
+body.theme-womens.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .post-meta,
+body.theme-womens.dark-mode .admin-stat-lbl,
+body.theme-womens.dark-mode .time-ago { color: #aaaaaa !important; }
+body.theme-womens.dark-mode .action-btn { color: #dddddd !important; }
+
+/* ═══════════════════════════════════════════════
+   CHRISTMAS
+   ═══════════════════════════════════════════════ */
+
+body.theme-christmas.dark-mode {
+    background:url('Christmas_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.theme-christmas:not(.dark-mode) {
+    background:url('Christmas_bg.jpg') !important;
+    background-size: cover !important; background-position: center !important;
+    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+body.theme-christmas .header,
+body.theme-christmas .topbar,
+body.theme-christmas .glass-nav {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 55%, #7f1d1d 100%) !important;
+    border-color: rgba(185,28,28,0.40) !important;
+    box-shadow: 0 4px 24px rgba(185,28,28,0.30) !important;
+}
+
+body.theme-christmas .panel-menu-item i,
+body.theme-christmas .slideout-panel i,
+body.theme-christmas .panel-header i { color: #15803d !important; }
+body.theme-christmas .panel-header h3 { color: #15803d !important; }
+body.theme-christmas .panel-menu-item.active { border-left: 4px solid #15803d !important; }
+body.theme-christmas .panel-menu-item.active i { color: #15803d !important; }
+body.theme-christmas .admin-stat-num,
+body.theme-christmas .stat-num { color: #15803d !important; }
+body.theme-christmas .action-btn:hover,
+body.theme-christmas .post-stats span:hover { color: #15803d !important; }
+body.theme-christmas ::-webkit-scrollbar-thumb { background: #15803d !important; border-radius: 20px; }
+
+/* LIGHT MODE */
+body.theme-christmas:not(.dark-mode) .card,
+body.theme-christmas:not(.dark-mode) .announcement-card,
+body.theme-christmas:not(.dark-mode) .announce-card,
+body.theme-christmas:not(.dark-mode) .admin-stat-box,
+body.theme-christmas:not(.dark-mode) .create-post-card,
+body.theme-christmas:not(.dark-mode) .stat-card,
+body.theme-christmas:not(.dark-mode) .post-input-bar,
+body.theme-christmas:not(.dark-mode) .slideout-panel,
+body.theme-christmas:not(.dark-mode) .modal-content,
+body.theme-christmas:not(.dark-mode) .approval-card,
+body.theme-christmas:not(.dark-mode) .notif-item {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+}
+body.theme-christmas:not(.dark-mode) .post-author,
+body.theme-christmas:not(.dark-mode) .post-title,
+body.theme-christmas:not(.dark-mode) .post-text,
+body.theme-christmas:not(.dark-mode) .card-header,
+body.theme-christmas:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-christmas:not(.dark-mode) .post-meta,
+body.theme-christmas:not(.dark-mode) .admin-stat-lbl,
+body.theme-christmas:not(.dark-mode) .time-ago { color: #555555 !important; }
+body.theme-christmas:not(.dark-mode) .action-btn { color: #333333 !important; }
+
+/* DARK MODE */
+body.theme-christmas.dark-mode .card,
+body.theme-christmas.dark-mode .announcement-card,
+body.theme-christmas.dark-mode .announce-card,
+body.theme-christmas.dark-mode .admin-stat-box,
+body.theme-christmas.dark-mode .create-post-card,
+body.theme-christmas.dark-mode .stat-card,
+body.theme-christmas.dark-mode .post-input-bar,
+body.theme-christmas.dark-mode .slideout-panel,
+body.theme-christmas.dark-mode .modal-content,
+body.theme-christmas.dark-mode .approval-card,
+body.theme-christmas.dark-mode .notif-item {
+    background: rgba(20,20,20,0.92) !important;
+    border-color: rgba(21,128,61,0.22) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-christmas.dark-mode .post-author,
+body.theme-christmas.dark-mode .post-title,
+body.theme-christmas.dark-mode .post-text,
+body.theme-christmas.dark-mode .card-header,
+body.theme-christmas.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .post-meta,
+body.theme-christmas.dark-mode .admin-stat-lbl,
+body.theme-christmas.dark-mode .time-ago { color: #aaaaaa !important; }
+body.theme-christmas.dark-mode .action-btn { color: #dddddd !important; }
+
+/* SAFE TEXT VISIBILITY FIX ONLY */
+body.dark-mode {
+    color: #eaeaea !important;
+}
+
+body:not(.dark-mode) {
+    color: #1a1a1a !important;
+}
+
+/* Fix unreadable muted text */
+body.dark-mode .muted,
+body.dark-mode .post-meta,
+body.dark-mode .time-ago {
+    color: #cfcfcf !important;
+}
+
+body:not(.dark-mode) .muted,
+body:not(.dark-mode) .post-meta,
+body:not(.dark-mode) .time-ago {
+    color: #555 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   GLOBAL LIGHT MODE TEXT VISIBILITY
+   Ensures text is readable on all pages when NOT in dark mode
+   Does NOT apply to Intramurals (dark theme even in "light" mode)
+   ═══════════════════════════════════════════════ */
+
+/* General body text in light mode — applies to all themes including Intramurals */
+body:not(.dark-mode) {
+    color: #1a2a3a !important;
+}
+
+/* Headings */
+body:not(.dark-mode) h1,
+body:not(.dark-mode) h2,
+body:not(.dark-mode) h3,
+body:not(.dark-mode) h4,
+body:not(.dark-mode) h5,
+body:not(.dark-mode) h6 {
+    color: #1a2a3a !important;
+}
+
+/* Common text elements */
+body:not(.dark-mode) .post-author,
+body:not(.dark-mode) .post-title,
+body:not(.dark-mode) .card-title,
+body:not(.dark-mode) .card-author-name,
+body:not(.dark-mode) .profile-name,
+body:not(.dark-mode) .info-value,
+body:not(.dark-mode) .page-title,
+body:not(.dark-mode) .section-title,
+body:not(.dark-mode) .user-name,
+body:not(.dark-mode) .brand,
+body:not(.dark-mode) .panel-menu-item,
+body:not(.dark-mode) .card-header,
+body:not(.dark-mode) .notif-message,
+body:not(.dark-mode) .summary-title,
+body:not(.dark-mode) .empty-title,
+body:not(.dark-mode) .comment-author {
+    color: #1a2a3a !important;
+}
+
+/* Muted / secondary text */
+body:not(.dark-mode) .post-text,
+body:not(.dark-mode) .post-meta,
+body:not(.dark-mode) .post-stats,
+body:not(.dark-mode) .card-meta,
+body:not(.dark-mode) .comment-time,
+body:not(.dark-mode) .notif-time,
+body:not(.dark-mode) .notif-state,
+body:not(.dark-mode) .summary-text,
+body:not(.dark-mode) .user-role,
+body:not(.dark-mode) .muted,
+body:not(.dark-mode) .empty-text,
+body:not(.dark-mode) .time-ago,
+body:not(.dark-mode) .admin-stat-lbl {
+    color: #4b5563 !important;
+}
+
+/* Inputs in light mode */
+body:not(.dark-mode) input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+body:not(.dark-mode) textarea,
+body:not(.dark-mode) select {
+    color: #1a2a3a !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+}
+
+body:not(.dark-mode) input::placeholder,
+body:not(.dark-mode) textarea::placeholder {
+    color: #7a8fa0 !important;
+}
+
+/* Panel menu items in light mode */
+body:not(.dark-mode) .panel-header h3 {
+    color: var(--uni-accent, #c9920a) !important;
+}
+
+body:not(.dark-mode) .panel-menu-item i {
+    color: var(--uni-accent, #c9920a) !important;
+}
+
+/* Action buttons in light mode */
+body:not(.dark-mode) .action-btn {
+    color: #4b5563 !important;
+}
+
+/* Intramurals always uses white text (dark theme regardless of light/dark toggle) */
+body.theme-intramurals.dark-mode {
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode h1,
+body.theme-intramurals.dark-mode h2,
+body.theme-intramurals.dark-mode h3,
+body.theme-intramurals.dark-mode h4,
+body.theme-intramurals.dark-mode h5,
+body.theme-intramurals.dark-mode h6 {
+    color: #ffffff !important;
+}
+body.theme-intramurals.dark-mode p,
+body.theme-intramurals.dark-mode span,
+body.theme-intramurals.dark-mode div,
+body.theme-intramurals.dark-mode li {
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode .muted,
+body.theme-intramurals.dark-mode .post-meta,
+body.theme-intramurals.dark-mode .time-ago,
+body.theme-intramurals.dark-mode .card-meta,
+body.theme-intramurals.dark-mode .creator-quote,
+body.theme-intramurals.dark-mode .hero-copy p {
+    color: #d1d5db !important;
+}
+body.theme-intramurals.dark-mode .eyebrow,
+body.theme-intramurals.dark-mode .creator-role { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .stat,
+body.theme-intramurals.dark-mode .mission-item,
+body.theme-intramurals.dark-mode .gallery-card,
+body.theme-intramurals.dark-mode .creator-card,
+body.theme-intramurals.dark-mode .section-card {
+    background: rgba(20,10,5,0.75) !important;
+    border-color: rgba(255,122,0,0.20) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode .stat strong { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .mission-item h4 { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .gallery-copy h4 { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .creator-info h4 { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .section-heading h3 { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+body.theme-intramurals.dark-mode textarea,
+body.theme-intramurals.dark-mode select {
+    background: rgba(30,15,5,0.85) !important;
+    border-color: rgba(255,122,0,0.25) !important;
+    color: #e0e0e0 !important;
+}
+
+/* Intramurals LIGHT mode — white cards, dark text */
+body.theme-intramurals:not(.dark-mode) {
+    color: #1a1a1a !important;
+}
+body.theme-intramurals:not(.dark-mode) h1,
+body.theme-intramurals:not(.dark-mode) h2,
+body.theme-intramurals:not(.dark-mode) h3,
+body.theme-intramurals:not(.dark-mode) h4,
+body.theme-intramurals:not(.dark-mode) h5,
+body.theme-intramurals:not(.dark-mode) h6 {
+    color: #1a1a1a !important;
+}
+body.theme-intramurals:not(.dark-mode) .muted,
+body.theme-intramurals:not(.dark-mode) .post-meta,
+body.theme-intramurals:not(.dark-mode) .time-ago,
+body.theme-intramurals:not(.dark-mode) .card-meta { color: #555555 !important; }
+body.theme-intramurals:not(.dark-mode) .eyebrow,
+body.theme-intramurals:not(.dark-mode) .creator-role { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .stat,
+body.theme-intramurals:not(.dark-mode) .mission-item,
+body.theme-intramurals:not(.dark-mode) .gallery-card,
+body.theme-intramurals:not(.dark-mode) .creator-card,
+body.theme-intramurals:not(.dark-mode) .section-card {
+    background: rgba(255,255,255,0.88) !important;
+    border-color: rgba(255,122,0,0.15) !important;
+    color: #1a1a1a !important;
+}
+body.theme-intramurals:not(.dark-mode) .stat strong { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .mission-item h4 { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .gallery-copy h4 { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .creator-info h4 { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .section-heading h3 { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]),
+body.theme-intramurals:not(.dark-mode) textarea,
+body.theme-intramurals:not(.dark-mode) select {
+    background: rgba(255,255,255,0.92) !important;
+    border-color: rgba(255,122,0,0.20) !important;
+    color: #1a1a1a !important;
+}
+
+/* ═══════════════════════════════════════════════
+   LOGIN / SIGNIN PAGE — UNIVERSITY THEME PANEL COLORS
+   ═══════════════════════════════════════════════ */
+
+/* Intramurals — left/right accent panel */
+body.theme-intramurals .panel-left::before,
+body.theme-intramurals .panel-right::before {
+    background: linear-gradient(160deg, #f97316 0%, #c2410c 100%) !important;
+}
+
+/* Foundation Week — left/right accent panel */
+body.theme-foundation .panel-left::before,
+body.theme-foundation .panel-right::before {
+    background: linear-gradient(160deg, #f5b700 0%, #b77900 100%) !important;
+}
+
+/* Women's Month — left/right accent panel */
+body.theme-womens .panel-left::before,
+body.theme-womens .panel-right::before {
+    background: linear-gradient(160deg, #7e22ce 0%, #581c87 100%) !important;
+}
+
+/* Christmas — left/right accent panel */
+body.theme-christmas .panel-left::before,
+body.theme-christmas .panel-right::before {
+    background: linear-gradient(160deg, #b91c1c 0%, #7f1d1d 100%) !important;
+}
+
+/* Login/Signin button colors per theme */
+body.theme-intramurals .btn-login,
+body.theme-intramurals .btn-register {
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 100%) !important;
+}
+
+body.theme-foundation .btn-login,
+body.theme-foundation .btn-register {
+    background: linear-gradient(135deg, #f5b700 0%, #b77900 100%) !important;
+}
+
+body.theme-womens .btn-login,
+body.theme-womens .btn-register {
+    background: linear-gradient(135deg, #7e22ce 0%, #581c87 100%) !important;
+}
+
+body.theme-christmas .btn-login,
+body.theme-christmas .btn-register {
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%) !important;
+}
+
+/* Signup/login link color per theme */
+body.theme-intramurals .signup-link a,
+body.theme-intramurals .login-link a { color: #fb923c !important; }
+
+body.theme-foundation .signup-link a,
+body.theme-foundation .login-link a { color: #fbbf24 !important; }
+
+body.theme-womens .signup-link a,
+body.theme-womens .login-link a { color: #c084fc !important; }
+
+body.theme-christmas .signup-link a,
+body.theme-christmas .login-link a { color: #4ade80 !important; }
+
+/* Input focus ring per theme on login/signin */
+body.theme-intramurals .input-wrap input:focus,
+body.theme-intramurals .input-wrap select:focus,
+body.theme-intramurals .role-wrap select:focus {
+    border-color: #f97316 !important;
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.25) !important;
+}
+
+body.theme-foundation .input-wrap input:focus,
+body.theme-foundation .input-wrap select:focus,
+body.theme-foundation .role-wrap select:focus {
+    border-color: #f5b700 !important;
+    box-shadow: 0 0 0 3px rgba(245,183,0,0.25) !important;
+}
+
+body.theme-womens .input-wrap input:focus,
+body.theme-womens .input-wrap select:focus,
+body.theme-womens .role-wrap select:focus {
+    border-color: #7e22ce !important;
+    box-shadow: 0 0 0 3px rgba(126,34,206,0.25) !important;
+}
+
+body.theme-christmas .input-wrap input:focus,
+body.theme-christmas .input-wrap select:focus,
+body.theme-christmas .role-wrap select:focus {
+    border-color: #15803d !important;
+    box-shadow: 0 0 0 3px rgba(21,128,61,0.25) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   AUTH PAGES (login/signin) — preserve white text on colored panels
+   These override the global light mode text rules above
+   ═══════════════════════════════════════════════ */
+
+/* White text on the colored left/right panels */
+body:not(.dark-mode) .panel-left h2,
+body:not(.dark-mode) .panel-left .brand-name,
+body:not(.dark-mode) .panel-left p,
+body:not(.dark-mode) .panel-right h2,
+body:not(.dark-mode) .panel-right .brand-name,
+body:not(.dark-mode) .panel-right p {
+    color: #ffffff !important;
+}
+
+/* White text on the form panel (glass panel) */
+body:not(.dark-mode) .panel-right h1,
+body:not(.dark-mode) .panel-right .subtitle,
+body:not(.dark-mode) .panel-left h1,
+body:not(.dark-mode) .panel-left .subtitle {
+    color: #ffffff !important;
+}
+
+/* Divider and link text on auth panels */
+body:not(.dark-mode) .or-divider span,
+body:not(.dark-mode) .signup-link,
+body:not(.dark-mode) .login-link {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Buttons on auth pages keep white text */
+body:not(.dark-mode) .btn-login,
+body:not(.dark-mode) .btn-register,
+body:not(.dark-mode) .btn-outline-white {
+    color: #ffffff !important;
+}
+
+/* Input fields on auth pages keep dark text (they have white bg) */
+body:not(.dark-mode) .input-wrap input,
+body:not(.dark-mode) .input-wrap select,
+body:not(.dark-mode) .role-wrap select {
+    color: #1a2a3a !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   TEACHER / STUDENT CALENDAR BOX — per theme (light + dark)
+   ═══════════════════════════════════════════════ */
+
+/* ── Intramurals — LIGHT ── */
+body.theme-intramurals:not(.dark-mode) .cal-box,
+body.theme-intramurals:not(.dark-mode) .modal-content {
+    background: rgba(255, 245, 235, 0.98) !important;
+    border: 1px solid rgba(255,122,0,0.22) !important;
+    color: #1a1a1a !important;
+}
+body.theme-intramurals:not(.dark-mode) .cal-box-header,
+body.theme-intramurals:not(.dark-mode) .modal-header { border-bottom-color: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-box-header h2,
+body.theme-intramurals:not(.dark-mode) .modal-header h2,
+body.theme-intramurals:not(.dark-mode) .modal-title { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day { border-color: rgba(255,122,0,0.16) !important; color: #1a1a1a !important; background: rgba(255,245,235,0.65) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day:hover { background: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day.today { border-color: #ff7a00 !important; background: rgba(255,122,0,0.14) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day.selected { border-color: #ff7a00 !important; background: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-day-hdr { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-nav-btn { border-color: rgba(255,122,0,0.25) !important; color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-nav-btn:hover { background: rgba(255,122,0,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .cal-event-item { background: rgba(255,122,0,0.08) !important; border-left-color: #ff7a00 !important; color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .cal-event-item .ev-title { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .cal-event-item .ev-meta { color: #555 !important; }
+body.theme-intramurals:not(.dark-mode) .cal-box-close { color: #c2410c !important; }
+
+/* ── Intramurals — DARK ── */
+body.theme-intramurals.dark-mode .cal-box,
+body.theme-intramurals.dark-mode .modal-content {
+    background: rgba(18, 10, 5, 0.97) !important;
+    border: 1px solid rgba(255,122,0,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals.dark-mode .cal-box-header,
+body.theme-intramurals.dark-mode .modal-header { border-bottom-color: rgba(255,122,0,0.20) !important; }
+body.theme-intramurals.dark-mode .cal-box-header h2,
+body.theme-intramurals.dark-mode .modal-header h2,
+body.theme-intramurals.dark-mode .modal-title { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-day { border-color: rgba(255,122,0,0.18) !important; color: #e0e0e0 !important; background: rgba(20,10,5,0.65) !important; }
+body.theme-intramurals.dark-mode .cal-day:hover { background: rgba(255,122,0,0.14) !important; }
+body.theme-intramurals.dark-mode .cal-day.today { border-color: #ff7a00 !important; background: rgba(255,122,0,0.18) !important; }
+body.theme-intramurals.dark-mode .cal-day.selected { border-color: #ff7a00 !important; background: rgba(255,122,0,0.22) !important; }
+body.theme-intramurals.dark-mode .cal-day-hdr { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-nav-btn { border-color: rgba(255,122,0,0.28) !important; color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-nav-btn:hover { background: rgba(255,122,0,0.14) !important; }
+body.theme-intramurals.dark-mode .cal-event-item { background: rgba(255,122,0,0.10) !important; border-left-color: #ff7a00 !important; color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .cal-event-item .ev-title { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .cal-event-item .ev-meta { color: #d1d5db !important; }
+body.theme-intramurals.dark-mode .cal-box-close { color: #d1d5db !important; }
+
+/* ── Foundation Week — LIGHT ── */
+body.theme-foundation:not(.dark-mode) .cal-box,
+body.theme-foundation:not(.dark-mode) .modal-content {
+    background: rgba(255, 252, 220, 0.98) !important;
+    border: 1px solid rgba(234,179,8,0.28) !important;
+    color: #152033 !important;
+}
+body.theme-foundation:not(.dark-mode) .cal-box-header,
+body.theme-foundation:not(.dark-mode) .modal-header { border-bottom-color: rgba(234,179,8,0.22) !important; }
+body.theme-foundation:not(.dark-mode) .cal-box-header h2,
+body.theme-foundation:not(.dark-mode) .modal-header h2,
+body.theme-foundation:not(.dark-mode) .modal-title { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .cal-day { border-color: rgba(234,179,8,0.22) !important; color: #152033 !important; background: rgba(255,252,220,0.65) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day:hover { background: rgba(234,179,8,0.12) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day.today { border-color: #eab308 !important; background: rgba(234,179,8,0.16) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day.selected { border-color: #eab308 !important; background: rgba(234,179,8,0.20) !important; }
+body.theme-foundation:not(.dark-mode) .cal-day-hdr { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .cal-nav-btn { border-color: rgba(234,179,8,0.32) !important; color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .cal-event-item { background: rgba(234,179,8,0.10) !important; border-left-color: #eab308 !important; color: #152033 !important; }
+body.theme-foundation:not(.dark-mode) .cal-event-item .ev-title { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .cal-box-close { color: #92400e !important; }
+
+/* ── Foundation Week — DARK ── */
+body.theme-foundation.dark-mode .cal-box,
+body.theme-foundation.dark-mode .modal-content {
+    background: rgba(30, 22, 5, 0.97) !important;
+    border: 1px solid rgba(234,179,8,0.28) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-foundation.dark-mode .cal-box-header,
+body.theme-foundation.dark-mode .modal-header { border-bottom-color: rgba(234,179,8,0.22) !important; }
+body.theme-foundation.dark-mode .cal-box-header h2,
+body.theme-foundation.dark-mode .modal-header h2,
+body.theme-foundation.dark-mode .modal-title { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .cal-day { border-color: rgba(234,179,8,0.18) !important; color: #e0e0e0 !important; background: rgba(30,22,5,0.65) !important; }
+body.theme-foundation.dark-mode .cal-day:hover { background: rgba(234,179,8,0.12) !important; }
+body.theme-foundation.dark-mode .cal-day.today { border-color: #eab308 !important; background: rgba(234,179,8,0.18) !important; }
+body.theme-foundation.dark-mode .cal-day.selected { border-color: #eab308 !important; background: rgba(234,179,8,0.22) !important; }
+body.theme-foundation.dark-mode .cal-day-hdr { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .cal-nav-btn { border-color: rgba(234,179,8,0.28) !important; color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .cal-event-item { background: rgba(234,179,8,0.10) !important; border-left-color: #eab308 !important; color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .cal-event-item .ev-title { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .cal-event-item .ev-meta { color: #d1d5db !important; }
+body.theme-foundation.dark-mode .cal-box-close { color: #d1d5db !important; }
+
+/* ── Women's Month — LIGHT ── */
+body.theme-womens:not(.dark-mode) .cal-box,
+body.theme-womens:not(.dark-mode) .modal-content {
+    background: rgba(245, 240, 255, 0.98) !important;
+    border: 1px solid rgba(126,34,206,0.22) !important;
+    color: #172033 !important;
+}
+body.theme-womens:not(.dark-mode) .cal-box-header,
+body.theme-womens:not(.dark-mode) .modal-header { border-bottom-color: rgba(126,34,206,0.18) !important; }
+body.theme-womens:not(.dark-mode) .cal-box-header h2,
+body.theme-womens:not(.dark-mode) .modal-header h2,
+body.theme-womens:not(.dark-mode) .modal-title { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .cal-day { border-color: rgba(126,34,206,0.18) !important; color: #172033 !important; background: rgba(245,240,255,0.65) !important; }
+body.theme-womens:not(.dark-mode) .cal-day:hover { background: rgba(126,34,206,0.10) !important; }
+body.theme-womens:not(.dark-mode) .cal-day.today { border-color: #7e22ce !important; background: rgba(126,34,206,0.14) !important; }
+body.theme-womens:not(.dark-mode) .cal-day.selected { border-color: #7e22ce !important; background: rgba(126,34,206,0.18) !important; }
+body.theme-womens:not(.dark-mode) .cal-day-hdr { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .cal-nav-btn { border-color: rgba(126,34,206,0.28) !important; color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .cal-event-item { background: rgba(126,34,206,0.08) !important; border-left-color: #7e22ce !important; color: #172033 !important; }
+body.theme-womens:not(.dark-mode) .cal-event-item .ev-title { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .cal-box-close { color: #6d28d9 !important; }
+
+/* ── Women's Month — DARK ── */
+body.theme-womens.dark-mode .cal-box,
+body.theme-womens.dark-mode .modal-content {
+    background: rgba(20, 12, 35, 0.97) !important;
+    border: 1px solid rgba(126,34,206,0.28) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-womens.dark-mode .cal-box-header,
+body.theme-womens.dark-mode .modal-header { border-bottom-color: rgba(126,34,206,0.22) !important; }
+body.theme-womens.dark-mode .cal-box-header h2,
+body.theme-womens.dark-mode .modal-header h2,
+body.theme-womens.dark-mode .modal-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .cal-day { border-color: rgba(126,34,206,0.18) !important; color: #e0e0e0 !important; background: rgba(20,12,35,0.65) !important; }
+body.theme-womens.dark-mode .cal-day:hover { background: rgba(126,34,206,0.12) !important; }
+body.theme-womens.dark-mode .cal-day.today { border-color: #7e22ce !important; background: rgba(126,34,206,0.18) !important; }
+body.theme-womens.dark-mode .cal-day.selected { border-color: #7e22ce !important; background: rgba(126,34,206,0.22) !important; }
+body.theme-womens.dark-mode .cal-day-hdr { color: #c084fc !important; }
+body.theme-womens.dark-mode .cal-nav-btn { border-color: rgba(126,34,206,0.28) !important; color: #c084fc !important; }
+body.theme-womens.dark-mode .cal-event-item { background: rgba(126,34,206,0.10) !important; border-left-color: #7e22ce !important; color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .cal-event-item .ev-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .cal-event-item .ev-meta { color: #d1d5db !important; }
+body.theme-womens.dark-mode .cal-box-close { color: #d1d5db !important; }
+
+/* ── Christmas — LIGHT ── */
+body.theme-christmas:not(.dark-mode) .cal-box,
+body.theme-christmas:not(.dark-mode) .modal-content {
+    background: rgba(240, 253, 244, 0.98) !important;
+    border: 1px solid rgba(21,128,61,0.22) !important;
+    color: #0f172a !important;
+}
+body.theme-christmas:not(.dark-mode) .cal-box-header,
+body.theme-christmas:not(.dark-mode) .modal-header { border-bottom-color: rgba(21,128,61,0.18) !important; }
+body.theme-christmas:not(.dark-mode) .cal-box-header h2,
+body.theme-christmas:not(.dark-mode) .modal-header h2,
+body.theme-christmas:not(.dark-mode) .modal-title { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .cal-day { border-color: rgba(21,128,61,0.18) !important; color: #0f172a !important; background: rgba(240,253,244,0.65) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day:hover { background: rgba(21,128,61,0.10) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day.today { border-color: #15803d !important; background: rgba(21,128,61,0.14) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day.selected { border-color: #15803d !important; background: rgba(21,128,61,0.18) !important; }
+body.theme-christmas:not(.dark-mode) .cal-day-hdr { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .cal-nav-btn { border-color: rgba(21,128,61,0.28) !important; color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .cal-event-item { background: rgba(21,128,61,0.08) !important; border-left-color: #15803d !important; color: #0f172a !important; }
+body.theme-christmas:not(.dark-mode) .cal-event-item .ev-title { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .cal-box-close { color: #15803d !important; }
+
+/* ── Christmas — DARK ── */
+body.theme-christmas.dark-mode .cal-box,
+body.theme-christmas.dark-mode .modal-content {
+    background: rgba(5, 20, 12, 0.97) !important;
+    border: 1px solid rgba(21,128,61,0.30) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-christmas.dark-mode .cal-box-header,
+body.theme-christmas.dark-mode .modal-header { border-bottom-color: rgba(21,128,61,0.22) !important; }
+body.theme-christmas.dark-mode .cal-box-header h2,
+body.theme-christmas.dark-mode .modal-header h2,
+body.theme-christmas.dark-mode .modal-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .cal-day { border-color: rgba(21,128,61,0.18) !important; color: #e0e0e0 !important; background: rgba(5,20,12,0.65) !important; }
+body.theme-christmas.dark-mode .cal-day:hover { background: rgba(21,128,61,0.12) !important; }
+body.theme-christmas.dark-mode .cal-day.today { border-color: #15803d !important; background: rgba(21,128,61,0.18) !important; }
+body.theme-christmas.dark-mode .cal-day.selected { border-color: #15803d !important; background: rgba(21,128,61,0.22) !important; }
+body.theme-christmas.dark-mode .cal-day-hdr { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .cal-nav-btn { border-color: rgba(21,128,61,0.28) !important; color: #4ade80 !important; }
+body.theme-christmas.dark-mode .cal-event-item { background: rgba(21,128,61,0.10) !important; border-left-color: #15803d !important; color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .cal-event-item .ev-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .cal-event-item .ev-meta { color: #d1d5db !important; }
+body.theme-christmas.dark-mode .cal-box-close { color: #d1d5db !important; }
+

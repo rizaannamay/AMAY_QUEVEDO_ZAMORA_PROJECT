@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal — Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="university-theme-decorations.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
@@ -76,7 +77,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, var(--uni-accent) 0%, var(--uni-accent-dark) 100%);
+            background: linear-gradient(160deg, var(--uni-accent, #c9920a) 0%, var(--uni-accent-dark, #a87800) 100%);
             opacity: 0.93;
             pointer-events: none;
         }
@@ -272,7 +273,7 @@
         .btn-login {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, #c9920a 0%, #a87800 100%);
+            background: linear-gradient(135deg, var(--uni-accent, #c9920a) 0%, var(--uni-accent-dark, #a87800) 100%);
             color: #ffffff;
             border: none;
             border-radius: 40px;
@@ -337,7 +338,7 @@
             text-align: center;
         }
         .signup-link a {
-            color: #c9920a;
+            color: var(--uni-accent, #c9920a);
             font-weight: 600;
             text-decoration: none;
         }
@@ -358,7 +359,7 @@
         }
     </style>
 </head>
-<body>
+<body class="">
     <div class="auth-card">
 
         <!-- LEFT TEAL PANEL -->
@@ -477,31 +478,6 @@
             });
         });
     </script>
-    <script>
-        // ── University Theme ─────────────────────────────────────────
-        (function () {
-            var UNIVERSITY_THEMES = {
-                'Default':       { accent: '#c9920a', accentDark: '#a87800' },
-                'Intramurals':   { accent: '#b91c1c', accentDark: '#991b1b' },
-                'FoundationWeek':{ accent: '#a87800', accentDark: '#7a5200' },
-                'WomensMonth':   { accent: '#7c3aed', accentDark: '#5b21b6' },
-                'Christmas':     { accent: '#15803d', accentDark: '#14532d' }
-            };
-            function applyUniversityTheme(name) {
-                var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
-                document.documentElement.style.setProperty('--uni-accent', t.accent);
-                document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
-            }
-            var saved = localStorage.getItem('campus_uni_theme');
-            if (saved) applyUniversityTheme(saved);
-            fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
-                .catch(function() {});
-            window.addEventListener('storage', function(e) {
-                if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
-            });
-        })();
-    </script>
+    <script src="university-theme.js"></script>
 </body>
 </html>

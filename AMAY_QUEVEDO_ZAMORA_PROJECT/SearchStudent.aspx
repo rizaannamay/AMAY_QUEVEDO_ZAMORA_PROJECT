@@ -18,6 +18,7 @@
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
         :root {
+            --bg-image: url('wbg.jpg');
             --uni-overlay: rgba(255,255,255,0);
             --uni-header-bg: #c9920a;
             --uni-accent: #c9920a;
@@ -41,10 +42,10 @@
             overflow-x: hidden;
             color: var(--page-text);
             background-color: var(--uni-header-bg);
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), url('wbg.jpg');
+            background-image: var(--bg-image);
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center center;
             background-attachment: fixed;
         }
 
@@ -335,7 +336,9 @@
         ══════════════════════════════════════════ */
         body.light-mode {
             background-color: #f0f4f8;
-            background-image: url('wbg.jpg');
+            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+            background-size: cover, cover;
+            background-attachment: fixed, fixed;
             color: #1a2a3a;
         }
         body.light-mode::before {
@@ -679,6 +682,54 @@
         body.light-mode .user-profile-card .upc-username { color: #92650a; }
         body.light-mode .user-profile-card .upc-badge   { background: #fef3c7; color: #7a5200; }
         body.light-mode .user-profile-card .upc-posts   { color: #6b7c8f; }
+
+        /* ── University Theme — announce-card overrides ── */
+        /* Intramurals (always dark) */
+        body.theme-intramurals .announce-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.40) !important; }
+        body.theme-intramurals .announce-card:hover { border-color: rgba(255,122,0,0.70) !important; }
+        body.theme-intramurals .card-title,
+        body.theme-intramurals .card-author-name { color: #ff9a3c !important; }
+        body.theme-intramurals .card-desc,
+        body.theme-intramurals .card-meta { color: #d1d5db !important; }
+
+        /* Foundation Week — light */
+        body.theme-foundation:not(.dark-mode) .announce-card { background: rgba(255,252,220,0.95) !important; border-color: rgba(234,179,8,0.45) !important; }
+        body.theme-foundation:not(.dark-mode) .card-title,
+        body.theme-foundation:not(.dark-mode) .card-author-name { color: #92400e !important; }
+        body.theme-foundation:not(.dark-mode) .card-desc,
+        body.theme-foundation:not(.dark-mode) .card-meta { color: #6b5b3e !important; }
+        /* Foundation Week — dark */
+        body.theme-foundation.dark-mode .announce-card { background: rgba(30,22,5,0.92) !important; border-color: rgba(234,179,8,0.35) !important; }
+        body.theme-foundation.dark-mode .card-title,
+        body.theme-foundation.dark-mode .card-author-name { color: #fbbf24 !important; }
+        body.theme-foundation.dark-mode .card-desc,
+        body.theme-foundation.dark-mode .card-meta { color: #d1d5db !important; }
+
+        /* Women's Month — light */
+        body.theme-womens:not(.dark-mode) .announce-card { background: rgba(245,240,255,0.95) !important; border-color: rgba(126,34,206,0.40) !important; }
+        body.theme-womens:not(.dark-mode) .card-title,
+        body.theme-womens:not(.dark-mode) .card-author-name { color: #6d28d9 !important; }
+        body.theme-womens:not(.dark-mode) .card-desc,
+        body.theme-womens:not(.dark-mode) .card-meta { color: #64748b !important; }
+        /* Women's Month — dark */
+        body.theme-womens.dark-mode .announce-card { background: rgba(20,12,35,0.92) !important; border-color: rgba(126,34,206,0.40) !important; }
+        body.theme-womens.dark-mode .card-title,
+        body.theme-womens.dark-mode .card-author-name { color: #c084fc !important; }
+        body.theme-womens.dark-mode .card-desc,
+        body.theme-womens.dark-mode .card-meta { color: #d1d5db !important; }
+
+        /* Christmas — light */
+        body.theme-christmas:not(.dark-mode) .announce-card { background: rgba(240,253,244,0.95) !important; border-color: rgba(21,128,61,0.40) !important; }
+        body.theme-christmas:not(.dark-mode) .card-title,
+        body.theme-christmas:not(.dark-mode) .card-author-name { color: #15803d !important; }
+        body.theme-christmas:not(.dark-mode) .card-desc,
+        body.theme-christmas:not(.dark-mode) .card-meta { color: #475569 !important; }
+        /* Christmas — dark */
+        body.theme-christmas.dark-mode .announce-card { background: rgba(5,20,12,0.92) !important; border-color: rgba(21,128,61,0.40) !important; }
+        body.theme-christmas.dark-mode .card-title,
+        body.theme-christmas.dark-mode .card-author-name { color: #4ade80 !important; }
+        body.theme-christmas.dark-mode .card-desc,
+        body.theme-christmas.dark-mode .card-meta { color: #d1d5db !important; }
     </style>
 </head>
 <body class="antialiased relative">
@@ -1324,11 +1375,11 @@
 
             // ── University Theme ─────────────────────────────────────
             var UNIVERSITY_THEMES = {
-                'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
-                'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
-                'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
-                'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-                'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
+                'Default': { overlay: 'rgba(255,255,255,0)', header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+                'Intramurals': { overlay: 'rgba(180,30,30,0.18)', header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+                'FoundationWeek': { overlay: 'rgba(201,146,10,0.18)', header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+                'WomensMonth': { overlay: 'rgba(147,51,234,0.18)', header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+                'Christmas': { overlay: 'rgba(22,101,52,0.20)', header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
             };
             function applyUniversityTheme(name) {
                 var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
@@ -1336,18 +1387,25 @@
                 document.documentElement.style.setProperty('--uni-header-bg', t.header);
                 document.documentElement.style.setProperty('--uni-accent', t.accent);
                 document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                // Apply body class for university-theme-decorations.css
+                var ALL_CLASSES = ['theme-default', 'theme-intramurals', 'theme-foundation', 'theme-womens', 'theme-christmas'];
+                ALL_CLASSES.forEach(function (c) { document.body.classList.remove(c); });
+                var clsMap = { 'Default': 'theme-default', 'Intramurals': 'theme-intramurals', 'FoundationWeek': 'theme-foundation', 'WomensMonth': 'theme-womens', 'Christmas': 'theme-christmas' };
+                document.body.classList.add(clsMap[name] || 'theme-default');
                 localStorage.setItem('campus_uni_theme', name);
             }
             var saved = localStorage.getItem('campus_uni_theme');
             if (saved) applyUniversityTheme(saved);
             fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-                .then(function(r) { return r.json(); })
-                .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
-                .catch(function() {});
-            window.addEventListener('storage', function(e) {
+                .then(function (r) { return r.json(); })
+                .then(function (res) { if (res.ok) applyUniversityTheme(res.theme); })
+                .catch(function () { });
+            window.addEventListener('storage', function (e) {
                 if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
             });
         })();
     </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>

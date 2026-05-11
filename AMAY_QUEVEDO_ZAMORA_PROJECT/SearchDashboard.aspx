@@ -19,6 +19,7 @@
 
         /* ── ROOT VARIABLES — teal theme matching dashboard ── */
         :root {
+            --bg-image: url('wbg.jpg');
             --uni-overlay: rgba(255,255,255,0);
             --uni-header-bg: #c9920a;
             --uni-accent: #c9920a;
@@ -43,10 +44,10 @@
             overflow-x: hidden;
             color: var(--page-text);
             background-color: var(--uni-header-bg);
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), url('wbg.jpg');
+            background-image: var(--bg-image);
             background-size: cover;
             background-repeat: no-repeat;
-            background-position: center;
+            background-position: center center;
             background-attachment: fixed;
             transition: color 0.3s ease;
         }
@@ -726,6 +727,47 @@
             background: rgba(255,255,255,0.2);
             border: 1px solid rgba(255,255,255,0.3);
         }
+
+        /* ── University Theme — announce-card overrides ── */
+        body.theme-intramurals .announce-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.40) !important; }
+        body.theme-intramurals .announce-card:hover { border-color: rgba(255,122,0,0.70) !important; }
+        body.theme-intramurals .card-title,
+        body.theme-intramurals .card-author-name { color: #ff9a3c !important; }
+        body.theme-intramurals .card-desc,
+        body.theme-intramurals .card-meta { color: #d1d5db !important; }
+
+        body.theme-foundation:not(.dark-mode) .announce-card { background: rgba(255,252,220,0.95) !important; border-color: rgba(234,179,8,0.45) !important; }
+        body.theme-foundation:not(.dark-mode) .card-title,
+        body.theme-foundation:not(.dark-mode) .card-author-name { color: #92400e !important; }
+        body.theme-foundation:not(.dark-mode) .card-desc,
+        body.theme-foundation:not(.dark-mode) .card-meta { color: #6b5b3e !important; }
+        body.theme-foundation.dark-mode .announce-card { background: rgba(30,22,5,0.92) !important; border-color: rgba(234,179,8,0.35) !important; }
+        body.theme-foundation.dark-mode .card-title,
+        body.theme-foundation.dark-mode .card-author-name { color: #fbbf24 !important; }
+        body.theme-foundation.dark-mode .card-desc,
+        body.theme-foundation.dark-mode .card-meta { color: #d1d5db !important; }
+
+        body.theme-womens:not(.dark-mode) .announce-card { background: rgba(245,240,255,0.95) !important; border-color: rgba(126,34,206,0.40) !important; }
+        body.theme-womens:not(.dark-mode) .card-title,
+        body.theme-womens:not(.dark-mode) .card-author-name { color: #6d28d9 !important; }
+        body.theme-womens:not(.dark-mode) .card-desc,
+        body.theme-womens:not(.dark-mode) .card-meta { color: #64748b !important; }
+        body.theme-womens.dark-mode .announce-card { background: rgba(20,12,35,0.92) !important; border-color: rgba(126,34,206,0.40) !important; }
+        body.theme-womens.dark-mode .card-title,
+        body.theme-womens.dark-mode .card-author-name { color: #c084fc !important; }
+        body.theme-womens.dark-mode .card-desc,
+        body.theme-womens.dark-mode .card-meta { color: #d1d5db !important; }
+
+        body.theme-christmas:not(.dark-mode) .announce-card { background: rgba(240,253,244,0.95) !important; border-color: rgba(21,128,61,0.40) !important; }
+        body.theme-christmas:not(.dark-mode) .card-title,
+        body.theme-christmas:not(.dark-mode) .card-author-name { color: #15803d !important; }
+        body.theme-christmas:not(.dark-mode) .card-desc,
+        body.theme-christmas:not(.dark-mode) .card-meta { color: #475569 !important; }
+        body.theme-christmas.dark-mode .announce-card { background: rgba(5,20,12,0.92) !important; border-color: rgba(21,128,61,0.40) !important; }
+        body.theme-christmas.dark-mode .card-title,
+        body.theme-christmas.dark-mode .card-author-name { color: #4ade80 !important; }
+        body.theme-christmas.dark-mode .card-desc,
+        body.theme-christmas.dark-mode .card-meta { color: #d1d5db !important; }
     </style>
 </head>
 <body class="antialiased relative">
@@ -1512,6 +1554,11 @@
                 document.documentElement.style.setProperty('--uni-header-bg', t.header);
                 document.documentElement.style.setProperty('--uni-accent', t.accent);
                 document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                // Apply body class for university-theme-decorations.css
+                var ALL_CLASSES = ['theme-default','theme-intramurals','theme-foundation','theme-womens','theme-christmas'];
+                ALL_CLASSES.forEach(function(c){ document.body.classList.remove(c); });
+                var clsMap = { 'Default':'theme-default','Intramurals':'theme-intramurals','FoundationWeek':'theme-foundation','WomensMonth':'theme-womens','Christmas':'theme-christmas' };
+                document.body.classList.add(clsMap[name] || 'theme-default');
                 localStorage.setItem('campus_uni_theme', name);
             }
             var saved = localStorage.getItem('campus_uni_theme');
@@ -1543,5 +1590,7 @@
             }
         });
     </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>

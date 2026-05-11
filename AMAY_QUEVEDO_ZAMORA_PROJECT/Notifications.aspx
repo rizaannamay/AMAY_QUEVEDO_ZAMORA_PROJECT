@@ -31,28 +31,16 @@
 html, body, form { min-height: 100%; }
 /* Cover strip — blocks content scrolling behind the fixed header */
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    z-index: 199;
-    pointer-events: none;
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    display: none;
 }
-
 body {
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+    background-image: var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-attachment: fixed;
 }
 a { color: inherit; text-decoration: none; }
@@ -385,6 +373,129 @@ button { font: inherit; }
     .notif-row { padding: 14px; }
     .header { padding: 10px 16px; }
 }
+
+/* ── University Theme — Notifications Page ── */
+
+/* Intramurals (always dark) */
+body.theme-intramurals .summary-card,
+body.theme-intramurals .notif-item,
+body.theme-intramurals .empty-state {
+    background: rgba(20, 10, 5, 0.88) !important;
+    border-color: rgba(255,122,0,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-intramurals .notif-item:hover { border-color: rgba(255,122,0,0.55) !important; }
+body.theme-intramurals .notif-item.unread { border-left-color: #ff7a00 !important; }
+body.theme-intramurals .notif-message,
+body.theme-intramurals .summary-title,
+body.theme-intramurals .empty-title { color: #ff9a3c !important; }
+body.theme-intramurals .notif-time,
+body.theme-intramurals .notif-state,
+body.theme-intramurals .summary-text,
+body.theme-intramurals .empty-text { color: #d1d5db !important; }
+body.theme-intramurals .notif-chevron { color: rgba(255,122,0,0.55) !important; }
+
+/* Foundation Week — light */
+body.theme-foundation:not(.dark-mode) .summary-card,
+body.theme-foundation:not(.dark-mode) .notif-item,
+body.theme-foundation:not(.dark-mode) .empty-state {
+    background: rgba(255, 252, 220, 0.92) !important;
+    border-color: rgba(234,179,8,0.25) !important;
+    color: #152033 !important;
+}
+body.theme-foundation:not(.dark-mode) .notif-item:hover { border-color: rgba(234,179,8,0.55) !important; }
+body.theme-foundation:not(.dark-mode) .notif-item.unread { border-left-color: #eab308 !important; }
+body.theme-foundation:not(.dark-mode) .notif-message,
+body.theme-foundation:not(.dark-mode) .summary-title,
+body.theme-foundation:not(.dark-mode) .empty-title { color: #92400e !important; }
+body.theme-foundation:not(.dark-mode) .notif-time,
+body.theme-foundation:not(.dark-mode) .notif-state,
+body.theme-foundation:not(.dark-mode) .summary-text,
+body.theme-foundation:not(.dark-mode) .empty-text { color: #6b5b3e !important; }
+/* Foundation Week — dark */
+body.theme-foundation.dark-mode .summary-card,
+body.theme-foundation.dark-mode .notif-item,
+body.theme-foundation.dark-mode .empty-state {
+    background: rgba(30, 22, 5, 0.88) !important;
+    border-color: rgba(234,179,8,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-foundation.dark-mode .notif-item.unread { border-left-color: #eab308 !important; }
+body.theme-foundation.dark-mode .notif-message,
+body.theme-foundation.dark-mode .summary-title,
+body.theme-foundation.dark-mode .empty-title { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .notif-time,
+body.theme-foundation.dark-mode .notif-state,
+body.theme-foundation.dark-mode .summary-text,
+body.theme-foundation.dark-mode .empty-text { color: #d1d5db !important; }
+
+/* Women's Month — light */
+body.theme-womens:not(.dark-mode) .summary-card,
+body.theme-womens:not(.dark-mode) .notif-item,
+body.theme-womens:not(.dark-mode) .empty-state {
+    background: rgba(245, 240, 255, 0.92) !important;
+    border-color: rgba(126,34,206,0.20) !important;
+    color: #172033 !important;
+}
+body.theme-womens:not(.dark-mode) .notif-item:hover { border-color: rgba(126,34,206,0.50) !important; }
+body.theme-womens:not(.dark-mode) .notif-item.unread { border-left-color: #7e22ce !important; }
+body.theme-womens:not(.dark-mode) .notif-message,
+body.theme-womens:not(.dark-mode) .summary-title,
+body.theme-womens:not(.dark-mode) .empty-title { color: #6d28d9 !important; }
+body.theme-womens:not(.dark-mode) .notif-time,
+body.theme-womens:not(.dark-mode) .notif-state,
+body.theme-womens:not(.dark-mode) .summary-text,
+body.theme-womens:not(.dark-mode) .empty-text { color: #64748b !important; }
+/* Women's Month — dark */
+body.theme-womens.dark-mode .summary-card,
+body.theme-womens.dark-mode .notif-item,
+body.theme-womens.dark-mode .empty-state {
+    background: rgba(20, 12, 35, 0.88) !important;
+    border-color: rgba(126,34,206,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-womens.dark-mode .notif-item.unread { border-left-color: #7e22ce !important; }
+body.theme-womens.dark-mode .notif-message,
+body.theme-womens.dark-mode .summary-title,
+body.theme-womens.dark-mode .empty-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .notif-time,
+body.theme-womens.dark-mode .notif-state,
+body.theme-womens.dark-mode .summary-text,
+body.theme-womens.dark-mode .empty-text { color: #d1d5db !important; }
+
+/* Christmas — light */
+body.theme-christmas:not(.dark-mode) .summary-card,
+body.theme-christmas:not(.dark-mode) .notif-item,
+body.theme-christmas:not(.dark-mode) .empty-state {
+    background: rgba(240, 253, 244, 0.92) !important;
+    border-color: rgba(21,128,61,0.20) !important;
+    color: #0f172a !important;
+}
+body.theme-christmas:not(.dark-mode) .notif-item:hover { border-color: rgba(21,128,61,0.50) !important; }
+body.theme-christmas:not(.dark-mode) .notif-item.unread { border-left-color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .notif-message,
+body.theme-christmas:not(.dark-mode) .summary-title,
+body.theme-christmas:not(.dark-mode) .empty-title { color: #15803d !important; }
+body.theme-christmas:not(.dark-mode) .notif-time,
+body.theme-christmas:not(.dark-mode) .notif-state,
+body.theme-christmas:not(.dark-mode) .summary-text,
+body.theme-christmas:not(.dark-mode) .empty-text { color: #475569 !important; }
+/* Christmas — dark */
+body.theme-christmas.dark-mode .summary-card,
+body.theme-christmas.dark-mode .notif-item,
+body.theme-christmas.dark-mode .empty-state {
+    background: rgba(5, 20, 12, 0.88) !important;
+    border-color: rgba(21,128,61,0.25) !important;
+    color: #f0f0f0 !important;
+}
+body.theme-christmas.dark-mode .notif-item.unread { border-left-color: #15803d !important; }
+body.theme-christmas.dark-mode .notif-message,
+body.theme-christmas.dark-mode .summary-title,
+body.theme-christmas.dark-mode .empty-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .notif-time,
+body.theme-christmas.dark-mode .notif-state,
+body.theme-christmas.dark-mode .summary-text,
+body.theme-christmas.dark-mode .empty-text { color: #d1d5db !important; }
 </style>
 </head>
 <body>
@@ -438,207 +549,183 @@ button { font: inherit; }
 </form>
 
 <script>
-var userRole  = '<%= Session["Role"] != null ? Session["Role"].ToString() : "Student" %>';
-var isAdmin   = userRole.toLowerCase() === 'admin';
-var isTeacher = userRole.toLowerCase() === 'teacher';
-var homeUrl   = isAdmin ? 'Admin.aspx' : isTeacher ? 'Teacher.aspx' : 'Student.aspx';
-var portalUrl = homeUrl;
+    var userRole = '<%= Session["Role"] != null ? Session["Role"].ToString() : "Student" %>';
+    var isAdmin = userRole.toLowerCase() === 'admin';
+    var isTeacher = userRole.toLowerCase() === 'teacher';
+    var homeUrl = isAdmin ? 'Admin.aspx' : isTeacher ? 'Teacher.aspx' : 'Student.aspx';
+    var portalUrl = homeUrl;
 
-document.getElementById('homeBtn').onclick = function () { window.location.href = homeUrl; };
+    document.getElementById('homeBtn').onclick = function () { window.location.href = homeUrl; };
 
-document.getElementById('topbarSub').textContent = isAdmin
-    ? 'Admin notifications — approvals, user activity, and system alerts appear here.'
-    : isTeacher
-    ? 'Student reactions to your announcements appear here.'
-    : 'Teacher comments, replies, and likes on your activity appear here.';
+    document.getElementById('topbarSub').textContent = isAdmin
+        ? 'Admin notifications — approvals, user activity, and system alerts appear here.'
+        : isTeacher
+            ? 'Student reactions to your announcements appear here.'
+            : 'Teacher comments, replies, and likes on your activity appear here.';
 
-document.getElementById('summaryText').textContent = isTeacher
-    ? 'Likes, comments, and shares on your announcement posts appear here.'
-    : 'You will be notified when a teacher comments, replies to, or likes your comment.';
+    document.getElementById('summaryText').textContent = isTeacher
+        ? 'Likes, comments, and shares on your announcement posts appear here.'
+        : 'You will be notified when a teacher comments, replies to, or likes your comment.';
 
-// Theme
-(function () {
-    document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
-    window.addEventListener('storage', function (e) {
-        if (e.key === 'campus_theme')
-            document.body.classList.toggle('dark-mode', e.newValue === 'dark');
-    });
-})();
-
-// ── University Theme ─────────────────────────────────────────
-(function () {
-    var UNIVERSITY_THEMES = {
-        'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
-        'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
-        'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
-        'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-        'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
-    };
-    function applyUniversityTheme(name) {
-        var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
-        document.documentElement.style.setProperty('--uni-overlay', t.overlay);
-        document.documentElement.style.setProperty('--uni-header-bg', t.header);
-        document.documentElement.style.setProperty('--uni-accent', t.accent);
-        document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
-        localStorage.setItem('campus_uni_theme', name);
-    }
-    var saved = localStorage.getItem('campus_uni_theme');
-    if (saved) applyUniversityTheme(saved);
-    fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-        .then(function(r) { return r.json(); })
-        .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
-        .catch(function() {});
-    window.addEventListener('storage', function(e) {
-        if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
-    });
-})();
-
-function escapeHtml(s) {
-    if (!s) return '';
-    var d = document.createElement('div');
-    d.appendChild(document.createTextNode(String(s)));
-    return d.innerHTML;
-}
-
-function showToast(msg) {
-    var t = document.createElement('div');
-    t.className = 'toast-msg';
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2200);
-}
-
-function getNotifType(message) {
-    var text = (message || '').toLowerCase();
-    if (text.indexOf('reminder:') !== -1 || text.indexOf('⏰') !== -1) return 'reminder';
-    if (text.indexOf('(teacher) liked your comment') !== -1)    return 'like';
-    if (text.indexOf('(teacher) replied to your comment') !== -1) return 'reply';
-    if (text.indexOf('(teacher) commented on') !== -1)           return 'comment';
-    if (text.indexOf('pinned announcement') !== -1)              return 'default';
-    if (text.indexOf('liked your announcement') !== -1)          return 'like';
-    if (text.indexOf('commented on your announcement') !== -1)   return 'comment';
-    if (text.indexOf('replied on your announcement') !== -1)     return 'reply';
-    if (text.indexOf('shared your announcement') !== -1)         return 'share';
-    if (text.indexOf('liked your comment') !== -1)               return 'like';
-    if (text.indexOf('new announcement') !== -1)                 return 'default';
-    return 'default';
-}
-
-function getNotifIcon(type) {
-    if (type === 'reminder') return 'fa-calendar-alt';
-    if (type === 'like')    return 'fa-heart';
-    if (type === 'comment') return 'fa-comment';
-    if (type === 'reply')   return 'fa-reply';
-    if (type === 'share')   return 'fa-share-alt';
-    return 'fa-bell';
-}
-
-function getNotifClass(type) {
-    if (type === 'reminder') return 'notif-default';
-    if (type === 'like')    return 'notif-like';
-    if (type === 'comment') return 'notif-comment';
-    if (type === 'reply')   return 'notif-reply';
-    if (type === 'share')   return 'notif-share';
-    return 'notif-default';
-}
-
-function renderUnreadBadge(list) {
-    var count = 0;
-    for (var i = 0; i < list.length; i++) { if (!list[i].isRead) count++; }
-    var badge = document.getElementById('unreadBadge');
-    if (!badge) return;
-    if (count > 0) { badge.textContent = count; badge.style.display = 'inline-flex'; }
-    else badge.style.display = 'none';
-}
-
-function renderNotifications(list) {
-    var container = document.getElementById('notifList');
-    if (!container) return;
-    renderUnreadBadge(list);
-    if (!list || !list.length) {
-        var emptyMsg = isTeacher
-            ? 'Student reactions to your announcements will appear here.'
-            : 'When a teacher comments, replies, or likes your comment, it will show here.';
-        container.innerHTML = '<div class="empty-state">'
-            + '<i class="fas fa-bell-slash"></i>'
-            + '<div class="empty-title">No notifications yet</div>'
-            + '<div class="empty-text">' + emptyMsg + '</div>'
-            + '</div>';
-        return;
-    }
-    container.innerHTML = list.map(function (item) {
-        var type      = getNotifType(item.message);
-        var icon      = getNotifIcon(type);
-        var iconClass = getNotifClass(type);
-        var stateText = item.isRead ? 'Read' : 'Unread';
-        return '<div class="notif-item' + (item.isRead ? '' : ' unread') + '" '
-            + 'onclick="openNotification(' + item.id + ',' + item.announcementId + ',\'' + getNotifType(item.message) + '\')">'
-            + '<div class="notif-row">'
-            + '<div class="notif-icon ' + iconClass + '"><i class="fas ' + icon + '"></i></div>'
-            + '<div class="notif-main">'
-            + '<div class="notif-head">'
-            + '<div class="notif-message">' + escapeHtml(item.message) + '</div>'
-            + '<div class="notif-time">' + escapeHtml(item.time || item.createdDate || '') + '</div>'
-            + '</div>'
-            + '<div class="notif-sub">'
-            + '<span class="notif-unread-dot"></span>'
-            + '<span class="notif-state">' + stateText + '</span>'
-            + '</div>'
-            + '</div>'
-            + '<i class="fas fa-chevron-right notif-chevron"></i>'
-            + '</div>'
-            + '</div>';
-    }).join('');
-}
-
-function loadNotifications() {
-    fetch('NotificationHandler.ashx?action=getAll', { credentials: 'same-origin' })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-            if (!res.ok) {
-                document.getElementById('notifList').innerHTML = '<div class="empty-state">'
-                    + '<i class="fas fa-exclamation-triangle"></i>'
-                    + '<div class="empty-title">Could not load notifications</div>'
-                    + '<div class="empty-text">' + escapeHtml(res.error || 'Please try again.') + '</div>'
-                    + '</div>';
-                return;
-            }
-            renderNotifications(res.data || []);
-        }).catch(function () {
-            document.getElementById('notifList').innerHTML = '<div class="empty-state">'
-                + '<i class="fas fa-wifi"></i>'
-                + '<div class="empty-title">Connection problem</div>'
-                + '<div class="empty-text">Please check your connection and try again.</div>'
-                + '</div>';
+    // Theme
+    (function () {
+        document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'campus_theme')
+                document.body.classList.toggle('dark-mode', e.newValue === 'dark');
         });
-}
+    })();
 
-function openNotification(notificationId, announcementId, notifType) {
-    fetch('NotificationHandler.ashx?action=markRead&id=' + encodeURIComponent(notificationId), {
-        credentials: 'same-origin'
-    }).finally(function () {
-        // Reminder notifications → open the calendar on the home page
-        if (notifType === 'reminder') {
-            window.location.href = homeUrl + '?openCalendar=1';
-        } else if (announcementId && announcementId > 0) {
-            window.location.href = portalUrl + '?postId=' + encodeURIComponent(announcementId);
-        } else {
-            window.location.href = portalUrl;
+    // University theme is handled by university-theme.js (loaded at bottom of page)
+
+    function escapeHtml(s) {
+        if (!s) return '';
+        var d = document.createElement('div');
+        d.appendChild(document.createTextNode(String(s)));
+        return d.innerHTML;
+    }
+
+    function showToast(msg) {
+        var t = document.createElement('div');
+        t.className = 'toast-msg';
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2200);
+    }
+
+    function getNotifType(message) {
+        var text = (message || '').toLowerCase();
+        if (text.indexOf('reminder:') !== -1 || text.indexOf('⏰') !== -1) return 'reminder';
+        if (text.indexOf('(teacher) liked your comment') !== -1) return 'like';
+        if (text.indexOf('(teacher) replied to your comment') !== -1) return 'reply';
+        if (text.indexOf('(teacher) commented on') !== -1) return 'comment';
+        if (text.indexOf('pinned announcement') !== -1) return 'default';
+        if (text.indexOf('liked your announcement') !== -1) return 'like';
+        if (text.indexOf('commented on your announcement') !== -1) return 'comment';
+        if (text.indexOf('replied on your announcement') !== -1) return 'reply';
+        if (text.indexOf('shared your announcement') !== -1) return 'share';
+        if (text.indexOf('liked your comment') !== -1) return 'like';
+        if (text.indexOf('new announcement') !== -1) return 'default';
+        return 'default';
+    }
+
+    function getNotifIcon(type) {
+        if (type === 'reminder') return 'fa-calendar-alt';
+        if (type === 'like') return 'fa-heart';
+        if (type === 'comment') return 'fa-comment';
+        if (type === 'reply') return 'fa-reply';
+        if (type === 'share') return 'fa-share-alt';
+        return 'fa-bell';
+    }
+
+    function getNotifClass(type) {
+        if (type === 'reminder') return 'notif-default';
+        if (type === 'like') return 'notif-like';
+        if (type === 'comment') return 'notif-comment';
+        if (type === 'reply') return 'notif-reply';
+        if (type === 'share') return 'notif-share';
+        return 'notif-default';
+    }
+
+    function renderUnreadBadge(list) {
+        var count = 0;
+        for (var i = 0; i < list.length; i++) { if (!list[i].isRead) count++; }
+        var badge = document.getElementById('unreadBadge');
+        if (!badge) return;
+        if (count > 0) { badge.textContent = count; badge.style.display = 'inline-flex'; }
+        else badge.style.display = 'none';
+    }
+
+    function renderNotifications(list) {
+        var container = document.getElementById('notifList');
+        if (!container) return;
+        renderUnreadBadge(list);
+        if (!list || !list.length) {
+            var emptyMsg = isTeacher
+                ? 'Student reactions to your announcements will appear here.'
+                : 'When a teacher comments, replies, or likes your comment, it will show here.';
+            container.innerHTML = '<div class="empty-state">'
+                + '<i class="fas fa-bell-slash"></i>'
+                + '<div class="empty-title">No notifications yet</div>'
+                + '<div class="empty-text">' + emptyMsg + '</div>'
+                + '</div>';
+            return;
         }
-    });
-}
+        container.innerHTML = list.map(function (item) {
+            var type = getNotifType(item.message);
+            var icon = getNotifIcon(type);
+            var iconClass = getNotifClass(type);
+            var stateText = item.isRead ? 'Read' : 'Unread';
+            return '<div class="notif-item' + (item.isRead ? '' : ' unread') + '" '
+                + 'onclick="openNotification(' + item.id + ',' + item.announcementId + ',\'' + getNotifType(item.message) + '\')">'
+                + '<div class="notif-row">'
+                + '<div class="notif-icon ' + iconClass + '"><i class="fas ' + icon + '"></i></div>'
+                + '<div class="notif-main">'
+                + '<div class="notif-head">'
+                + '<div class="notif-message">' + escapeHtml(item.message) + '</div>'
+                + '<div class="notif-time">' + escapeHtml(item.time || item.createdDate || '') + '</div>'
+                + '</div>'
+                + '<div class="notif-sub">'
+                + '<span class="notif-unread-dot"></span>'
+                + '<span class="notif-state">' + stateText + '</span>'
+                + '</div>'
+                + '</div>'
+                + '<i class="fas fa-chevron-right notif-chevron"></i>'
+                + '</div>'
+                + '</div>';
+        }).join('');
+    }
 
-function markAllNotificationsRead() {
-    fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
-        .then(function (r) { return r.json(); })
-        .then(function (res) {
-            if (!res.ok) { showToast('Could not mark notifications as read'); return; }
-            showToast('All notifications marked as read');
-            loadNotifications();
-        }).catch(function () { showToast('Could not mark notifications as read'); });
-}
+    function loadNotifications() {
+        fetch('NotificationHandler.ashx?action=getAll', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (!res.ok) {
+                    document.getElementById('notifList').innerHTML = '<div class="empty-state">'
+                        + '<i class="fas fa-exclamation-triangle"></i>'
+                        + '<div class="empty-title">Could not load notifications</div>'
+                        + '<div class="empty-text">' + escapeHtml(res.error || 'Please try again.') + '</div>'
+                        + '</div>';
+                    return;
+                }
+                renderNotifications(res.data || []);
+            }).catch(function () {
+                document.getElementById('notifList').innerHTML = '<div class="empty-state">'
+                    + '<i class="fas fa-wifi"></i>'
+                    + '<div class="empty-title">Connection problem</div>'
+                    + '<div class="empty-text">Please check your connection and try again.</div>'
+                    + '</div>';
+            });
+    }
 
-loadNotifications();
+    function openNotification(notificationId, announcementId, notifType) {
+        fetch('NotificationHandler.ashx?action=markRead&id=' + encodeURIComponent(notificationId), {
+            credentials: 'same-origin'
+        }).finally(function () {
+            // Reminder notifications → open the calendar on the home page
+            if (notifType === 'reminder') {
+                window.location.href = homeUrl + '?openCalendar=1';
+            } else if (announcementId && announcementId > 0) {
+                window.location.href = portalUrl + '?postId=' + encodeURIComponent(announcementId);
+            } else {
+                window.location.href = portalUrl;
+            }
+        });
+    }
+
+    function markAllNotificationsRead() {
+        fetch('NotificationHandler.ashx?action=markAllRead', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (!res.ok) { showToast('Could not mark notifications as read'); return; }
+                showToast('All notifications marked as read');
+                loadNotifications();
+            }).catch(function () { showToast('Could not mark notifications as read'); });
+    }
+
+    loadNotifications();
 </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>

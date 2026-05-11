@@ -31,26 +31,15 @@
 html, body, form { height: auto; min-height: 100%; }
 html, body { overflow: auto; }
 body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    z-index: 1199;
-    pointer-events: none;
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+   display: none;
 }
 body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+    background-image: var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-attachment: fixed;
     transition: background 0.4s ease, color 0.4s ease;
 }
@@ -259,6 +248,27 @@ body.dark-mode .modal-title, body.dark-mode #pm-fullname { color: #e0e7ff; }
 body.dark-mode #pm-username, body.dark-mode #pm-email, body.dark-mode #pm-role { color: #e2e8f0; }
 body.dark-mode .action-btn.liked { color: #f87171; }
 body.dark-mode .pin-btn-top { color: rgba(148,163,184,0.5); }
+
+/* ── University Theme dark mode — announcement card overrides ── */
+body.theme-intramurals .announcement-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.55) !important; }
+body.theme-intramurals .post-author, body.theme-intramurals .post-title { color: #ff9a3c !important; }
+body.theme-intramurals .post-text { color: #e0e0e0 !important; }
+body.theme-intramurals .post-meta, body.theme-intramurals .action-btn { color: #d1d5db !important; }
+
+body.theme-foundation.dark-mode .announcement-card { background: rgba(30,22,5,0.92) !important; border-color: rgba(234,179,8,0.45) !important; }
+body.theme-foundation.dark-mode .post-author, body.theme-foundation.dark-mode .post-title { color: #fbbf24 !important; }
+body.theme-foundation.dark-mode .post-text { color: #e0e0e0 !important; }
+body.theme-foundation.dark-mode .post-meta, body.theme-foundation.dark-mode .action-btn { color: #d1d5db !important; }
+
+body.theme-womens.dark-mode .announcement-card { background: rgba(20,12,35,0.92) !important; border-color: rgba(126,34,206,0.50) !important; }
+body.theme-womens.dark-mode .post-author, body.theme-womens.dark-mode .post-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .post-text { color: #e0e0e0 !important; }
+body.theme-womens.dark-mode .post-meta, body.theme-womens.dark-mode .action-btn { color: #d1d5db !important; }
+
+body.theme-christmas.dark-mode .announcement-card { background: rgba(5,20,12,0.92) !important; border-color: rgba(21,128,61,0.50) !important; }
+body.theme-christmas.dark-mode .post-author, body.theme-christmas.dark-mode .post-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .post-text { color: #e0e0e0 !important; }
+body.theme-christmas.dark-mode .post-meta, body.theme-christmas.dark-mode .action-btn { color: #d1d5db !important; }
 body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
 body.dark-mode .slideout-panel { background: rgba(20,20,20,0.98); border-color: rgba(148,163,184,0.2); }
 body.dark-mode .panel-header h3 { color: #e0e7ff; }
@@ -586,247 +596,252 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
 </form>
 
 <script>
-// ====================== GLOBAL STATE ======================
-let st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
+    // ====================== GLOBAL STATE ======================
+    let st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
 
-// ✅ CHANGE 1: Read focusPostId from URL at page load
-let focusPostId = 0;
-(function () {
-    var params = new URLSearchParams(window.location.search);
-    var pid = parseInt(params.get('postId') || '0', 10);
-    if (!isNaN(pid) && pid > 0) focusPostId = pid;
-    // Open calendar panel if redirected from a reminder notification
-    if (params.get('openCalendar') === '1') {
-        window.addEventListener('load', function () { openCalendarPanel(); });
+    // ✅ CHANGE 1: Read focusPostId from URL at page load
+    let focusPostId = 0;
+    (function () {
+        var params = new URLSearchParams(window.location.search);
+        var pid = parseInt(params.get('postId') || '0', 10);
+        if (!isNaN(pid) && pid > 0) focusPostId = pid;
+        // Open calendar panel if redirected from a reminder notification
+        if (params.get('openCalendar') === '1') {
+            window.addEventListener('load', function () { openCalendarPanel(); });
+        }
+    })();
+
+    function showToast(msg) {
+        let t = document.createElement('div');
+        t.innerText = msg;
+        t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background: var(--uni-accent);color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 2500);
     }
-})();
 
-function showToast(msg) {
-    let t = document.createElement('div');
-    t.innerText = msg;
-    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background: var(--uni-accent);color:#fff;padding:8px 20px;border-radius:30px;z-index:9999';
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 2500);
-}
+    var videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
+    var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
+    function getExt(url) { return (url.split('.').pop() || '').toLowerCase().split('?')[0]; }
 
-var videoExts = ['mp4','webm','ogg','mov','avi'];
-var imageExts = ['jpg','jpeg','png','gif','webp','bmp'];
-function getExt(url) { return (url.split('.').pop() || '').toLowerCase().split('?')[0]; }
-
-function renderMediaHtml(mediaUrl) {
-    if (!mediaUrl) return '';
-    var urls = mediaUrl.split(',').map(function(u) { return u.trim(); }).filter(Boolean);
-    if (!urls.length) return '';
-    var html = '';
-    var images = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) !== -1; });
-    var videos = urls.filter(function(u) { return videoExts.indexOf(getExt(u)) !== -1; });
-    var files  = urls.filter(function(u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
-    if (images.length === 1) {
-        html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
-    } else if (images.length > 1) {
-        html += `<div class="post-image" style="display:flex;flex-wrap:wrap;gap:6px;">`;
-        images.forEach(function(img) {
-            html += `<img src="${img}" style="width:calc(50% - 3px);max-height:160px;object-fit:cover;border-radius:12px;cursor:zoom-in;flex:1 1 calc(50% - 3px);" onclick="openLightbox('${img}')" onerror="this.style.display='none'" />`;
+    function renderMediaHtml(mediaUrl) {
+        if (!mediaUrl) return '';
+        var urls = mediaUrl.split(',').map(function (u) { return u.trim(); }).filter(Boolean);
+        if (!urls.length) return '';
+        var html = '';
+        var images = urls.filter(function (u) { return imageExts.indexOf(getExt(u)) !== -1; });
+        var videos = urls.filter(function (u) { return videoExts.indexOf(getExt(u)) !== -1; });
+        var files = urls.filter(function (u) { return imageExts.indexOf(getExt(u)) === -1 && videoExts.indexOf(getExt(u)) === -1; });
+        if (images.length === 1) {
+            html += `<div class="post-image"><img src="${images[0]}" style="cursor:zoom-in;" onclick="openLightbox('${images[0]}')" onerror="this.style.display='none'" /></div>`;
+        } else if (images.length > 1) {
+            html += `<div class="post-image" style="display:flex;flex-wrap:wrap;gap:6px;">`;
+            images.forEach(function (img) {
+                html += `<img src="${img}" style="width:calc(50% - 3px);max-height:160px;object-fit:cover;border-radius:12px;cursor:zoom-in;flex:1 1 calc(50% - 3px);" onclick="openLightbox('${img}')" onerror="this.style.display='none'" />`;
+            });
+            html += `</div>`;
+        }
+        videos.forEach(function (vid) {
+            html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
         });
-        html += `</div>`;
-    }
-    videos.forEach(function(vid) {
-        html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
-    });
-    files.forEach(function(f) {
-        var fname = f.split('/').pop();
-        html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
+        files.forEach(function (f) {
+            var fname = f.split('/').pop();
+            html += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;">
             <i class="fas fa-file-alt" style="color:var(--primary);font-size:18px;"></i>
             <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fname}</span>
             <a href="${f}" download="${fname}" style="padding:6px 14px;background:var(--primary);color:#fff;border-radius:20px;font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap;">
                 <i class="fas fa-download" style="margin-right:4px;"></i>Download
             </a>
         </div>`;
-    });
-    return html;
-}
-
-function openLightbox(src) {
-    var lb = document.getElementById('imageLightbox');
-    var lbImg = document.getElementById('lightboxImg');
-    if (!lb || !lbImg) return;
-    lbImg.src = src;
-    lb.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
-function closeLightbox() {
-    var lb = document.getElementById('imageLightbox');
-    if (lb) lb.style.display = 'none';
-    document.body.style.overflow = '';
-}
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeLightbox(); });
-
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, m => ({ '&': '&', '<': '<', '>': '>' })[m]);
-}
-
-function timeAgo(dateStr) {
-    if (!dateStr) return '';
-    var date = new Date(dateStr);
-    if (isNaN(date)) return dateStr;
-    var now = new Date();
-    var sec = Math.floor((now - date) / 1000);
-    if (sec < 60)  return 'Just now';
-    var min = Math.floor(sec / 60);
-    if (min < 60)  return min + (min === 1 ? ' min ago' : ' mins ago');
-    var hr = Math.floor(min / 60);
-    if (hr < 24)   return hr + (hr === 1 ? ' hour ago' : ' hours ago');
-    var day = Math.floor(hr / 24);
-    if (day < 7)   return day + (day === 1 ? ' day ago' : ' days ago');
-    var wk = Math.floor(day / 7);
-    if (wk < 5)    return wk + (wk === 1 ? ' week ago' : ' weeks ago');
-    var mo = Math.floor(day / 30);
-    if (mo < 12)   return mo + (mo === 1 ? ' month ago' : ' months ago');
-    var yr = Math.floor(day / 365);
-    return yr + (yr === 1 ? ' year ago' : ' years ago');
-}
-
-document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
-    e.stopPropagation();
-    let panel = document.getElementById('categoryDropdownPanel');
-    panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
-});
-document.getElementById('settingsThemeBtn').addEventListener('click', function (e) {
-    e.stopPropagation();
-    toggleTheme();
-});
-
-function filterCategory(category) {
-    localStorage.setItem('student_filter', category);
-    let label = document.getElementById('activeFilterLabel');
-    if (label) label.innerText = category;
-    document.querySelectorAll('.announcement-card').forEach(card => {
-        let cat = card.getAttribute('data-category') || '';
-        let show = category === 'All' || cat === category;
-        card.style.display = show ? '' : 'none';
-    });
-    document.querySelectorAll('[data-filter]').forEach(btn => {
-        btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === category);
-    });
-}
-
-function applyTheme(isDark) {
-    document.body.classList.toggle('dark-mode', isDark);
-    document.querySelectorAll('.toggle-switch-panel, #panelThemeToggle').forEach(el => el.classList.toggle('active', isDark));
-}
-function toggleTheme() {
-    let isDark = !document.body.classList.contains('dark-mode');
-    localStorage.setItem('campus_theme', isDark ? 'dark' : 'light');
-    applyTheme(isDark);
-}
-applyTheme(localStorage.getItem('campus_theme') === 'dark');
-window.addEventListener('storage', function (e) {
-    if (e.key === 'campus_theme') applyTheme(e.newValue === 'dark');
-});
-
-// ── University Theme ─────────────────────────────────────────
-var UNIVERSITY_THEMES = {
-    'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
-    'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
-    'FoundationWeek':{ overlay: 'rgba(201,146,10,0.18)',    header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
-    'WomensMonth':   { overlay: 'rgba(147,51,234,0.18)',    header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-    'Christmas':     { overlay: 'rgba(22,101,52,0.20)',     header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
-};
-function applyUniversityTheme(name) {
-    var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
-    document.documentElement.style.setProperty('--uni-overlay', t.overlay);
-    document.documentElement.style.setProperty('--uni-header-bg', t.header);
-    document.documentElement.style.setProperty('--uni-accent', t.accent);
-    document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
-    localStorage.setItem('campus_uni_theme', name);
-}
-var savedUniTheme = localStorage.getItem('campus_uni_theme');
-if (savedUniTheme) applyUniversityTheme(savedUniTheme);
-fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
-    .then(function(r) { return r.json(); })
-    .then(function(res) { if (res.ok) applyUniversityTheme(res.theme); })
-    .catch(function() {});
-window.addEventListener('storage', function(e) {
-    if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
-});
-
-function openProfileModal(e) { if (e) e.stopPropagation(); document.getElementById('profileModal').style.display = 'flex'; }
-function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
-function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
-function closeAboutModal() { document.getElementById('aboutModal').style.display = 'none'; }
-function logout() { window.location.href = 'Logout.aspx'; }
-document.addEventListener('click', function (e) {
-    let pm = document.getElementById('profileModal');
-    if (pm && pm.style.display === 'flex' && e.target === pm) pm.style.display = 'none';
-    let am = document.getElementById('aboutModal');
-    if (am && am.style.display === 'flex' && e.target === am) am.style.display = 'none';
-});
-
-function toggleLike(postId) {
-    fetch('LikeHandler.ashx?action=toggle&postId=' + postId, { credentials: 'same-origin' })
-        .then(r => r.json()).then(res => {
-            if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update like')); return; }
-            st_likes[postId] = res.liked;
-            st_likeCounts[postId] = res.likeCount;
-            let card = document.querySelector(`.announcement-card[data-post-id="${postId}"]`);
-            if (card) {
-                let likeSpan = card.querySelector('.like-count');
-                if (likeSpan) likeSpan.textContent = res.likeCount;
-                let likeBtn = card.querySelector('.action-btn.like-btn');
-                if (likeBtn) {
-                    likeBtn.className = 'action-btn like-btn' + (res.liked ? ' liked' : '');
-                    likeBtn.innerHTML = `<i class="${res.liked ? 'fas' : 'far'} fa-heart"></i> ${res.liked ? 'Liked' : 'Like'}`;
-                }
-                let statsSpan = card.querySelector('.post-stats span:first-child i');
-                if (statsSpan) statsSpan.className = res.liked ? 'fas fa-heart' : 'far fa-heart';
-            }
-            showToast(res.liked ? 'Liked!' : 'Like removed');
-        }).catch(() => showToast('Could not update like'));
-}
-
-function togglePin(postId) {
-    fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
-        .then(r => r.json()).then(res => {
-            if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
-            if (res.isPinned) { st_pins[postId] = true; } else { delete st_pins[postId]; }
-            let btn = document.querySelector(`.pin-btn-top[onclick="togglePin(${postId})"]`);
-            if (btn) { btn.classList.toggle('pinned', res.isPinned); btn.title = res.isPinned ? 'Unpin' : 'Pin'; }
-            showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
-        }).catch(() => showToast('Could not update pin'));
-}
-
-function toggleCommentSection(postId) {
-    let sec = document.getElementById('commentsSection_' + postId);
-    if (sec) {
-        let isHidden = sec.style.display === 'none' || sec.style.display === '';
-        sec.style.display = isHidden ? 'block' : 'none';
-        if (isHidden) loadCommentsFromDB(postId);
+        });
+        return html;
     }
-}
 
-function loadCommentsFromDB(postId) {
-    let listDiv = document.getElementById('commentsList_' + postId);
-    if (!listDiv) return;
-    listDiv.innerHTML = '<div style="text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i></div>';
-    fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
-        .then(r => r.json()).then(data => {
-            if (!Array.isArray(data)) { listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>'; return; }
-            const comments = data;
-            if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-            const topLevel = comments.filter(c => !c.parentCommentId);
-            const replies  = comments.filter(c =>  c.parentCommentId);
-            if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-            listDiv.innerHTML = topLevel.map(c => {
-                let cAvatar = c.profileImage
-                    ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                    : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
-                let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
-                let repliesHtml = commentReplies.map(r => {
-                    let rAvatar = r.profileImage
-                        ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                        : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
-                    return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
+    function openLightbox(src) {
+        var lb = document.getElementById('imageLightbox');
+        var lbImg = document.getElementById('lightboxImg');
+        if (!lb || !lbImg) return;
+        lbImg.src = src;
+        lb.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+        var lb = document.getElementById('imageLightbox');
+        if (lb) lb.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&', '<': '<', '>': '>' })[m]);
+    }
+
+    function timeAgo(dateStr) {
+        if (!dateStr) return '';
+        var date = new Date(dateStr);
+        if (isNaN(date)) return dateStr;
+        var now = new Date();
+        var sec = Math.floor((now - date) / 1000);
+        if (sec < 60) return 'Just now';
+        var min = Math.floor(sec / 60);
+        if (min < 60) return min + (min === 1 ? ' min ago' : ' mins ago');
+        var hr = Math.floor(min / 60);
+        if (hr < 24) return hr + (hr === 1 ? ' hour ago' : ' hours ago');
+        var day = Math.floor(hr / 24);
+        if (day < 7) return day + (day === 1 ? ' day ago' : ' days ago');
+        var wk = Math.floor(day / 7);
+        if (wk < 5) return wk + (wk === 1 ? ' week ago' : ' weeks ago');
+        var mo = Math.floor(day / 30);
+        if (mo < 12) return mo + (mo === 1 ? ' month ago' : ' months ago');
+        var yr = Math.floor(day / 365);
+        return yr + (yr === 1 ? ' year ago' : ' years ago');
+    }
+
+    document.getElementById('filterCategoryBtn').addEventListener('click', function (e) {
+        e.stopPropagation();
+        let panel = document.getElementById('categoryDropdownPanel');
+        panel.style.display = panel.style.display === 'flex' ? 'none' : 'flex';
+    });
+    document.getElementById('settingsThemeBtn').addEventListener('click', function (e) {
+        e.stopPropagation();
+        toggleTheme();
+    });
+
+    function filterCategory(category) {
+        localStorage.setItem('student_filter', category);
+        let label = document.getElementById('activeFilterLabel');
+        if (label) label.innerText = category;
+        document.querySelectorAll('.announcement-card').forEach(card => {
+            let cat = card.getAttribute('data-category') || '';
+            let show = category === 'All' || cat === category;
+            card.style.display = show ? '' : 'none';
+        });
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === category);
+        });
+    }
+
+    function applyTheme(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        document.querySelectorAll('.toggle-switch-panel, #panelThemeToggle').forEach(el => el.classList.toggle('active', isDark));
+    }
+    function toggleTheme() {
+        let isDark = !document.body.classList.contains('dark-mode');
+        localStorage.setItem('campus_theme', isDark ? 'dark' : 'light');
+        applyTheme(isDark);
+    }
+    applyTheme(localStorage.getItem('campus_theme') === 'dark');
+    window.addEventListener('storage', function (e) {
+        if (e.key === 'campus_theme') applyTheme(e.newValue === 'dark');
+    });
+
+    // ── University Theme ─────────────────────────────────────────
+    var UNIVERSITY_THEMES = {
+        'Default': { overlay: 'rgba(255,255,255,0)', header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
+        'Intramurals': { overlay: 'rgba(180,30,30,0.18)', header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
+        'FoundationWeek': { overlay: 'rgba(201,146,10,0.18)', header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
+        'WomensMonth': { overlay: 'rgba(147,51,234,0.18)', header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
+        'Christmas': { overlay: 'rgba(22,101,52,0.20)', header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
+    };
+    function applyUniversityTheme(name) {
+        var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+        document.documentElement.style.setProperty('--uni-overlay', t.overlay);
+        document.documentElement.style.setProperty('--uni-header-bg', t.header);
+        document.documentElement.style.setProperty('--uni-accent', t.accent);
+        document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+        // Apply body class for university-theme-decorations.css
+        var ALL_CLASSES = ['theme-default', 'theme-intramurals', 'theme-foundation', 'theme-womens', 'theme-christmas'];
+        ALL_CLASSES.forEach(function (c) { document.body.classList.remove(c); });
+        var clsMap = { 'Default': 'theme-default', 'Intramurals': 'theme-intramurals', 'FoundationWeek': 'theme-foundation', 'WomensMonth': 'theme-womens', 'Christmas': 'theme-christmas' };
+        document.body.classList.add(clsMap[name] || 'theme-default');
+        localStorage.setItem('campus_uni_theme', name);
+    }
+    var savedUniTheme = localStorage.getItem('campus_uni_theme');
+    if (savedUniTheme) applyUniversityTheme(savedUniTheme);
+    fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
+        .then(function (r) { return r.json(); })
+        .then(function (res) { if (res.ok) applyUniversityTheme(res.theme); })
+        .catch(function () { });
+    window.addEventListener('storage', function (e) {
+        if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
+    });
+
+    function openProfileModal(e) { if (e) e.stopPropagation(); document.getElementById('profileModal').style.display = 'flex'; }
+    function closeProfileModal() { document.getElementById('profileModal').style.display = 'none'; }
+    function openAboutModal() { document.getElementById('aboutModal').style.display = 'flex'; }
+    function closeAboutModal() { document.getElementById('aboutModal').style.display = 'none'; }
+    function logout() { window.location.href = 'Logout.aspx'; }
+    document.addEventListener('click', function (e) {
+        let pm = document.getElementById('profileModal');
+        if (pm && pm.style.display === 'flex' && e.target === pm) pm.style.display = 'none';
+        let am = document.getElementById('aboutModal');
+        if (am && am.style.display === 'flex' && e.target === am) am.style.display = 'none';
+    });
+
+    function toggleLike(postId) {
+        fetch('LikeHandler.ashx?action=toggle&postId=' + postId, { credentials: 'same-origin' })
+            .then(r => r.json()).then(res => {
+                if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update like')); return; }
+                st_likes[postId] = res.liked;
+                st_likeCounts[postId] = res.likeCount;
+                let card = document.querySelector(`.announcement-card[data-post-id="${postId}"]`);
+                if (card) {
+                    let likeSpan = card.querySelector('.like-count');
+                    if (likeSpan) likeSpan.textContent = res.likeCount;
+                    let likeBtn = card.querySelector('.action-btn.like-btn');
+                    if (likeBtn) {
+                        likeBtn.className = 'action-btn like-btn' + (res.liked ? ' liked' : '');
+                        likeBtn.innerHTML = `<i class="${res.liked ? 'fas' : 'far'} fa-heart"></i> ${res.liked ? 'Liked' : 'Like'}`;
+                    }
+                    let statsSpan = card.querySelector('.post-stats span:first-child i');
+                    if (statsSpan) statsSpan.className = res.liked ? 'fas fa-heart' : 'far fa-heart';
+                }
+                showToast(res.liked ? 'Liked!' : 'Like removed');
+            }).catch(() => showToast('Could not update like'));
+    }
+
+    function togglePin(postId) {
+        fetch('UserPinHandler.ashx?action=toggle&announcementId=' + postId, { credentials: 'same-origin' })
+            .then(r => r.json()).then(res => {
+                if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
+                if (res.isPinned) { st_pins[postId] = true; } else { delete st_pins[postId]; }
+                let btn = document.querySelector(`.pin-btn-top[onclick="togglePin(${postId})"]`);
+                if (btn) { btn.classList.toggle('pinned', res.isPinned); btn.title = res.isPinned ? 'Unpin' : 'Pin'; }
+                showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+            }).catch(() => showToast('Could not update pin'));
+    }
+
+    function toggleCommentSection(postId) {
+        let sec = document.getElementById('commentsSection_' + postId);
+        if (sec) {
+            let isHidden = sec.style.display === 'none' || sec.style.display === '';
+            sec.style.display = isHidden ? 'block' : 'none';
+            if (isHidden) loadCommentsFromDB(postId);
+        }
+    }
+
+    function loadCommentsFromDB(postId) {
+        let listDiv = document.getElementById('commentsList_' + postId);
+        if (!listDiv) return;
+        listDiv.innerHTML = '<div style="text-align:center;padding:10px;"><i class="fas fa-spinner fa-spin"></i></div>';
+        fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
+            .then(r => r.json()).then(data => {
+                if (!Array.isArray(data)) { listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>'; return; }
+                const comments = data;
+                if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+                const topLevel = comments.filter(c => !c.parentCommentId);
+                const replies = comments.filter(c => c.parentCommentId);
+                if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+                listDiv.innerHTML = topLevel.map(c => {
+                    let cAvatar = c.profileImage
+                        ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                        : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
+                    let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
+                    let repliesHtml = commentReplies.map(r => {
+                        let rAvatar = r.profileImage
+                            ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                            : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
+                        return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
                         ${rAvatar}
                         <div style="flex:1;min-width:0;">
                             <span class="comment-author">${escapeHtml(r.author)}</span>
@@ -853,8 +868,8 @@ function loadCommentsFromDB(postId) {
                             </div>
                         </div>
                     </div>`;
-                }).join('');
-                return `<div class="comment" data-comment-id="${c.commentId}">
+                    }).join('');
+                    return `<div class="comment" data-comment-id="${c.commentId}">
                     ${cAvatar}
                     <div style="flex:1;min-width:0;">
                         <span class="comment-author">${escapeHtml(c.author)}</span>
@@ -882,152 +897,152 @@ function loadCommentsFromDB(postId) {
                         ${repliesHtml}
                     </div>
                 </div>`;
-            }).join('');
-        }).catch(() => { listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>'; });
-}
+                }).join('');
+            }).catch(() => { listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>'; });
+    }
 
-function likeComment(commentId, btn) {
-    fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
-        .then(r => r.json()).then(res => {
-            if (!res.success) return;
-            btn.className = 'comment-like-btn' + (res.liked ? ' liked' : '');
-            btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
-            btn.querySelector('i').className = res.liked ? 'fas fa-heart' : 'far fa-heart';
-            btn.querySelector('.clc').textContent = res.likeCount > 0 ? res.likeCount : '';
+    function likeComment(commentId, btn) {
+        fetch('CommentHandler.ashx?action=likeComment&commentId=' + commentId, { credentials: 'same-origin' })
+            .then(r => r.json()).then(res => {
+                if (!res.success) return;
+                btn.className = 'comment-like-btn' + (res.liked ? ' liked' : '');
+                btn.style.color = res.liked ? '#dc2626' : 'var(--muted)';
+                btn.querySelector('i').className = res.liked ? 'fas fa-heart' : 'far fa-heart';
+                btn.querySelector('.clc').textContent = res.likeCount > 0 ? res.likeCount : '';
+            });
+    }
+
+    function toggleReplyBox(commentId, postId) {
+        let box = document.getElementById('replyBox_' + commentId);
+        if (!box) return;
+        let isHidden = box.style.display === 'none';
+        box.style.display = isHidden ? 'block' : 'none';
+        if (isHidden) document.getElementById('replyInput_' + commentId)?.focus();
+    }
+
+    function submitReply(commentId, postId) {
+        let input = document.getElementById('replyInput_' + commentId);
+        let text = input ? input.value.trim() : '';
+        if (!text) return showToast('Write a reply first');
+        fetch('CommentHandler.ashx?action=reply', {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postId: postId, parentCommentId: commentId, comment: text })
+        }).then(r => r.json()).then(res => {
+            if (res.success) {
+                input.value = '';
+                document.getElementById('replyBox_' + commentId).style.display = 'none';
+                loadCommentsFromDB(postId);
+                showToast('Reply posted');
+            } else { showToast('Error: ' + (res.error || 'Could not reply')); }
         });
-}
+    }
 
-function toggleReplyBox(commentId, postId) {
-    let box = document.getElementById('replyBox_' + commentId);
-    if (!box) return;
-    let isHidden = box.style.display === 'none';
-    box.style.display = isHidden ? 'block' : 'none';
-    if (isHidden) document.getElementById('replyInput_' + commentId)?.focus();
-}
+    function addComment(btn, postId) {
+        let input = document.getElementById('commentInput_' + postId);
+        let text = input.value.trim();
+        if (!text) return showToast('Write a comment');
+        fetch('CommentHandler.ashx?action=add', {
+            method: 'POST', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postId: postId, comment: text })
+        }).then(r => r.json()).then(res => {
+            if (res.success) {
+                input.value = '';
+                loadCommentsFromDB(postId);
+                let countSpan = document.querySelector(`.announcement-card[data-post-id="${postId}"] .comment-count`);
+                if (countSpan) countSpan.textContent = parseInt(countSpan.textContent || 0) + 1;
+                showToast('Comment added');
+            } else { showToast('Error: ' + (res.error || 'Could not add comment')); }
+        }).catch(() => showToast('Could not add comment'));
+    }
 
-function submitReply(commentId, postId) {
-    let input = document.getElementById('replyInput_' + commentId);
-    let text = input ? input.value.trim() : '';
-    if (!text) return showToast('Write a reply first');
-    fetch('CommentHandler.ashx?action=reply', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId: postId, parentCommentId: commentId, comment: text })
-    }).then(r => r.json()).then(res => {
-        if (res.success) {
-            input.value = '';
-            document.getElementById('replyBox_' + commentId).style.display = 'none';
-            loadCommentsFromDB(postId);
-            showToast('Reply posted');
-        } else { showToast('Error: ' + (res.error || 'Could not reply')); }
-    });
-}
+    function sharePost(postId) {
+        let url = window.location.href.split('?')[0];
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => showToast('Shared!'));
+        } else { showToast('Shared!'); }
+        fetch('NotificationHandler.ashx?action=notifyShare&postId=' + postId, { credentials: 'same-origin' }).catch(() => { });
+    }
 
-function addComment(btn, postId) {
-    let input = document.getElementById('commentInput_' + postId);
-    let text = input.value.trim();
-    if (!text) return showToast('Write a comment');
-    fetch('CommentHandler.ashx?action=add', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ postId: postId, comment: text })
-    }).then(r => r.json()).then(res => {
-        if (res.success) {
-            input.value = '';
-            loadCommentsFromDB(postId);
-            let countSpan = document.querySelector(`.announcement-card[data-post-id="${postId}"] .comment-count`);
-            if (countSpan) countSpan.textContent = parseInt(countSpan.textContent || 0) + 1;
-            showToast('Comment added');
-        } else { showToast('Error: ' + (res.error || 'Could not add comment')); }
-    }).catch(() => showToast('Could not add comment'));
-}
+    // ====================== RENDER ANNOUNCEMENTS ======================
+    // ✅ CHANGE 2: renderAnnouncements now handles focus mode (single post + back button)
+    function renderAnnouncements() {
+        let container = document.getElementById('announcementsContainer');
+        if (!container) return;
 
-function sharePost(postId) {
-    let url = window.location.href.split('?')[0];
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => showToast('Link copied!')).catch(() => showToast('Shared!'));
-    } else { showToast('Shared!'); }
-    fetch('NotificationHandler.ashx?action=notifyShare&postId=' + postId, { credentials: 'same-origin' }).catch(() => {});
-}
+        Promise.all([
+            fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(r => r.json()),
+            fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(r => r.json())
+        ]).then(([res, pinRes]) => {
+            if (!res.ok) { container.innerHTML = '<div style="padding:40px;text-align:center;">Error loading</div>'; return; }
 
-// ====================== RENDER ANNOUNCEMENTS ======================
-// ✅ CHANGE 2: renderAnnouncements now handles focus mode (single post + back button)
-function renderAnnouncements() {
-    let container = document.getElementById('announcementsContainer');
-    if (!container) return;
+            let announcements = res.data;
+            if (!announcements.length) { container.innerHTML = '<div style="padding:40px;text-align:center;">No announcements</div>'; return; }
 
-    Promise.all([
-        fetch('AnnouncementHandler.ashx?action=getAll', { credentials: 'same-origin' }).then(r => r.json()),
-               fetch('UserPinHandler.ashx?action=getUserPins', { credentials: 'same-origin' }).then(r => r.json())
-    ]).then(([res, pinRes]) => {
-        if (!res.ok) { container.innerHTML = '<div style="padding:40px;text-align:center;">Error loading</div>'; return; }
+            st_pins = {};
+            if (pinRes.ok && pinRes.pinnedIds) {
+                pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
+            }
 
-        let announcements = res.data;
-        if (!announcements.length) { container.innerHTML = '<div style="padding:40px;text-align:center;">No announcements</div>'; return; }
+            // ✅ Sort announcements: admin-pinned posts (isPinned=true) appear first
+            announcements.sort(function (a, b) {
+                let aPinned = a.isPinned === true;
+                let bPinned = b.isPinned === true;
+                if (aPinned && !bPinned) return -1;  // a is pinned, comes first
+                if (!aPinned && bPinned) return 1;   // b is pinned, comes first
+                // If both or neither are pinned, sort by date (newest first)
+                return new Date(b.date) - new Date(a.date);
+            });
 
-        st_pins = {};
-        if (pinRes.ok && pinRes.pinnedIds) {
-            pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
-        }
+            // ✅ If focusPostId is set, only show that one post
+            let displayList = focusPostId > 0
+                ? announcements.filter(post => post.id === focusPostId)
+                : announcements;
 
-        // ✅ Sort announcements: admin-pinned posts (isPinned=true) appear first
-        announcements.sort(function(a, b) {
-            let aPinned = a.isPinned === true;
-            let bPinned = b.isPinned === true;
-            if (aPinned && !bPinned) return -1;  // a is pinned, comes first
-            if (!aPinned && bPinned) return 1;   // b is pinned, comes first
-            // If both or neither are pinned, sort by date (newest first)
-            return new Date(b.date) - new Date(a.date);
-        });
+            let savedFilter = localStorage.getItem('student_filter') || 'All';
 
-        // ✅ If focusPostId is set, only show that one post
-        let displayList = focusPostId > 0
-            ? announcements.filter(post => post.id === focusPostId)
-            : announcements;
+            // ✅ Update board mode label
+            let boardModeLabel = document.getElementById('boardModeLabel');
+            if (focusPostId > 0) {
+                if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+            } else {
+                if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + savedFilter + '</span>';
+            }
 
-        let savedFilter = localStorage.getItem('student_filter') || 'All';
-
-        // ✅ Update board mode label
-        let boardModeLabel = document.getElementById('boardModeLabel');
-        if (focusPostId > 0) {
-            if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
-        } else {
-            if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + savedFilter + '</span>';
-        }
-
-        // ✅ Focus banner with Back to All Posts button
-        let bannerHtml = '';
-        if (focusPostId > 0) {
-            bannerHtml = `<div class="focus-banner">
+            // ✅ Focus banner with Back to All Posts button
+            let bannerHtml = '';
+            if (focusPostId > 0) {
+                bannerHtml = `<div class="focus-banner">
                 <button type="button" class="focus-back-btn" onclick="window.location.href='Student.aspx'">
                     <i class="fas fa-arrow-left" style="margin-right:6px;"></i>Back to All Posts
                 </button>
             </div>`;
-        }
+            }
 
-        container.innerHTML = bannerHtml + displayList.map(post => {
-            let isPinned     = !!st_pins[post.id];
-            let isAdminPin   = post.isPinned === true;  // Pinned by admin (global)
-            let liked        = !!post.userLiked;
-            let likeCount    = post.likeCount || 0;
-            let catClass     = post.category === 'Exam'       ? 'post-category-exam'
-                             : post.category === 'Suspension' ? 'post-category-suspension'
-                             : post.category === 'Event'      ? 'post-category-event'
-                             : 'post-category-general';
+            container.innerHTML = bannerHtml + displayList.map(post => {
+                let isPinned = !!st_pins[post.id];
+                let isAdminPin = post.isPinned === true;  // Pinned by admin (global)
+                let liked = !!post.userLiked;
+                let likeCount = post.likeCount || 0;
+                let catClass = post.category === 'Exam' ? 'post-category-exam'
+                    : post.category === 'Suspension' ? 'post-category-suspension'
+                        : post.category === 'Event' ? 'post-category-event'
+                            : 'post-category-general';
 
-            // In normal mode, respect the saved filter
-            let visible = focusPostId > 0 || savedFilter === 'All' || post.category === savedFilter;
+                // In normal mode, respect the saved filter
+                let visible = focusPostId > 0 || savedFilter === 'All' || post.category === savedFilter;
 
-            let postAvatar = post.authorImage
-                ? `<div class="post-avatar" style="overflow:hidden;"><img src="${post.authorImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                : `<div class="post-avatar"><i class="fas fa-user-tie"></i></div>`;
+                let postAvatar = post.authorImage
+                    ? `<div class="post-avatar" style="overflow:hidden;"><img src="${post.authorImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                    : `<div class="post-avatar"><i class="fas fa-user-tie"></i></div>`;
 
-            // Admin-pinned badge
-            let adminPinBadge = isAdminPin 
-                ? `<span class="post-category" style="background:#fff0db;color:#d97706;"><i class="fas fa-thumbtack" style="margin-right:4px;"></i>Pinned</span>` 
-                : '';
+                // Admin-pinned badge
+                let adminPinBadge = isAdminPin
+                    ? `<span class="post-category" style="background:#fff0db;color:#d97706;"><i class="fas fa-thumbtack" style="margin-right:4px;"></i>Pinned</span>`
+                    : '';
 
-            return `<div class="announcement-card${focusPostId === post.id ? ' notification-target' : ''}"
+                return `<div class="announcement-card${focusPostId === post.id ? ' notification-target' : ''}"
                         data-post-id="${post.id}" data-category="${post.category}"
                         style="${visible ? '' : 'display:none'}">
                 <div class="post-header">
@@ -1087,348 +1102,348 @@ function renderAnnouncements() {
                     </div>
                 </div>
             </div>`;
-        }).join('');
+            }).join('');
 
-        // ✅ Auto-load comments when in focus mode
-        if (focusPostId > 0 && displayList.length > 0) {
-            loadCommentsFromDB(focusPostId);
+            // ✅ Auto-load comments when in focus mode
+            if (focusPostId > 0 && displayList.length > 0) {
+                loadCommentsFromDB(focusPostId);
+            }
+
+            // Update filter label only in normal mode
+            if (focusPostId === 0) {
+                let label = document.getElementById('activeFilterLabel');
+                if (label) label.innerText = savedFilter;
+                document.querySelectorAll('[data-filter]').forEach(btn => {
+                    btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === savedFilter);
+                });
+            }
+
+            updateNotifBadge();
+
+        }).catch(() => {
+            container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
+        });
+    }
+
+    function markNotificationRead(el, id) {
+        if (el) el.classList.remove('unread');
+        fetch('NotificationHandler.ashx?action=markRead&id=' + id, { credentials: 'same-origin' });
+        let badge = document.getElementById('notificationBadge');
+        if (badge) {
+            let count = parseInt(badge.textContent || '0') - 1;
+            if (count > 0) { badge.textContent = count; } else { badge.style.display = 'none'; }
         }
+    }
 
-        // Update filter label only in normal mode
-        if (focusPostId === 0) {
-            let label = document.getElementById('activeFilterLabel');
-            if (label) label.innerText = savedFilter;
-            document.querySelectorAll('[data-filter]').forEach(btn => {
-                btn.classList.toggle('active-filter', btn.getAttribute('data-filter') === savedFilter);
+    function updateNotifBadge() {
+        fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
+            .then(r => r.json()).then(res => {
+                let badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    if (res.ok && res.count > 0) {
+                        badge.textContent = res.count;
+                        badge.style.display = 'inline-block';
+                    } else badge.style.display = 'none';
+                }
             });
+    }
+
+    function navigateWithFlip(url) { window.location.href = url; }
+
+    // ====================== MOBILE SIDEBAR ======================
+    (function () {
+        var btn = document.getElementById('hamburgerBtn');
+        var panel = document.getElementById('slideoutPanel');
+        var overlay = document.getElementById('mobileOverlay');
+        if (!btn || !panel) return;
+        btn.addEventListener('click', function () {
+            var isOpen = panel.classList.contains('mobile-open');
+            if (isOpen) { closeSidebar(); } else { openSidebar(); }
+        });
+        function openSidebar() {
+            panel.classList.add('mobile-open');
+            panel.style.display = 'flex';
+            if (overlay) overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        window.closeSidebar = function () {
+            panel.classList.remove('mobile-open');
+            panel.style.display = '';
+            if (overlay) overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        };
+    })();
+
+    // ====================== INITIALIZE ======================
+    renderAnnouncements();
+    updateNotifBadge();
+    setInterval(updateNotifBadge, 30000);
+
+    // ── 5-minute calendar reminder polling ───────────────────────
+    function pollCalendarReminders() {
+        fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
+            .then(r => r.json())
+            .then(res => { if (res.ok && res.triggered > 0) updateNotifBadge(); })
+            .catch(() => { });
+    }
+    pollCalendarReminders();
+    setInterval(pollCalendarReminders, 60000);
+
+    // ── ACADEMIC CALENDAR (Student) ──────────────
+    var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+    var calEvents = [];
+    var selectedCalDate = '';
+    var currentUserId = <%= Session["UserId"] != null ? Session["UserId"].ToString() : "0" %>;
+
+    function fmtTime(t) {
+        if (!t) return '';
+        var parts = t.split(':');
+        var h = parseInt(parts[0], 10), m = parts[1] || '00';
+        if (isNaN(h)) return t;
+        var suffix = h >= 12 ? 'PM' : 'AM';
+        return (h % 12 || 12) + ':' + m + ' ' + suffix;
+    }
+
+    function openCalendarPanel() {
+        document.getElementById('calendarOverlay').classList.add('open');
+        loadCalEvents();
+        renderCal();
+    }
+    function closeCalendarPanel() {
+        document.getElementById('calendarOverlay').classList.remove('open');
+        toggleCalForm(false);
+    }
+    document.getElementById('calendarOverlay').addEventListener('click', function (e) {
+        if (e.target === this) closeCalendarPanel();
+    });
+
+    // Toggle the add-event form: show=true opens, show=false closes
+    var calEditingId = null; // null = adding new event; integer = editing existing event
+
+    function toggleCalForm(show) {
+        var form = document.getElementById('calFormBody');
+        var btn = document.getElementById('calAddToggleBtn');
+        if (show) {
+            form.style.display = 'flex';
+            if (btn) btn.style.display = 'none';
+        } else {
+            form.style.display = 'none';
+            if (btn) btn.style.display = 'flex';
+            // Clear form
+            document.getElementById('calTitle').value = '';
+            document.getElementById('calDate').value = '';
+            document.getElementById('calTime').value = '';
+            document.getElementById('calDesc').value = '';
+            // Reset edit state
+            calEditingId = null;
+            var saveBtn = document.getElementById('calSaveBtn');
+            if (saveBtn) saveBtn.textContent = 'Save Event';
+        }
+    }
+
+    function loadCalEvents() {
+        fetch('CalendarHandler.ashx?action=getEvents', { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.ok) { calEvents = res.data; renderCal(); renderCalList(); }
+            }).catch(function () { });
+    }
+
+    function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } selectedCalDate = ''; renderCal(); hideDayEvents(); }
+    function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } selectedCalDate = ''; renderCal(); hideDayEvents(); }
+
+    function renderCal() {
+        var label = document.getElementById('calMonthLabel');
+        var grid = document.getElementById('calGrid');
+        if (!label || !grid) return;
+        var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        label.textContent = months[calMonth] + ' ' + calYear;
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var html = days.map(function (d) { return '<div class="cal-day-hdr">' + d + '</div>'; }).join('');
+        var first = new Date(calYear, calMonth, 1).getDay();
+        var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+        var daysInPrev = new Date(calYear, calMonth, 0).getDate();
+        var today = new Date();
+        var typeColorMap = { Exam: '#f59e0b', Deadline: '#ef4444', Event: '#10b981', Quiz: '#3b82f6', Reminder: '#8b5cf6', General: '#c9920a' };
+
+        for (var i = first - 1; i >= 0; i--)
+            html += '<div class="cal-day other-month"><div class="day-num">' + (daysInPrev - i) + '</div></div>';
+
+        for (var d = 1; d <= daysInMonth; d++) {
+            var isToday = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
+            var ds = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+            var dayEvents = calEvents.filter(function (e) { return e.eventDate === ds; });
+            var isSelected = (ds === selectedCalDate);
+
+            // Build colored dots — one per event type (max 3)
+            var dots = '';
+            var shown = {};
+            dayEvents.forEach(function (ev) {
+                if (Object.keys(shown).length >= 3) return;
+                var color = typeColorMap[ev.eventType] || '#c9920a';
+                if (!shown[ev.eventType]) {
+                    dots += '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + color + ';margin:1px;"></span>';
+                    shown[ev.eventType] = true;
+                }
+            });
+
+            var cls = 'cal-day' + (isToday ? ' today' : '') + (isSelected ? ' selected' : '');
+            html += '<div class="' + cls + '" onclick="calDayPick(\'' + ds + '\')" style="cursor:pointer;">';
+            html += '<div class="day-num">' + d + '</div>';
+            if (dots) html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:2px;">' + dots + '</div>';
+            html += '</div>';
         }
 
-        updateNotifBadge();
-
-    }).catch(() => {
-        container.innerHTML = '<div style="padding:40px;text-align:center;">Could not load announcements.</div>';
-    });
-}
-
-function markNotificationRead(el, id) {
-    if (el) el.classList.remove('unread');
-    fetch('NotificationHandler.ashx?action=markRead&id=' + id, { credentials: 'same-origin' });
-    let badge = document.getElementById('notificationBadge');
-    if (badge) {
-        let count = parseInt(badge.textContent || '0') - 1;
-        if (count > 0) { badge.textContent = count; } else { badge.style.display = 'none'; }
-    }
-}
-
-function updateNotifBadge() {
-    fetch('NotificationHandler.ashx?action=getUnread', { credentials: 'same-origin' })
-        .then(r => r.json()).then(res => {
-            let badge = document.getElementById('notificationBadge');
-            if (badge) {
-                if (res.ok && res.count > 0) {
-                    badge.textContent = res.count;
-                    badge.style.display = 'inline-block';
-                } else badge.style.display = 'none';
-            }
-        });
-}
-
-function navigateWithFlip(url) { window.location.href = url; }
-
-// ====================== MOBILE SIDEBAR ======================
-(function () {
-    var btn = document.getElementById('hamburgerBtn');
-    var panel = document.getElementById('slideoutPanel');
-    var overlay = document.getElementById('mobileOverlay');
-    if (!btn || !panel) return;
-    btn.addEventListener('click', function () {
-        var isOpen = panel.classList.contains('mobile-open');
-        if (isOpen) { closeSidebar(); } else { openSidebar(); }
-    });
-    function openSidebar() {
-        panel.classList.add('mobile-open');
-        panel.style.display = 'flex';
-        if (overlay) overlay.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-    window.closeSidebar = function () {
-        panel.classList.remove('mobile-open');
-        panel.style.display = '';
-        if (overlay) overlay.classList.remove('show');
-        document.body.style.overflow = '';
-    };
-})();
-
-// ====================== INITIALIZE ======================
-renderAnnouncements();
-updateNotifBadge();
-setInterval(updateNotifBadge, 30000);
-
-// ── 5-minute calendar reminder polling ───────────────────────
-function pollCalendarReminders() {
-    fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
-        .then(r => r.json())
-        .then(res => { if (res.ok && res.triggered > 0) updateNotifBadge(); })
-        .catch(() => {});
-}
-pollCalendarReminders();
-setInterval(pollCalendarReminders, 60000);
-
-// ── ACADEMIC CALENDAR (Student) ──────────────
-var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
-var calEvents = [];
-var selectedCalDate = '';
-var currentUserId = <%= Session["UserId"] != null ? Session["UserId"].ToString() : "0" %>;
-
-function fmtTime(t) {
-    if (!t) return '';
-    var parts = t.split(':');
-    var h = parseInt(parts[0], 10), m = parts[1] || '00';
-    if (isNaN(h)) return t;
-    var suffix = h >= 12 ? 'PM' : 'AM';
-    return (h % 12 || 12) + ':' + m + ' ' + suffix;
-}
-
-function openCalendarPanel() {
-    document.getElementById('calendarOverlay').classList.add('open');
-    loadCalEvents();
-    renderCal();
-}
-function closeCalendarPanel() {
-    document.getElementById('calendarOverlay').classList.remove('open');
-    toggleCalForm(false);
-}
-document.getElementById('calendarOverlay').addEventListener('click', function(e) {
-    if (e.target === this) closeCalendarPanel();
-});
-
-// Toggle the add-event form: show=true opens, show=false closes
-var calEditingId = null; // null = adding new event; integer = editing existing event
-
-function toggleCalForm(show) {
-    var form = document.getElementById('calFormBody');
-    var btn  = document.getElementById('calAddToggleBtn');
-    if (show) {
-        form.style.display = 'flex';
-        if (btn) btn.style.display = 'none';
-    } else {
-        form.style.display = 'none';
-        if (btn) btn.style.display = 'flex';
-        // Clear form
-        document.getElementById('calTitle').value = '';
-        document.getElementById('calDate').value = '';
-        document.getElementById('calTime').value = '';
-        document.getElementById('calDesc').value = '';
-        // Reset edit state
-        calEditingId = null;
-        var saveBtn = document.getElementById('calSaveBtn');
-        if (saveBtn) saveBtn.textContent = 'Save Event';
-    }
-}
-
-function loadCalEvents() {
-    fetch('CalendarHandler.ashx?action=getEvents', { credentials: 'same-origin' })
-        .then(function(r) { return r.json(); })
-        .then(function(res) {
-            if (res.ok) { calEvents = res.data; renderCal(); renderCalList(); }
-        }).catch(function() {});
-}
-
-function calPrev() { calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; } selectedCalDate = ''; renderCal(); hideDayEvents(); }
-function calNext() { calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; } selectedCalDate = ''; renderCal(); hideDayEvents(); }
-
-function renderCal() {
-    var label = document.getElementById('calMonthLabel');
-    var grid  = document.getElementById('calGrid');
-    if (!label || !grid) return;
-    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-    label.textContent = months[calMonth] + ' ' + calYear;
-    var days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    var html = days.map(function(d) { return '<div class="cal-day-hdr">' + d + '</div>'; }).join('');
-    var first = new Date(calYear, calMonth, 1).getDay();
-    var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    var daysInPrev  = new Date(calYear, calMonth, 0).getDate();
-    var today = new Date();
-    var typeColorMap = { Exam:'#f59e0b', Deadline:'#ef4444', Event:'#10b981', Quiz:'#3b82f6', Reminder:'#8b5cf6', General:'#c9920a' };
-
-    for (var i = first - 1; i >= 0; i--)
-        html += '<div class="cal-day other-month"><div class="day-num">' + (daysInPrev - i) + '</div></div>';
-
-    for (var d = 1; d <= daysInMonth; d++) {
-        var isToday    = (d === today.getDate() && calMonth === today.getMonth() && calYear === today.getFullYear());
-        var ds         = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-        var dayEvents  = calEvents.filter(function(e) { return e.eventDate === ds; });
-        var isSelected = (ds === selectedCalDate);
-
-        // Build colored dots — one per event type (max 3)
-        var dots = '';
-        var shown = {};
-        dayEvents.forEach(function(ev) {
-            if (Object.keys(shown).length >= 3) return;
-            var color = typeColorMap[ev.eventType] || '#c9920a';
-            if (!shown[ev.eventType]) {
-                dots += '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' + color + ';margin:1px;"></span>';
-                shown[ev.eventType] = true;
-            }
-        });
-
-        var cls = 'cal-day' + (isToday ? ' today' : '') + (isSelected ? ' selected' : '');
-        html += '<div class="' + cls + '" onclick="calDayPick(\'' + ds + '\')" style="cursor:pointer;">';
-        html += '<div class="day-num">' + d + '</div>';
-        if (dots) html += '<div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:2px;">' + dots + '</div>';
-        html += '</div>';
+        var total = first + daysInMonth, rem = total % 7 === 0 ? 0 : 7 - (total % 7);
+        for (var n = 1; n <= rem; n++)
+            html += '<div class="cal-day other-month"><div class="day-num">' + n + '</div></div>';
+        grid.innerHTML = html;
     }
 
-    var total = first + daysInMonth, rem = total % 7 === 0 ? 0 : 7 - (total % 7);
-    for (var n = 1; n <= rem; n++)
-        html += '<div class="cal-day other-month"><div class="day-num">' + n + '</div></div>';
-    grid.innerHTML = html;
-}
+    function calDayPick(ds) {
+        selectedCalDate = ds;
+        document.getElementById('calDate').value = ds;
+        renderCal();
+        showDayEvents(ds);
+    }
 
-function calDayPick(ds) {
-    selectedCalDate = ds;
-    document.getElementById('calDate').value = ds;
-    renderCal();
-    showDayEvents(ds);
-}
+    function showDayEvents(ds) {
+        var dayEvents = calEvents.filter(function (e) { return e.eventDate === ds; });
+        var panel = document.getElementById('calDayEvents');
+        var label = document.getElementById('calDayLabel');
+        var list = document.getElementById('calDayEventList');
+        if (!panel) return;
 
-function showDayEvents(ds) {
-    var dayEvents = calEvents.filter(function(e) { return e.eventDate === ds; });
-    var panel = document.getElementById('calDayEvents');
-    var label = document.getElementById('calDayLabel');
-    var list  = document.getElementById('calDayEventList');
-    if (!panel) return;
+        var d = new Date(ds + 'T00:00:00');
+        var dl = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        label.textContent = dl;
 
-    var d = new Date(ds + 'T00:00:00');
-    var dl = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
-    label.textContent = dl;
+        if (!dayEvents.length) {
+            list.innerHTML = '<div style="font-size:12px;color:var(--muted);">No events on this day.</div>';
+        } else {
+            var typeColorMap = { Exam: '#fef3c7|#b45309', Deadline: '#fee2e2|#991b1b', Event: '#d1fae5|#065f46', Quiz: '#dbeafe|#1e40af', Reminder: '#ede9fe|#5b21b6', General: '#f3f4f6|#374151' };
+            list.innerHTML = dayEvents.map(function (ev) {
+                var tc = (typeColorMap[ev.eventType] || typeColorMap.General).split('|');
+                var isOwn = (ev.ownerId == currentUserId);
+                var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);"></i>' : '';
+                return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">'
+                    + '<span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';white-space:nowrap;">' + ev.eventType + '</span>'
+                    + '<div style="flex:1;">'
+                    + '<div style="font-size:13px;font-weight:600;color:var(--primary);">' + escapeHtml(ev.title) + lockIcon + '</div>'
+                    + (ev.eventTime ? '<div style="font-size:11px;color:var(--muted);">⏰ ' + fmtTime(ev.eventTime) + '</div>' : '')
+                    + '</div>'
+                    + (isOwn ? '<button type="button" onclick="openCalEditFormById(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color: var(--uni-accent);font-size:13px;padding:2px;" title="Edit"><i class="fas fa-edit"></i></button>'
+                        + '<button type="button" onclick="delCalEvent(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:2px;">&times;</button>' : '')
+                    + '</div>';
+            }).join('');
+        }
+        panel.style.display = 'block';
+    }
 
-    if (!dayEvents.length) {
-        list.innerHTML = '<div style="font-size:12px;color:var(--muted);">No events on this day.</div>';
-    } else {
-        var typeColorMap = { Exam:'#fef3c7|#b45309', Deadline:'#fee2e2|#991b1b', Event:'#d1fae5|#065f46', Quiz:'#dbeafe|#1e40af', Reminder:'#ede9fe|#5b21b6', General:'#f3f4f6|#374151' };
-        list.innerHTML = dayEvents.map(function(ev) {
+    function hideDayEvents() {
+        var panel = document.getElementById('calDayEvents');
+        if (panel) panel.style.display = 'none';
+    }
+
+    function renderCalList() {
+        var today = new Date().toISOString().slice(0, 10);
+        var upcoming = calEvents.filter(function (e) { return e.eventDate >= today; })
+            .sort(function (a, b) { return a.eventDate.localeCompare(b.eventDate); })
+            .slice(0, 8);
+        var container = document.getElementById('calEventList');
+        if (!container) return;
+        if (!upcoming.length) {
+            container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">No upcoming events.</div>';
+            return;
+        }
+        var typeColorMap = { Exam: '#fef3c7|#b45309', Deadline: '#fee2e2|#991b1b', Event: '#d1fae5|#065f46', Quiz: '#dbeafe|#1e40af', Reminder: '#ede9fe|#5b21b6', General: '#f3f4f6|#374151' };
+        container.innerHTML = upcoming.map(function (ev) {
+            var d = new Date(ev.eventDate + 'T00:00:00');
+            var dl = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             var tc = (typeColorMap[ev.eventType] || typeColorMap.General).split('|');
             var isOwn = (ev.ownerId == currentUserId);
-            var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);"></i>' : '';
-            return '<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);">'
-                + '<span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';white-space:nowrap;">' + ev.eventType + '</span>'
+            var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);" title="Personal"></i>' : '';
+            return '<div class="cal-event-item" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;" onclick="calDayPick(\'' + ev.eventDate + '\')">'
                 + '<div style="flex:1;">'
-                + '<div style="font-size:13px;font-weight:600;color:var(--primary);">' + escapeHtml(ev.title) + lockIcon + '</div>'
-                + (ev.eventTime ? '<div style="font-size:11px;color:var(--muted);">⏰ ' + fmtTime(ev.eventTime) + '</div>' : '')
+                + '<div class="ev-title">' + escapeHtml(ev.title) + lockIcon + '</div>'
+                + '<div class="ev-meta" style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
+                + '<span>' + dl + '</span>'
+                + (ev.eventTime ? '<span>⏰ ' + fmtTime(ev.eventTime) + '</span>' : '')
+                + '<span style="padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';">' + ev.eventType + '</span>'
                 + '</div>'
-                + (isOwn ? '<button type="button" onclick="openCalEditFormById(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color: var(--uni-accent);font-size:13px;padding:2px;" title="Edit"><i class="fas fa-edit"></i></button>'
-                + '<button type="button" onclick="delCalEvent(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:2px;">&times;</button>' : '')
+                + (ev.description ? '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + escapeHtml(ev.description) + '</div>' : '')
+                + '</div>'
+                + (isOwn ? '<button type="button" onclick="event.stopPropagation();openCalEditForm(ev)" style="background:none;border:none;cursor:pointer;color: var(--uni-accent);font-size:13px;padding:2px 4px;flex-shrink:0;" title="Edit"><i class="fas fa-edit"></i></button>'
+                    + '<button type="button" onclick="event.stopPropagation();delCalEvent(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:15px;padding:2px 4px;flex-shrink:0;">&times;</button>' : '')
                 + '</div>';
         }).join('');
     }
-    panel.style.display = 'block';
-}
 
-function hideDayEvents() {
-    var panel = document.getElementById('calDayEvents');
-    if (panel) panel.style.display = 'none';
-}
-
-function renderCalList() {
-    var today = new Date().toISOString().slice(0,10);
-    var upcoming = calEvents.filter(function(e) { return e.eventDate >= today; })
-                            .sort(function(a,b) { return a.eventDate.localeCompare(b.eventDate); })
-                            .slice(0, 8);
-    var container = document.getElementById('calEventList');
-    if (!container) return;
-    if (!upcoming.length) {
-        container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">No upcoming events.</div>';
-        return;
-    }
-    var typeColorMap = { Exam:'#fef3c7|#b45309', Deadline:'#fee2e2|#991b1b', Event:'#d1fae5|#065f46', Quiz:'#dbeafe|#1e40af', Reminder:'#ede9fe|#5b21b6', General:'#f3f4f6|#374151' };
-    container.innerHTML = upcoming.map(function(ev) {
-        var d  = new Date(ev.eventDate + 'T00:00:00');
-        var dl = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-        var tc = (typeColorMap[ev.eventType] || typeColorMap.General).split('|');
-        var isOwn    = (ev.ownerId == currentUserId);
-        var lockIcon = !ev.isPublic ? ' <i class="fas fa-lock" style="font-size:9px;color:var(--muted);" title="Personal"></i>' : '';
-        return '<div class="cal-event-item" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;" onclick="calDayPick(\'' + ev.eventDate + '\')">'
-            + '<div style="flex:1;">'
-            + '<div class="ev-title">' + escapeHtml(ev.title) + lockIcon + '</div>'
-            + '<div class="ev-meta" style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
-            + '<span>' + dl + '</span>'
-            + (ev.eventTime ? '<span>⏰ ' + fmtTime(ev.eventTime) + '</span>' : '')
-            + '<span style="padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';">' + ev.eventType + '</span>'
-            + '</div>'
-            + (ev.description ? '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + escapeHtml(ev.description) + '</div>' : '')
-            + '</div>'
-            + (isOwn ? '<button type="button" onclick="event.stopPropagation();openCalEditForm(ev)" style="background:none;border:none;cursor:pointer;color: var(--uni-accent);font-size:13px;padding:2px 4px;flex-shrink:0;" title="Edit"><i class="fas fa-edit"></i></button>'
-            + '<button type="button" onclick="event.stopPropagation();delCalEvent(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:15px;padding:2px 4px;flex-shrink:0;">&times;</button>' : '')
-            + '</div>';
-    }).join('');
-}
-
-function openCalEditForm(ev) {
-    calEditingId = ev.eventId;
-    document.getElementById('calTitle').value = ev.title       || '';
-    document.getElementById('calDate').value  = ev.eventDate   || '';
-    document.getElementById('calTime').value  = ev.eventTime   || '';
-    document.getElementById('calType').value  = ev.eventType   || 'General';
-    document.getElementById('calDesc').value  = ev.description || '';
-    toggleCalForm(true);
-    var saveBtn = document.getElementById('calSaveBtn');
-    if (saveBtn) saveBtn.textContent = 'Update Event';
-}
-
-function openCalEditFormById(id) {
-    var ev = calEvents.find(function(e) { return e.eventId === id; });
-    if (ev) openCalEditForm(ev);
-}
-
-function saveCalEvent() {
-    var title = document.getElementById('calTitle').value.trim();
-    var date  = document.getElementById('calDate').value;
-    var time  = document.getElementById('calTime').value;
-    var type  = document.getElementById('calType').value;
-    var desc  = document.getElementById('calDesc').value.trim();
-    if (!title || !date) { showToast('Enter a title and date.'); return; }
-
-    var url;
-    if (calEditingId) {
-        url = 'CalendarHandler.ashx?action=updateEvent&id=' + calEditingId
-            + '&title=' + encodeURIComponent(title)
-            + '&date='  + encodeURIComponent(date)
-            + '&time='  + encodeURIComponent(time)
-            + '&type='  + encodeURIComponent(type)
-            + '&desc='  + encodeURIComponent(desc)
-            + '&isPublic=0';
-    } else {
-        url = 'CalendarHandler.ashx?action=addEvent&title=' + encodeURIComponent(title)
-            + '&date='  + encodeURIComponent(date)
-            + '&time='  + encodeURIComponent(time)
-            + '&type='  + encodeURIComponent(type)
-            + '&desc='  + encodeURIComponent(desc)
-            + '&isPublic=0';
+    function openCalEditForm(ev) {
+        calEditingId = ev.eventId;
+        document.getElementById('calTitle').value = ev.title || '';
+        document.getElementById('calDate').value = ev.eventDate || '';
+        document.getElementById('calTime').value = ev.eventTime || '';
+        document.getElementById('calType').value = ev.eventType || 'General';
+        document.getElementById('calDesc').value = ev.description || '';
+        toggleCalForm(true);
+        var saveBtn = document.getElementById('calSaveBtn');
+        if (saveBtn) saveBtn.textContent = 'Update Event';
     }
 
-    fetch(url, { credentials: 'same-origin' })
-        .then(function(r) { return r.json(); })
-        .then(function(res) {
-            if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
-            showToast(calEditingId ? 'Event updated!' : 'Event added!');
-            toggleCalForm(false);
-            selectedCalDate = date;
-            loadCalEvents();
-        }).catch(function() { showToast('Network error.'); });
-}
+    function openCalEditFormById(id) {
+        var ev = calEvents.find(function (e) { return e.eventId === id; });
+        if (ev) openCalEditForm(ev);
+    }
 
-function delCalEvent(id) {
-    fetch('CalendarHandler.ashx?action=deleteEvent&id=' + id, { credentials: 'same-origin' })
-        .then(function(r) { return r.json(); })
-        .then(function(res) {
-            if (res.ok) {
-                showToast('Event removed.');
+    function saveCalEvent() {
+        var title = document.getElementById('calTitle').value.trim();
+        var date = document.getElementById('calDate').value;
+        var time = document.getElementById('calTime').value;
+        var type = document.getElementById('calType').value;
+        var desc = document.getElementById('calDesc').value.trim();
+        if (!title || !date) { showToast('Enter a title and date.'); return; }
+
+        var url;
+        if (calEditingId) {
+            url = 'CalendarHandler.ashx?action=updateEvent&id=' + calEditingId
+                + '&title=' + encodeURIComponent(title)
+                + '&date=' + encodeURIComponent(date)
+                + '&time=' + encodeURIComponent(time)
+                + '&type=' + encodeURIComponent(type)
+                + '&desc=' + encodeURIComponent(desc)
+                + '&isPublic=0';
+        } else {
+            url = 'CalendarHandler.ashx?action=addEvent&title=' + encodeURIComponent(title)
+                + '&date=' + encodeURIComponent(date)
+                + '&time=' + encodeURIComponent(time)
+                + '&type=' + encodeURIComponent(type)
+                + '&desc=' + encodeURIComponent(desc)
+                + '&isPublic=0';
+        }
+
+        fetch(url, { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); return; }
+                showToast(calEditingId ? 'Event updated!' : 'Event added!');
+                toggleCalForm(false);
+                selectedCalDate = date;
                 loadCalEvents();
-                hideDayEvents();
-            }
-        }).catch(function() {});
-}
+            }).catch(function () { showToast('Network error.'); });
+    }
+
+    function delCalEvent(id) {
+        fetch('CalendarHandler.ashx?action=deleteEvent&id=' + id, { credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.ok) {
+                    showToast('Event removed.');
+                    loadCalEvents();
+                    hideDayEvents();
+                }
+            }).catch(function () { });
+    }
 </script>
 
 <!-- Image Lightbox -->
@@ -1440,6 +1455,8 @@ function delCalEvent(id) {
         style="max-width:92vw;max-height:88vh;border-radius:12px;object-fit:contain;box-shadow:0 8px 40px rgba(0,0,0,0.6);" />
 </div>
 
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>
 

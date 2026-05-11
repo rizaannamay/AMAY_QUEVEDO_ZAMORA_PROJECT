@@ -73,7 +73,10 @@
     <Content Include="AboutUs.aspx" />
     <Content Include="Amay Riza Ann.jpg" />
     <Content Include="Backup.aspx" />
+    <Content Include="Christmas_bg.jpg" />
     <Content Include="ctu.png" />
+    <Content Include="Foundation_bg.jpg" />
+    <Content Include="Intramurals_bg.jpg" />
     <Content Include="Profile.aspx" />
     <Content Include="Academic Updates.jpg" />
     <Content Include="bg.jpg" />
@@ -105,6 +108,7 @@
     <Content Include="Admin.aspx" />
     <Content Include="Teacher.aspx" />
     <Content Include="Web.config" />
+    <Content Include="Womens_bg.jpg" />
     <Content Include="Zamora Shaira Jane.jpg" />
   </ItemGroup>
   <ItemGroup>

@@ -11,6 +11,8 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         :root {
+            --bg-image: url('wbg.jpg');
+            --uni-overlay: rgba(255,255,255,0.18);
             --primary:#7a5200; --primary-2:#c9920a;
             --surface:rgba(255,255,255,0.93);
             --border:rgba(26,58,92,0.12);
@@ -21,25 +23,15 @@
         html, body { overflow: auto; }
 
         /* Cover content that scrolls behind the fixed header */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            z-index: 199;
-            pointer-events: none;
-            background-image: linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)),url('wbg.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-        }
+       body::before {
+    display: none;
+}
 
         body {
             font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
             min-height:100vh;
-            background-image:linear-gradient(rgba(255,255,255,0.18),rgba(255,255,255,0.18)),url('wbg.jpg');
-            background-size:cover; background-attachment:fixed;
+            background-image: var(--bg-image);
+            background-size: cover; background-attachment: fixed;
             color:var(--primary);
         }
         .shell { max-width: calc(100% - 20px); margin:0 auto; padding:90px 20px 60px; display:flex; flex-direction:column; gap:20px; }
@@ -340,5 +332,7 @@
                 document.body.classList.add('dark-mode');
         })();
     </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>

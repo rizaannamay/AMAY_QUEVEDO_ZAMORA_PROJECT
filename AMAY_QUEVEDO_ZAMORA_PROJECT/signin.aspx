@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal — Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="university-theme-decorations.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
@@ -228,7 +229,7 @@
             color: rgba(255,255,255,0.75);
             text-align: center;
         }
-        .login-link a { color: #fbbf24; font-weight: 600; text-decoration: none; }
+        .login-link a { color: var(--uni-accent, #fbbf24); font-weight: 600; text-decoration: none; }
         .login-link a:hover { text-decoration: underline; }
 
         /* ── RIGHT DARK TEAL PANEL ── */
@@ -252,7 +253,8 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(160deg, rgba(180,130,0,0.92) 0%, rgba(160,110,0,0.95) 100%);
+            background: linear-gradient(160deg, var(--uni-accent, #c9920a) 0%, var(--uni-accent-dark, #a87800) 100%);
+            opacity: 0.93;
             pointer-events: none;
         }
 
@@ -635,5 +637,6 @@
             });
         });
     </script>
+    <script src="university-theme.js"></script>
 </body>
 </html>

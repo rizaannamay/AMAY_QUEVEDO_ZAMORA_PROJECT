@@ -1,24 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" %>
-<script runat="server">
-    protected string BackUrl {
-        get {
-            string role   = (Session["Role"] ?? "").ToString().ToLowerInvariant();
-            string source = (Request.QueryString["source"] ?? "").ToLowerInvariant();
-            if (role == "admin")   return "Admin.aspx";
-            if (role == "teacher" || source == "teacher") return "Teacher.aspx";
-            return "Student.aspx";
-        }
-    }
-    protected string BackLabel {
-        get {
-            string role   = (Session["Role"] ?? "").ToString().ToLowerInvariant();
-            string source = (Request.QueryString["source"] ?? "").ToLowerInvariant();
-            if (role == "admin")   return "Back to Admin";
-            if (role == "teacher" || source == "teacher") return "Back to Teacher";
-            return "Back to Student";
-        }
-    }
-</script>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.AboutUs" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
@@ -59,29 +39,29 @@
         html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
         /* Cover content that scrolls behind the fixed header */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 80px;
-            z-index: 199;
-            pointer-events: none;
-            background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 199;
+    pointer-events: none;
+    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
 
-        body {
+    body {
     min-height: 100vh;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--page-text);
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
+    background-image: var(--bg-image);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center center;
     background-attachment: fixed;
     padding: 90px 10px 16px;
     transition: background 0.4s ease, color 0.4s ease;
@@ -470,6 +450,11 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
                 document.documentElement.style.setProperty('--uni-header-bg', t.header);
                 document.documentElement.style.setProperty('--uni-accent', t.accent);
                 document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
+                // Apply body class for university-theme-decorations.css
+                var ALL_CLASSES = ['theme-default','theme-intramurals','theme-foundation','theme-womens','theme-christmas'];
+                ALL_CLASSES.forEach(function(c){ document.body.classList.remove(c); });
+                var clsMap = { 'Default':'theme-default','Intramurals':'theme-intramurals','FoundationWeek':'theme-foundation','WomensMonth':'theme-womens','Christmas':'theme-christmas' };
+                document.body.classList.add(clsMap[name] || 'theme-default');
                 localStorage.setItem('campus_uni_theme', name);
             }
             var saved = localStorage.getItem('campus_uni_theme');
@@ -502,6 +487,8 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
     }
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') _closeModal(); });
     </script>
+<link rel="stylesheet" href="university-theme-decorations.css" />
+<script src="university-theme.js"></script>
 </body>
 </html>
 
