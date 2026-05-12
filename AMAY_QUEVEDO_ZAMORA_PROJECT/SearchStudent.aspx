@@ -17,6 +17,9 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
         :root {
             --bg-image: url('wbg.jpg');
             --uni-overlay: rgba(255,255,255,0);

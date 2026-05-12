@@ -1086,10 +1086,36 @@ body.theme-christmas::before {
         .reject-reason-inp { flex:1; padding:7px 12px; border-radius:20px; border:1px solid #ef4444; background:var(--surface-soft); font-size:12px; outline:none; }
         /* ── Theme selector ── */
         .theme-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; }
-        .theme-card { border:2px solid var(--border); border-radius:16px; padding:16px 12px; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--surface-soft); }
-        .theme-card:hover { border-color: var(--uni-accent); transform:translateY(-2px); box-shadow:0 6px 16px rgba(201,146,10,0.15); }
-        .theme-card.selected { border-color: var(--uni-accent); background:linear-gradient(135deg,rgba(201,146,10,0.12),rgba(168,120,0,0.08)); }
-        .theme-card .theme-icon { font-size:28px; margin-bottom:8px; }
+        .theme-card {
+            border:2px solid var(--border); border-radius:16px; padding:16px 12px;
+            text-align:center; cursor:pointer; transition:all 0.2s;
+            background:var(--surface-soft); position: relative;
+        }
+        .theme-card:hover { border-color: var(--uni-accent); transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,0.12); }
+        .theme-card.selected {
+            border-color: var(--uni-accent);
+            border-width: 3px;
+            background:var(--active-bg);
+            box-shadow:0 4px 20px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        /* Checkmark badge on selected card */
+        .theme-card.selected::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 8px; right: 10px;
+            font-size: 11px;
+            color: #ffffff;
+            background: var(--uni-accent);
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            line-height: 20px;
+        }
+        .theme-card .theme-icon { font-size:24px; margin-bottom:8px; color: var(--uni-accent); }
+        .theme-card .theme-icon i { font-size:24px; color: var(--uni-accent); }
         .theme-card .theme-name { font-size:12px; font-weight:700; color:var(--primary); }
         .theme-card .theme-desc { font-size:10px; color:var(--muted); margin-top:3px; }
         /* ── Calendar ── */
@@ -1908,27 +1934,27 @@ body.theme-christmas .post-avatar {
                     <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">Select a theme to apply across all pages for all users.</p>
                     <div class="theme-grid" id="themeGrid">
                         <div class="theme-card" data-theme="Default" onclick="selectTheme('Default',this)">
-                            <div class="theme-icon">🏫</div>
+                            <div class="theme-icon"><i class="fas fa-university"></i></div>
                             <div class="theme-name">Default</div>
                             <div class="theme-desc">Standard university look</div>
                         </div>
                         <div class="theme-card" data-theme="Intramurals" onclick="selectTheme('Intramurals',this)">
-                            <div class="theme-icon">🏆</div>
+                            <div class="theme-icon"><i class="fas fa-trophy"></i></div>
                             <div class="theme-name">Intramurals</div>
-                            <div class="theme-desc">Sports & competition</div>
+                            <div class="theme-desc">Sports &amp; competition</div>
                         </div>
                         <div class="theme-card" data-theme="FoundationWeek" onclick="selectTheme('FoundationWeek',this)">
-                            <div class="theme-icon">🎉</div>
+                            <div class="theme-icon"><i class="fas fa-star"></i></div>
                             <div class="theme-name">Foundation Week</div>
                             <div class="theme-desc">Anniversary celebration</div>
                         </div>
                         <div class="theme-card" data-theme="WomensMonth" onclick="selectTheme('WomensMonth',this)">
-                            <div class="theme-icon">💜</div>
+                            <div class="theme-icon"><i class="fas fa-venus"></i></div>
                             <div class="theme-name">Women's Month</div>
-                            <div class="theme-desc">Empowerment & equality</div>
+                            <div class="theme-desc">Empowerment &amp; equality</div>
                         </div>
                         <div class="theme-card" data-theme="Christmas" onclick="selectTheme('Christmas',this)">
-                            <div class="theme-icon">🎄</div>
+                            <div class="theme-icon"><i class="fas fa-snowflake"></i></div>
                             <div class="theme-name">Christmas</div>
                             <div class="theme-desc">Holiday season</div>
                         </div>

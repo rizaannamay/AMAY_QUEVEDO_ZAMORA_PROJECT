@@ -34,11 +34,11 @@
         }
 
         html, body, form { min-height: 100%; }
-        html, body { overflow: auto; }
-        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
-        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+html, body { overflow: auto; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
-        /* Cover content that scrolls behind the fixed header */
+/* Cover content that scrolls behind the fixed header */
 body::before {
     content: '';
     position: fixed;
@@ -48,10 +48,7 @@ body::before {
     height: 80px;
     z-index: 199;
     pointer-events: none;
-    background-image: linear-gradient(var(--uni-overlay), var(--uni-overlay)), var(--bg-image);
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    display: none;
 }
 
     body {
@@ -213,7 +210,7 @@ body.dark-mode .stat strong { color: #93c5fd; }
 /* ── SECTION CARD ── */
 .section-card { padding: 28px; }
 .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); box-shadow: 0 4px 12px rgba(201,146,10,0.3); }
+.section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .section-heading h3 { color: var(--primary); font-size: 1.35rem; }
 body.dark-mode .section-heading h3 { color: #e2e8f0; }
 

@@ -29,6 +29,10 @@
     --active-bg: #fef9e7;
 }
 html, body, form { min-height: 100%; }
+html, body { overflow: auto; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
+
 /* Cover strip — blocks content scrolling behind the fixed header */
 body::before {
     display: none;

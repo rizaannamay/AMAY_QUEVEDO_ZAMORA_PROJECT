@@ -20,10 +20,12 @@
         }
 
         html, body, form { min-height: 100%; }
-        html, body { overflow: auto; }
+html, body { overflow: auto; }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
-        /* Cover content that scrolls behind the fixed header */
-       body::before {
+/* Cover content that scrolls behind the fixed header */
+body::before {
     display: none;
 }
 
@@ -38,7 +40,7 @@
 
         /* topbar */
         .topbar {
-            background:#c9920a; backdrop-filter:blur(10px);
+            background: var(--uni-header-bg, #c9920a); backdrop-filter:blur(10px);
             border:1px solid rgba(255,255,255,0.15); border-radius:24px;
             padding:12px 24px; display:flex; align-items:center;
             justify-content:space-between; box-shadow:0 4px 20px rgba(0,0,0,0.2);
@@ -52,12 +54,12 @@
         .brand { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:800; color:#ffffff; }
         .brand-badge {
             width:40px; height:40px; border-radius:12px;
-            background:linear-gradient(135deg,#7a5200,#c9920a);
+            background: linear-gradient(135deg, var(--uni-accent-dark, #7a5200), var(--uni-accent, #c9920a));
             color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px;
         }
         .back-btn {
             width:40px; height:40px; border-radius:50%;
-            background:linear-gradient(135deg,#7a5200,#c9920a);
+            background: linear-gradient(135deg, var(--uni-accent-dark, #7a5200), var(--uni-accent, #c9920a));
             color:#fff; border:none; cursor:pointer; text-decoration:none;
             display:flex; align-items:center; justify-content:center;
             box-shadow:var(--shadow); transition:transform .2s;
@@ -83,7 +85,7 @@
             background:#f0f5ff; border:1px solid var(--border); border-radius:16px;
             padding:16px 18px; text-align:center;
         }
-        .stat-num { font-size:28px; font-weight:800; color:var(--primary-2); }
+        .stat-num { font-size:28px; font-weight:800; color:var(--uni-accent, var(--primary-2)); }
         .stat-lbl { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; margin-top:4px; }
 
         /* export buttons */
@@ -96,7 +98,7 @@
         }
         .export-btn:hover { transform:translateY(-2px); }
         .btn-csv  { background:linear-gradient(135deg,#059669,#10b981); color:#fff; box-shadow:0 4px 14px rgba(5,150,105,.25); }
-        .btn-sql  { background:linear-gradient(135deg,#7a5200,#c9920a); color:#fff; box-shadow:0 4px 14px rgba(201,146,10,.25); }
+        .btn-sql  { background:linear-gradient(135deg, var(--uni-accent-dark, #7a5200), var(--uni-accent, #c9920a)); color:#fff; box-shadow:0 4px 14px rgba(201,146,10,.25); }
         .btn-csv:hover  { box-shadow:0 8px 20px rgba(5,150,105,.35); }
         .btn-sql:hover  { box-shadow:0 8px 20px rgba(201,146,10,.35); }
 
@@ -104,7 +106,7 @@
         .table-wrap { overflow-x:auto; margin-top:20px; border-radius:14px; border:1px solid var(--border); }
         .backup-table { width:100%; border-collapse:collapse; font-size:13px; }
         .backup-table th {
-            background:linear-gradient(135deg,#7a5200,#c9920a); color:#fff;
+            background:linear-gradient(135deg, var(--uni-accent-dark, #7a5200), var(--uni-accent, #c9920a)); color:#fff;
             padding:10px 14px; text-align:left; font-weight:600;
         }
         .backup-table td { padding:9px 14px; border-bottom:1px solid var(--border); color:#334155; }
@@ -143,9 +145,9 @@
             background: rgba(45, 45, 45, 0.80) !important;
             border-color: rgba(255,255,255,0.10) !important;
         }
-        body.dark-mode .stat-num { color: #fbbf24 !important; }
+        body.dark-mode .stat-num { color: var(--primary-2, #fbbf24) !important; }
         body.dark-mode .stat-lbl { color: #94a3b8 !important; }
-        body.dark-mode .backup-table th { background: linear-gradient(135deg,#7a5200,#c9920a) !important; }
+        body.dark-mode .backup-table th { background: linear-gradient(135deg, var(--uni-accent-dark, #7a5200), var(--uni-accent, #c9920a)) !important; }
         body.dark-mode .backup-table td {
             color: #e2e8f0 !important;
             border-color: rgba(255,255,255,0.08) !important;
@@ -160,7 +162,7 @@
         body.dark-mode .msg-success { background: rgba(22,101,52,0.25) !important; color: #86efac !important; border-color: rgba(134,239,172,0.30) !important; }
         body.dark-mode .msg-error   { background: rgba(153,27,27,0.25) !important; color: #fca5a5 !important; border-color: rgba(252,165,165,0.30) !important; }
         body.dark-mode input[type="file"] { background: rgba(45,45,45,0.80) !important; border-color: rgba(255,255,255,0.12) !important; color: #e2e8f0 !important; }
-        body.dark-mode code { background: rgba(255,255,255,0.08) !important; color: #fbbf24 !important; }
+        body.dark-mode code { background: rgba(255,255,255,0.08) !important; color: var(--primary-2, #fbbf24) !important; }
     </style>
 </head>
 <body>

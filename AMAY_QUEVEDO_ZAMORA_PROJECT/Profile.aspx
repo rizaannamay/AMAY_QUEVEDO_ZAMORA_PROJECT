@@ -140,7 +140,7 @@
             display: inline-flex; align-items: center; gap: 8px; position: relative;
             background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff;
             border-radius: 40px; padding: 10px 22px; font-size: 13px; font-weight: 600;
-            cursor: pointer; box-shadow: 0 4px 14px rgba(201,146,10,0.25);
+            cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.15);
             transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; border: none;
         }
         .upload-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(201,146,10,0.35); }
@@ -206,9 +206,9 @@
             padding: 10px 24px; border: none; border-radius: 40px;
             background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: #fff;
             font-size: 13px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(201,146,10,0.25); transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: all 0.2s;
         }
-        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(201,146,10,0.35); }
+        .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.25); }
         .btn-cancel-edit {
             padding: 10px 20px; border: 1px solid var(--border); border-radius: 40px;
             background: none; color: var(--muted); font-size: 13px; font-weight: 600;
@@ -263,13 +263,13 @@
             -webkit-backdrop-filter: blur(16px);
         }
         body.dark-mode .profile-avatar { border-color: rgba(30,30,30,0.98); }
-        body.dark-mode .profile-role-badge       { background: rgba(201,146,10,0.22); color: #fcd34d; }
-        body.dark-mode .profile-role-badge.admin { background: rgba(168,120,0,0.28); color: #fde68a; }
+        body.dark-mode .profile-role-badge       { background: rgba(201,146,10,0.22); color: var(--uni-accent, #fcd34d); }
+        body.dark-mode .profile-role-badge.admin { background: rgba(168,120,0,0.28); color: var(--primary, #fde68a); }
         body.dark-mode .profile-name { color: #e0e7ff; }
         body.dark-mode .info-value   { color: #e0e7ff; }
-        body.dark-mode .info-input   { background: rgba(51,65,85,0.8); color: #e0e7ff; border-color: #60a5fa; }
+        body.dark-mode .info-input   { background: rgba(51,65,85,0.8); color: #e0e7ff; border-color: var(--uni-accent, #60a5fa); }
         body.dark-mode .info-card-title { color: #e0e7ff; }
-        body.dark-mode .edit-toggle-btn { color: #93c5fd; }
+        body.dark-mode .edit-toggle-btn { color: var(--primary, #93c5fd); }
 
         @media (max-width: 700px) {
             .topbar { top: 0; left: 0; right: 0; padding: 10px 16px; border-radius: 0 0 18px 18px; }

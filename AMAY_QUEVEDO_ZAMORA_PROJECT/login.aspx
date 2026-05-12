@@ -221,7 +221,7 @@
         .input-wrap input:focus,
         .input-wrap select:focus {
             outline: none;
-            border-color: #c9920a;
+            border-color: var(--uni-accent, #c9920a);
             box-shadow: 0 0 0 3px rgba(180,130,0,0.25);
             background: #ffffff;
         }
@@ -289,7 +289,7 @@
         }
         .btn-login:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(180,130,0,0.50);
+            box-shadow: 0 8px 24px rgba(var(--uni-accent-rgb, 180,130,0), 0.50);
         }
         .btn-login:active:not(:disabled) { transform: translateY(0); }
         .btn-login:disabled {

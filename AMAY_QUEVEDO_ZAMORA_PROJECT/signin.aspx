@@ -109,7 +109,7 @@
 
         .input-wrap input:focus {
             outline: none;
-            border-color: #d97706;
+            border-color: var(--uni-accent, #d97706);
             box-shadow: 0 0 0 3px rgba(217,119,6,0.25);
             background: #ffffff;
         }
@@ -201,7 +201,7 @@
         }
         .btn-register:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(180,130,0,0.50);
+            box-shadow: 0 8px 24px rgba(var(--uni-accent-rgb, 180,130,0), 0.50);
         }
         .btn-register:active:not(:disabled) { transform: translateY(0); }
         .btn-register:disabled { opacity: 0.7; cursor: not-allowed; }

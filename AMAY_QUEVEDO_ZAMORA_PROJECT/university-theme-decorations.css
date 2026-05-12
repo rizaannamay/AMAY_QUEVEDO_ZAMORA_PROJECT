@@ -8,10 +8,30 @@
  */
 
 /* ═══════════════════════════════════════════════
+   DEFAULT THEME — restore background in light mode
+   ═══════════════════════════════════════════════ */
+body.theme-default:not(.dark-mode) {
+    background-image: url('wbg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
+body.theme-default.dark-mode {
+    background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+    background-color: #121212 !important;
+}
+
+/* ═══════════════════════════════════════════════
    INTRAMURALS
    ═══════════════════════════════════════════════ */
 
-/* Background dark */
+/* ── Background dark */
 body.theme-intramurals.dark-mode {
     background: url('Intramurals_bg.jpg') !important;
     background-size: cover !important; background-position: center !important;
@@ -811,10 +831,7 @@ body.theme-christmas .role-wrap select:focus {
     box-shadow: 0 0 0 3px rgba(21,128,61,0.25) !important;
 }
 
-/* ═══════════════════════════════════════════════
-   AUTH PAGES (login/signin) — preserve white text on colored panels
-   These override the global light mode text rules above
-   ═══════════════════════════════════════════════ */
+/* ── AUTH PAGES (login/signin) — preserve white text on colored panels ── */
 
 /* White text on the colored left/right panels */
 body:not(.dark-mode) .panel-left h2,
@@ -854,6 +871,35 @@ body:not(.dark-mode) .input-wrap select,
 body:not(.dark-mode) .role-wrap select {
     color: #1a2a3a !important;
     background: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* ── LOGIN/SIGNIN BUTTON HOVER — theme-specific glow ── */
+/* Default / Foundation Week — gold glow */
+body:not([class*='theme-']) .btn-login:hover,
+body:not([class*='theme-']) .btn-register:hover,
+body.theme-default .btn-login:hover,
+body.theme-default .btn-register:hover,
+body.theme-foundation .btn-login:hover,
+body.theme-foundation .btn-register:hover {
+    box-shadow: 0 8px 28px rgba(201,146,10,0.55) !important;
+}
+
+/* Intramurals — orange glow */
+body.theme-intramurals .btn-login:hover,
+body.theme-intramurals .btn-register:hover {
+    box-shadow: 0 8px 28px rgba(249,115,22,0.55) !important;
+}
+
+/* Women's Month — purple glow */
+body.theme-womens .btn-login:hover,
+body.theme-womens .btn-register:hover {
+    box-shadow: 0 8px 28px rgba(126,34,206,0.55) !important;
+}
+
+/* Christmas — green glow */
+body.theme-christmas .btn-login:hover,
+body.theme-christmas .btn-register:hover {
+    box-shadow: 0 8px 28px rgba(21,128,61,0.55) !important;
 }
 
 /* ═══════════════════════════════════════════════
@@ -1200,4 +1246,174 @@ body:not([class*='theme-']).dark-mode .approval-card:hover,
 body:not([class*='theme-']).dark-mode .notif-item:hover {
     border-color: rgba(252,211,77,0.70) !important;
     box-shadow: 0 8px 24px rgba(252,211,77,0.18) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   SEARCH PAGES — theme-specific dark mode overrides
+   Fixes hardcoded gold in SearchStudent/SearchDashboard
+   ═══════════════════════════════════════════════ */
+
+/* Women's Month dark */
+body.theme-womens.dark-mode .card-author-name { color: #c084fc !important; }
+body.theme-womens.dark-mode .comment-author { color: #c084fc !important; }
+body.theme-womens.dark-mode .comment-avatar { background: rgba(168,85,247,0.18) !important; color: #c084fc !important; }
+body.theme-womens.dark-mode .section-title { color: #c084fc !important; }
+body.theme-womens.dark-mode .section-icon { color: #c084fc !important; }
+body.theme-womens.dark-mode .action-btn:hover { background: rgba(168,85,247,0.12) !important; color: #c084fc !important; }
+body.theme-womens.dark-mode .glass-card:hover { border-color: rgba(168,85,247,0.40) !important; }
+body.theme-womens.dark-mode .announce-card:hover { border-color: rgba(168,85,247,0.55) !important; }
+body.theme-womens.dark-mode .btn-cancel:hover { background: rgba(168,85,247,0.12) !important; color: #c084fc !important; }
+body.theme-womens.dark-mode .upc-username { color: #c084fc !important; }
+body.theme-womens.dark-mode .upc-badge { background: rgba(168,85,247,0.18) !important; color: #e9d5ff !important; }
+
+/* Christmas dark */
+body.theme-christmas.dark-mode .card-author-name { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .comment-author { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .comment-avatar { background: rgba(21,128,61,0.18) !important; color: #4ade80 !important; }
+body.theme-christmas.dark-mode .section-title { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .section-icon { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .action-btn:hover { background: rgba(21,128,61,0.12) !important; color: #4ade80 !important; }
+body.theme-christmas.dark-mode .glass-card:hover { border-color: rgba(21,128,61,0.40) !important; }
+body.theme-christmas.dark-mode .announce-card:hover { border-color: rgba(21,128,61,0.55) !important; }
+body.theme-christmas.dark-mode .btn-cancel:hover { background: rgba(21,128,61,0.12) !important; color: #4ade80 !important; }
+body.theme-christmas.dark-mode .upc-username { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .upc-badge { background: rgba(21,128,61,0.18) !important; color: #d1fae5 !important; }
+
+/* Intramurals dark */
+body.theme-intramurals.dark-mode .card-author-name { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .comment-author { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .comment-avatar { background: rgba(255,123,0,0.18) !important; color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .section-title { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .section-icon { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .glass-card:hover { border-color: rgba(255,123,0,0.40) !important; }
+body.theme-intramurals.dark-mode .announce-card:hover { border-color: rgba(255,123,0,0.55) !important; }
+body.theme-intramurals.dark-mode .upc-username { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .upc-badge { background: rgba(255,123,0,0.18) !important; color: #ffd4a8 !important; }
+
+/* ═══════════════════════════════════════════════
+   TOGGLE SWITCH — theme-specific active color
+   ═══════════════════════════════════════════════ */
+body.theme-womens .toggle-switch-panel.active,
+body.theme-womens.dark-mode .toggle-switch-panel {
+    background: linear-gradient(135deg, #7e22ce, #6d28d9) !important;
+}
+body.theme-christmas .toggle-switch-panel.active,
+body.theme-christmas.dark-mode .toggle-switch-panel {
+    background: linear-gradient(135deg, #15803d, #14532d) !important;
+}
+body.theme-intramurals .toggle-switch-panel.active,
+body.theme-intramurals.dark-mode .toggle-switch-panel {
+    background: linear-gradient(135deg, #f97316, #c2410c) !important;
+}
+body.theme-foundation .toggle-switch-panel.active,
+body.theme-foundation.dark-mode .toggle-switch-panel {
+    background: linear-gradient(135deg, #eab308, #92400e) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   PROFILE ROLE BADGE — theme-specific colors
+   ═══════════════════════════════════════════════ */
+body.theme-womens .profile-role-badge { background: #f3e8ff !important; color: #7e22ce !important; }
+body.theme-womens.dark-mode .profile-role-badge { background: rgba(168,85,247,0.22) !important; color: #c084fc !important; }
+body.theme-christmas .profile-role-badge { background: #dcfce7 !important; color: #15803d !important; }
+body.theme-christmas.dark-mode .profile-role-badge { background: rgba(21,128,61,0.22) !important; color: #4ade80 !important; }
+body.theme-intramurals .profile-role-badge { background: #fff7ed !important; color: #c2410c !important; }
+body.theme-intramurals.dark-mode .profile-role-badge { background: rgba(255,123,0,0.22) !important; color: #ff9a3c !important; }
+
+/* ═══════════════════════════════════════════════
+   PROFILE PAGE — force white cards in light mode
+   The JS theme sets --surface to dark for Intramurals
+   which bleeds into profile-card and info-card.
+   ═══════════════════════════════════════════════ */
+
+/* All themes: white profile/info cards in light mode */
+body:not(.dark-mode) .profile-card,
+body:not(.dark-mode) .info-card {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #1a2a3a !important;
+}
+
+/* Theme-specific light mode border accent on profile/info cards */
+body.theme-intramurals:not(.dark-mode) .profile-card,
+body.theme-intramurals:not(.dark-mode) .info-card {
+    border-color: rgba(249,115,22,0.25) !important;
+}
+body.theme-foundation:not(.dark-mode) .profile-card,
+body.theme-foundation:not(.dark-mode) .info-card {
+    border-color: rgba(234,179,8,0.25) !important;
+}
+body.theme-womens:not(.dark-mode) .profile-card,
+body.theme-womens:not(.dark-mode) .info-card {
+    border-color: rgba(126,34,206,0.20) !important;
+}
+body.theme-christmas:not(.dark-mode) .profile-card,
+body.theme-christmas:not(.dark-mode) .info-card {
+    border-color: rgba(21,128,61,0.20) !important;
+}
+
+/* Light mode: text inside profile/info cards stays dark */
+body:not(.dark-mode) .profile-name,
+body:not(.dark-mode) .info-value,
+body:not(.dark-mode) .info-card-title,
+body:not(.dark-mode) .info-label { color: #1a2a3a !important; }
+body:not(.dark-mode) .profile-tagline,
+body:not(.dark-mode) .info-label { color: #6b7c8f !important; }
+
+/* Dark mode: theme-specific profile/info card backgrounds */
+body.theme-intramurals.dark-mode .profile-card,
+body.theme-intramurals.dark-mode .info-card {
+    background: rgba(20, 10, 5, 0.96) !important;
+    border-color: rgba(255,123,0,0.25) !important;
+}
+body.theme-foundation.dark-mode .profile-card,
+body.theme-foundation.dark-mode .info-card {
+    background: rgba(20, 15, 2, 0.96) !important;
+    border-color: rgba(234,179,8,0.25) !important;
+}
+body.theme-womens.dark-mode .profile-card,
+body.theme-womens.dark-mode .info-card {
+    background: rgba(20, 12, 35, 0.96) !important;
+    border-color: rgba(168,85,247,0.25) !important;
+}
+body.theme-christmas.dark-mode .profile-card,
+body.theme-christmas.dark-mode .info-card {
+    background: rgba(5, 14, 8, 0.96) !important;
+    border-color: rgba(21,128,61,0.25) !important;
+}
+
+/* Dark mode: profile name and info values use white */
+body.dark-mode .profile-name { color: #ffffff !important; }
+body.dark-mode .info-value { color: #e0e7ff !important; }
+body.dark-mode .info-card-title { color: #e0e7ff !important; }
+body.dark-mode .profile-tagline { color: #9ca3af !important; }
+
+/* Theme-specific dark mode profile text */
+body.theme-womens.dark-mode .profile-name { color: #e9d5ff !important; }
+body.theme-womens.dark-mode .info-value { color: #e9d5ff !important; }
+body.theme-womens.dark-mode .info-card-title { color: #c084fc !important; }
+body.theme-christmas.dark-mode .profile-name { color: #d1fae5 !important; }
+body.theme-christmas.dark-mode .info-value { color: #d1fae5 !important; }
+body.theme-christmas.dark-mode .info-card-title { color: #4ade80 !important; }
+body.theme-intramurals.dark-mode .profile-name { color: #ffd4a8 !important; }
+body.theme-intramurals.dark-mode .info-value { color: #ffd4a8 !important; }
+body.theme-intramurals.dark-mode .info-card-title { color: #ff9a3c !important; }
+body.theme-foundation.dark-mode .profile-name { color: #fde68a !important; }
+body.theme-foundation.dark-mode .info-value { color: #fde68a !important; }
+body.theme-foundation.dark-mode .info-card-title { color: #fbbf24 !important; }
+
+/* ═══════════════════════════════════════════════
+   PROFILE BANNER — always uses theme accent color
+   ═══════════════════════════════════════════════ */
+body.theme-intramurals .profile-banner {
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 55%, #9a3412 100%) !important;
+}
+body.theme-foundation .profile-banner {
+    background: linear-gradient(135deg, #f5b700 0%, #d97706 55%, #b45309 100%) !important;
+}
+body.theme-womens .profile-banner {
+    background: linear-gradient(135deg, #7e22ce 0%, #6d28d9 55%, #4c1d95 100%) !important;
+}
+body.theme-christmas .profile-banner {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 55%, #991b1b 100%) !important;
 }

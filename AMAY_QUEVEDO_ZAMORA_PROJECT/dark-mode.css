@@ -31,6 +31,47 @@ body.dark-mode {
     --success-hover:  #4ade80;
 }
 
+/* ── THEME-SPECIFIC DARK MODE VARIABLE OVERRIDES ────────────────── */
+/* Intramurals dark — orange accent */
+body.theme-intramurals.dark-mode {
+    --primary:        #ff9a3c;
+    --primary-2:      #ff7b00;
+    --uni-accent:     #ff7b00;
+    --uni-accent-dark:#c2410c;
+    --active-bg:      rgba(255,123,0,0.15);
+    --border:         rgba(255,123,0,0.25);
+}
+
+/* Foundation Week dark — amber/gold accent (keeps yellow — this is correct) */
+body.theme-foundation.dark-mode {
+    --primary:        #fde68a;
+    --primary-2:      #fbbf24;
+    --uni-accent:     #eab308;
+    --uni-accent-dark:#92400e;
+    --active-bg:      rgba(234,179,8,0.15);
+    --border:         rgba(234,179,8,0.25);
+}
+
+/* Women's Month dark — purple accent */
+body.theme-womens.dark-mode {
+    --primary:        #e9d5ff;
+    --primary-2:      #c084fc;
+    --uni-accent:     #7e22ce;
+    --uni-accent-dark:#6d28d9;
+    --active-bg:      rgba(126,34,206,0.15);
+    --border:         rgba(168,85,247,0.25);
+}
+
+/* Christmas dark — green accent */
+body.theme-christmas.dark-mode {
+    --primary:        #86efac;
+    --primary-2:      #4ade80;
+    --uni-accent:     #15803d;
+    --uni-accent-dark:#14532d;
+    --active-bg:      rgba(21,128,61,0.15);
+    --border:         rgba(21,128,61,0.25);
+}
+
 /* ── BODY ───────────────────────────────────────────────────────── */
 body.dark-mode {
     background-color: #121212;
@@ -115,6 +156,54 @@ body.dark-mode .empty-state {
     background: rgba(30, 30, 30, 0.95) !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.50) !important;
+}
+
+/* Theme-specific card backgrounds */
+body.theme-womens.dark-mode .card,
+body.theme-womens.dark-mode .section-card,
+body.theme-womens.dark-mode .hero,
+body.theme-womens.dark-mode .info-card,
+body.theme-womens.dark-mode .profile-card,
+body.theme-womens.dark-mode .summary-card {
+    background: rgba(20, 12, 35, 0.95) !important;
+    border-color: rgba(168,85,247,0.18) !important;
+}
+
+body.theme-christmas.dark-mode .card,
+body.theme-christmas.dark-mode .section-card,
+body.theme-christmas.dark-mode .hero,
+body.theme-christmas.dark-mode .info-card,
+body.theme-christmas.dark-mode .profile-card,
+body.theme-christmas.dark-mode .summary-card {
+    background: rgba(5, 14, 8, 0.95) !important;
+    border-color: rgba(21,128,61,0.18) !important;
+}
+
+body.theme-intramurals.dark-mode .card,
+body.theme-intramurals.dark-mode .section-card,
+body.theme-intramurals.dark-mode .hero,
+body.theme-intramurals.dark-mode .info-card,
+body.theme-intramurals.dark-mode .profile-card,
+body.theme-intramurals.dark-mode .summary-card {
+    background: rgba(20, 10, 5, 0.95) !important;
+    border-color: rgba(255,123,0,0.18) !important;
+}
+
+body.theme-foundation.dark-mode .card,
+body.theme-foundation.dark-mode .section-card,
+body.theme-foundation.dark-mode .hero,
+body.theme-foundation.dark-mode .info-card,
+body.theme-foundation.dark-mode .profile-card,
+body.theme-foundation.dark-mode .summary-card {
+    background: rgba(20, 15, 2, 0.95) !important;
+    border-color: rgba(234,179,8,0.18) !important;
+}
+
+/* Light mode: always white cards regardless of theme */
+body:not(.dark-mode) .profile-card,
+body:not(.dark-mode) .info-card {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
 }
 
 body.dark-mode .card:hover,
@@ -355,12 +444,12 @@ body.dark-mode .pin-badge {
 /* ── PROFILE ROLE BADGE ─────────────────────────────────────────── */
 body.dark-mode .profile-role-badge {
     background: rgba(201, 146, 10, 0.22) !important;
-    color: #fcd34d !important;
+    color: var(--primary, #fcd34d) !important;
 }
 
 body.dark-mode .profile-role-badge.admin {
     background: rgba(168, 120, 0, 0.28) !important;
-    color: #fde68a !important;
+    color: var(--primary, #fde68a) !important;
 }
 
 /* ── HISTORY / SEARCH ITEMS ─────────────────────────────────────── */
@@ -376,13 +465,26 @@ body.dark-mode .history-item:hover {
     color: #f5f5f5 !important;
 }
 
+/* Theme-specific history hover */
+body.theme-womens.dark-mode .history-item:hover { background: rgba(168,85,247,0.15) !important; border-color: rgba(168,85,247,0.35) !important; }
+body.theme-christmas.dark-mode .history-item:hover { background: rgba(21,128,61,0.15) !important; border-color: rgba(21,128,61,0.35) !important; }
+body.theme-intramurals.dark-mode .history-item:hover { background: rgba(255,123,0,0.15) !important; border-color: rgba(255,123,0,0.35) !important; }
+
 /* ── RESULT COUNT BADGE ─────────────────────────────────────────── */
 body.dark-mode #resultCount,
 body.dark-mode .result-count {
     background: rgba(201, 146, 10, 0.15) !important;
     border-color: rgba(201, 146, 10, 0.30) !important;
-    color: #fcd34d !important;
+    color: var(--primary, #fcd34d) !important;
 }
+
+/* Theme-specific result count */
+body.theme-womens.dark-mode #resultCount,
+body.theme-womens.dark-mode .result-count { background: rgba(168,85,247,0.15) !important; border-color: rgba(168,85,247,0.30) !important; }
+body.theme-christmas.dark-mode #resultCount,
+body.theme-christmas.dark-mode .result-count { background: rgba(21,128,61,0.15) !important; border-color: rgba(21,128,61,0.30) !important; }
+body.theme-intramurals.dark-mode #resultCount,
+body.theme-intramurals.dark-mode .result-count { background: rgba(255,123,0,0.15) !important; border-color: rgba(255,123,0,0.30) !important; }
 
 /* ── EMPTY STATE ────────────────────────────────────────────────── */
 body.dark-mode #emptyState {
@@ -430,12 +532,12 @@ body.theme-christmas.dark-mode .panel-menu-item:hover {
 body.dark-mode .edit-toggle-btn {
     background: rgba(45, 45, 45, 0.80) !important;
     border-color: rgba(255, 255, 255, 0.12) !important;
-    color: #fcd34d !important;
+    color: var(--primary, #fcd34d) !important;
 }
 
 body.dark-mode .edit-toggle-btn:hover {
-    background: rgba(201, 146, 10, 0.18) !important;
-    border-color: rgba(201, 146, 10, 0.40) !important;
+    background: rgba(var(--uni-accent-rgb, 201, 146, 10), 0.18) !important;
+    border-color: var(--uni-accent, rgba(201, 146, 10, 0.40)) !important;
 }
 
 body.dark-mode .btn-cancel-edit {
@@ -468,7 +570,7 @@ body.dark-mode .btn-cancel {
 
 body.dark-mode .btn-cancel:hover {
     background: rgba(201, 146, 10, 0.12) !important;
-    color: #fcd34d !important;
+    color: var(--primary, #fcd34d) !important;
 }
 
 /* ── IMAGE MODAL (AboutUs) ──────────────────────────────────────── */
@@ -477,7 +579,7 @@ body.dark-mode .image-modal-content {
     border-color: rgba(201, 146, 10, 0.20) !important;
 }
 
-body.dark-mode .image-caption h4 { color: #fcd34d !important; }
+body.dark-mode .image-caption h4 { color: var(--primary, #fcd34d) !important; }
 body.dark-mode .image-caption p  { color: #9ca3af !important; }
 
 /* ── GALLERY & CREATOR CARDS (AboutUs) ─────────────────────────── */
@@ -493,8 +595,24 @@ body.dark-mode .creator-card:hover {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.60) !important;
 }
 
+/* Theme-specific gallery/creator hover */
+body.theme-womens.dark-mode .gallery-card,
+body.theme-womens.dark-mode .creator-card { border-color: rgba(168,85,247,0.18) !important; }
+body.theme-womens.dark-mode .gallery-card:hover,
+body.theme-womens.dark-mode .creator-card:hover { border-color: rgba(168,85,247,0.55) !important; }
+
+body.theme-christmas.dark-mode .gallery-card,
+body.theme-christmas.dark-mode .creator-card { border-color: rgba(21,128,61,0.18) !important; }
+body.theme-christmas.dark-mode .gallery-card:hover,
+body.theme-christmas.dark-mode .creator-card:hover { border-color: rgba(21,128,61,0.55) !important; }
+
+body.theme-intramurals.dark-mode .gallery-card,
+body.theme-intramurals.dark-mode .creator-card { border-color: rgba(255,123,0,0.18) !important; }
+body.theme-intramurals.dark-mode .gallery-card:hover,
+body.theme-intramurals.dark-mode .creator-card:hover { border-color: rgba(255,123,0,0.55) !important; }
+
 body.dark-mode .gallery-copy h4,
-body.dark-mode .creator-info h4 { color: #fcd34d !important; }
+body.dark-mode .creator-info h4 { color: var(--primary) !important; }
 
 body.dark-mode .creator-photo {
     border-color: rgba(253, 211, 77, 0.30) !important;
@@ -506,14 +624,19 @@ body.dark-mode .mission-item {
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-body.dark-mode .mission-item h4 { color: #fcd34d !important; }
+body.dark-mode .mission-item h4 { color: var(--primary) !important; }
 
 body.dark-mode .stat {
     background: rgba(35, 35, 35, 0.80) !important;
     border-color: rgba(201, 146, 10, 0.18) !important;
 }
 
-body.dark-mode .stat strong { color: #fcd34d !important; }
+body.dark-mode .stat strong { color: var(--primary) !important; }
+
+/* Theme-specific stat borders */
+body.theme-womens.dark-mode .stat { border-color: rgba(168,85,247,0.18) !important; }
+body.theme-christmas.dark-mode .stat { border-color: rgba(21,128,61,0.18) !important; }
+body.theme-intramurals.dark-mode .stat { border-color: rgba(255,123,0,0.18) !important; }
 
 /* ── USER PROFILE CARD (SearchStudent) ─────────────────────────── */
 body.dark-mode .user-profile-card {
@@ -532,6 +655,11 @@ body.dark-mode .focus-banner {
     border-color: rgba(201, 146, 10, 0.22) !important;
 }
 
+/* Theme-specific focus banner */
+body.theme-womens.dark-mode .focus-banner { background: rgba(168,85,247,0.08) !important; border-color: rgba(168,85,247,0.22) !important; }
+body.theme-christmas.dark-mode .focus-banner { background: rgba(21,128,61,0.08) !important; border-color: rgba(21,128,61,0.22) !important; }
+body.theme-intramurals.dark-mode .focus-banner { background: rgba(255,123,0,0.08) !important; border-color: rgba(255,123,0,0.22) !important; }
+
 /* ── FOOTER ─────────────────────────────────────────────────────── */
 body.dark-mode footer {
     background: rgba(15, 15, 15, 0.80) !important;
@@ -547,7 +675,7 @@ body.dark-mode .toast-msg {
 
 /* ── TOGGLE SWITCH ──────────────────────────────────────────────── */
 body.dark-mode .toggle-switch-panel {
-    background: linear-gradient(135deg, #c9920a, #a87800) !important;
+    background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)) !important;
 }
 
 /* ── SCROLLBAR ──────────────────────────────────────────────────── */
@@ -564,22 +692,30 @@ body.dark-mode .flatpickr-calendar {
 body.dark-mode .flatpickr-day { color: #e4e6eb !important; }
 body.dark-mode .flatpickr-day:hover { background: rgba(201, 146, 10, 0.18) !important; }
 body.dark-mode .flatpickr-day.selected {
-    background: #c9920a !important;
-    border-color: #c9920a !important;
+    background: var(--uni-accent, #c9920a) !important;
+    border-color: var(--uni-accent, #c9920a) !important;
     color: #fff !important;
 }
 body.dark-mode .flatpickr-months .flatpickr-month,
 body.dark-mode .flatpickr-weekdays,
 body.dark-mode span.flatpickr-weekday {
     background: #121212 !important;
-    color: #fcd34d !important;
-    fill: #fcd34d !important;
+    color: var(--primary, #fcd34d) !important;
+    fill: var(--primary, #fcd34d) !important;
 }
 body.dark-mode .flatpickr-current-month select,
 body.dark-mode .flatpickr-current-month input { color: #e4e6eb !important; }
 body.dark-mode .flatpickr-prev-month svg,
-body.dark-mode .flatpickr-next-month svg { fill: #fbbf24 !important; }
+body.dark-mode .flatpickr-next-month svg { fill: var(--primary-2, #fbbf24) !important; }
 body.dark-mode .flatpickr-day.flatpickr-disabled { color: #4b5563 !important; }
+
+/* Theme-specific flatpickr */
+body.theme-womens.dark-mode .flatpickr-calendar { border-color: rgba(168,85,247,0.25) !important; }
+body.theme-womens.dark-mode .flatpickr-day:hover { background: rgba(168,85,247,0.18) !important; }
+body.theme-christmas.dark-mode .flatpickr-calendar { border-color: rgba(21,128,61,0.25) !important; }
+body.theme-christmas.dark-mode .flatpickr-day:hover { background: rgba(21,128,61,0.18) !important; }
+body.theme-intramurals.dark-mode .flatpickr-calendar { border-color: rgba(255,123,0,0.25) !important; }
+body.theme-intramurals.dark-mode .flatpickr-day:hover { background: rgba(255,123,0,0.18) !important; }
 
 /* ── LOGIN / SIGNIN PAGES ───────────────────────────────────────── */
 body.dark-mode .input-wrap input,

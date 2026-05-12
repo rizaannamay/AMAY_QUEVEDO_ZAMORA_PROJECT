@@ -17,6 +17,9 @@
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
 
+        html, body { scrollbar-width: none; -ms-overflow-style: none; }
+        html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
         /* ── ROOT VARIABLES — teal theme matching dashboard ── */
         :root {
             --bg-image: url('wbg.jpg');
