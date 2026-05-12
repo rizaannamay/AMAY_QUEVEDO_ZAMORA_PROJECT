@@ -20,16 +20,15 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('ctu.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-image: url('ctu.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            /* Darker overlay so text is always readable */
             position: relative;
         }
 
@@ -359,7 +358,7 @@
         }
     </style>
 </head>
-<body class="">
+<body class="auth-page">
     <div class="auth-card">
 
         <!-- LEFT TEAL PANEL -->

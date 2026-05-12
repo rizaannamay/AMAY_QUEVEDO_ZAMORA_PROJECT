@@ -20,10 +20,10 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: url('ctu.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background-image: url('ctu.png') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -356,7 +356,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
+<body class="auth-page">
     <!-- ═══ SPLASH OVERLAY ═══ -->
     <div id="signinSplash" style="
         position:fixed;inset:0;background:#0d1a2e;

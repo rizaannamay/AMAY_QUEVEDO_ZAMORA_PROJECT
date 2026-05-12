@@ -18,6 +18,16 @@ body.theme-default:not(.dark-mode) {
     background-attachment: fixed !important;
 }
 
+/* Default theme auth pages — keep ctu.png */
+body.auth-page.theme-default:not(.dark-mode),
+body.auth-page:not([class*='theme-']):not(.dark-mode) {
+    background-image: url('ctu.png') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
+}
+
 body.theme-default.dark-mode {
     background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg') !important;
     background-size: cover !important;
@@ -1416,4 +1426,74 @@ body.theme-womens .profile-banner {
 }
 body.theme-christmas .profile-banner {
     background: linear-gradient(135deg, #dc2626 0%, #b91c1c 55%, #991b1b 100%) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   AUTH PAGES (login / signin) — background per theme
+   Default: ctu.png (handled at top of file)
+   Other themes: use their own background image
+   ═══════════════════════════════════════════════ */
+
+/* Intramurals auth */
+body.auth-page.theme-intramurals:not(.dark-mode) {
+    background-image: url('LightIntramurals.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.auth-page.theme-intramurals.dark-mode {
+    background-image: url('Intramurals_bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+/* Foundation Week auth */
+body.auth-page.theme-foundation:not(.dark-mode) {
+    background-image: url('Foundation_bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.auth-page.theme-foundation.dark-mode {
+    background-image: url('DarkFoundation.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+/* Women's Month auth */
+body.auth-page.theme-womens:not(.dark-mode) {
+    background-image: url('Womens_bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.auth-page.theme-womens.dark-mode {
+    background-image: url('DarkWomens.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+
+/* Christmas auth */
+body.auth-page.theme-christmas:not(.dark-mode) {
+    background-image: url('Christmas_bg.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
+}
+body.auth-page.theme-christmas.dark-mode {
+    background-image: url('DarkChristmas.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+    background-color: transparent !important;
 }
