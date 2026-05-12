@@ -20,19 +20,28 @@ body.theme-intramurals.dark-mode {
 }
 /* Background light */
 body.theme-intramurals:not(.dark-mode) {
-    background: url('Intramurals_bg.jpg') !important;
+    background: url('LightIntramurals.jpg') !important;
     background-size: cover !important; background-position: center !important;
     background-repeat: no-repeat !important; background-attachment: fixed !important;
     background-color: transparent !important;
 }
 
-/* Header always orange */
-body.theme-intramurals .header,
-body.theme-intramurals .topbar,
-body.theme-intramurals .glass-nav {
-    background: linear-gradient(135deg, #f97316 0%, #c2410c 48%, #431407 100%) !important;
-    border-color: rgba(255,123,0,0.35) !important;
-    box-shadow: 0 4px 24px rgba(255,107,0,0.30) !important;
+/* Header — LIGHT mode: vibrant orange */
+body.theme-intramurals:not(.dark-mode) .header,
+body.theme-intramurals:not(.dark-mode) .topbar,
+body.theme-intramurals:not(.dark-mode) .glass-nav {
+    background: linear-gradient(135deg, #f97316 0%, #c2410c 48%, #9a3412 100%) !important;
+    border-color: rgba(255,123,0,0.40) !important;
+    box-shadow: 0 4px 24px rgba(255,107,0,0.35) !important;
+}
+
+/* Header — DARK mode: much darker orange-brown */
+body.theme-intramurals.dark-mode .header,
+body.theme-intramurals.dark-mode .topbar,
+body.theme-intramurals.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #7c2d12 0%, #431407 55%, #1c0a02 100%) !important;
+    border-color: rgba(255,123,0,0.25) !important;
+    box-shadow: 0 4px 24px rgba(120,40,0,0.50) !important;
 }
 
 /* Icons always orange */
@@ -48,7 +57,7 @@ body.theme-intramurals .action-btn:hover,
 body.theme-intramurals .post-stats span:hover { color: #ff7b00 !important; }
 body.theme-intramurals ::-webkit-scrollbar-thumb { background: #ff7b00 !important; border-radius: 20px; }
 
-/* LIGHT MODE — white cards, dark text */
+/* LIGHT MODE — white cards, black text */
 body.theme-intramurals:not(.dark-mode) .card,
 body.theme-intramurals:not(.dark-mode) .announcement-card,
 body.theme-intramurals:not(.dark-mode) .announce-card,
@@ -60,21 +69,30 @@ body.theme-intramurals:not(.dark-mode) .slideout-panel,
 body.theme-intramurals:not(.dark-mode) .modal-content,
 body.theme-intramurals:not(.dark-mode) .approval-card,
 body.theme-intramurals:not(.dark-mode) .notif-item {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(249,115,22,0.35) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+}
+body.theme-intramurals:not(.dark-mode) .card:hover,
+body.theme-intramurals:not(.dark-mode) .announcement-card:hover,
+body.theme-intramurals:not(.dark-mode) .announce-card:hover,
+body.theme-intramurals:not(.dark-mode) .admin-stat-box:hover,
+body.theme-intramurals:not(.dark-mode) .stat-card:hover,
+body.theme-intramurals:not(.dark-mode) .approval-card:hover,
+body.theme-intramurals:not(.dark-mode) .notif-item:hover {
+    border-color: rgba(249,115,22,0.75) !important;
+    box-shadow: 0 8px 24px rgba(249,115,22,0.20) !important;
 }
 body.theme-intramurals:not(.dark-mode) .post-author,
 body.theme-intramurals:not(.dark-mode) .post-title,
 body.theme-intramurals:not(.dark-mode) .post-text,
 body.theme-intramurals:not(.dark-mode) .card-header,
-body.theme-intramurals:not(.dark-mode) .panel-menu-item,
-body.theme-intramurals:not(.dark-mode) .panel-header h3 { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
 body.theme-intramurals:not(.dark-mode) .panel-header h3 { color: #ff7b00 !important; }
 body.theme-intramurals:not(.dark-mode) .post-meta,
 body.theme-intramurals:not(.dark-mode) .admin-stat-lbl,
-body.theme-intramurals:not(.dark-mode) .time-ago { color: #555555 !important; }
-body.theme-intramurals:not(.dark-mode) .action-btn { color: #333333 !important; }
+body.theme-intramurals:not(.dark-mode) .time-ago { color: #444444 !important; }
+body.theme-intramurals:not(.dark-mode) .action-btn { color: #222222 !important; }
 
 /* DARK MODE — dark cards, white text */
 body.theme-intramurals.dark-mode .card,
@@ -88,28 +106,40 @@ body.theme-intramurals.dark-mode .slideout-panel,
 body.theme-intramurals.dark-mode .modal-content,
 body.theme-intramurals.dark-mode .approval-card,
 body.theme-intramurals.dark-mode .notif-item {
-    background: rgba(20,20,20,0.92) !important;
-    border-color: rgba(255,123,0,0.25) !important;
-    color: #f0f0f0 !important;
+    background: rgba(20,10,5,0.94) !important;
+    border: 1.5px solid rgba(255,123,0,0.35) !important;
+    color: #ffffff !important;
+}
+body.theme-intramurals.dark-mode .card:hover,
+body.theme-intramurals.dark-mode .announcement-card:hover,
+body.theme-intramurals.dark-mode .announce-card:hover,
+body.theme-intramurals.dark-mode .admin-stat-box:hover,
+body.theme-intramurals.dark-mode .stat-card:hover,
+body.theme-intramurals.dark-mode .approval-card:hover,
+body.theme-intramurals.dark-mode .notif-item:hover {
+    border-color: rgba(255,123,0,0.80) !important;
+    box-shadow: 0 8px 24px rgba(255,100,0,0.25) !important;
 }
 body.theme-intramurals.dark-mode .post-author,
 body.theme-intramurals.dark-mode .post-title,
 body.theme-intramurals.dark-mode .post-text,
 body.theme-intramurals.dark-mode .card-header,
-body.theme-intramurals.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-intramurals.dark-mode .panel-menu-item { color: #ffffff !important; }
 body.theme-intramurals.dark-mode .post-meta,
 body.theme-intramurals.dark-mode .admin-stat-lbl,
-body.theme-intramurals.dark-mode .time-ago { color: #aaaaaa !important; }
-body.theme-intramurals.dark-mode .action-btn { color: #dddddd !important; }
+body.theme-intramurals.dark-mode .time-ago { color: #cccccc !important; }
+body.theme-intramurals.dark-mode .action-btn { color: #eeeeee !important; }
 
 /* ═══════════════════════════════════════════════
    FOUNDATION WEEK
    ═══════════════════════════════════════════════ */
 
 body.theme-foundation.dark-mode {
-    background:url('Foundation_bg.jpg') !important;
-    background-size: cover !important; background-position: center !important;
-    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background: url('DarkFoundation.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
     background-color: transparent !important;
 }
 body.theme-foundation:not(.dark-mode) {
@@ -119,12 +149,22 @@ body.theme-foundation:not(.dark-mode) {
     background-color: transparent !important;
 }
 
-body.theme-foundation .header,
-body.theme-foundation .topbar,
-body.theme-foundation .glass-nav {
-    background: linear-gradient(135deg, #f5b700 0%, #facc15 50%, #ffd84d 100%) !important;
-    border-color: rgba(234,179,8,0.40) !important;
-    box-shadow: 0 4px 24px rgba(234,179,8,0.25) !important;
+/* Header — LIGHT mode: bright yellow-gold */
+body.theme-foundation:not(.dark-mode) .header,
+body.theme-foundation:not(.dark-mode) .topbar,
+body.theme-foundation:not(.dark-mode) .glass-nav {
+    background: linear-gradient(135deg, #f5b700 0%, #d97706 50%, #b45309 100%) !important;
+    border-color: rgba(234,179,8,0.45) !important;
+    box-shadow: 0 4px 24px rgba(234,179,8,0.30) !important;
+}
+
+/* Header — DARK mode: deep amber-brown */
+body.theme-foundation.dark-mode .header,
+body.theme-foundation.dark-mode .topbar,
+body.theme-foundation.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #78350f 0%, #451a03 55%, #1c0a00 100%) !important;
+    border-color: rgba(234,179,8,0.20) !important;
+    box-shadow: 0 4px 24px rgba(120,53,15,0.55) !important;
 }
 
 body.theme-foundation .panel-menu-item i,
@@ -139,7 +179,7 @@ body.theme-foundation .action-btn:hover,
 body.theme-foundation .post-stats span:hover { color: #eab308 !important; }
 body.theme-foundation ::-webkit-scrollbar-thumb { background: #eab308 !important; border-radius: 20px; }
 
-/* LIGHT MODE */
+/* LIGHT MODE — white cards, black text */
 body.theme-foundation:not(.dark-mode) .card,
 body.theme-foundation:not(.dark-mode) .announcement-card,
 body.theme-foundation:not(.dark-mode) .announce-card,
@@ -151,21 +191,31 @@ body.theme-foundation:not(.dark-mode) .slideout-panel,
 body.theme-foundation:not(.dark-mode) .modal-content,
 body.theme-foundation:not(.dark-mode) .approval-card,
 body.theme-foundation:not(.dark-mode) .notif-item {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(234,179,8,0.40) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+}
+body.theme-foundation:not(.dark-mode) .card:hover,
+body.theme-foundation:not(.dark-mode) .announcement-card:hover,
+body.theme-foundation:not(.dark-mode) .announce-card:hover,
+body.theme-foundation:not(.dark-mode) .admin-stat-box:hover,
+body.theme-foundation:not(.dark-mode) .stat-card:hover,
+body.theme-foundation:not(.dark-mode) .approval-card:hover,
+body.theme-foundation:not(.dark-mode) .notif-item:hover {
+    border-color: rgba(234,179,8,0.85) !important;
+    box-shadow: 0 8px 24px rgba(234,179,8,0.22) !important;
 }
 body.theme-foundation:not(.dark-mode) .post-author,
 body.theme-foundation:not(.dark-mode) .post-title,
 body.theme-foundation:not(.dark-mode) .post-text,
 body.theme-foundation:not(.dark-mode) .card-header,
-body.theme-foundation:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-foundation:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
 body.theme-foundation:not(.dark-mode) .post-meta,
 body.theme-foundation:not(.dark-mode) .admin-stat-lbl,
-body.theme-foundation:not(.dark-mode) .time-ago { color: #555555 !important; }
-body.theme-foundation:not(.dark-mode) .action-btn { color: #333333 !important; }
+body.theme-foundation:not(.dark-mode) .time-ago { color: #444444 !important; }
+body.theme-foundation:not(.dark-mode) .action-btn { color: #222222 !important; }
 
-/* DARK MODE */
+/* DARK MODE — dark cards, white text */
 body.theme-foundation.dark-mode .card,
 body.theme-foundation.dark-mode .announcement-card,
 body.theme-foundation.dark-mode .announce-card,
@@ -177,28 +227,40 @@ body.theme-foundation.dark-mode .slideout-panel,
 body.theme-foundation.dark-mode .modal-content,
 body.theme-foundation.dark-mode .approval-card,
 body.theme-foundation.dark-mode .notif-item {
-    background: rgba(20,20,20,0.92) !important;
-    border-color: rgba(234,179,8,0.22) !important;
-    color: #f0f0f0 !important;
+    background: rgba(20,15,2,0.94) !important;
+    border: 1.5px solid rgba(234,179,8,0.35) !important;
+    color: #ffffff !important;
+}
+body.theme-foundation.dark-mode .card:hover,
+body.theme-foundation.dark-mode .announcement-card:hover,
+body.theme-foundation.dark-mode .announce-card:hover,
+body.theme-foundation.dark-mode .admin-stat-box:hover,
+body.theme-foundation.dark-mode .stat-card:hover,
+body.theme-foundation.dark-mode .approval-card:hover,
+body.theme-foundation.dark-mode .notif-item:hover {
+    border-color: rgba(234,179,8,0.85) !important;
+    box-shadow: 0 8px 24px rgba(234,179,8,0.22) !important;
 }
 body.theme-foundation.dark-mode .post-author,
 body.theme-foundation.dark-mode .post-title,
 body.theme-foundation.dark-mode .post-text,
 body.theme-foundation.dark-mode .card-header,
-body.theme-foundation.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-foundation.dark-mode .panel-menu-item { color: #ffffff !important; }
 body.theme-foundation.dark-mode .post-meta,
 body.theme-foundation.dark-mode .admin-stat-lbl,
-body.theme-foundation.dark-mode .time-ago { color: #aaaaaa !important; }
-body.theme-foundation.dark-mode .action-btn { color: #dddddd !important; }
+body.theme-foundation.dark-mode .time-ago { color: #cccccc !important; }
+body.theme-foundation.dark-mode .action-btn { color: #eeeeee !important; }
 
 /* ═══════════════════════════════════════════════
    WOMEN'S MONTH
    ═══════════════════════════════════════════════ */
 
 body.theme-womens.dark-mode {
-    background: url('Womens_bg.jpg') !important;
-    background-size: cover !important; background-position: center !important;
-    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background: url('DarkWomens.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
     background-color: transparent !important;
 }
 body.theme-womens:not(.dark-mode) {
@@ -208,12 +270,22 @@ body.theme-womens:not(.dark-mode) {
     background-color: transparent !important;
 }
 
-body.theme-womens .header,
-body.theme-womens .topbar,
-body.theme-womens .glass-nav {
-    background: linear-gradient(135deg, #581c87 0%, #7e22ce 48%, #a855f7 100%) !important;
-    border-color: rgba(168,85,247,0.40) !important;
-    box-shadow: 0 4px 24px rgba(126,34,206,0.30) !important;
+/* Header — LIGHT mode: vibrant purple */
+body.theme-womens:not(.dark-mode) .header,
+body.theme-womens:not(.dark-mode) .topbar,
+body.theme-womens:not(.dark-mode) .glass-nav {
+    background: linear-gradient(135deg, #7e22ce 0%, #6d28d9 48%, #4c1d95 100%) !important;
+    border-color: rgba(168,85,247,0.45) !important;
+    box-shadow: 0 4px 24px rgba(126,34,206,0.35) !important;
+}
+
+/* Header — DARK mode: very deep purple */
+body.theme-womens.dark-mode .header,
+body.theme-womens.dark-mode .topbar,
+body.theme-womens.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #3b0764 0%, #1e0338 55%, #0d0118 100%) !important;
+    border-color: rgba(168,85,247,0.20) !important;
+    box-shadow: 0 4px 24px rgba(59,7,100,0.60) !important;
 }
 
 body.theme-womens .panel-menu-item i,
@@ -228,7 +300,22 @@ body.theme-womens .action-btn:hover,
 body.theme-womens .post-stats span:hover { color: #7e22ce !important; }
 body.theme-womens ::-webkit-scrollbar-thumb { background: #7e22ce !important; border-radius: 20px; }
 
-/* LIGHT MODE */
+/* Women's Month dark mode — override global yellow with purple */
+body.theme-womens.dark-mode .panel-menu-item i,
+body.theme-womens.dark-mode .slideout-panel i,
+body.theme-womens.dark-mode .panel-header i { color: #c084fc !important; }
+body.theme-womens.dark-mode .panel-header h3 { color: #c084fc !important; }
+body.theme-womens.dark-mode .panel-menu-item { color: #e9d5ff !important; }
+body.theme-womens.dark-mode .panel-menu-item:hover { background: rgba(168,85,247,0.15) !important; color: #ffffff !important; border-left-color: #c084fc !important; }
+body.theme-womens.dark-mode .panel-menu-item.active { background: linear-gradient(135deg, #6d28d9, #7e22ce) !important; color: #ffffff !important; }
+body.theme-womens.dark-mode .panel-menu-item.active i { color: #ffffff !important; }
+body.theme-womens.dark-mode .admin-stat-num,
+body.theme-womens.dark-mode .stat-num { color: #c084fc !important; }
+body.theme-womens.dark-mode .action-btn:hover,
+body.theme-womens.dark-mode .post-stats span:hover { color: #c084fc !important; }
+body.theme-womens.dark-mode ::-webkit-scrollbar-thumb { background: #7e22ce !important; border-radius: 20px; }
+
+/* LIGHT MODE — white cards, black text */
 body.theme-womens:not(.dark-mode) .card,
 body.theme-womens:not(.dark-mode) .announcement-card,
 body.theme-womens:not(.dark-mode) .announce-card,
@@ -240,21 +327,31 @@ body.theme-womens:not(.dark-mode) .slideout-panel,
 body.theme-womens:not(.dark-mode) .modal-content,
 body.theme-womens:not(.dark-mode) .approval-card,
 body.theme-womens:not(.dark-mode) .notif-item {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(126,34,206,0.35) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+}
+body.theme-womens:not(.dark-mode) .card:hover,
+body.theme-womens:not(.dark-mode) .announcement-card:hover,
+body.theme-womens:not(.dark-mode) .announce-card:hover,
+body.theme-womens:not(.dark-mode) .admin-stat-box:hover,
+body.theme-womens:not(.dark-mode) .stat-card:hover,
+body.theme-womens:not(.dark-mode) .approval-card:hover,
+body.theme-womens:not(.dark-mode) .notif-item:hover {
+    border-color: rgba(126,34,206,0.80) !important;
+    box-shadow: 0 8px 24px rgba(126,34,206,0.20) !important;
 }
 body.theme-womens:not(.dark-mode) .post-author,
 body.theme-womens:not(.dark-mode) .post-title,
 body.theme-womens:not(.dark-mode) .post-text,
 body.theme-womens:not(.dark-mode) .card-header,
-body.theme-womens:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-womens:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
 body.theme-womens:not(.dark-mode) .post-meta,
 body.theme-womens:not(.dark-mode) .admin-stat-lbl,
-body.theme-womens:not(.dark-mode) .time-ago { color: #555555 !important; }
-body.theme-womens:not(.dark-mode) .action-btn { color: #333333 !important; }
+body.theme-womens:not(.dark-mode) .time-ago { color: #444444 !important; }
+body.theme-womens:not(.dark-mode) .action-btn { color: #222222 !important; }
 
-/* DARK MODE */
+/* DARK MODE — dark cards, white text */
 body.theme-womens.dark-mode .card,
 body.theme-womens.dark-mode .announcement-card,
 body.theme-womens.dark-mode .announce-card,
@@ -266,28 +363,40 @@ body.theme-womens.dark-mode .slideout-panel,
 body.theme-womens.dark-mode .modal-content,
 body.theme-womens.dark-mode .approval-card,
 body.theme-womens.dark-mode .notif-item {
-    background: rgba(20,20,20,0.92) !important;
-    border-color: rgba(168,85,247,0.22) !important;
-    color: #f0f0f0 !important;
+    background: rgba(15,8,28,0.95) !important;
+    border: 1.5px solid rgba(168,85,247,0.35) !important;
+    color: #ffffff !important;
+}
+body.theme-womens.dark-mode .card:hover,
+body.theme-womens.dark-mode .announcement-card:hover,
+body.theme-womens.dark-mode .announce-card:hover,
+body.theme-womens.dark-mode .admin-stat-box:hover,
+body.theme-womens.dark-mode .stat-card:hover,
+body.theme-womens.dark-mode .approval-card:hover,
+body.theme-womens.dark-mode .notif-item:hover {
+    border-color: rgba(168,85,247,0.85) !important;
+    box-shadow: 0 8px 24px rgba(168,85,247,0.22) !important;
 }
 body.theme-womens.dark-mode .post-author,
 body.theme-womens.dark-mode .post-title,
 body.theme-womens.dark-mode .post-text,
 body.theme-womens.dark-mode .card-header,
-body.theme-womens.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-womens.dark-mode .panel-menu-item { color: #ffffff !important; }
 body.theme-womens.dark-mode .post-meta,
 body.theme-womens.dark-mode .admin-stat-lbl,
-body.theme-womens.dark-mode .time-ago { color: #aaaaaa !important; }
-body.theme-womens.dark-mode .action-btn { color: #dddddd !important; }
+body.theme-womens.dark-mode .time-ago { color: #cccccc !important; }
+body.theme-womens.dark-mode .action-btn { color: #eeeeee !important; }
 
 /* ═══════════════════════════════════════════════
    CHRISTMAS
    ═══════════════════════════════════════════════ */
 
 body.theme-christmas.dark-mode {
-    background:url('Christmas_bg.jpg') !important;
-    background-size: cover !important; background-position: center !important;
-    background-repeat: no-repeat !important; background-attachment: fixed !important;
+    background: url('DarkChristmas.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-attachment: fixed !important;
     background-color: transparent !important;
 }
 body.theme-christmas:not(.dark-mode) {
@@ -297,12 +406,22 @@ body.theme-christmas:not(.dark-mode) {
     background-color: transparent !important;
 }
 
-body.theme-christmas .header,
-body.theme-christmas .topbar,
-body.theme-christmas .glass-nav {
-    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 55%, #7f1d1d 100%) !important;
-    border-color: rgba(185,28,28,0.40) !important;
-    box-shadow: 0 4px 24px rgba(185,28,28,0.30) !important;
+/* Header — LIGHT mode: rich Christmas red */
+body.theme-christmas:not(.dark-mode) .header,
+body.theme-christmas:not(.dark-mode) .topbar,
+body.theme-christmas:not(.dark-mode) .glass-nav {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 55%, #991b1b 100%) !important;
+    border-color: rgba(185,28,28,0.45) !important;
+    box-shadow: 0 4px 24px rgba(185,28,28,0.35) !important;
+}
+
+/* Header — DARK mode: very deep dark red */
+body.theme-christmas.dark-mode .header,
+body.theme-christmas.dark-mode .topbar,
+body.theme-christmas.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 55%, #1a0202 100%) !important;
+    border-color: rgba(185,28,28,0.20) !important;
+    box-shadow: 0 4px 24px rgba(127,29,29,0.60) !important;
 }
 
 body.theme-christmas .panel-menu-item i,
@@ -317,7 +436,22 @@ body.theme-christmas .action-btn:hover,
 body.theme-christmas .post-stats span:hover { color: #15803d !important; }
 body.theme-christmas ::-webkit-scrollbar-thumb { background: #15803d !important; border-radius: 20px; }
 
-/* LIGHT MODE */
+/* Christmas dark mode — override global yellow with green */
+body.theme-christmas.dark-mode .panel-menu-item i,
+body.theme-christmas.dark-mode .slideout-panel i,
+body.theme-christmas.dark-mode .panel-header i { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .panel-header h3 { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .panel-menu-item { color: #d1fae5 !important; }
+body.theme-christmas.dark-mode .panel-menu-item:hover { background: rgba(21,128,61,0.15) !important; color: #ffffff !important; border-left-color: #4ade80 !important; }
+body.theme-christmas.dark-mode .panel-menu-item.active { background: linear-gradient(135deg, #14532d, #15803d) !important; color: #ffffff !important; }
+body.theme-christmas.dark-mode .panel-menu-item.active i { color: #ffffff !important; }
+body.theme-christmas.dark-mode .admin-stat-num,
+body.theme-christmas.dark-mode .stat-num { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .action-btn:hover,
+body.theme-christmas.dark-mode .post-stats span:hover { color: #4ade80 !important; }
+body.theme-christmas.dark-mode ::-webkit-scrollbar-thumb { background: #15803d !important; border-radius: 20px; }
+
+/* LIGHT MODE — white cards, black text */
 body.theme-christmas:not(.dark-mode) .card,
 body.theme-christmas:not(.dark-mode) .announcement-card,
 body.theme-christmas:not(.dark-mode) .announce-card,
@@ -329,21 +463,31 @@ body.theme-christmas:not(.dark-mode) .slideout-panel,
 body.theme-christmas:not(.dark-mode) .modal-content,
 body.theme-christmas:not(.dark-mode) .approval-card,
 body.theme-christmas:not(.dark-mode) .notif-item {
-    background: rgba(255, 255, 255, 0.92) !important;
-    border: 1px solid rgba(0, 0, 0, 0.08) !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1.5px solid rgba(185,28,28,0.35) !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08) !important;
+}
+body.theme-christmas:not(.dark-mode) .card:hover,
+body.theme-christmas:not(.dark-mode) .announcement-card:hover,
+body.theme-christmas:not(.dark-mode) .announce-card:hover,
+body.theme-christmas:not(.dark-mode) .admin-stat-box:hover,
+body.theme-christmas:not(.dark-mode) .stat-card:hover,
+body.theme-christmas:not(.dark-mode) .approval-card:hover,
+body.theme-christmas:not(.dark-mode) .notif-item:hover {
+    border-color: rgba(185,28,28,0.80) !important;
+    box-shadow: 0 8px 24px rgba(185,28,28,0.20) !important;
 }
 body.theme-christmas:not(.dark-mode) .post-author,
 body.theme-christmas:not(.dark-mode) .post-title,
 body.theme-christmas:not(.dark-mode) .post-text,
 body.theme-christmas:not(.dark-mode) .card-header,
-body.theme-christmas:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
+body.theme-christmas:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
 body.theme-christmas:not(.dark-mode) .post-meta,
 body.theme-christmas:not(.dark-mode) .admin-stat-lbl,
-body.theme-christmas:not(.dark-mode) .time-ago { color: #555555 !important; }
-body.theme-christmas:not(.dark-mode) .action-btn { color: #333333 !important; }
+body.theme-christmas:not(.dark-mode) .time-ago { color: #444444 !important; }
+body.theme-christmas:not(.dark-mode) .action-btn { color: #222222 !important; }
 
-/* DARK MODE */
+/* DARK MODE — dark cards, white text */
 body.theme-christmas.dark-mode .card,
 body.theme-christmas.dark-mode .announcement-card,
 body.theme-christmas.dark-mode .announce-card,
@@ -355,40 +499,50 @@ body.theme-christmas.dark-mode .slideout-panel,
 body.theme-christmas.dark-mode .modal-content,
 body.theme-christmas.dark-mode .approval-card,
 body.theme-christmas.dark-mode .notif-item {
-    background: rgba(20,20,20,0.92) !important;
-    border-color: rgba(21,128,61,0.22) !important;
-    color: #f0f0f0 !important;
+    background: rgba(5,2,2,0.95) !important;
+    border: 1.5px solid rgba(21,128,61,0.40) !important;
+    color: #ffffff !important;
+}
+body.theme-christmas.dark-mode .card:hover,
+body.theme-christmas.dark-mode .announcement-card:hover,
+body.theme-christmas.dark-mode .announce-card:hover,
+body.theme-christmas.dark-mode .admin-stat-box:hover,
+body.theme-christmas.dark-mode .stat-card:hover,
+body.theme-christmas.dark-mode .approval-card:hover,
+body.theme-christmas.dark-mode .notif-item:hover {
+    border-color: rgba(21,128,61,0.85) !important;
+    box-shadow: 0 8px 24px rgba(21,128,61,0.22) !important;
 }
 body.theme-christmas.dark-mode .post-author,
 body.theme-christmas.dark-mode .post-title,
 body.theme-christmas.dark-mode .post-text,
 body.theme-christmas.dark-mode .card-header,
-body.theme-christmas.dark-mode .panel-menu-item { color: #f0f0f0 !important; }
+body.theme-christmas.dark-mode .panel-menu-item { color: #ffffff !important; }
 body.theme-christmas.dark-mode .post-meta,
 body.theme-christmas.dark-mode .admin-stat-lbl,
-body.theme-christmas.dark-mode .time-ago { color: #aaaaaa !important; }
-body.theme-christmas.dark-mode .action-btn { color: #dddddd !important; }
+body.theme-christmas.dark-mode .time-ago { color: #cccccc !important; }
+body.theme-christmas.dark-mode .action-btn { color: #eeeeee !important; }
 
 /* SAFE TEXT VISIBILITY FIX ONLY */
 body.dark-mode {
-    color: #eaeaea !important;
+    color: #ffffff !important;
 }
 
 body:not(.dark-mode) {
-    color: #1a1a1a !important;
+    color: #000000 !important;
 }
 
 /* Fix unreadable muted text */
 body.dark-mode .muted,
 body.dark-mode .post-meta,
 body.dark-mode .time-ago {
-    color: #cfcfcf !important;
+    color: #dddddd !important;
 }
 
 body:not(.dark-mode) .muted,
 body:not(.dark-mode) .post-meta,
 body:not(.dark-mode) .time-ago {
-    color: #555 !important;
+    color: #444 !important;
 }
 
 /* ═══════════════════════════════════════════════
@@ -399,7 +553,7 @@ body:not(.dark-mode) .time-ago {
 
 /* General body text in light mode — applies to all themes including Intramurals */
 body:not(.dark-mode) {
-    color: #1a2a3a !important;
+    color: #000000 !important;
 }
 
 /* Headings */
@@ -409,7 +563,7 @@ body:not(.dark-mode) h3,
 body:not(.dark-mode) h4,
 body:not(.dark-mode) h5,
 body:not(.dark-mode) h6 {
-    color: #1a2a3a !important;
+    color: #000000 !important;
 }
 
 /* Common text elements */
@@ -429,7 +583,7 @@ body:not(.dark-mode) .notif-message,
 body:not(.dark-mode) .summary-title,
 body:not(.dark-mode) .empty-title,
 body:not(.dark-mode) .comment-author {
-    color: #1a2a3a !important;
+    color: #000000 !important;
 }
 
 /* Muted / secondary text */
@@ -446,7 +600,7 @@ body:not(.dark-mode) .muted,
 body:not(.dark-mode) .empty-text,
 body:not(.dark-mode) .time-ago,
 body:not(.dark-mode) .admin-stat-lbl {
-    color: #4b5563 !important;
+    color: #333333 !important;
 }
 
 /* Inputs in light mode */
@@ -478,7 +632,7 @@ body:not(.dark-mode) .action-btn {
 
 /* Intramurals always uses white text (dark theme regardless of light/dark toggle) */
 body.theme-intramurals.dark-mode {
-    color: #f0f0f0 !important;
+    color: #ffffff !important;
 }
 body.theme-intramurals.dark-mode h1,
 body.theme-intramurals.dark-mode h2,
@@ -492,7 +646,7 @@ body.theme-intramurals.dark-mode p,
 body.theme-intramurals.dark-mode span,
 body.theme-intramurals.dark-mode div,
 body.theme-intramurals.dark-mode li {
-    color: #f0f0f0 !important;
+    color: #ffffff !important;
 }
 body.theme-intramurals.dark-mode .muted,
 body.theme-intramurals.dark-mode .post-meta,
@@ -526,9 +680,9 @@ body.theme-intramurals.dark-mode select {
     color: #e0e0e0 !important;
 }
 
-/* Intramurals LIGHT mode — white cards, dark text */
+/* Intramurals LIGHT mode — white cards, black text */
 body.theme-intramurals:not(.dark-mode) {
-    color: #1a1a1a !important;
+    color: #000000 !important;
 }
 body.theme-intramurals:not(.dark-mode) h1,
 body.theme-intramurals:not(.dark-mode) h2,
@@ -536,12 +690,12 @@ body.theme-intramurals:not(.dark-mode) h3,
 body.theme-intramurals:not(.dark-mode) h4,
 body.theme-intramurals:not(.dark-mode) h5,
 body.theme-intramurals:not(.dark-mode) h6 {
-    color: #1a1a1a !important;
+    color: #000000 !important;
 }
 body.theme-intramurals:not(.dark-mode) .muted,
 body.theme-intramurals:not(.dark-mode) .post-meta,
 body.theme-intramurals:not(.dark-mode) .time-ago,
-body.theme-intramurals:not(.dark-mode) .card-meta { color: #555555 !important; }
+body.theme-intramurals:not(.dark-mode) .card-meta { color: #333333 !important; }
 body.theme-intramurals:not(.dark-mode) .eyebrow,
 body.theme-intramurals:not(.dark-mode) .creator-role { color: #c2410c !important; }
 body.theme-intramurals:not(.dark-mode) .stat,
@@ -889,3 +1043,161 @@ body.theme-christmas.dark-mode .cal-event-item .ev-title { color: #4ade80 !impor
 body.theme-christmas.dark-mode .cal-event-item .ev-meta { color: #d1d5db !important; }
 body.theme-christmas.dark-mode .cal-box-close { color: #d1d5db !important; }
 
+
+/* ═══════════════════════════════════════════════
+   GLOBAL DARK MODE — white text on all elements
+   ═══════════════════════════════════════════════ */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode .post-author,
+body.dark-mode .post-title,
+body.dark-mode .card-title,
+body.dark-mode .card-header,
+body.dark-mode .panel-menu-item,
+body.dark-mode .notif-message,
+body.dark-mode .comment-author,
+body.dark-mode .user-name,
+body.dark-mode .profile-name,
+body.dark-mode .page-title,
+body.dark-mode .section-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode .post-text,
+body.dark-mode .post-meta,
+body.dark-mode .card-meta,
+body.dark-mode .comment-time,
+body.dark-mode .notif-time,
+body.dark-mode .user-role,
+body.dark-mode .muted,
+body.dark-mode .time-ago,
+body.dark-mode .admin-stat-lbl {
+    color: #cccccc !important;
+}
+
+/* ── Women's Month dark mode — override yellow text with purple ── */
+body.theme-womens.dark-mode {
+    --primary-2: #c084fc !important;
+    --primary: #e9d5ff !important;
+    --uni-accent: #7e22ce !important;
+    --uni-accent-dark: #6d28d9 !important;
+}
+body.theme-womens.dark-mode .notif-message,
+body.theme-womens.dark-mode .summary-title,
+body.theme-womens.dark-mode .empty-title,
+body.theme-womens.dark-mode .topbar-title,
+body.theme-womens.dark-mode .card-header,
+body.theme-womens.dark-mode .post-author,
+body.theme-womens.dark-mode .post-title,
+body.theme-womens.dark-mode h1,
+body.theme-womens.dark-mode h2,
+body.theme-womens.dark-mode h3,
+body.theme-womens.dark-mode h4 { color: #e9d5ff !important; }
+body.theme-womens.dark-mode .notif-time,
+body.theme-womens.dark-mode .notif-state,
+body.theme-womens.dark-mode .summary-text,
+body.theme-womens.dark-mode .empty-text,
+body.theme-womens.dark-mode .post-meta,
+body.theme-womens.dark-mode .time-ago { color: #c4b5fd !important; }
+
+/* ── Christmas dark mode — override yellow text with green ── */
+body.theme-christmas.dark-mode {
+    --primary-2: #4ade80 !important;
+    --primary: #86efac !important;
+    --uni-accent: #15803d !important;
+    --uni-accent-dark: #14532d !important;
+}
+body.theme-christmas.dark-mode .notif-message,
+body.theme-christmas.dark-mode .summary-title,
+body.theme-christmas.dark-mode .empty-title,
+body.theme-christmas.dark-mode .topbar-title,
+body.theme-christmas.dark-mode .card-header,
+body.theme-christmas.dark-mode .post-author,
+body.theme-christmas.dark-mode .post-title,
+body.theme-christmas.dark-mode h1,
+body.theme-christmas.dark-mode h2,
+body.theme-christmas.dark-mode h3,
+body.theme-christmas.dark-mode h4 { color: #86efac !important; }
+body.theme-christmas.dark-mode .notif-time,
+body.theme-christmas.dark-mode .notif-state,
+body.theme-christmas.dark-mode .summary-text,
+body.theme-christmas.dark-mode .empty-text,
+body.theme-christmas.dark-mode .post-meta,
+body.theme-christmas.dark-mode .time-ago { color: #a7f3d0 !important; }
+
+/* ── Intramurals dark mode — orange accent text ── */
+body.theme-intramurals.dark-mode {
+    --primary-2: #ff9a3c !important;
+    --primary: #ffd4a8 !important;
+    --uni-accent: #ff7b00 !important;
+    --uni-accent-dark: #c2410c !important;
+}
+body.theme-intramurals.dark-mode .notif-message,
+body.theme-intramurals.dark-mode .summary-title,
+body.theme-intramurals.dark-mode .empty-title,
+body.theme-intramurals.dark-mode .topbar-title { color: #ff9a3c !important; }
+
+/* ── Foundation Week dark mode — amber text ── */
+body.theme-foundation.dark-mode {
+    --primary-2: #fbbf24 !important;
+    --primary: #fde68a !important;
+    --uni-accent: #eab308 !important;
+    --uni-accent-dark: #92400e !important;
+}
+body.theme-foundation.dark-mode .notif-message,
+body.theme-foundation.dark-mode .summary-title,
+body.theme-foundation.dark-mode .empty-title,
+body.theme-foundation.dark-mode .topbar-title { color: #fde68a !important; }
+
+/* ═══════════════════════════════════════════════
+   GLOBAL BOX BORDER HOVER — visible on all themes
+   ═══════════════════════════════════════════════ */
+
+/* Light mode hover — theme-accent colored border glow */
+body:not(.dark-mode) .card,
+body:not(.dark-mode) .announcement-card,
+body:not(.dark-mode) .announce-card,
+body:not(.dark-mode) .admin-stat-box,
+body:not(.dark-mode) .stat-card,
+body:not(.dark-mode) .approval-card,
+body:not(.dark-mode) .notif-item {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Dark mode hover — brighter border glow */
+body.dark-mode .card,
+body.dark-mode .announcement-card,
+body.dark-mode .announce-card,
+body.dark-mode .admin-stat-box,
+body.dark-mode .stat-card,
+body.dark-mode .approval-card,
+body.dark-mode .notif-item {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* Default (no theme class) hover borders */
+body:not([class*='theme-']):not(.dark-mode) .card:hover,
+body:not([class*='theme-']):not(.dark-mode) .announcement-card:hover,
+body:not([class*='theme-']):not(.dark-mode) .announce-card:hover,
+body:not([class*='theme-']):not(.dark-mode) .admin-stat-box:hover,
+body:not([class*='theme-']):not(.dark-mode) .stat-card:hover,
+body:not([class*='theme-']):not(.dark-mode) .approval-card:hover,
+body:not([class*='theme-']):not(.dark-mode) .notif-item:hover {
+    border-color: rgba(201,146,10,0.70) !important;
+    box-shadow: 0 8px 24px rgba(201,146,10,0.18) !important;
+}
+
+body:not([class*='theme-']).dark-mode .card:hover,
+body:not([class*='theme-']).dark-mode .announcement-card:hover,
+body:not([class*='theme-']).dark-mode .announce-card:hover,
+body:not([class*='theme-']).dark-mode .admin-stat-box:hover,
+body:not([class*='theme-']).dark-mode .stat-card:hover,
+body:not([class*='theme-']).dark-mode .approval-card:hover,
+body:not([class*='theme-']).dark-mode .notif-item:hover {
+    border-color: rgba(252,211,77,0.70) !important;
+    box-shadow: 0 8px 24px rgba(252,211,77,0.18) !important;
+}

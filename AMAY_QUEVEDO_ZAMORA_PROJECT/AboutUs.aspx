@@ -202,7 +202,7 @@ body.dark-mode .section-card:hover { border-color: rgba(99,102,241,0.32); box-sh
 h1 { font-size: clamp(2.2rem,4vw,4rem); line-height: 1.05; color: var(--primary); }
 .hero-copy p { font-size: 1.05rem; line-height: 1.75; color: var(--muted); max-width: 680px; }
 .hero-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-top: 8px; }
-.stat { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; padding: 18px; transition: background 0.3s, border-color 0.3s; }
+.stat { background: rgba(255,255,255,0.85); border: 1px solid var(--border); border-radius: 20px; padding: 18px; transition: background 0.3s, border-color 0.3s; }
 body.dark-mode .stat { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); }
 .stat:hover { border-color: rgba(99,102,241,0.4); }
 .stat strong { display: block; font-size: 1.5rem; color: var(--primary); margin-bottom: 6px; }
@@ -219,7 +219,7 @@ body.dark-mode .section-heading h3 { color: #e2e8f0; }
 
 /* ── MISSION LIST ── */
 .mission-list { display: grid; gap: 14px; }
-.mission-item { padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s, transform 0.25s; }
+.mission-item { padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.88); border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s, transform 0.25s; }
 body.dark-mode .mission-item { background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.15); }
 .mission-item:hover { transform: translateY(-2px); border-color: rgba(99,102,241,0.35); }
 .mission-item h4 { font-size: 1.05rem; margin-bottom: 8px; color: var(--primary); }
@@ -228,7 +228,7 @@ body.dark-mode .mission-item h4 { color: #93c5fd; }
 
 /* ── GALLERY ── */
 .gallery-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
-.gallery-card { overflow: hidden; border-radius: 22px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.gallery-card { overflow: hidden; border-radius: 22px; background: rgba(255,255,255,0.90); border: 1px solid var(--border); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
 body.dark-mode .gallery-card { background: rgba(10,18,45,0.7); border-color: rgba(59,130,246,0.2); }
 .gallery-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.3); border-color: rgba(99,102,241,0.45); }
 body.dark-mode .gallery-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(99,102,241,0.25); }
@@ -249,7 +249,7 @@ body.dark-mode .gallery-copy h4 { color: #93c5fd; }
 }
 
 .creators-grid { display: grid; gap: 18px; }
-.creator-card { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 22px; padding: 22px; border-radius: 24px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.creator-card { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 22px; padding: 22px; border-radius: 24px; background: rgba(255,255,255,0.90); border: 1px solid var(--border); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
 body.dark-mode .creator-card { background: rgba(10,18,45,0.7); border-color: rgba(59,130,246,0.2); }
 .creator-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px rgba(0,0,0,0.25); border-color: rgba(99,102,241,0.4); }
 body.dark-mode .creator-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(99,102,241,0.28); }

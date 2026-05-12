@@ -856,6 +856,23 @@
         body.dark-mode .post-category-event { background: rgba(46,125,50,0.2); color: #a5d6a7; }
         body.dark-mode .post-category-general { background: rgba(80,80,80,0.35); color: #d1d5db; }
         body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
+
+        /* ── University Theme dark mode — announcement card overrides ── */
+        body.theme-foundation.dark-mode .announcement-card { background: rgba(20,15,2,0.94) !important; border-color: rgba(234,179,8,0.55) !important; box-shadow: 0 4px 20px rgba(234,179,8,0.10) !important; }
+        body.theme-foundation.dark-mode .post-author, body.theme-foundation.dark-mode .post-title { color: #fde68a !important; }
+        body.theme-foundation.dark-mode .post-text { color: #e5d9b6 !important; }
+        body.theme-foundation.dark-mode .post-meta, body.theme-foundation.dark-mode .action-btn { color: #b8a46a !important; }
+
+        body.theme-womens.dark-mode .announcement-card { background: rgba(15,8,28,0.95) !important; border-color: rgba(168,85,247,0.55) !important; box-shadow: 0 4px 20px rgba(168,85,247,0.12) !important; }
+        body.theme-womens.dark-mode .post-author, body.theme-womens.dark-mode .post-title { color: #e9d5ff !important; }
+        body.theme-womens.dark-mode .post-text { color: #d8b4fe !important; }
+        body.theme-womens.dark-mode .post-meta, body.theme-womens.dark-mode .action-btn { color: #a78bca !important; }
+
+        body.theme-christmas.dark-mode .announcement-card { background: rgba(3,14,8,0.95) !important; border-color: rgba(21,128,61,0.60) !important; box-shadow: 0 4px 20px rgba(21,128,61,0.12) !important; }
+        body.theme-christmas.dark-mode .post-author, body.theme-christmas.dark-mode .post-title { color: #86efac !important; }
+        body.theme-christmas.dark-mode .post-text { color: #d1fae5 !important; }
+        body.theme-christmas.dark-mode .post-meta, body.theme-christmas.dark-mode .action-btn { color: #6ee7b7 !important; }
+
         body.dark-mode .search-btn { border-color: rgba(255,255,255,0.2); color: #e2e8f0; }
         body.dark-mode .edit-btn-top:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
         body.dark-mode .delete-btn-top:hover { background: rgba(239,68,68,0.15); color: #fca5a5; }

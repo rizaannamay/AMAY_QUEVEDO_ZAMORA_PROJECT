@@ -61,6 +61,39 @@ body.dark-mode .glass-nav {
     -webkit-backdrop-filter: blur(16px);
 }
 
+/* Theme-specific dark headers — override the generic dark above */
+body.theme-intramurals.dark-mode .header,
+body.theme-intramurals.dark-mode .topbar,
+body.theme-intramurals.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #7c2d12 0%, #431407 55%, #1c0a02 100%) !important;
+    border-color: rgba(255,123,0,0.25) !important;
+    box-shadow: 0 4px 24px rgba(120,40,0,0.50) !important;
+}
+
+body.theme-foundation.dark-mode .header,
+body.theme-foundation.dark-mode .topbar,
+body.theme-foundation.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #78350f 0%, #451a03 55%, #1c0a00 100%) !important;
+    border-color: rgba(234,179,8,0.20) !important;
+    box-shadow: 0 4px 24px rgba(120,53,15,0.55) !important;
+}
+
+body.theme-womens.dark-mode .header,
+body.theme-womens.dark-mode .topbar,
+body.theme-womens.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #3b0764 0%, #1e0338 55%, #0d0118 100%) !important;
+    border-color: rgba(168,85,247,0.20) !important;
+    box-shadow: 0 4px 24px rgba(59,7,100,0.60) !important;
+}
+
+body.theme-christmas.dark-mode .header,
+body.theme-christmas.dark-mode .topbar,
+body.theme-christmas.dark-mode .glass-nav {
+    background: linear-gradient(135deg, #7f1d1d 0%, #450a0a 55%, #1a0202 100%) !important;
+    border-color: rgba(185,28,28,0.20) !important;
+    box-shadow: 0 4px 24px rgba(127,29,29,0.60) !important;
+}
+
 /* ── SIDEBAR ────────────────────────────────────────────────────── */
 body.dark-mode .glass-sidebar,
 body.dark-mode .sidebar,
@@ -89,6 +122,14 @@ body.dark-mode .glass-card:hover {
     border-color: rgba(201, 146, 10, 0.35) !important;
 }
 
+/* Theme-specific card hover borders */
+body.theme-womens.dark-mode .card:hover,
+body.theme-womens.dark-mode .glass-card:hover { border-color: rgba(168,85,247,0.55) !important; }
+body.theme-christmas.dark-mode .card:hover,
+body.theme-christmas.dark-mode .glass-card:hover { border-color: rgba(21,128,61,0.55) !important; }
+body.theme-intramurals.dark-mode .card:hover,
+body.theme-intramurals.dark-mode .glass-card:hover { border-color: rgba(255,123,0,0.55) !important; }
+
 /* ── ANNOUNCEMENT / PINNED CARDS ────────────────────────────────── */
 body.dark-mode .announcement-card,
 body.dark-mode .pinned-card,
@@ -105,6 +146,14 @@ body.dark-mode .announce-card:hover {
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.60) !important;
 }
 
+/* Theme-specific announcement hover */
+body.theme-womens.dark-mode .announcement-card:hover,
+body.theme-womens.dark-mode .announce-card:hover { border-color: rgba(168,85,247,0.75) !important; }
+body.theme-christmas.dark-mode .announcement-card:hover,
+body.theme-christmas.dark-mode .announce-card:hover { border-color: rgba(21,128,61,0.75) !important; }
+body.theme-intramurals.dark-mode .announcement-card:hover,
+body.theme-intramurals.dark-mode .announce-card:hover { border-color: rgba(255,123,0,0.75) !important; }
+
 /* ── NOTIFICATION ITEMS ─────────────────────────────────────────── */
 body.dark-mode .notif-item {
     background: rgba(30, 30, 30, 0.95) !important;
@@ -116,9 +165,19 @@ body.dark-mode .notif-item:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.40) !important;
 }
 
+/* Theme-specific notif hover */
+body.theme-womens.dark-mode .notif-item:hover { border-color: rgba(168,85,247,0.65) !important; }
+body.theme-christmas.dark-mode .notif-item:hover { border-color: rgba(21,128,61,0.65) !important; }
+body.theme-intramurals.dark-mode .notif-item:hover { border-color: rgba(255,123,0,0.65) !important; }
+
 body.dark-mode .notif-item.unread {
     border-left-color: #fbbf24 !important;
 }
+
+/* Theme-specific unread border */
+body.theme-womens.dark-mode .notif-item.unread { border-left-color: #7e22ce !important; }
+body.theme-christmas.dark-mode .notif-item.unread { border-left-color: #15803d !important; }
+body.theme-intramurals.dark-mode .notif-item.unread { border-left-color: #ff7a00 !important; }
 
 /* ── TEXT ───────────────────────────────────────────────────────── */
 body.dark-mode,
@@ -201,6 +260,11 @@ body.dark-mode .action-btn:hover {
     background: rgba(201, 146, 10, 0.12) !important;
     color: #fcd34d !important;
 }
+
+/* Theme-specific action btn hover */
+body.theme-womens.dark-mode .action-btn:hover { background: rgba(168,85,247,0.12) !important; color: #c084fc !important; }
+body.theme-christmas.dark-mode .action-btn:hover { background: rgba(21,128,61,0.12) !important; color: #4ade80 !important; }
+body.theme-intramurals.dark-mode .action-btn:hover { background: rgba(255,123,0,0.12) !important; color: #ff9a3c !important; }
 
 body.dark-mode .action-btn.liked       { color: #f87171 !important; }
 body.dark-mode .action-btn.pinned-active { color: #fb923c !important; }
@@ -340,6 +404,26 @@ body.dark-mode .dropdown-item-panel { color: #d1d5db !important; }
 body.dark-mode .dropdown-item-panel:hover {
     background: rgba(201, 146, 10, 0.12) !important;
     color: #ffffff !important;
+}
+
+/* Women's Month dark — purple panel (overrides yellow above) */
+body.theme-womens.dark-mode .panel-header h3 { color: #c084fc !important; }
+body.theme-womens.dark-mode .panel-menu-item { color: #e9d5ff !important; }
+body.theme-womens.dark-mode .panel-menu-item i { color: #c084fc !important; }
+body.theme-womens.dark-mode .panel-menu-item:hover {
+    background: rgba(168,85,247,0.15) !important;
+    color: #ffffff !important;
+    border-left-color: #c084fc !important;
+}
+
+/* Christmas dark — green panel (overrides yellow above) */
+body.theme-christmas.dark-mode .panel-header h3 { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .panel-menu-item { color: #d1fae5 !important; }
+body.theme-christmas.dark-mode .panel-menu-item i { color: #4ade80 !important; }
+body.theme-christmas.dark-mode .panel-menu-item:hover {
+    background: rgba(21,128,61,0.15) !important;
+    color: #ffffff !important;
+    border-left-color: #4ade80 !important;
 }
 
 /* ── EDIT TOGGLE BUTTON ─────────────────────────────────────────── */

@@ -75,8 +75,12 @@
     <Content Include="Backup.aspx" />
     <Content Include="Christmas_bg.jpg" />
     <Content Include="ctu.png" />
+    <Content Include="DarkChristmas.jpg" />
+    <Content Include="DarkFoundation.jpg" />
+    <Content Include="DarkWomens.jpg" />
     <Content Include="Foundation_bg.jpg" />
     <Content Include="Intramurals_bg.jpg" />
+    <Content Include="LightIntramurals.jpg" />
     <Content Include="Profile.aspx" />
     <Content Include="Academic Updates.jpg" />
     <Content Include="bg.jpg" />
