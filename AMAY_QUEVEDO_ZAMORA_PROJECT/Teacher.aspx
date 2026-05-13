@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Teacher.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Teacher" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal - Teacher Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <link rel="stylesheet" href="responsive.css" />
     <style>
@@ -836,8 +836,8 @@
         body.dark-mode .divider-light { background: rgba(255,255,255,0.08); }
 
         body.dark-mode .comment-input input {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.1);
+            background: rgba(40,40,40,0.85);
+            border-color: rgba(255,255,255,0.12);
             color: #e2e8f0;
         }
 
@@ -846,9 +846,88 @@
         body.dark-mode .form-group input,
         body.dark-mode .form-group textarea,
         body.dark-mode .form-group select {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.1);
+            background: rgba(40,40,40,0.85);
+            border-color: rgba(255,255,255,0.12);
             color: #e2e8f0;
+        }
+
+        /* -- Focus ring follows theme accent -- */
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus,
+        .comment-input input:focus {
+            outline: none;
+            border-color: var(--uni-accent);
+            box-shadow: 0 0 0 3px rgba(201,146,10,0.18);
+        }
+        body.theme-intramurals .form-group input:focus,
+        body.theme-intramurals .form-group textarea:focus,
+        body.theme-intramurals .comment-input input:focus {
+            border-color: #f97316 !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.20) !important;
+        }
+        body.theme-foundation .form-group input:focus,
+        body.theme-foundation .form-group textarea:focus,
+        body.theme-foundation .comment-input input:focus {
+            border-color: #eab308 !important; box-shadow: 0 0 0 3px rgba(234,179,8,0.20) !important;
+        }
+        body.theme-womens .form-group input:focus,
+        body.theme-womens .form-group textarea:focus,
+        body.theme-womens .comment-input input:focus {
+            border-color: #7e22ce !important; box-shadow: 0 0 0 3px rgba(126,34,206,0.20) !important;
+        }
+        body.theme-christmas .form-group input:focus,
+        body.theme-christmas .form-group textarea:focus,
+        body.theme-christmas .comment-input input:focus {
+            border-color: #15803d !important; box-shadow: 0 0 0 3px rgba(21,128,61,0.20) !important;
+        }
+
+        /* Christmas dark � inputs */
+        body.theme-christmas.dark-mode .comment-input input {
+            background: rgba(3,14,8,0.88) !important; border-color: rgba(21,128,61,0.35) !important; color: #d1fae5 !important;
+        }
+        body.theme-christmas.dark-mode .form-group input,
+        body.theme-christmas.dark-mode .form-group textarea,
+        body.theme-christmas.dark-mode .form-group select {
+            background: rgba(3,14,8,0.88) !important; border-color: rgba(21,128,61,0.35) !important; color: #d1fae5 !important;
+        }
+        body.theme-christmas.dark-mode .modal-content {
+            background: rgba(5,20,12,0.98) !important; border-color: rgba(21,128,61,0.30) !important;
+        }
+        /* Intramurals dark � inputs */
+        body.theme-intramurals.dark-mode .comment-input input {
+            background: rgba(18,8,3,0.88) !important; border-color: rgba(255,122,0,0.30) !important; color: #ffd4a8 !important;
+        }
+        body.theme-intramurals.dark-mode .form-group input,
+        body.theme-intramurals.dark-mode .form-group textarea,
+        body.theme-intramurals.dark-mode .form-group select {
+            background: rgba(18,8,3,0.88) !important; border-color: rgba(255,122,0,0.30) !important; color: #ffd4a8 !important;
+        }
+        body.theme-intramurals.dark-mode .modal-content {
+            background: rgba(18,8,3,0.98) !important; border-color: rgba(255,122,0,0.25) !important;
+        }
+        /* Foundation dark � inputs */
+        body.theme-foundation.dark-mode .comment-input input {
+            background: rgba(20,15,2,0.88) !important; border-color: rgba(234,179,8,0.28) !important; color: #fde68a !important;
+        }
+        body.theme-foundation.dark-mode .form-group input,
+        body.theme-foundation.dark-mode .form-group textarea,
+        body.theme-foundation.dark-mode .form-group select {
+            background: rgba(20,15,2,0.88) !important; border-color: rgba(234,179,8,0.28) !important; color: #fde68a !important;
+        }
+        body.theme-foundation.dark-mode .modal-content {
+            background: rgba(20,15,2,0.98) !important; border-color: rgba(234,179,8,0.22) !important;
+        }
+        /* Women's dark � inputs */
+        body.theme-womens.dark-mode .comment-input input {
+            background: rgba(15,8,28,0.88) !important; border-color: rgba(168,85,247,0.28) !important; color: #e9d5ff !important;
+        }
+        body.theme-womens.dark-mode .form-group input,
+        body.theme-womens.dark-mode .form-group textarea,
+        body.theme-womens.dark-mode .form-group select {
+            background: rgba(15,8,28,0.88) !important; border-color: rgba(168,85,247,0.28) !important; color: #e9d5ff !important;
+        }
+        body.theme-womens.dark-mode .modal-content {
+            background: rgba(15,8,28,0.98) !important; border-color: rgba(168,85,247,0.25) !important;
         }
 
         body.dark-mode .post-category-exam { background: rgba(25,118,210,0.2); color: #90caf9; }
@@ -857,7 +936,7 @@
         body.dark-mode .post-category-general { background: rgba(80,80,80,0.35); color: #d1d5db; }
         body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
 
-        /* ── University Theme dark mode — announcement card overrides ── */
+        /* -- University Theme dark mode � announcement card overrides -- */
         body.theme-foundation.dark-mode .announcement-card { background: rgba(20,15,2,0.94) !important; border-color: rgba(234,179,8,0.55) !important; box-shadow: 0 4px 20px rgba(234,179,8,0.10) !important; }
         body.theme-foundation.dark-mode .post-author, body.theme-foundation.dark-mode .post-title { color: #fde68a !important; }
         body.theme-foundation.dark-mode .post-text { color: #e5d9b6 !important; }
@@ -1010,7 +1089,7 @@
         body.dark-mode .btn-dm-cancel { background: rgba(45,45,45,0.80); color: #d1d5db; border-color: rgba(255,255,255,0.15) !important; }
         body.dark-mode .btn-dm-cancel:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
 
-        /* ── Calendar panel ── */
+        /* -- Calendar panel -- */
         .cal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; padding:20px; }
         .cal-overlay.open { display:flex; }
         .cal-box { background:var(--surface-strong); border-radius:24px; width:100%; max-width:860px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.3); position:relative; z-index:2001; pointer-events:auto; }
@@ -1040,6 +1119,28 @@
         body.dark-mode .cal-day.selected { border-color: var(--uni-accent); background:rgba(201,146,10,0.16); }
         body.dark-mode .cal-event-item { background:rgba(255,255,255,0.05); }
         body.dark-mode .cal-event-item .ev-title { color:#e2e8f0; }
+
+        /* -- Calendar month label + Upcoming Events � light mode readable text -- */
+        #calMonthLabel { color: var(--primary) !important; }
+        .cal-upcoming-label { color: var(--primary) !important; }
+        body.theme-intramurals:not(.dark-mode) #calMonthLabel,
+        body.theme-intramurals:not(.dark-mode) .cal-upcoming-label { color: #c2410c !important; }
+        body.theme-foundation:not(.dark-mode) #calMonthLabel,
+        body.theme-foundation:not(.dark-mode) .cal-upcoming-label { color: #92400e !important; }
+        body.theme-womens:not(.dark-mode) #calMonthLabel,
+        body.theme-womens:not(.dark-mode) .cal-upcoming-label { color: #6d28d9 !important; }
+        body.theme-christmas:not(.dark-mode) #calMonthLabel,
+        body.theme-christmas:not(.dark-mode) .cal-upcoming-label { color: #15803d !important; }
+        body.dark-mode #calMonthLabel,
+        body.dark-mode .cal-upcoming-label { color: var(--primary, #fcd34d) !important; }
+        body.theme-intramurals.dark-mode #calMonthLabel,
+        body.theme-intramurals.dark-mode .cal-upcoming-label { color: #ff9a3c !important; }
+        body.theme-foundation.dark-mode #calMonthLabel,
+        body.theme-foundation.dark-mode .cal-upcoming-label { color: #fbbf24 !important; }
+        body.theme-womens.dark-mode #calMonthLabel,
+        body.theme-womens.dark-mode .cal-upcoming-label { color: #c084fc !important; }
+        body.theme-christmas.dark-mode #calMonthLabel,
+        body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; }
     </style>
 </head>
 <body>
@@ -1140,6 +1241,7 @@
                                 <i class="fas fa-bullhorn"></i> Announcement Board
                                 <span id="boardModeLabel" style="float: right; font-size: 12px;">Showing: <span id="activeFilterLabel">All</span></span>
                             </div>
+                            <div id="rejectionNotice" style="display:none;"></div>
                             <div id="announcementsContainer" class="announcement-board"></div>
                         </div>
                     </main>
@@ -1193,7 +1295,7 @@
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. — optional)</span></label>
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. � optional)</span></label>
                         <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                             <i class="fas fa-paperclip" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
@@ -1259,7 +1361,7 @@
                         <div>
                             <div class="cal-nav">
                                 <button type="button" class="cal-nav-btn" onclick="calPrev()"><i class="fas fa-chevron-left"></i></button>
-                                <strong id="calMonthLabel" style="font-size:15px;color:var(--primary);"></strong>
+                                <strong id="calMonthLabel" style="font-size:15px;"></strong>
                                 <button type="button" class="cal-nav-btn" onclick="calNext()"><i class="fas fa-chevron-right"></i></button>
                             </div>
                             <div class="cal-grid" id="calGrid"></div>
@@ -1272,7 +1374,7 @@
                         <!-- Right: Add form + upcoming list -->
                         <div>
                             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                                <span style="font-weight:700;font-size:14px;color:var(--primary);">Upcoming Events</span>
+                                <span class="cal-upcoming-label" style="font-weight:700;font-size:14px;">Upcoming Events</span>
                                 <button type="button" id="calAddToggleBtn" onclick="toggleCalForm(true)"
                                     title="Add event"
                                     style="width:30px;height:30px;border-radius:50%;border:none;background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">
@@ -1455,9 +1557,43 @@
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
 
             if (focusPostId > 0) {
-                filtered = filtered.filter(a => a.id === focusPostId);
-                let boardModeLabel = document.getElementById('boardModeLabel');
-                if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+                let focusFiltered = filtered.filter(a => a.id === focusPostId);
+                // If the focused post is not in the list, it may be rejected � fetch its status
+                if (focusFiltered.length === 0) {
+                    let savedId = focusPostId;
+                    focusPostId = 0;
+                    history.replaceState(null, '', 'Teacher.aspx');
+                    let boardModeLabel = document.getElementById('boardModeLabel');
+                    if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
+                    // Check if it was rejected � show a notice in the dedicated rejection div
+                    fetch('AnnouncementHandler.ashx?action=getById&id=' + savedId, { credentials: 'same-origin' })
+                        .then(r => r.json())
+                        .then(res => {
+                            let notice = document.getElementById('rejectionNotice');
+                            if (!notice) return;
+                            if (res.ok && res.status === 'Rejected') {
+                                let reasonHtml = res.rejectionReason
+                                    ? '<div style="margin-top:8px;font-size:13px;color:#991b1b;"><strong>Reason:</strong> ' + escapeHtml(res.rejectionReason) + '</div>'
+                                    : '';
+                                notice.style.display = 'block';
+                                notice.innerHTML =
+                                    '<div style="background:#fff5f5;border:1.5px solid #fca5a5;border-radius:20px;padding:28px 24px;margin-bottom:16px;">'
+                                    + '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">'
+                                    + '<span style="width:44px;height:44px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;font-size:20px;color:#dc2626;flex-shrink:0;"><i class="fas fa-times-circle"></i></span>'
+                                    + '<div><div style="font-weight:800;font-size:16px;color:#991b1b;">Post Rejected</div>'
+                                    + '<div style="font-size:13px;color:#b91c1c;margin-top:2px;">' + escapeHtml(res.title) + '</div></div>'
+                                    + '</div>'
+                                    + '<div style="font-size:13px;color:#7f1d1d;line-height:1.6;">Your announcement was reviewed by the admin and was not approved for publishing. It will not appear on any dashboard.</div>'
+                                    + reasonHtml
+                                    + '<button type="button" onclick="dismissRejectionNotice();" style="margin-top:16px;padding:9px 20px;border-radius:30px;border:none;background:#dc2626;color:#fff;font-weight:700;cursor:pointer;font-size:13px;"><i class=\"fas fa-arrow-left\" style=\"margin-right:6px;\"></i>Back to Dashboard</button>'
+                                    + '</div>';
+                            }
+                        }).catch(() => {});
+                } else {
+                    filtered = focusFiltered;
+                    let boardModeLabel = document.getElementById('boardModeLabel');
+                    if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+                }
             } else {
                 let boardModeLabel = document.getElementById('boardModeLabel');
                 if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
@@ -1470,12 +1606,10 @@
             );
 
             if (focusPostId > 0) {
-                let exists = filtered.length > 0;
                 container.innerHTML =
                     `<div class="focus-banner">
-                        <button type="button" class="focus-back-btn" onclick="window.location.href='Teacher.aspx'">Back to All Posts</button>
-                    </div>` +
-                    (exists ? '' : `<div class="no-comments" style="padding:30px;">That announcement could not be found.</div>`);
+                        <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Teacher.aspx');renderAnnouncements();">Back to All Posts</button>
+                    </div>`;
             } else {
                 container.innerHTML = '';
             }
@@ -1611,6 +1745,12 @@
         function escapeHtml(str) {
             if (!str) return '';
             return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[m]);
+        }
+
+        function dismissRejectionNotice() {
+            let notice = document.getElementById('rejectionNotice');
+            if (notice) { notice.style.display = 'none'; notice.innerHTML = ''; }
+            renderAnnouncements();
         }
 
         function timeAgo(dateStr) {
@@ -2125,7 +2265,7 @@
         function logout() { window.location.href = 'Logout.aspx'; }
         function navigateWithFlip(url) { window.location.href = url; }
 
-        // ── MOBILE SIDEBAR ──────────────────────────────────────────
+        // -- MOBILE SIDEBAR ------------------------------------------
         (function () {
             var btn = document.getElementById('hamburgerBtn');
             var panel = document.getElementById('slideoutPanel');
@@ -2169,7 +2309,7 @@
         let panelToggle = document.getElementById('panelThemeToggle');
         if (panelToggle) panelToggle.classList.toggle('active', savedTheme === 'dark');
 
-        // ── University Theme ─────────────────────────────────────────
+        // -- University Theme -----------------------------------------
         var UNIVERSITY_THEMES = {
             'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
             'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
@@ -2213,7 +2353,7 @@
         updateNotifBadge();
         setInterval(updateNotifBadge, 30000);
 
-        // ── 5-minute calendar reminder polling ───────────────────────
+        // -- 5-minute calendar reminder polling -----------------------
         function pollCalendarReminders() {
             fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
                 .then(function(r) { return r.json(); })
@@ -2244,7 +2384,7 @@
                 .catch(() => { });
         }
 
-        // ── ACADEMIC CALENDAR (Teacher) ──────────────────────────────
+        // -- ACADEMIC CALENDAR (Teacher) ------------------------------
         var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
         var calEvents = [];
         var selectedCalDate = '';

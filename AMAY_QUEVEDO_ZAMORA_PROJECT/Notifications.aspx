@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Notifications" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notifications.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Notifications" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Notifications - Campus Connect</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="font-awesome.min.css" />
 <link rel="stylesheet" href="dark-mode.css" />
 <link rel="stylesheet" href="responsive.css" />
 <style>
@@ -33,7 +33,7 @@ html, body { overflow: auto; }
 html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 html, body { scrollbar-width: none; -ms-overflow-style: none; }
 
-/* Cover strip — blocks content scrolling behind the fixed header */
+/* Cover strip � blocks content scrolling behind the fixed header */
 body::before {
     display: none;
 }
@@ -110,7 +110,7 @@ button { font: inherit; }
 }
 .home-btn:hover { background: rgba(255,255,255,0.25); }
 
-/* ── Page shell ── */
+/* -- Page shell -- */
 .page-shell {
     min-height: 100vh;
     padding: 90px 10px 24px;
@@ -123,7 +123,7 @@ button { font: inherit; }
     gap: 18px;
 }
 
-/* ── Summary card ── */
+/* -- Summary card -- */
 .summary-card {
     background: var(--surface);
     backdrop-filter: blur(12px);
@@ -156,7 +156,7 @@ button { font: inherit; }
     color: #fff; font-weight: 800; font-size: 14px;
 }
 
-/* ── Notification list ── */
+/* -- Notification list -- */
 .list-wrap { display: flex; flex-direction: column; gap: 14px; }
 .notif-item {
     background: var(--surface);
@@ -186,7 +186,7 @@ button { font: inherit; }
 .notif-item:not(.unread) .notif-unread-dot { display: none; }
 .notif-chevron { color: var(--muted-light); font-size: 20px; flex-shrink: 0; }
 
-/* ── Empty state ── */
+/* -- Empty state -- */
 .empty-state { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: var(--shadow); padding: 64px 20px; text-align: center; }
 .empty-state i { font-size: 48px; color: var(--primary-2); opacity: 0.35; display: block; margin-bottom: 14px; }
 .empty-title { font-size: 18px; font-weight: 800; color: var(--primary-2); }
@@ -378,9 +378,9 @@ button { font: inherit; }
     .header { padding: 10px 16px; }
 }
 
-/* ── University Theme — Notifications Page ── */
+/* -- University Theme � Notifications Page -- */
 
-/* Intramurals — light mode: white cards, black text */
+/* Intramurals � light mode: white cards, black text */
 body.theme-intramurals:not(.dark-mode) .summary-card,
 body.theme-intramurals:not(.dark-mode) .notif-item,
 body.theme-intramurals:not(.dark-mode) .empty-state {
@@ -399,7 +399,7 @@ body.theme-intramurals:not(.dark-mode) .summary-text,
 body.theme-intramurals:not(.dark-mode) .empty-text { color: #444444 !important; }
 body.theme-intramurals:not(.dark-mode) .notif-chevron { color: rgba(249,115,22,0.55) !important; }
 
-/* Intramurals — dark mode */
+/* Intramurals � dark mode */
 body.theme-intramurals.dark-mode .summary-card,
 body.theme-intramurals.dark-mode .notif-item,
 body.theme-intramurals.dark-mode .empty-state {
@@ -418,7 +418,7 @@ body.theme-intramurals.dark-mode .summary-text,
 body.theme-intramurals.dark-mode .empty-text { color: #cccccc !important; }
 body.theme-intramurals.dark-mode .notif-chevron { color: rgba(255,122,0,0.55) !important; }
 
-/* Foundation Week — light */
+/* Foundation Week � light */
 body.theme-foundation:not(.dark-mode) .summary-card,
 body.theme-foundation:not(.dark-mode) .notif-item,
 body.theme-foundation:not(.dark-mode) .empty-state {
@@ -435,7 +435,7 @@ body.theme-foundation:not(.dark-mode) .notif-time,
 body.theme-foundation:not(.dark-mode) .notif-state,
 body.theme-foundation:not(.dark-mode) .summary-text,
 body.theme-foundation:not(.dark-mode) .empty-text { color: #6b5b3e !important; }
-/* Foundation Week — dark */
+/* Foundation Week � dark */
 body.theme-foundation.dark-mode .summary-card,
 body.theme-foundation.dark-mode .notif-item,
 body.theme-foundation.dark-mode .empty-state {
@@ -453,7 +453,7 @@ body.theme-foundation.dark-mode .notif-state,
 body.theme-foundation.dark-mode .summary-text,
 body.theme-foundation.dark-mode .empty-text { color: #b8a46a !important; }
 
-/* Women's Month — light */
+/* Women's Month � light */
 body.theme-womens:not(.dark-mode) .summary-card,
 body.theme-womens:not(.dark-mode) .notif-item,
 body.theme-womens:not(.dark-mode) .empty-state {
@@ -470,7 +470,7 @@ body.theme-womens:not(.dark-mode) .notif-time,
 body.theme-womens:not(.dark-mode) .notif-state,
 body.theme-womens:not(.dark-mode) .summary-text,
 body.theme-womens:not(.dark-mode) .empty-text { color: #64748b !important; }
-/* Women's Month — dark */
+/* Women's Month � dark */
 body.theme-womens.dark-mode .summary-card,
 body.theme-womens.dark-mode .notif-item,
 body.theme-womens.dark-mode .empty-state {
@@ -488,7 +488,7 @@ body.theme-womens.dark-mode .notif-state,
 body.theme-womens.dark-mode .summary-text,
 body.theme-womens.dark-mode .empty-text { color: #a78bca !important; }
 
-/* Christmas — light */
+/* Christmas � light */
 body.theme-christmas:not(.dark-mode) .summary-card,
 body.theme-christmas:not(.dark-mode) .notif-item,
 body.theme-christmas:not(.dark-mode) .empty-state {
@@ -505,7 +505,7 @@ body.theme-christmas:not(.dark-mode) .notif-time,
 body.theme-christmas:not(.dark-mode) .notif-state,
 body.theme-christmas:not(.dark-mode) .summary-text,
 body.theme-christmas:not(.dark-mode) .empty-text { color: #475569 !important; }
-/* Christmas — dark */
+/* Christmas � dark */
 body.theme-christmas.dark-mode .summary-card,
 body.theme-christmas.dark-mode .notif-item,
 body.theme-christmas.dark-mode .empty-state {
@@ -527,7 +527,7 @@ body.theme-christmas.dark-mode .empty-text { color: #6ee7b7 !important; }
 <body>
 <form id="form1" runat="server">
 
-<!-- ✅ Header matches Student.aspx style -->
+<!-- ? Header matches Student.aspx style -->
 <div class="header">
     <div>
         <div class="header-title">
@@ -584,7 +584,7 @@ body.theme-christmas.dark-mode .empty-text { color: #6ee7b7 !important; }
     document.getElementById('homeBtn').onclick = function () { window.location.href = homeUrl; };
 
     document.getElementById('topbarSub').textContent = isAdmin
-        ? 'Admin notifications — approvals, user activity, and system alerts appear here.'
+        ? 'Admin notifications � approvals, user activity, and system alerts appear here.'
         : isTeacher
             ? 'Student reactions to your announcements appear here.'
             : 'Teacher comments, replies, and likes on your activity appear here.';
@@ -621,7 +621,7 @@ body.theme-christmas.dark-mode .empty-text { color: #6ee7b7 !important; }
 
     function getNotifType(message) {
         var text = (message || '').toLowerCase();
-        if (text.indexOf('reminder:') !== -1 || text.indexOf('⏰') !== -1) return 'reminder';
+        if (text.indexOf('reminder:') !== -1 || text.indexOf('?') !== -1) return 'reminder';
         if (text.indexOf('(teacher) liked your comment') !== -1) return 'like';
         if (text.indexOf('(teacher) replied to your comment') !== -1) return 'reply';
         if (text.indexOf('(teacher) commented on') !== -1) return 'comment';
@@ -728,7 +728,7 @@ body.theme-christmas.dark-mode .empty-text { color: #6ee7b7 !important; }
         fetch('NotificationHandler.ashx?action=markRead&id=' + encodeURIComponent(notificationId), {
             credentials: 'same-origin'
         }).finally(function () {
-            // Reminder notifications → open the calendar on the home page
+            // Reminder notifications ? open the calendar on the home page
             if (notifType === 'reminder') {
                 window.location.href = homeUrl + '?openCalendar=1';
             } else if (announcementId && announcementId > 0) {

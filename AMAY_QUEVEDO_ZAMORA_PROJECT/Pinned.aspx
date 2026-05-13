@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Pinned.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Pinned" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pinned Announcements - Campus Connect</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <link rel="stylesheet" href="responsive.css" />
     <style>
@@ -65,7 +65,7 @@ body.dark-mode::before {
 
         a { color: inherit; text-decoration: none; }
 
-        /* ── Header (matches dashboard) ── */
+        /* -- Header (matches dashboard) -- */
         .header {
             background: var(--uni-header-bg);
             border-radius: 24px;
@@ -96,7 +96,7 @@ body.dark-mode::before {
         }
         .back-btn:hover { background: rgba(255,255,255,0.25); }
 
-        /* ── Page shell ── */
+        /* -- Page shell -- */
        .page-shell { padding: 80px 10px 24px; }
 
         .page-wrap { max-width: calc(100% - 20px); margin: 24px auto 0; }
@@ -109,7 +109,7 @@ body.dark-mode::before {
 
         .pinned-list { display: flex; flex-direction: column; gap: 18px; }
 
-        /* ── Announcement card (matches dashboard style) ── */
+        /* -- Announcement card (matches dashboard style) -- */
         .pinned-card {
             background: var(--surface-strong);
             border-radius: 20px;
@@ -237,14 +237,14 @@ body.dark-mode::before {
             padding: 14px 0; text-align: center; font-size: 12px; color: var(--muted-light);
         }
 
-        /* ── Empty state ── */
+        /* -- Empty state -- */
         .empty-state {
             background: var(--surface); border: 1px solid var(--border);
             border-radius: 20px; box-shadow: var(--shadow);
             padding: 50px 20px; text-align: center; color: var(--muted);
         }
 
-        /* ── Toast ── */
+        /* -- Toast -- */
         .toast-msg {
             position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
             background: var(--uni-accent); color: #fff; padding: 10px 24px;
@@ -252,7 +252,7 @@ body.dark-mode::before {
             box-shadow: 0 4px 16px rgba(0,0,0,.25); pointer-events: none;
         }
 
-        /* ── Dark mode ── */
+        /* -- Dark mode -- */
         .dark-mode {
             --bg-image: url('bg.jpg');
             --page-text: #e4e6eb;
@@ -346,11 +346,11 @@ body.dark-mode::before {
     var pinnedDB = [];
     var likeCounts = {};
 
-    // ✅ Role injected from session — controls unpin button visibility
+    // ? Role injected from session � controls unpin button visibility
     var userRole = '<%= Session["Role"] != null ? Session["Role"].ToString() : "Student" %>';
     var isTeacher = userRole.toLowerCase() === 'admin';
 
-    // ── Helpers ──────────────────────────────────────────────────────
+    // -- Helpers ------------------------------------------------------
     function escapeHtml(s) {
         if (!s) return '';
         var d = document.createElement('div');
@@ -403,7 +403,7 @@ body.dark-mode::before {
     }
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLightbox(); });
 
-    // ── Media render (images, videos, attachments) ───────────────────
+    // -- Media render (images, videos, attachments) -------------------
     var videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi'];
     var imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
     function getExt(url) { return (url.split('.').pop() || '').toLowerCase().split('?')[0]; }
@@ -441,7 +441,7 @@ body.dark-mode::before {
         return html;
     }
 
-    // ── Load from DB ─────────────────────────────────────────────────
+    // -- Load from DB -------------------------------------------------
     function loadFromDB() {
         // For students: fetch their personal pinned announcement IDs
         // For teachers: show globally pinned posts
@@ -492,7 +492,7 @@ body.dark-mode::before {
             .catch(function () { renderPinned([]); });
     }
 
-    // ── Like ─────────────────────────────────────────────────────────
+    // -- Like ---------------------------------------------------------
     function toggleLike(id) {
         fetch('LikeHandler.ashx?action=toggle&postId=' + id, { credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
@@ -514,7 +514,7 @@ body.dark-mode::before {
             }).catch(function () { showToast('Could not update like'); });
     }
 
-    // ── Unpin ─────────────────────────────────────────────────────────
+    // -- Unpin ---------------------------------------------------------
     // Teacher: toggles global IsPinned on Announcements table (via AnnouncementHandler)
     // Student: toggles personal pin in UserPins table (via UserPinHandler)
     function unpinPost(id) {
@@ -526,13 +526,13 @@ body.dark-mode::before {
             .then(function (r) { return r.json(); })
             .then(function (res) {
                 if (!res.ok) { showToast('Error: ' + (res.error || 'Could not update pin')); return; }
-                showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
                 // Reload to reflect the change
                 loadFromDB();
             }).catch(function () { showToast('Could not update pin'); });
     }
 
-    // ── Comments ─────────────────────────────────────────────────────
+    // -- Comments -----------------------------------------------------
     function toggleComments(id) {
         var sec = document.getElementById('cs-' + id);
         if (!sec) return;
@@ -599,7 +599,7 @@ body.dark-mode::before {
             });
     }
 
-    // ── Share ────────────────────────────────────────────────────────
+    // -- Share --------------------------------------------------------
     function sharePost(id) {
         var url = window.location.href.split('?')[0];
         if (navigator.clipboard) {
@@ -619,7 +619,7 @@ body.dark-mode::before {
         showToast('Link copied!');
     }
 
-    // ── Render ───────────────────────────────────────────────────────
+    // -- Render -------------------------------------------------------
     function renderPinned(list) {
         var container = document.querySelector('.pinned-list');
         if (!container) return;
@@ -647,7 +647,7 @@ body.dark-mode::before {
                 ? '<div class="post-avatar"><img src="' + escapeHtml(ann.authorImage) + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>'
                 : '<div class="post-avatar"><i class="fas fa-user-tie"></i></div>';
 
-            // ✅ Pin/Unpin button - visible to both teachers and students
+            // ? Pin/Unpin button - visible to both teachers and students
             var pinControls = '<span class="pin-badge"><i class="fas fa-thumbtack"></i> Pinned</span>';
             pinControls += '<button class="unpin-btn" onclick="unpinPost(' + ann.id + ')" title="Unpin this post">'
                 + '<i class="fas fa-thumbtack"></i></button>';
@@ -706,7 +706,7 @@ body.dark-mode::before {
         }).join('');
     }
 
-    // ── Theme ────────────────────────────────────────────────────────
+    // -- Theme --------------------------------------------------------
     function applyStoredTheme() {
         document.body.classList.toggle('dark-mode', localStorage.getItem(THEME_KEY) === 'dark');
     }
@@ -714,7 +714,7 @@ body.dark-mode::before {
         if (e.key === THEME_KEY) applyStoredTheme();
     });
 
-    // ── University Theme ─────────────────────────────────────────────
+    // -- University Theme ---------------------------------------------
     var UNIVERSITY_THEMES = {
         'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
         'Intramurals':   { overlay: 'rgba(180,30,30,0.18)',     header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
@@ -745,7 +745,7 @@ body.dark-mode::before {
         if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
     });
 
-    // ── Init ─────────────────────────────────────────────────────────
+    // -- Init ---------------------------------------------------------
     applyStoredTheme();
     loadFromDB();
 </script>

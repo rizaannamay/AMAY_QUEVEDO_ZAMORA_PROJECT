@@ -7,12 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CampusConnect | Announcement Dashboard</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="tailwind.min.js"></script>
+    <link rel="stylesheet" href="font-awesome.min.css">
     <link rel="stylesheet" href="dark-mode.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="flatpickr.min.css">
+    <script src="flatpickr.min.js"></script>
 
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
@@ -550,6 +549,39 @@
             background: rgba(15,25,55,0.5) !important;
         }
 
+        /* ── Theme-specific focus rings (date picker + search input) ── */
+        body.theme-intramurals .search-input:focus,
+        body.theme-intramurals input:focus,
+        body.theme-intramurals select:focus {
+            border-color: #f97316 !important;
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.22) !important;
+        }
+        body.theme-foundation .search-input:focus,
+        body.theme-foundation input:focus,
+        body.theme-foundation select:focus {
+            border-color: #eab308 !important;
+            box-shadow: 0 0 0 3px rgba(234,179,8,0.22) !important;
+        }
+        body.theme-womens .search-input:focus,
+        body.theme-womens input:focus,
+        body.theme-womens select:focus {
+            border-color: #7e22ce !important;
+            box-shadow: 0 0 0 3px rgba(126,34,206,0.22) !important;
+        }
+        body.theme-christmas .search-input:focus,
+        body.theme-christmas input:focus,
+        body.theme-christmas select:focus {
+            border-color: #15803d !important;
+            box-shadow: 0 0 0 3px rgba(21,128,61,0.22) !important;
+        }
+        body:not([class*='theme-']) input:focus,
+        body:not([class*='theme-']) select:focus,
+        body.theme-default input:focus,
+        body.theme-default select:focus {
+            border-color: #c9920a !important;
+            box-shadow: 0 0 0 3px rgba(201,146,10,0.22) !important;
+        }
+
         /* ── TOAST ── */
         .toast-msg {
             position: fixed;
@@ -876,7 +908,7 @@
             </div>
 
             <!-- ═══ FOOTER ═══ -->
-            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm">
+            <footer class="border-t mt-12 py-5 text-center text-xs backdrop-blur-sm" style="display:none;">
                 <i class="far fa-copyright"></i> 2026 CampusConnect — Connecting Teachers to Campus Life
             </footer>
         </div>

@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="signin.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.signin" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Announcement Portal — Register</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>Campus Announcement Portal � Register</title>
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="university-theme-decorations.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,7 +42,7 @@
             pointer-events: none;
         }
 
-        /* ── OUTER CARD ── */
+        /* -- OUTER CARD -- */
         .auth-card {
             display: flex;
             width: 100%;
@@ -56,7 +56,7 @@
             z-index: 1;
         }
 
-        /* ── LEFT FORM PANEL ── */
+        /* -- LEFT FORM PANEL -- */
         .panel-left {
             flex: 1;
             display: flex;
@@ -86,7 +86,7 @@
             text-align: center;
         }
 
-        /* ── INPUTS ── */
+        /* -- INPUTS -- */
         .input-wrap {
             position: relative;
             width: 100%;
@@ -137,7 +137,7 @@
         .input-wrap input::-webkit-credentials-auto-fill-button,
         .input-wrap input::-webkit-textfield-decoration-container { display: none !important; }
 
-        /* ── ROLE SELECT ── */
+        /* -- ROLE SELECT -- */
         .role-wrap {
             position: relative;
             width: 100%;
@@ -165,7 +165,7 @@
         }
         .role-wrap .icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #7a9aaa; font-size: 14px; pointer-events: none; }
 
-        /* ── MESSAGES ── */
+        /* -- MESSAGES -- */
         .msg-box {
             width: 100%;
             padding: 10px 14px;
@@ -180,7 +180,7 @@
         .error-message   { background: rgba(254,226,226,0.95); border-left: 3px solid #dc2626; color: #b91c1c; }
         .success-message { background: rgba(240,253,244,0.95); border-left: 3px solid #16a34a; color: #15803d; }
 
-        /* ── REGISTER BUTTON ── */
+        /* -- REGISTER BUTTON -- */
         .btn-register {
             width: 100%;
             padding: 13px;
@@ -206,7 +206,7 @@
         .btn-register:active:not(:disabled) { transform: translateY(0); }
         .btn-register:disabled { opacity: 0.7; cursor: not-allowed; }
 
-        /* ── DIVIDER ── */
+        /* -- DIVIDER -- */
         .or-divider {
             display: flex;
             align-items: center;
@@ -223,7 +223,7 @@
         }
         .or-divider span { font-size: 11px; color: rgba(255,255,255,0.6); white-space: nowrap; }
 
-        /* ── LOGIN LINK ── */
+        /* -- LOGIN LINK -- */
         .login-link {
             font-size: 13px;
             color: rgba(255,255,255,0.75);
@@ -232,7 +232,7 @@
         .login-link a { color: var(--uni-accent, #fbbf24); font-weight: 600; text-decoration: none; }
         .login-link a:hover { text-decoration: underline; }
 
-        /* ── RIGHT DARK TEAL PANEL ── */
+        /* -- RIGHT DARK TEAL PANEL -- */
         .panel-right {
             width: 40%;
             background-image: url('ctu.png');
@@ -339,7 +339,7 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* ── RESPONSIVE ── */
+        /* -- RESPONSIVE -- */
         @media (max-width: 640px) {
             .auth-card { flex-direction: column-reverse; max-width: 100%; border-radius: 20px; margin: 8px; }
             .panel-right { width: 100%; padding: 28px 20px; min-height: unset; }
@@ -357,7 +357,7 @@
     </style>
 </head>
 <body class="auth-page">
-    <!-- ═══ SPLASH OVERLAY ═══ -->
+    <!-- --- SPLASH OVERLAY --- -->
     <div id="signinSplash" style="
         position:fixed;inset:0;background:#0d1a2e;
         display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
@@ -445,7 +445,7 @@
                     </span>
                 </div>
 
-                <!-- Role dropdown — Student & Teacher only; Admin is created by existing admins -->
+                <!-- Role dropdown � Student & Teacher only; Admin is created by existing admins -->
                 <div class="role-wrap">
                     <select id="roleSelect" onchange="syncRole(this.value)">
                         <option value="Student">Student</option>
@@ -499,7 +499,7 @@
     </div>
 
     <script>
-        // Sync visible dropdown → hidden radio buttons for server-side
+        // Sync visible dropdown ? hidden radio buttons for server-side
         function syncRole(val) {
             var rbStudent = document.getElementById('<%= rbStudent.ClientID %>');
             var rbTeacher = document.getElementById('<%= rbTeacher.ClientID %>');
@@ -536,7 +536,7 @@
             function mark(id, ok) {
                 var el = document.getElementById(id);
                 if (!el) return;
-                el.innerHTML = (ok ? '&#x2714; ' : '&#x25CB; ') + el.textContent.replace(/^[✔○] /, '');
+                el.innerHTML = (ok ? '&#x2714; ' : '&#x25CB; ') + el.textContent.replace(/^[??] /, '');
                 el.style.color = ok ? '#4ade80' : 'rgba(255,255,255,0.65)';
             }
             mark('r8', rules.len);
@@ -547,7 +547,7 @@
             return rules;
         }
 
-        // Show/hide password — field 1
+        // Show/hide password � field 1
         (function () {
             var btn  = document.getElementById('togglePw1');
             var icon = document.getElementById('togglePw1Icon');
@@ -578,7 +578,7 @@
             });
         })();
 
-        // Show/hide password — field 2
+        // Show/hide password � field 2
         (function () {
             var btn  = document.getElementById('togglePw2');
             var icon = document.getElementById('togglePw2Icon');
@@ -610,7 +610,7 @@
             });
         })();
 
-        // Loading state — fires after postback starts (safe)
+        // Loading state � fires after postback starts (safe)
         (function () {
             var btn = document.getElementById('<%= btnSignUp.ClientID %>');
             if (!btn) return;

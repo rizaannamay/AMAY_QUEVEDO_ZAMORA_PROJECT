@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Profile" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Profile" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal - My Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <link rel="stylesheet" href="responsive.css" />
     <style>
@@ -60,7 +60,7 @@
         .profile-col-left  { display: flex; flex-direction: column; gap: 18px; }
         .profile-col-right { display: flex; flex-direction: column; gap: 18px; }
 
-        /* Topbar — matches dashboard header */
+        /* Topbar � matches dashboard header */
         .topbar {
             background: var(--uni-header-bg);
             backdrop-filter: blur(10px);
@@ -333,7 +333,7 @@
                             <i class="fas fa-<%= Role == "Admin" ? "chalkboard-teacher" : "user-graduate" %>"
                                style="margin-right:5px;"></i><%= Role %>
                         </div>
-                        <div class="profile-tagline">Cebu Technological University — Campus Connect Portal</div>
+                        <div class="profile-tagline">Cebu Technological University � Campus Connect Portal</div>
 
                         <asp:FileUpload ID="photoUpload" runat="server" ClientIDMode="Static"
                             accept="image/*" Style="display:none;" />
@@ -393,7 +393,7 @@
                         </div>
                     </div>
 
-                    <!-- Role — read only -->
+                    <!-- Role � read only -->
                     <div class="info-row">
                         <div class="info-icon locked"><i class="fas fa-shield-alt"></i></div>
                         <div class="info-text">
@@ -420,7 +420,7 @@
                     </div><!-- end col-right -->
                 </div><!-- end profile-columns -->
 
-                <!-- Logout — always at the bottom -->
+                <!-- Logout � always at the bottom -->
                 <button type="button" class="logout-btn" onclick="confirmLogout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -438,7 +438,7 @@
     </form>
 
     <script>
-        // ── Theme ──────────────────────────────────────────────
+        // -- Theme ----------------------------------------------
         (function () {
             document.body.classList.toggle('dark-mode', localStorage.getItem('campus_theme') === 'dark');
             window.addEventListener('storage', function (e) {
@@ -447,7 +447,7 @@
             });
         })();
 
-        // ── University Theme ─────────────────────────────────────────
+        // -- University Theme -----------------------------------------
         (function () {
             var UNIVERSITY_THEMES = {
                 'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
@@ -480,7 +480,7 @@
             });
         })();
 
-        // ── Toast ──────────────────────────────────────────────
+        // -- Toast ----------------------------------------------
         function showToast(msg) {
             var t = document.createElement('div');
             t.className = 'toast-msg'; t.textContent = msg;
@@ -488,10 +488,10 @@
             setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 2700);
         }
 
-        // ── Logout ─────────────────────────────────────────────
+        // -- Logout ---------------------------------------------
         function confirmLogout() { window.location.href = 'Logout.aspx'; }
 
-        // ── Edit toggle ────────────────────────────────────────
+        // -- Edit toggle ----------------------------------------
         var editing = false;
 
         function toggleEdit() {
@@ -540,7 +540,7 @@
             document.getElementById('form1').submit();
         }
 
-        // ── Photo upload ────────────────────────────────────────
+        // -- Photo upload ----------------------------------------
         var photoInput = document.getElementById('photoUpload');
         if (photoInput) {
             photoInput.addEventListener('change', function () {
@@ -564,7 +564,7 @@
                     status.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Uploading...';
                 }
 
-                // Upload via AJAX — no page reload
+                // Upload via AJAX � no page reload
                 var fd = new FormData();
                 fd.append('photo', file);
 
@@ -585,7 +585,7 @@
                             status.innerHTML = '<i class="fas fa-check-circle" style="margin-right:6px;"></i>Profile photo updated!';
                             setTimeout(function() { status.style.display = 'none'; }, 3000);
                         }
-                        showToast('✅ Profile photo updated!');
+                        showToast('? Profile photo updated!');
 
                         // Also update the header avatar on this page if it exists
                         var headerAvatar = document.getElementById('headerAvatar');
@@ -601,7 +601,7 @@
                             status.style.color = '#dc2626';
                             status.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>' + (res.error || 'Upload failed.');
                         }
-                        showToast('❌ ' + (res.error || 'Upload failed.'));
+                        showToast('? ' + (res.error || 'Upload failed.'));
                     }
                 })
                 .catch(function(err) {
@@ -609,7 +609,7 @@
                         status.style.color = '#dc2626';
                         status.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right:6px;"></i>Network error. Please try again.';
                     }
-                    showToast('❌ Network error. Please try again.');
+                    showToast('? Network error. Please try again.');
                 });
 
                 // Reset input so same file can be re-selected

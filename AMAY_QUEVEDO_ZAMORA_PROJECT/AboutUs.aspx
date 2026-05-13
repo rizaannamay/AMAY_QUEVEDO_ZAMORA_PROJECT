@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.AboutUs" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.AboutUs" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal - About Us</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <link rel="stylesheet" href="responsive.css" />
     <style>
@@ -85,7 +85,7 @@ body.dark-mode {
     background-attachment: fixed;
 }
 
-        /* ── PAGE SHELL ── */
+        /* -- PAGE SHELL -- */
         .page-shell {
             max-width: 1240px;
             margin: 0 auto;
@@ -95,7 +95,7 @@ body.dark-mode {
             z-index: 1;
         }
 
-        /* ── SHARED CARD STYLE ── */
+        /* -- SHARED CARD STYLE -- */
         .hero,
         .section-card {
             background: var(--surface);
@@ -113,7 +113,7 @@ body.dark-mode {
             box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(99,102,241,0.15);
         }
 
-        /* ── TOPBAR — matches dashboard dark navy header ── */
+        /* -- TOPBAR � matches dashboard dark navy header -- */
         .topbar {
             background: var(--uni-header-bg);
             border-radius: 24px;
@@ -170,7 +170,7 @@ body.dark-mode {
 
         .action-link:hover { background: rgba(255,255,255,0.25); }
 
-/* ── PAGE SHELL ── */
+/* -- PAGE SHELL -- */
 .page-shell {
     max-width: calc(100% - 0px);
     margin: 0 auto;
@@ -180,7 +180,7 @@ body.dark-mode {
     z-index: 1;
 }
 
-/* ── SHARED CARD ── */
+/* -- SHARED CARD -- */
 .hero, .section-card {
     background: var(--surface);
     backdrop-filter: blur(18px);
@@ -192,7 +192,7 @@ body.dark-mode {
 }
 body.dark-mode .section-card:hover { border-color: rgba(99,102,241,0.32); box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.15); }
 
-/* ── HERO ── */
+/* -- HERO -- */
 .hero { overflow: hidden; display: grid; grid-template-columns: 1.2fr 0.8fr; }
 .hero-copy { padding: 40px; display: grid; gap: 18px; }
 .eyebrow { color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
@@ -207,14 +207,14 @@ body.dark-mode .stat strong { color: #93c5fd; }
 .stat span { color: var(--muted); font-size: 0.95rem; }
 .hero-visual { min-height: 100%; background: linear-gradient(rgba(10,18,45,0.25),rgba(10,18,45,0.65)), url('School Campus View.jpg') center/cover no-repeat; }
 
-/* ── SECTION CARD ── */
+/* -- SECTION CARD -- */
 .section-card { padding: 28px; }
 .section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .section-heading i { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 14px; color: #ffffff; background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .section-heading h3 { color: var(--primary); font-size: 1.35rem; }
 body.dark-mode .section-heading h3 { color: #e2e8f0; }
 
-/* ── MISSION LIST ── */
+/* -- MISSION LIST -- */
 .mission-list { display: grid; gap: 14px; }
 .mission-item { padding: 18px; border-radius: 18px; background: rgba(255,255,255,0.88); border: 1px solid var(--border); transition: background 0.3s, border-color 0.3s, transform 0.25s; }
 body.dark-mode .mission-item { background: rgba(99,102,241,0.06); border-color: rgba(99,102,241,0.15); }
@@ -223,7 +223,7 @@ body.dark-mode .mission-item { background: rgba(99,102,241,0.06); border-color: 
 body.dark-mode .mission-item h4 { color: #93c5fd; }
 .mission-item p { color: var(--muted); line-height: 1.7; }
 
-/* ── GALLERY ── */
+/* -- GALLERY -- */
 .gallery-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
 .gallery-card { overflow: hidden; border-radius: 22px; background: rgba(255,255,255,0.90); border: 1px solid var(--border); cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
 body.dark-mode .gallery-card { background: rgba(10,18,45,0.7); border-color: rgba(59,130,246,0.2); }
@@ -235,7 +235,7 @@ body.dark-mode .gallery-card:hover { box-shadow: 0 16px 40px rgba(0,0,0,0.55), 0
 body.dark-mode .gallery-copy h4 { color: #93c5fd; }
 .gallery-copy p { color: var(--muted); line-height: 1.6; font-size: 0.94rem; }
 
-/* ── CREATORS ── */
+/* -- CREATORS -- */
 .creators-section { display: grid; gap: 18px; }
 .creators-intro {
     color: var(--muted);
@@ -260,7 +260,7 @@ body.dark-mode .creator-info h4 { color: #e2e8f0; }
 .creator-role { color: var(--accent); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
 .creator-quote { color: var(--muted); line-height: 1.7; font-size: 0.97rem; font-style: italic; }
 
-/* ── IMAGE MODAL ── */
+/* -- IMAGE MODAL -- */
 .image-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(2,6,12,0.84); backdrop-filter: blur(12px); z-index: 1500; }
 .image-modal.show { display: flex; }
 .image-modal-content { position: relative; width: min(960px,100%); max-height: 90vh; background: rgba(8,14,36,0.97); border: 1px solid rgba(99,102,241,0.25); border-radius: 28px; padding: 22px; box-shadow: 0 24px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.1); }
@@ -276,7 +276,58 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
 
 *, *::before, *::after { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; }
 
-        /* ── RESPONSIVE ── */
+        /* -- LIGHT MODE: force white cards, dark text -- */
+        body:not(.dark-mode) .hero,
+        body:not(.dark-mode) .section-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            color: #1a2a3a !important;
+        }
+        body:not(.dark-mode) h1,
+        body:not(.dark-mode) .hero-copy h1 { color: #1a2a3a !important; }
+        body:not(.dark-mode) .hero-copy p { color: #4b5563 !important; }
+        body:not(.dark-mode) .eyebrow { color: var(--accent) !important; }
+        body:not(.dark-mode) .stat {
+            background: rgba(255, 255, 255, 0.90) !important;
+            color: #1a2a3a !important;
+        }
+        body:not(.dark-mode) .stat strong { color: #1a2a3a !important; }
+        body:not(.dark-mode) .stat span { color: #6b7c8f !important; }
+        body:not(.dark-mode) .mission-item {
+            background: rgba(255, 255, 255, 0.90) !important;
+            color: #1a2a3a !important;
+        }
+        body:not(.dark-mode) .mission-item h4 { color: #1a2a3a !important; }
+        body:not(.dark-mode) .mission-item p { color: #4b5563 !important; }
+        body:not(.dark-mode) .gallery-card,
+        body:not(.dark-mode) .creator-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            color: #1a2a3a !important;
+        }
+        body:not(.dark-mode) .gallery-copy h4,
+        body:not(.dark-mode) .creator-info h4 { color: #1a2a3a !important; }
+        body:not(.dark-mode) .gallery-copy p,
+        body:not(.dark-mode) .creator-quote,
+        body:not(.dark-mode) .creators-intro { color: #4b5563 !important; }
+        body:not(.dark-mode) .section-heading h3 { color: #1a2a3a !important; }
+
+        /* -- DARK MODE: keep dark cards, light text -- */
+        body.dark-mode .hero,
+        body.dark-mode .section-card {
+            background: rgba(28, 28, 28, 0.96) !important;
+            color: #e4e6eb !important;
+        }
+        body.dark-mode h1,
+        body.dark-mode .hero-copy h1 { color: #f5f5f5 !important; }
+        body.dark-mode .hero-copy p { color: #9ca3af !important; }
+        body.dark-mode .stat {
+            background: rgba(40, 40, 40, 0.85) !important;
+        }
+        body.dark-mode .stat strong { color: var(--primary, #fcd34d) !important; }
+        body.dark-mode .stat span { color: #9ca3af !important; }
+        body.dark-mode .section-heading h3 { color: #e2e8f0 !important; }
+        body.dark-mode .creators-intro { color: #9ca3af !important; }
+
+        /* -- RESPONSIVE -- */
         @media (max-width: 980px) {
             body { padding: 76px 10px 10px; }
             .topbar { top: 6px; left: 6px; right: 6px; }
@@ -296,7 +347,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
 <body>
 <form id="form1" runat="server">
 
-            <!-- ═══ TOPBAR ═══ -->
+            <!-- --- TOPBAR --- -->
             <div class="topbar">
                 <div class="brand">
                     <div class="brand-badge">
@@ -374,7 +425,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
         image filenames below in the same project folder.</p>
         <div class="creators-grid">
             <article class="creator-card"
-                onclick="openImageModal('Amay Riza Ann.jpg?v=2','Amay Riza Ann','Creator — We built this platform to make every important school update easier to reach, understand, and trust.')">
+                onclick="openImageModal('Amay Riza Ann.jpg?v=2','Amay Riza Ann','Creator � We built this platform to make every important school update easier to reach, understand, and trust.')">
                 <div class="creator-photo"><img src="Amay Riza Ann.jpg?v=2" alt="Amay Riza Ann" /></div>
                 <div class="creator-info">
                     <h4>Amay Riza Ann</h4>
@@ -383,7 +434,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
                 </div>
             </article>
             <article class="creator-card"
-                onclick="openImageModal('Quevedo Mary Chris.jpg?v=2','Quevedo Mary Chris','Creator — Good communication creates a stronger campus community, and this portal was designed to support that every day.')">
+                onclick="openImageModal('Quevedo Mary Chris.jpg?v=2','Quevedo Mary Chris','Creator � Good communication creates a stronger campus community, and this portal was designed to support that every day.')">
                 <div class="creator-photo"><img src="Quevedo Mary Chris.jpg?v=2" alt="Quevedo Mary Chris" /></div>
                 <div class="creator-info">
                     <h4>Quevedo Mary Chris</h4>
@@ -392,7 +443,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
                 </div>
             </article>
             <article class="creator-card"
-                onclick="openImageModal('Zamora Shaira Jane.jpg?v=2','Zamora Shaira Jane','Creator — Our vision was to create a space where announcements feel clear, official, and always within reach.')">
+                onclick="openImageModal('Zamora Shaira Jane.jpg?v=2','Zamora Shaira Jane','Creator � Our vision was to create a space where announcements feel clear, official, and always within reach.')">
                 <div class="creator-photo"><img src="Zamora Shaira Jane.jpg?v=2" alt="Zamora Shaira Jane" /></div>
                 <div class="creator-info">
                     <h4>Zamora Shaira Jane</h4>
@@ -421,7 +472,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
 </div>
 
     <script>
-        // ── Theme sync — reads campus_theme set by other pages ──
+        // -- Theme sync � reads campus_theme set by other pages --
         (function () {
             function applyTheme(val) {
                 document.body.classList.toggle('dark-mode', val === 'dark');
@@ -432,7 +483,7 @@ body:not(.dark-mode) .image-caption h4 { color: var(--primary); }
             });
         })();
 
-        // ── University Theme ─────────────────────────────────────────
+        // -- University Theme -----------------------------------------
         (function () {
             var UNIVERSITY_THEMES = {
                 'Default':       { overlay: 'rgba(255,255,255,0)',      header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },

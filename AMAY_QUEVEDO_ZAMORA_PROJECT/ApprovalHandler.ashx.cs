@@ -123,11 +123,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                     currentStatus = result.ToString();
                 }
 
-                // Once approved, the status is locked — no further changes allowed.
-                if (string.Equals(currentStatus, "Approved", StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(newStatus, "Approved", StringComparison.OrdinalIgnoreCase))
+                // Once Approved or Rejected, the decision is final — no further changes allowed.
+                if (currentStatus == "Approved" || currentStatus == "Rejected")
                 {
-                    ctx.Response.Write(js.Serialize(new { ok = false, error = "Approved announcements cannot be changed." }));
+                    ctx.Response.Write(js.Serialize(new { ok = false, error = "Decision is final and cannot be changed." }));
                     return;
                 }
 

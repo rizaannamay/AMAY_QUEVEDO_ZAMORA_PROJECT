@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Announcement Portal - Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="dark-mode.css" />
     <link rel="stylesheet" href="responsive.css" />
     <style>
@@ -1022,17 +1022,17 @@ body.theme-christmas::before {
         body.dark-mode .btn-dm-cancel { background: rgba(45,45,45,0.80); color: #d1d5db; border-color: rgba(255,255,255,0.15) !important; }
         body.dark-mode .btn-dm-cancel:hover { background: rgba(59,130,246,0.15); color: #93c5fd; }
 
-        /* ── Admin stat strip ── */
+        /* -- Admin stat strip -- */
         .admin-stat-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; margin-bottom:16px; }
         .admin-stat-box { background:var(--surface); border:1px solid var(--border); border-radius:18px; padding:14px 16px; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
         .admin-stat-num { font-size:24px; font-weight:800; color: var(--uni-accent); }
         .admin-stat-lbl { font-size:10px; color:var(--muted); font-weight:600; text-transform:uppercase; margin-top:3px; }
-        /* ── Admin panel tabs ── */
+        /* -- Admin panel tabs -- */
         .admin-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
         .admin-tab { padding:8px 16px; border-radius:30px; border:1px solid var(--border); background:none; font-size:13px; font-weight:600; color:var(--muted); cursor:pointer; transition:all 0.2s; }
         .admin-tab:hover { background:var(--surface-soft); color:var(--primary); }
         .admin-tab.active { background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color:#fff; border-color:transparent; }
-        /* ── User table ── */
+        /* -- User table -- */
         .user-table { width:100%; border-collapse:collapse; font-size:13px; }
         .user-table th { padding:10px 14px; text-align:left; font-weight:700; color:var(--muted); border-bottom:2px solid var(--border); font-size:11px; text-transform:uppercase; }
         .user-table td { padding:10px 14px; border-bottom:1px solid var(--border); vertical-align:middle; }
@@ -1055,7 +1055,7 @@ body.theme-christmas::before {
         .tbl-btn-suspend:hover { background:#d97706; color:#fff; }
         .tbl-btn-activate{ background:#dbeafe; color:#1e40af; }
         .tbl-btn-activate:hover{ background:#2563eb; color:#fff; }
-        /* Dark mode pill overrides — ensure text is always visible */
+        /* Dark mode pill overrides � ensure text is always visible */
         body.dark-mode .pill-active    { background:rgba(16,185,129,0.25);  color:#6ee7b7; }
         body.dark-mode .pill-pending   { background:rgba(245,158,11,0.25);  color:#fcd34d; }
         body.dark-mode .pill-suspended { background:rgba(239,68,68,0.25);   color:#fca5a5; }
@@ -1070,7 +1070,7 @@ body.theme-christmas::before {
         body.dark-mode .user-table th { color:#94a3b8; }
         body.dark-mode .user-table td { color:#e2e8f0; border-color:rgba(255,255,255,0.08); }
         body.dark-mode .user-table tr:hover td { background:rgba(255,255,255,0.04); }
-        /* ── Approval cards ── */
+        /* -- Approval cards -- */
         .approval-card { background:var(--surface-strong); border-radius:16px; border:1px solid var(--border); margin-bottom:14px; overflow:hidden; }
         .approval-card.border-pending  { border-left:4px solid #f59e0b; }
         .approval-card.border-approved { border-left:4px solid #10b981; }
@@ -1084,7 +1084,7 @@ body.theme-christmas::before {
         .reject-reason-row { display:none; flex:1; min-width:180px; gap:6px; align-items:center; }
         .reject-reason-row.show { display:flex; }
         .reject-reason-inp { flex:1; padding:7px 12px; border-radius:20px; border:1px solid #ef4444; background:var(--surface-soft); font-size:12px; outline:none; }
-        /* ── Theme selector ── */
+        /* -- Theme selector -- */
         .theme-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:12px; }
         .theme-card {
             border:2px solid var(--border); border-radius:16px; padding:16px 12px;
@@ -1118,7 +1118,7 @@ body.theme-christmas::before {
         .theme-card .theme-icon i { font-size:24px; color: var(--uni-accent); }
         .theme-card .theme-name { font-size:12px; font-weight:700; color:var(--primary); }
         .theme-card .theme-desc { font-size:10px; color:var(--muted); margin-top:3px; }
-        /* ── Calendar ── */
+        /* -- Calendar -- */
         .cal-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
         .cal-nav-btn { background:none; border:1px solid var(--border); border-radius:50%; width:32px; height:32px; cursor:pointer; font-size:14px; color:var(--primary); display:flex; align-items:center; justify-content:center; }
         .cal-nav-btn:hover { background:var(--active-bg); }
@@ -1135,7 +1135,7 @@ body.theme-christmas::before {
         .cal-event-item { padding:10px 14px; border-radius:12px; border-left:3px solid var(--uni-accent); background:var(--surface-soft); font-size:13px; display:flex; justify-content:space-between; align-items:center; }
         .cal-event-item .ev-title { font-weight:600; color:var(--primary); }
         .cal-event-item .ev-meta  { font-size:11px; color:var(--muted); margin-top:2px; }
-        /* ── Admin overlay panel ── */
+        /* -- Admin overlay panel -- */
         .admin-panel-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; padding:20px; }
         .admin-panel-overlay.open { display:flex; }
         .admin-panel-box { background:var(--surface-strong); border-radius:24px; width:100%; max-width:900px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.3); }
@@ -1161,18 +1161,21 @@ body.theme-christmas::before {
 
 .logo {
     display: flex;
-    flex-direction: column;
-    line-height: 1.05;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    line-height: 1.2;
 }
 
 .logo::after {
     content: var(--theme-label);
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 900;
     letter-spacing: 0.5px;
     color: rgba(255,255,255,0.92);
-    margin-left: 32px;
-    margin-top: 3px;
+    width: 100%;
+    margin-left: 30px;
+    margin-top: 1px;
 }
 
 .header {
@@ -1235,7 +1238,7 @@ body.theme-intramurals .admin-stat-lbl {
     color: #d1d5db;
 }
 
-/* Intramurals — Admin Panels & Modals (LIGHT) */
+/* Intramurals � Admin Panels & Modals (LIGHT) */
 body.theme-intramurals:not(.dark-mode) .admin-panel-box,
 body.theme-intramurals:not(.dark-mode) .modal-content {
     background: rgba(255, 245, 235, 0.98) !important;
@@ -1277,7 +1280,7 @@ body.theme-intramurals:not(.dark-mode) .form-group input,
 body.theme-intramurals:not(.dark-mode) .form-group textarea,
 body.theme-intramurals:not(.dark-mode) .form-group select { background: rgba(255,255,255,0.90) !important; border-color: rgba(255,122,0,0.22) !important; color: #1a1a1a !important; }
 
-/* Intramurals — Admin Panels & Modals (DARK) */
+/* Intramurals � Admin Panels & Modals (DARK) */
 body.theme-intramurals.dark-mode .admin-panel-box,
 body.theme-intramurals.dark-mode .modal-content {
     background: rgba(18, 10, 5, 0.97) !important;
@@ -1348,7 +1351,7 @@ body.theme-foundation .post-stats span:hover {
     color: #eab308;
 }
 
-/* Foundation Week — Admin Panels & Modals (LIGHT) */
+/* Foundation Week � Admin Panels & Modals (LIGHT) */
 body.theme-foundation:not(.dark-mode) .admin-panel-box,
 body.theme-foundation:not(.dark-mode) .modal-content {
     background: rgba(255, 252, 220, 0.98) !important;
@@ -1379,7 +1382,7 @@ body.theme-foundation:not(.dark-mode) .form-group input,
 body.theme-foundation:not(.dark-mode) .form-group textarea,
 body.theme-foundation:not(.dark-mode) .form-group select { background: rgba(255,252,220,0.90) !important; border-color: rgba(234,179,8,0.30) !important; color: #152033 !important; }
 
-/* Foundation Week — Admin Panels & Modals (DARK) */
+/* Foundation Week � Admin Panels & Modals (DARK) */
 body.theme-foundation.dark-mode .admin-panel-box,
 body.theme-foundation.dark-mode .modal-content {
     background: rgba(30, 22, 5, 0.97) !important;
@@ -1439,7 +1442,7 @@ body.theme-womens .post-stats span:hover {
     color: #7e22ce;
 }
 
-/* Women's Month — Admin Panels & Modals (LIGHT) */
+/* Women's Month � Admin Panels & Modals (LIGHT) */
 body.theme-womens:not(.dark-mode) .admin-panel-box,
 body.theme-womens:not(.dark-mode) .modal-content {
     background: rgba(245, 240, 255, 0.98) !important;
@@ -1470,7 +1473,7 @@ body.theme-womens:not(.dark-mode) .form-group input,
 body.theme-womens:not(.dark-mode) .form-group textarea,
 body.theme-womens:not(.dark-mode) .form-group select { background: rgba(245,240,255,0.90) !important; border-color: rgba(126,34,206,0.25) !important; color: #172033 !important; }
 
-/* Women's Month — Admin Panels & Modals (DARK) */
+/* Women's Month � Admin Panels & Modals (DARK) */
 body.theme-womens.dark-mode .admin-panel-box,
 body.theme-womens.dark-mode .modal-content {
     background: rgba(20, 12, 35, 0.97) !important;
@@ -1530,7 +1533,7 @@ body.theme-christmas .post-stats span:hover {
     color: #15803d;
 }
 
-/* Christmas — Admin Panels & Modals (LIGHT) */
+/* Christmas � Admin Panels & Modals (LIGHT) */
 body.theme-christmas:not(.dark-mode) .admin-panel-box,
 body.theme-christmas:not(.dark-mode) .modal-content {
     background: rgba(240, 253, 244, 0.98) !important;
@@ -1561,7 +1564,7 @@ body.theme-christmas:not(.dark-mode) .form-group input,
 body.theme-christmas:not(.dark-mode) .form-group textarea,
 body.theme-christmas:not(.dark-mode) .form-group select { background: rgba(240,253,244,0.90) !important; border-color: rgba(21,128,61,0.25) !important; color: #0f172a !important; }
 
-/* Christmas — Admin Panels & Modals (DARK) */
+/* Christmas � Admin Panels & Modals (DARK) */
 body.theme-christmas.dark-mode .admin-panel-box,
 body.theme-christmas.dark-mode .modal-content {
     background: rgba(5, 20, 12, 0.97) !important;
@@ -1682,7 +1685,7 @@ body.theme-christmas .post-avatar {
                             <i class="fas fa-thumbtack"></i> Pinned Announcements
                         </button>
                         <div class="divider-light"></div>
-                        <%-- ── Admin-only features ── --%>
+                        <%-- -- Admin-only features -- --%>
                         <button type="button" class="panel-menu-item" onclick="openAdminPanel('approval')">
                             <i class="fas fa-check-circle"></i> Announcement Approval
                             <span id="pendingBadge" style="margin-left:auto;background:#f59e0b;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;display:none;">0</span>
@@ -1721,23 +1724,23 @@ body.theme-christmas .post-avatar {
                         <%-- Admin stat strip --%>
                         <div class="admin-stat-strip">
                             <div class="admin-stat-box">
-                                <div class="admin-stat-num" id="statTotalPosts">—</div>
+                                <div class="admin-stat-num" id="statTotalPosts">�</div>
                                 <div class="admin-stat-lbl"><i class="fas fa-bullhorn"></i> Total Posts</div>
                             </div>
                             <div class="admin-stat-box">
-                                <div class="admin-stat-num" id="statPending" style="color:#f59e0b;">—</div>
+                                <div class="admin-stat-num" id="statPending" style="color:#f59e0b;">�</div>
                                 <div class="admin-stat-lbl"><i class="fas fa-clock"></i> Pending</div>
                             </div>
                             <div class="admin-stat-box">
-                                <div class="admin-stat-num" id="statApproved" style="color:#10b981;">—</div>
+                                <div class="admin-stat-num" id="statApproved" style="color:#10b981;">�</div>
                                 <div class="admin-stat-lbl"><i class="fas fa-check-circle"></i> Approved</div>
                             </div>
                             <div class="admin-stat-box">
-                                <div class="admin-stat-num" id="statUsers">—</div>
+                                <div class="admin-stat-num" id="statUsers">�</div>
                                 <div class="admin-stat-lbl"><i class="fas fa-users"></i> Users</div>
                             </div>
                             <div class="admin-stat-box">
-                                <div class="admin-stat-num" id="statPendingTeachers" style="color:#3b82f6;">—</div>
+                                <div class="admin-stat-num" id="statPendingTeachers" style="color:#3b82f6;">�</div>
                                 <div class="admin-stat-lbl"><i class="fas fa-user-clock"></i> Pending Teachers</div>
                             </div>
                         </div>
@@ -1805,7 +1808,7 @@ body.theme-christmas .post-avatar {
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. — optional)</span></label>
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. � optional)</span></label>
                         <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                             <i class="fas fa-paperclip" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
@@ -1858,9 +1861,9 @@ body.theme-christmas .post-avatar {
             </div>
         </div>
 
-        <%-- ══════════════════════════════════════════════════════
+        <%-- ------------------------------------------------------
              ADMIN OVERLAY PANELS
-             ══════════════════════════════════════════════════════ --%>
+             ------------------------------------------------------ --%>
 
         <%-- 1. Announcement Approval Panel --%>
         <div id="approvalPanel" class="admin-panel-overlay">
@@ -2176,9 +2179,18 @@ body.theme-christmas .post-avatar {
             let filtered = st_announcements.filter(a => filter === 'All' || a.category === filter);
 
             if (focusPostId > 0) {
-                filtered = filtered.filter(a => a.id === focusPostId);
-                let boardModeLabel = document.getElementById('boardModeLabel');
-                if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+                let focusFiltered = filtered.filter(a => a.id === focusPostId);
+                // If the focused post no longer exists (e.g. rejected), auto-clear focus
+                if (focusFiltered.length === 0) {
+                    focusPostId = 0;
+                    history.replaceState(null, '', 'Admin.aspx');
+                    let boardModeLabel = document.getElementById('boardModeLabel');
+                    if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
+                } else {
+                    filtered = focusFiltered;
+                    let boardModeLabel = document.getElementById('boardModeLabel');
+                    if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
+                }
             } else {
                 let boardModeLabel = document.getElementById('boardModeLabel');
                 if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
@@ -2191,12 +2203,10 @@ body.theme-christmas .post-avatar {
             );
 
             if (focusPostId > 0) {
-                let exists = filtered.length > 0;
                 container.innerHTML =
                     `<div class="focus-banner">
-                        <button type="button" class="focus-back-btn" onclick="window.location.href='Admin.aspx'">Back to All Posts</button>
-                    </div>` +
-                    (exists ? '' : `<div class="no-comments" style="padding:30px;">That announcement could not be found.</div>`);
+                        <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Admin.aspx');renderBoard();">Back to All Posts</button>
+                    </div>`;
             } else {
                 container.innerHTML = '';
             }
@@ -2832,7 +2842,7 @@ body.theme-christmas .post-avatar {
         function logout() { window.location.href = 'Logout.aspx'; }
         function navigateWithFlip(url) { window.location.href = url; }
 
-        // ── MOBILE SIDEBAR ──────────────────────────────────────────
+        // -- MOBILE SIDEBAR ------------------------------------------
         (function () {
             var btn = document.getElementById('hamburgerBtn');
             var panel = document.getElementById('slideoutPanel');
@@ -2876,7 +2886,7 @@ body.theme-christmas .post-avatar {
         let panelToggle = document.getElementById('panelThemeToggle');
         if (panelToggle) panelToggle.classList.toggle('active', savedTheme === 'dark');
 
-        // ── University Theme ─────────────────────────────────────────
+        // -- University Theme -----------------------------------------
         var UNIVERSITY_THEMES = {
             'Default': {
                 bodyClass: 'theme-default',
@@ -2914,7 +2924,7 @@ body.theme-christmas .post-avatar {
 
             'FoundationWeek': {
                 bodyClass: 'theme-foundation',
-                label: 'FOUNDATION WEEK 🎉',
+                label: 'FOUNDATION WEEK ??',
                 bg: "url('Foundation_bg.jpg')",
                 overlay: 'rgba(255,255,255,0.68)',
                 header: 'linear-gradient(135deg, #f5b700 0%, #facc15 50%, #ffd84d 100%)',
@@ -3022,7 +3032,7 @@ body.theme-christmas .post-avatar {
         updateNotifBadge();
         setInterval(updateNotifBadge, 30000);
 
-        // ── 5-minute calendar reminder polling ───────────────────────
+        // -- 5-minute calendar reminder polling -----------------------
         function pollCalendarReminders() {
             fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
                 .then(function (r) { return r.json(); })
@@ -3053,9 +3063,9 @@ body.theme-christmas .post-avatar {
                 .catch(() => { });
         }
 
-        // ══════════════════════════════════════════════════════════════
+        // --------------------------------------------------------------
         // ADMIN PANEL LOGIC
-        // ══════════════════════════════════════════════════════════════
+        // --------------------------------------------------------------
 
         let adminData = { announcements: [], users: [], calEvents: [], activeTheme: 'Default' };
         let approvalFilter = 'All', userFilter = 'All';
@@ -3063,13 +3073,13 @@ body.theme-christmas .post-avatar {
         let calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
         let selectedCalDate = '';
 
-        // ── Open / Close panels ──────────────────────────────────────
+        // -- Open / Close panels --------------------------------------
         function openAdminPanel(name) {
             document.getElementById(name + 'Panel').classList.add('open');
             if (name === 'approval') { approvalFilter = 'All'; loadApprovalData(); }
             else if (name === 'users') {
                 userFilter = 'All';
-                // Reset tabs — make All active
+                // Reset tabs � make All active
                 document.querySelectorAll('#usersPanel .admin-tab').forEach(function (b) { b.classList.remove('active'); });
                 var allTab = document.querySelector('#usersPanel .admin-tab');
                 if (allTab) allTab.classList.add('active');
@@ -3089,7 +3099,7 @@ body.theme-christmas .post-avatar {
             });
         });
 
-        // ── Load admin stats ─────────────────────────────────────────
+        // -- Load admin stats -----------------------------------------
         function loadAdminStats() {
             fetch('UserMgmtHandler.ashx?action=getStats', { credentials: 'same-origin' })
                 .then(function (r) { return r.json(); })
@@ -3109,7 +3119,7 @@ body.theme-christmas .post-avatar {
         loadAdminStats();
         setInterval(loadAdminStats, 60000);
 
-        // ── ANNOUNCEMENT APPROVAL ────────────────────────────────────
+        // -- ANNOUNCEMENT APPROVAL ------------------------------------
         function loadApprovalData() {
             document.getElementById('approvalCardsContainer').innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Loading...</div>';
             fetch('ApprovalHandler.ashx?action=getAnnouncements', { credentials: 'same-origin' })
@@ -3148,19 +3158,27 @@ body.theme-christmas .post-avatar {
                     html += '<div class="approval-card ' + borderCls + '" id="acard-' + a.id + '">';
                     html += '<div class="approval-head">';
                     html += '<div><div style="font-weight:700;font-size:15px;color:var(--primary);">' + escapeHtml(a.title) + '</div>';
-                    html += '<div style="font-size:12px;color:var(--muted);margin-top:3px;"><i class="fas fa-user-tie" style="margin-right:4px;"></i>' + escapeHtml(a.authorName) + ' &nbsp;·&nbsp; ' + dateStr + '</div></div>';
+                    html += '<div style="font-size:12px;color:var(--muted);margin-top:3px;"><i class="fas fa-user-tie" style="margin-right:4px;"></i>' + escapeHtml(a.authorName) + ' &nbsp;�&nbsp; ' + dateStr + '</div></div>';
                     html += '<span class="status-badge ' + badgeCls + '"><i class="fas ' + icon + '"></i> ' + a.status + '</span>';
                     html += '</div>';
                     html += '<div class="approval-body">' + escapeHtml(a.content.length > 200 ? a.content.substring(0, 200) + '...' : a.content) + '</div>';
                     if (a.rejectionReason) html += '<div style="margin:0 18px 10px;padding:8px 12px;background:#fee2e2;border-radius:10px;font-size:12px;color:#991b1b;"><i class="fas fa-exclamation-circle" style="margin-right:4px;"></i><strong>Rejection reason:</strong> ' + escapeHtml(a.rejectionReason) + '</div>';
                     html += '<div class="approval-actions">';
-                    if (a.status !== 'Approved') html += '<button class="btn-approve-sm" onclick="reviewAnnouncement(' + a.id + ',\'Approve\',this)"><i class="fas fa-check" style="margin-right:4px;"></i>Approve</button>';
-                    if (a.status !== 'Rejected' && a.status !== 'Approved') html += '<button class="btn-reject-sm" onclick="showRejectRow(' + a.id + ',this)"><i class="fas fa-times" style="margin-right:4px;"></i>Reject</button>';
-                    if (a.status !== 'Pending' && a.status !== 'Approved') html += '<button class="btn-undo-sm" onclick="reviewAnnouncement(' + a.id + ',\'Pending\',this)"><i class="fas fa-undo" style="margin-right:4px;"></i>Reset</button>';
+                    if (a.status === 'Pending') {
+                        // Only Pending posts can be acted on � decisions are final
+                        html += '<button type="button" class="btn-approve-sm" onclick="reviewAnnouncement(' + a.id + ',\'Approve\',this)"><i class="fas fa-check" style="margin-right:4px;"></i>Approve</button>';
+                        html += '<button type="button" class="btn-reject-sm" onclick="showRejectRow(' + a.id + ',this)"><i class="fas fa-times" style="margin-right:4px;"></i>Reject</button>';
+                    } else {
+                        // Approved or Rejected � locked, show a simple read-only label
+                        var lockMsg = a.status === 'Approved'
+                            ? '<span style="font-size:12px;color:#059669;font-weight:600;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>Approved</span>'
+                            : '<span style="font-size:12px;color:#dc2626;font-weight:600;"><i class="fas fa-times-circle" style="margin-right:4px;"></i>Rejected</span>';
+                        html += lockMsg;
+                    }
                     html += '<div class="reject-reason-row" id="rr-' + a.id + '">';
                     html += '<input type="text" class="reject-reason-inp" id="rri-' + a.id + '" placeholder="Reason (optional)..." />';
-                    html += '<button class="btn-reject-sm" onclick="reviewAnnouncement(' + a.id + ',\'Reject\',this)">Confirm</button>';
-                    html += '<button class="btn-undo-sm" onclick="hideRejectRow(' + a.id + ')">Cancel</button>';
+                    html += '<button type="button" class="btn-reject-sm" onclick="reviewAnnouncement(' + a.id + ',\'Reject\',this)">Confirm</button>';
+                    html += '<button type="button" class="btn-undo-sm" onclick="hideRejectRow(' + a.id + ')">Cancel</button>';
                     html += '</div></div></div>';
                 });
             }
@@ -3174,6 +3192,12 @@ body.theme-christmas .post-avatar {
         function hideRejectRow(id) {
             var row = document.getElementById('rr-' + id);
             if (row) row.classList.remove('show');
+            // Re-show the Reject button
+            var card = document.getElementById('acard-' + id);
+            if (card) {
+                var rejectBtn = card.querySelector('.btn-reject-sm');
+                if (rejectBtn) rejectBtn.style.display = '';
+            }
         }
 
         function reviewAnnouncement(id, action, btn) {
@@ -3185,13 +3209,21 @@ body.theme-christmas .post-avatar {
                 .then(function (res) {
                     if (!res.ok) { showToast('Error: ' + (res.error || 'Unknown')); if (btn) { btn.disabled = false; btn.style.opacity = ''; } return; }
                     showToast(action === 'Approve' ? 'Approved!' : action === 'Reject' ? 'Rejected.' : 'Reset to Pending.');
+                    // If we rejected the currently focused post, clear focus so the board
+                    // returns to normal view instead of showing "post not found"
+                    if (action === 'Reject' && focusPostId === id) {
+                        focusPostId = 0;
+                        history.replaceState(null, '', 'Admin.aspx');
+                        var boardModeLabel = document.getElementById('boardModeLabel');
+                        if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">All</span>';
+                    }
                     loadApprovalData();
                     loadAdminStats();
                     loadAnnouncementsFromDB();
                 }).catch(function () { if (btn) { btn.disabled = false; btn.style.opacity = ''; } });
         }
 
-        // ── USER MANAGEMENT ──────────────────────────────────────────
+        // -- USER MANAGEMENT ------------------------------------------
         function loadUsersData() {
             document.getElementById('userTableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:var(--muted);">Loading...</td></tr>';
             fetch('UserMgmtHandler.ashx?action=getUsers', { credentials: 'same-origin' })
@@ -3276,7 +3308,7 @@ body.theme-christmas .post-avatar {
                 }).catch(function () { showToast('Network error.'); });
         }
 
-        // ── THEME ────────────────────────────────────────────────────
+        // -- THEME ----------------------------------------------------
         function loadThemeData() {
             fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
                 .then(function (r) { return r.json(); })
@@ -3309,7 +3341,7 @@ body.theme-christmas .post-avatar {
                 }).catch(function () { });
         }
 
-        // ── CALENDAR ─────────────────────────────────────────────────
+        // -- CALENDAR -------------------------------------------------
         var adminCalSelectedDate = '';
         var adminCalEditingId = null; // null = adding new event; integer = editing existing event
         var adminTypeColorMap = { Exam: '#f59e0b', Deadline: '#ef4444', Event: '#10b981', Quiz: '#3b82f6', Reminder: '#8b5cf6', General: '#c9920a' };

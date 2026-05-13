@@ -63,13 +63,34 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 ShowError("Please enter your username and password."); return;
             }
 
-            string hashedPassword = HashPassword(password);
+            string ipAddress = Request.UserHostAddress ?? "";
 
             try
             {
                 using (var con = new SqlConnection(connectionString))
                 {
                     con.Open();
+
+                    // ── Brute-force lockout: max 5 failed attempts in 15 minutes ──
+                    const int maxAttempts  = 5;
+                    const int windowMinutes = 15;
+                    using (var lockCmd = new SqlCommand(
+                        "SELECT COUNT(1) FROM LoginAttempts " +
+                        "WHERE Username = @u AND Success = 0 " +
+                        "AND AttemptTime >= DATEADD(MINUTE, -@w, GETDATE())", con))
+                    {
+                        lockCmd.Parameters.AddWithValue("@u", username);
+                        lockCmd.Parameters.AddWithValue("@w", windowMinutes);
+                        int recentFails = (int)lockCmd.ExecuteScalar();
+                        if (recentFails >= maxAttempts)
+                        {
+                            LogAttempt(con, username, ipAddress, false);
+                            ShowError("Too many failed attempts. Please wait 15 minutes before trying again.");
+                            return;
+                        }
+                    }
+
+                    string hashedPassword = HashPassword(password);
 
                     // First try hashed password (new accounts)
                     string sql = "SELECT UserId, FullName, Email, Role, Username, ProfileImage, Password, ISNULL(AccountStatus,'Active') AS AccountStatus FROM Users WHERE Username = @u AND Role = @r";
@@ -88,6 +109,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                                 if (!isHashMatch && !isPlainMatch)
                                 {
+                                    dr.Close();
+                                    LogAttempt(con, username, ipAddress, false);
                                     ShowError("Invalid role, username, or password.");
                                     return;
                                 }
@@ -104,16 +127,19 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                 // Block pending/suspended/rejected accounts
                                 if (acctStatus == "Pending")
                                 {
+                                    LogAttempt(con, username, ipAddress, false);
                                     ShowError("Your account is pending admin approval. Please wait for activation.");
                                     return;
                                 }
                                 if (acctStatus == "Suspended")
                                 {
+                                    LogAttempt(con, username, ipAddress, false);
                                     ShowError("Your account has been suspended. Please contact the administrator.");
                                     return;
                                 }
                                 if (acctStatus == "Rejected")
                                 {
+                                    LogAttempt(con, username, ipAddress, false);
                                     ShowError("Your account registration was not approved. Please contact the administrator.");
                                     return;
                                 }
@@ -129,6 +155,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                                         upd.ExecuteNonQuery();
                                     }
                                 }
+
+                                // Successful login — log it and clear old failed attempts
+                                LogAttempt(con, username, ipAddress, true);
 
                                 Session["UserId"]       = userId;
                                 Session["Username"]     = username;
@@ -147,6 +176,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                             }
                             else
                             {
+                                dr.Close();
+                                LogAttempt(con, username, ipAddress, false);
                                 ShowError("Invalid role, username, or password.");
                             }
                         }
@@ -157,6 +188,23 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             {
                 ShowError("Database error: " + ex.Message);
             }
+        }
+
+        private void LogAttempt(SqlConnection con, string username, string ipAddress, bool success)
+        {
+            try
+            {
+                using (var cmd = new SqlCommand(
+                    "INSERT INTO LoginAttempts (Username, IpAddress, AttemptTime, Success) " +
+                    "VALUES (@u, @ip, GETDATE(), @s)", con))
+                {
+                    cmd.Parameters.AddWithValue("@u",  username);
+                    cmd.Parameters.AddWithValue("@ip", ipAddress);
+                    cmd.Parameters.AddWithValue("@s",  success ? 1 : 0);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch { /* never let logging break the login flow */ }
         }
 
         private void ShowError(string msg)

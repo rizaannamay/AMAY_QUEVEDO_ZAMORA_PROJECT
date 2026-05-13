@@ -27,6 +27,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 switch (action)
                 {
                     case "getAll": GetAll(ctx, js); break;
+                    case "getById": GetById(ctx, js); break;
                     case "create": Create(ctx, js); break;
                     case "update": Update(ctx, js); break;
                     case "delete": Delete(ctx, js); break;
@@ -72,16 +73,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
 
                 // Build WHERE clause based on role:
-                // Admin  → sees all posts
-                // Teacher → sees Approved posts + their own pending/rejected posts
-                // Student → sees only Approved posts
-                string statusFilter;
-                if (isAdmin)
-                    statusFilter = "";
-                else if (isTeacher)
-                    statusFilter = " AND (ISNULL(a.Status,'Approved')='Approved' OR a.UserId=@myId)";
-                else
-                    statusFilter = " AND ISNULL(a.Status,'Approved')='Approved'";
+                // Admin    → sees only Approved posts on the main board
+                //            (Pending/Rejected are handled in the Approval Panel via ApprovalHandler)
+                // Teacher  → sees only Approved posts (own pending posts are NOT shown on the board)
+                // Student  → sees only Approved posts
+                string statusFilter = " AND ISNULL(a.Status,'Approved') = 'Approved'";
 
                 // IsPinned meaning differs by role:
                 //   Admin   → global IsPinned flag on the Announcements row
@@ -106,7 +102,6 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 using (var cmd = new SqlCommand(sql, con))
                 {
                     cmd.Parameters.AddWithValue("@currentUid", currentUserId > 0 ? (object)currentUserId : DBNull.Value);
-                    if (isTeacher) cmd.Parameters.AddWithValue("@myId", currentUserId);
                     if (filterCat)  cmd.Parameters.AddWithValue("@cat",  category);
                     if (filterDate) cmd.Parameters.AddWithValue("@date", date);
 
@@ -143,6 +138,61 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
 
             ctx.Response.Write(js.Serialize(new { ok = true, data = list }));
+        }
+
+        // ── GET SINGLE POST (owner only, any status) ────────────────────────
+        private void GetById(HttpContext ctx, JavaScriptSerializer js)
+        {
+            bool isLoggedIn = ctx.Session["IsLoggedIn"] != null && (bool)ctx.Session["IsLoggedIn"];
+            int currentUserId = ctx.Session["UserId"] != null ? Convert.ToInt32(ctx.Session["UserId"]) : 0;
+            string sessionRole = ctx.Session["Role"] != null ? ctx.Session["Role"].ToString() : "";
+            bool isAdmin = string.Equals(sessionRole, "Admin", StringComparison.OrdinalIgnoreCase);
+
+            if (!isLoggedIn)
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Unauthorized" }));
+                return;
+            }
+
+            int id;
+            if (!int.TryParse(ctx.Request["id"], out id))
+            {
+                ctx.Response.Write(js.Serialize(new { ok = false, error = "Invalid ID" }));
+                return;
+            }
+
+            using (var con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+                // Owner or admin can fetch any status; others cannot
+                string ownerCheck = isAdmin ? "" : " AND a.UserId = @uid";
+                string sql = "SELECT a.AnnouncementId, a.Title, ISNULL(a.Status,'Approved') AS Status, " +
+                             "a.RejectionReason FROM Announcements a WHERE a.AnnouncementId = @id" + ownerCheck;
+
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    if (!isAdmin) cmd.Parameters.AddWithValue("@uid", currentUserId);
+                    using (var dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            ctx.Response.Write(js.Serialize(new
+                            {
+                                ok = true,
+                                id = Convert.ToInt32(dr["AnnouncementId"]),
+                                title = dr["Title"].ToString(),
+                                status = dr["Status"].ToString(),
+                                rejectionReason = dr["RejectionReason"] != DBNull.Value ? dr["RejectionReason"].ToString() : ""
+                            }));
+                        }
+                        else
+                        {
+                            ctx.Response.Write(js.Serialize(new { ok = false, error = "Not found" }));
+                        }
+                    }
+                }
+            }
         }
 
         // ── Helper: save all uploaded files and return comma-separated URLs ──

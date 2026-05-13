@@ -1,12 +1,12 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.login" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.login" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campus Announcement Portal — Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <title>Campus Announcement Portal � Login</title>
+    <link rel="stylesheet" href="font-awesome.min.css" />
     <link rel="stylesheet" href="university-theme-decorations.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -41,7 +41,7 @@
             pointer-events: none;
         }
 
-        /* ── OUTER CARD ── */
+        /* -- OUTER CARD -- */
         .auth-card {
             display: flex;
             width: 100%;
@@ -55,7 +55,7 @@
             z-index: 1;
         }
 
-        /* ── LEFT TEAL PANEL ── */
+        /* -- LEFT TEAL PANEL -- */
         .panel-left {
             width: 42%;
             background-image: url('ctu.png');
@@ -163,7 +163,7 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* ── RIGHT FORM PANEL ── */
+        /* -- RIGHT FORM PANEL -- */
         .panel-right {
             flex: 1;
             display: flex;
@@ -193,7 +193,7 @@
             text-align: center;
         }
 
-        /* ── INPUTS ── */
+        /* -- INPUTS -- */
         .input-wrap {
             position: relative;
             width: 100%;
@@ -251,7 +251,7 @@
 
         .input-wrap select option { background: #fff; color: #1a2a3a; }
 
-        /* ── ERROR BOX ── */
+        /* -- ERROR BOX -- */
         .error-box {
             width: 100%;
             padding: 10px 14px;
@@ -268,7 +268,7 @@
             gap: 8px;
         }
 
-        /* ── LOGIN BUTTON ── */
+        /* -- LOGIN BUTTON -- */
         .btn-login {
             width: 100%;
             padding: 13px;
@@ -308,7 +308,7 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ── DIVIDER ── */
+        /* -- DIVIDER -- */
         .or-divider {
             display: flex;
             align-items: center;
@@ -329,7 +329,7 @@
             white-space: nowrap;
         }
 
-        /* ── SIGN UP LINK ── */
+        /* -- SIGN UP LINK -- */
         .signup-link {
             margin-top: 14px;
             font-size: 13px;
@@ -343,7 +343,7 @@
         }
         .signup-link a:hover { text-decoration: underline; }
 
-        /* ── RESPONSIVE ── */
+        /* -- RESPONSIVE -- */
         @media (max-width: 640px) {
             .auth-card { flex-direction: column; max-width: 100%; border-radius: 20px; margin: 8px; }
             .panel-left { width: 100%; padding: 28px 20px; min-height: unset; }
@@ -375,7 +375,7 @@
         <div class="panel-right">
             <form id="form1" runat="server" style="width:100%;max-width:320px;">
                 <h1>Sign In</h1>
-                <div class="subtitle">Welcome back — please login to continue</div>
+                <div class="subtitle">Welcome back � please login to continue</div>
 
                 <!-- Role -->
                 <div class="input-wrap">
@@ -431,7 +431,7 @@
             if (err && err.innerText.trim() !== '') err.style.display = 'flex';
         })();
 
-        // Show/hide password toggle — uses a flag so it doesn't break postback
+        // Show/hide password toggle � uses a flag so it doesn't break postback
         (function () {
             var toggleBtn = document.getElementById('togglePw');
             var toggleIcon = document.getElementById('togglePwIcon');
@@ -441,7 +441,7 @@
             toggleBtn.addEventListener('click', function (e) {
                 e.preventDefault();
                 visible = !visible;
-                // ASP.NET renders TextMode="Password" as type="password" — we swap it via a wrapper trick
+                // ASP.NET renders TextMode="Password" as type="password" � we swap it via a wrapper trick
                 var val = pwField.value;
                 pwField.setAttribute('type', visible ? 'text' : 'password');
                 pwField.value = val;
@@ -449,7 +449,7 @@
             });
         })();
 
-        // Loading state — fires AFTER form submits (safe for postback)
+        // Loading state � fires AFTER form submits (safe for postback)
         (function () {
             var btn = document.getElementById('<%= btnLogin.ClientID %>');
             if (!btn) return;

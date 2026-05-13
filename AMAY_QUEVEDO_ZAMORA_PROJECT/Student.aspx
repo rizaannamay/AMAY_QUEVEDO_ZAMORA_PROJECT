@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Student.aspx.cs" Inherits="AMAY_QUEVEDO_ZAMORA_PROJECT.Student" %>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Campus Announcement Portal - Student Portal</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="font-awesome.min.css" />
 <link rel="stylesheet" href="dark-mode.css" />
 <link rel="stylesheet" href="responsive.css" />
 <style>
@@ -134,7 +134,7 @@ form { height: auto; min-height: 100%; overflow: visible; }
 .announcement-board { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 18px; background: rgba(248,250,252,0.35); scrollbar-width: none; -ms-overflow-style: none; }
 .announcement-board::-webkit-scrollbar { display: none; }
 
-/* ✅ Focus banner — shown when viewing a single post from a notification */
+/* ? Focus banner � shown when viewing a single post from a notification */
 .focus-banner {
     background: linear-gradient(135deg, rgba(201,146,10,0.10), rgba(168,120,0,0.08));
     border: 1px solid var(--border);
@@ -249,7 +249,7 @@ body.dark-mode #pm-username, body.dark-mode #pm-email, body.dark-mode #pm-role {
 body.dark-mode .action-btn.liked { color: #f87171; }
 body.dark-mode .pin-btn-top { color: rgba(148,163,184,0.5); }
 
-/* ── University Theme dark mode — announcement card overrides ── */
+/* -- University Theme dark mode � announcement card overrides -- */
 body.theme-intramurals .announcement-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.55) !important; }
 body.theme-intramurals .post-author, body.theme-intramurals .post-title { color: #ff9a3c !important; }
 body.theme-intramurals .post-text { color: #e0e0e0 !important; }
@@ -278,11 +278,27 @@ body.dark-mode .panel-menu-item:hover { background: rgba(59,130,246,0.2); color:
 body.dark-mode .dropdown-item-panel { color: #e2e8f0; }
 body.dark-mode .dropdown-item-panel:hover { background: rgba(59,130,246,0.2); color: #ffffff; }
 body.dark-mode .divider-light { background: rgba(148,163,184,0.2); }
-body.dark-mode .comment-input input { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); color: #f1f5f9; }
+body.dark-mode .comment-input input { background: rgba(40,40,40,0.85); border-color: rgba(255,255,255,0.12); color: #f1f5f9; }
 body.dark-mode .comment-input input::placeholder { color: #94a3b8; }
-body.dark-mode .search-box { background: rgba(51,65,85,0.6); border-color: rgba(148,163,184,0.3); }
+body.dark-mode .search-box { background: rgba(40,40,40,0.85); border-color: rgba(255,255,255,0.12); }
 body.dark-mode .search-box input { color: #f1f5f9; }
 body.dark-mode .search-box input::placeholder { color: #94a3b8; }
+
+/* -- Comment input focus ring follows theme -- */
+.comment-input input:focus { outline: none; border-color: var(--uni-accent); box-shadow: 0 0 0 3px rgba(201,146,10,0.18); }
+body.theme-intramurals .comment-input input:focus { border-color: #f97316 !important; box-shadow: 0 0 0 3px rgba(249,115,22,0.20) !important; }
+body.theme-foundation .comment-input input:focus { border-color: #eab308 !important; box-shadow: 0 0 0 3px rgba(234,179,8,0.20) !important; }
+body.theme-womens .comment-input input:focus { border-color: #7e22ce !important; box-shadow: 0 0 0 3px rgba(126,34,206,0.20) !important; }
+body.theme-christmas .comment-input input:focus { border-color: #15803d !important; box-shadow: 0 0 0 3px rgba(21,128,61,0.20) !important; }
+
+/* Christmas dark � comment input */
+body.theme-christmas.dark-mode .comment-input input { background: rgba(3,14,8,0.88) !important; border-color: rgba(21,128,61,0.35) !important; color: #d1fae5 !important; }
+/* Intramurals dark � comment input */
+body.theme-intramurals.dark-mode .comment-input input { background: rgba(18,8,3,0.88) !important; border-color: rgba(255,122,0,0.30) !important; color: #ffd4a8 !important; }
+/* Foundation dark � comment input */
+body.theme-foundation.dark-mode .comment-input input { background: rgba(20,15,2,0.88) !important; border-color: rgba(234,179,8,0.28) !important; color: #fde68a !important; }
+/* Women's dark � comment input */
+body.theme-womens.dark-mode .comment-input input { background: rgba(15,8,28,0.88) !important; border-color: rgba(168,85,247,0.28) !important; color: #e9d5ff !important; }
 body.dark-mode .post-category-exam { background: rgba(59,130,246,0.25); color: #93c5fd; }
 body.dark-mode .post-category-suspension { background: rgba(239,68,68,0.25); color: #fca5a5; }
 body.dark-mode .post-category-event { background: rgba(34,197,94,0.25); color: #86efac; }
@@ -340,7 +356,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
     }
 }
 
-/* ── Calendar panel (Student: view-only) ── */
+/* -- Calendar panel (Student: view-only) -- */
 .cal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; padding:20px; }
 .cal-overlay.open { display:flex; }
 .cal-box { background:var(--surface-strong); border-radius:24px; width:100%; max-width:700px; max-height:88vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 24px 60px rgba(0,0,0,0.3); }
@@ -370,6 +386,34 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
 .dark-mode .cal-day.selected { border-color: var(--uni-accent); background:rgba(201,146,10,0.16); }
 .dark-mode .cal-event-item { background:rgba(255,255,255,0.05); }
 .dark-mode .cal-event-item .ev-title { color:#e2e8f0; }
+
+/* -- Calendar month label + Upcoming Events � light mode readable text -- */
+#calMonthLabel { color: var(--primary) !important; }
+.cal-upcoming-label { color: var(--primary) !important; }
+
+/* Intramurals light */
+body.theme-intramurals:not(.dark-mode) #calMonthLabel,
+body.theme-intramurals:not(.dark-mode) .cal-upcoming-label { color: #c2410c !important; }
+/* Foundation light */
+body.theme-foundation:not(.dark-mode) #calMonthLabel,
+body.theme-foundation:not(.dark-mode) .cal-upcoming-label { color: #92400e !important; }
+/* Women's light */
+body.theme-womens:not(.dark-mode) #calMonthLabel,
+body.theme-womens:not(.dark-mode) .cal-upcoming-label { color: #6d28d9 !important; }
+/* Christmas light */
+body.theme-christmas:not(.dark-mode) #calMonthLabel,
+body.theme-christmas:not(.dark-mode) .cal-upcoming-label { color: #15803d !important; }
+/* Dark mode � theme accent */
+body.dark-mode #calMonthLabel,
+body.dark-mode .cal-upcoming-label { color: var(--primary, #fcd34d) !important; }
+body.theme-intramurals.dark-mode #calMonthLabel,
+body.theme-intramurals.dark-mode .cal-upcoming-label { color: #ff9a3c !important; }
+body.theme-foundation.dark-mode #calMonthLabel,
+body.theme-foundation.dark-mode .cal-upcoming-label { color: #fbbf24 !important; }
+body.theme-womens.dark-mode #calMonthLabel,
+body.theme-womens.dark-mode .cal-upcoming-label { color: #c084fc !important; }
+body.theme-christmas.dark-mode #calMonthLabel,
+body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; }
 </style>
 </head>
 <body>
@@ -542,7 +586,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 <div>
                     <div class="cal-nav">
                         <button type="button" class="cal-nav-btn" onclick="calPrev()"><i class="fas fa-chevron-left"></i></button>
-                        <strong id="calMonthLabel" style="font-size:15px;color:var(--primary);"></strong>
+                        <strong id="calMonthLabel" style="font-size:15px;"></strong>
                         <button type="button" class="cal-nav-btn" onclick="calNext()"><i class="fas fa-chevron-right"></i></button>
                     </div>
                     <div class="cal-grid" id="calGrid"></div>
@@ -556,7 +600,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 <div>
                     <!-- Header row: title + plus button -->
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-                        <span style="font-weight:700;font-size:14px;color:var(--primary);">Upcoming Events</span>
+                        <span class="cal-upcoming-label" style="font-weight:700;font-size:14px;">Upcoming Events</span>
                         <button type="button" id="calAddToggleBtn" onclick="toggleCalForm(true)"
                             title="Add event"
                             style="width:30px;height:30px;border-radius:50%;border:none;background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark));color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">
@@ -599,7 +643,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
     // ====================== GLOBAL STATE ======================
     let st_likes = {}, st_likeCounts = {}, st_pins = {}, st_comments = {};
 
-    // ✅ CHANGE 1: Read focusPostId from URL at page load
+    // ? CHANGE 1: Read focusPostId from URL at page load
     let focusPostId = 0;
     (function () {
         var params = new URLSearchParams(window.location.search);
@@ -735,7 +779,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
         if (e.key === 'campus_theme') applyTheme(e.newValue === 'dark');
     });
 
-    // ── University Theme ─────────────────────────────────────────
+    // -- University Theme -----------------------------------------
     var UNIVERSITY_THEMES = {
         'Default': { overlay: 'rgba(255,255,255,0)', header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
         'Intramurals': { overlay: 'rgba(180,30,30,0.18)', header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
@@ -807,7 +851,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 if (res.isPinned) { st_pins[postId] = true; } else { delete st_pins[postId]; }
                 let btn = document.querySelector(`.pin-btn-top[onclick="togglePin(${postId})"]`);
                 if (btn) { btn.classList.toggle('pinned', res.isPinned); btn.title = res.isPinned ? 'Unpin' : 'Pin'; }
-                showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                showToast(res.isPinned ? '?? Pinned!' : 'Unpinned');
             }).catch(() => showToast('Could not update pin'));
     }
 
@@ -966,7 +1010,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
     }
 
     // ====================== RENDER ANNOUNCEMENTS ======================
-    // ✅ CHANGE 2: renderAnnouncements now handles focus mode (single post + back button)
+    // ? CHANGE 2: renderAnnouncements now handles focus mode (single post + back button)
     function renderAnnouncements() {
         let container = document.getElementById('announcementsContainer');
         if (!container) return;
@@ -985,7 +1029,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 pinRes.pinnedIds.forEach(id => { st_pins[id] = true; });
             }
 
-            // ✅ Sort announcements: admin-pinned posts (isPinned=true) appear first
+            // ? Sort announcements: admin-pinned posts (isPinned=true) appear first
             announcements.sort(function (a, b) {
                 let aPinned = a.isPinned === true;
                 let bPinned = b.isPinned === true;
@@ -995,14 +1039,22 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 return new Date(b.date) - new Date(a.date);
             });
 
-            // ✅ If focusPostId is set, only show that one post
-            let displayList = focusPostId > 0
+            // ? If focusPostId is set, only show that one post
+            let focusFiltered = focusPostId > 0
                 ? announcements.filter(post => post.id === focusPostId)
                 : announcements;
 
+            // If the focused post no longer exists (e.g. rejected), auto-clear focus
+            if (focusPostId > 0 && focusFiltered.length === 0) {
+                focusPostId = 0;
+                history.replaceState(null, '', 'Student.aspx');
+            }
+
+            let displayList = focusPostId > 0 ? focusFiltered : announcements;
+
             let savedFilter = localStorage.getItem('student_filter') || 'All';
 
-            // ✅ Update board mode label
+            // ? Update board mode label
             let boardModeLabel = document.getElementById('boardModeLabel');
             if (focusPostId > 0) {
                 if (boardModeLabel) boardModeLabel.innerHTML = 'Mode: <strong>Notification Post View</strong>';
@@ -1010,11 +1062,11 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + savedFilter + '</span>';
             }
 
-            // ✅ Focus banner with Back to All Posts button
+            // ? Focus banner with Back to All Posts button
             let bannerHtml = '';
             if (focusPostId > 0) {
                 bannerHtml = `<div class="focus-banner">
-                <button type="button" class="focus-back-btn" onclick="window.location.href='Student.aspx'">
+                <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Student.aspx');renderBoard();">
                     <i class="fas fa-arrow-left" style="margin-right:6px;"></i>Back to All Posts
                 </button>
             </div>`;
@@ -1104,7 +1156,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
             </div>`;
             }).join('');
 
-            // ✅ Auto-load comments when in focus mode
+            // ? Auto-load comments when in focus mode
             if (focusPostId > 0 && displayList.length > 0) {
                 loadCommentsFromDB(focusPostId);
             }
@@ -1179,7 +1231,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
     updateNotifBadge();
     setInterval(updateNotifBadge, 30000);
 
-    // ── 5-minute calendar reminder polling ───────────────────────
+    // -- 5-minute calendar reminder polling -----------------------
     function pollCalendarReminders() {
         fetch('ReminderCheckHandler.ashx', { credentials: 'same-origin' })
             .then(r => r.json())
@@ -1189,7 +1241,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
     pollCalendarReminders();
     setInterval(pollCalendarReminders, 60000);
 
-    // ── ACADEMIC CALENDAR (Student) ──────────────
+    // -- ACADEMIC CALENDAR (Student) --------------
     var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
     var calEvents = [];
     var selectedCalDate = '';
@@ -1275,7 +1327,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
             var dayEvents = calEvents.filter(function (e) { return e.eventDate === ds; });
             var isSelected = (ds === selectedCalDate);
 
-            // Build colored dots — one per event type (max 3)
+            // Build colored dots � one per event type (max 3)
             var dots = '';
             var shown = {};
             dayEvents.forEach(function (ev) {
@@ -1330,7 +1382,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                     + '<span style="padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';white-space:nowrap;">' + ev.eventType + '</span>'
                     + '<div style="flex:1;">'
                     + '<div style="font-size:13px;font-weight:600;color:var(--primary);">' + escapeHtml(ev.title) + lockIcon + '</div>'
-                    + (ev.eventTime ? '<div style="font-size:11px;color:var(--muted);">⏰ ' + fmtTime(ev.eventTime) + '</div>' : '')
+                    + (ev.eventTime ? '<div style="font-size:11px;color:var(--muted);">? ' + fmtTime(ev.eventTime) + '</div>' : '')
                     + '</div>'
                     + (isOwn ? '<button type="button" onclick="openCalEditFormById(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color: var(--uni-accent);font-size:13px;padding:2px;" title="Edit"><i class="fas fa-edit"></i></button>'
                         + '<button type="button" onclick="delCalEvent(' + ev.eventId + ')" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:14px;padding:2px;">&times;</button>' : '')
@@ -1368,7 +1420,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
                 + '<div class="ev-title">' + escapeHtml(ev.title) + lockIcon + '</div>'
                 + '<div class="ev-meta" style="display:flex;align-items:center;gap:6px;margin-top:3px;">'
                 + '<span>' + dl + '</span>'
-                + (ev.eventTime ? '<span>⏰ ' + fmtTime(ev.eventTime) + '</span>' : '')
+                + (ev.eventTime ? '<span>? ' + fmtTime(ev.eventTime) + '</span>' : '')
                 + '<span style="padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;background:' + tc[0] + ';color:' + tc[1] + ';">' + ev.eventType + '</span>'
                 + '</div>'
                 + (ev.description ? '<div style="font-size:11px;color:var(--muted);margin-top:3px;">' + escapeHtml(ev.description) + '</div>' : '')
