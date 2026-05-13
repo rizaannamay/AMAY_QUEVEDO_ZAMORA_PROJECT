@@ -15,10 +15,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 return;
             }
 
+            // homeLink NavigateUrl is set by client-side JS using the homeUrl variable
+            // (role-aware: Admin→Admin.aspx, Teacher→Teacher.aspx, Student→Student.aspx)
+
             if (!IsPostBack)
             {
-                // If a query string term was passed (e.g. from Student.aspx search),
-                // put it in the hidden field so the client-side JS picks it up on load.
                 string q = Request.QueryString["query"];
                 if (!string.IsNullOrWhiteSpace(q))
                     lastSearchTerm.Value = q.Trim();

@@ -65,7 +65,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
         protected void SearchButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("SearchDashboard.aspx");
+            Response.Redirect("SearchStudent.aspx");
         }
     }
 }

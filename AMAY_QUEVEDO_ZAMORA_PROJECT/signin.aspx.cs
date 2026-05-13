@@ -116,8 +116,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                     // Insert user — AccountStatus column added by AdminMigration.sql
                     using (var insertCmd = new SqlCommand(
-                        "INSERT INTO Users (FullName, Email, Username, Password, Role, AccountStatus, IsEmailVerified) " +
-                        "VALUES (@fullName, @email, @username, @password, @role, @status, 1)", con))
+                        "INSERT INTO Users (FullName, Email, Username, Password, Role, AccountStatus) " +
+                        "VALUES (@fullName, @email, @username, @password, @role, @status)", con))
                     {
                         insertCmd.Parameters.AddWithValue("@fullName", fullName);
                         insertCmd.Parameters.AddWithValue("@email",    email);
@@ -133,11 +133,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
                 if (role == "Teacher")
                     ShowMessage(
-                        "✅ Teacher account created! Your account is pending admin approval. " +
+                        "Teacher account created! Your account is pending admin approval. " +
                         "You will be notified once approved.",
                         true);
                 else
-                    ShowMessage("✅ Account created! You can now log in.", true);
+                    ShowMessage("Account created! You can now log in.", true);
             }
             catch (Exception ex)
             {

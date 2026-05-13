@@ -77,6 +77,15 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 string fullPath    = Path.Combine(folderPath, fileName);
                 string relativePath = "uploads/profiles/" + fileName;
 
+                // Delete any existing photo for this user (different extension)
+                string[] oldExts = { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                foreach (var oldExt in oldExts)
+                {
+                    string oldPath = Path.Combine(folderPath, userId + oldExt);
+                    if (oldPath != fullPath && File.Exists(oldPath))
+                        try { File.Delete(oldPath); } catch { }
+                }
+
                 file.SaveAs(fullPath);
 
                 // ── Save path to database ───────────────────────────
@@ -99,9 +108,11 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 }
 
                 // ── Update session ──────────────────────────────────
-                ctx.Session["ProfileImage"] = relativePath;
+                // Store path with cache-bust in session so all pages show the new photo
+                string cacheBustedPath = relativePath + "?v=" + DateTime.Now.Ticks;
+                ctx.Session["ProfileImage"] = cacheBustedPath;
 
-                ctx.Response.Write(js.Serialize(new { ok = true, imagePath = relativePath }));
+                ctx.Response.Write(js.Serialize(new { ok = true, imagePath = cacheBustedPath }));
             }
             catch (Exception ex)
             {

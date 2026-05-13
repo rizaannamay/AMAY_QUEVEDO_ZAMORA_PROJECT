@@ -749,6 +749,17 @@ body.theme-christmas::before {
         .btn-publish { background: linear-gradient(135deg, var(--uni-accent), var(--uni-accent-dark)); color: white; border: none; padding: 10px 28px; border-radius: 40px; cursor: pointer; }
         .btn-cancel { background: none; border: 1px solid var(--border); padding: 10px 24px; border-radius: 40px; cursor: pointer; }
 
+        .file-drop-label {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px;
+            border: 1.5px dashed var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            background: var(--surface-soft);
+            transition: border-color 0.2s;
+        }
+        .file-drop-label:hover { border-color: var(--primary); }
+
         body:not(.dark-mode) .header .logo,
         body:not(.dark-mode) .header .logo i,
         body:not(.dark-mode) .header .user-name,
@@ -1639,7 +1650,7 @@ body.theme-christmas .post-avatar {
             <div class="header-actions">
                 <button type="button" class="notification-bell" id="mobileSearchBtn"
                     style="display:none;"
-                    onclick="navigateWithFlip('SearchDashboard.aspx')"
+                    onclick="navigateWithFlip('SearchStudent.aspx')"
                     title="Search">
                     <i class="fas fa-search bell-icon"></i>
                 </button>
@@ -1650,7 +1661,7 @@ body.theme-christmas .post-avatar {
                 <div class="user-info" onclick="window.location.href='Profile.aspx'">
                     <div class="avatar" id="headerAvatar" style="overflow:hidden;">
                         <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
-                            <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
+                            <img src="<%= Session["ProfileImage"].ToString().Contains("?") ? Session["ProfileImage"].ToString() : Session["ProfileImage"].ToString() + "?v=" + DateTime.Now.Ticks %>" alt="Profile"
                                  style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                         <% } else { %>
                             <i class="fas fa-user"></i>
@@ -1788,28 +1799,28 @@ body.theme-christmas .post-avatar {
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
                         <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Photos <span style="font-weight:400;color:var(--muted);">(optional, multiple)</span></label>
-                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <label class="file-drop-label">
                             <i class="fas fa-image" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose images</span>
-                            <input type="file" id="announcementImageFile" accept="image/*" multiple onchange="previewImageFiles()" style="display:none;" />
+                            <input type="file" id="announcementImageFile" accept="image/*" multiple="multiple" onchange="previewImageFiles()" style="display:none;" />
                         </label>
                         <div id="imagePreviewContainer" style="margin-top:10px;flex-wrap:wrap;gap:8px;display:none;"></div>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
                         <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach Video <span style="font-weight:400;color:var(--muted);">(optional)</span></label>
-                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <label class="file-drop-label">
                             <i class="fas fa-video" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose a video</span>
                             <input type="file" id="announcementVideoFile" accept="video/*" onchange="previewVideoFile()" style="display:none;" />
                         </label>
                         <div id="videoPreviewContainer" style="display:none;margin-top:10px;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;">
-                            <video id="previewVideo" controls style="width:100%;max-height:180px;display:block;border-radius:12px;"></video>
+                            <video id="previewVideo" controls="controls" style="width:100%;max-height:180px;display:block;border-radius:12px;"></video>
                             <button type="button" onclick="clearVideoPreview()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;">&times;</button>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. � optional)</span></label>
-                        <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. - optional)</span></label>
+                        <label class="file-drop-label">
                             <i class="fas fa-paperclip" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
                             <input type="file" id="announcementAttachFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.zip" onchange="previewAttachFile()" style="display:none;" />
@@ -2205,7 +2216,7 @@ body.theme-christmas .post-avatar {
             if (focusPostId > 0) {
                 container.innerHTML =
                     `<div class="focus-banner">
-                        <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Admin.aspx');renderBoard();">Back to All Posts</button>
+                        <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Admin.aspx');renderAnnouncements();">Back to All Posts</button>
                     </div>`;
             } else {
                 container.innerHTML = '';
@@ -2307,7 +2318,7 @@ body.theme-christmas .post-avatar {
             }
 
             videos.forEach(function (vid) {
-                html += `<div class="post-image" style="margin-top:10px;"><video controls style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
+                html += `<div class="post-image" style="margin-top:10px;"><video controls="controls" style="width:100%;max-height:280px;border-radius:16px;display:block;"><source src="${vid}" />Your browser does not support video.</video></div>`;
             });
 
             files.forEach(function (f) {

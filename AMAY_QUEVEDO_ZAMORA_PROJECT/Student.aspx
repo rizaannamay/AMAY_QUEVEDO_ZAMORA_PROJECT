@@ -134,7 +134,7 @@ form { height: auto; min-height: 100%; overflow: visible; }
 .announcement-board { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 18px; background: rgba(248,250,252,0.35); scrollbar-width: none; -ms-overflow-style: none; }
 .announcement-board::-webkit-scrollbar { display: none; }
 
-/* ? Focus banner — shown when viewing a single post from a notification */
+/* ? Focus banner ï¿½ shown when viewing a single post from a notification */
 .focus-banner {
     background: linear-gradient(135deg, rgba(201,146,10,0.10), rgba(168,120,0,0.08));
     border: 1px solid var(--border);
@@ -249,7 +249,7 @@ body.dark-mode #pm-username, body.dark-mode #pm-email, body.dark-mode #pm-role {
 body.dark-mode .action-btn.liked { color: #f87171; }
 body.dark-mode .pin-btn-top { color: rgba(148,163,184,0.5); }
 
-/* -- University Theme dark mode — announcement card overrides -- */
+/* -- University Theme dark mode ï¿½ announcement card overrides -- */
 body.theme-intramurals .announcement-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.55) !important; }
 body.theme-intramurals .post-author, body.theme-intramurals .post-title { color: #ff9a3c !important; }
 body.theme-intramurals .post-text { color: #e0e0e0 !important; }
@@ -291,13 +291,13 @@ body.theme-foundation .comment-input input:focus { border-color: #eab308 !import
 body.theme-womens .comment-input input:focus { border-color: #7e22ce !important; box-shadow: 0 0 0 3px rgba(126,34,206,0.20) !important; }
 body.theme-christmas .comment-input input:focus { border-color: #15803d !important; box-shadow: 0 0 0 3px rgba(21,128,61,0.20) !important; }
 
-/* Christmas dark — comment input */
+/* Christmas dark ï¿½ comment input */
 body.theme-christmas.dark-mode .comment-input input { background: rgba(3,14,8,0.88) !important; border-color: rgba(21,128,61,0.35) !important; color: #d1fae5 !important; }
-/* Intramurals dark — comment input */
+/* Intramurals dark ï¿½ comment input */
 body.theme-intramurals.dark-mode .comment-input input { background: rgba(18,8,3,0.88) !important; border-color: rgba(255,122,0,0.30) !important; color: #ffd4a8 !important; }
-/* Foundation dark — comment input */
+/* Foundation dark ï¿½ comment input */
 body.theme-foundation.dark-mode .comment-input input { background: rgba(20,15,2,0.88) !important; border-color: rgba(234,179,8,0.28) !important; color: #fde68a !important; }
-/* Women's dark — comment input */
+/* Women's dark ï¿½ comment input */
 body.theme-womens.dark-mode .comment-input input { background: rgba(15,8,28,0.88) !important; border-color: rgba(168,85,247,0.28) !important; color: #e9d5ff !important; }
 body.dark-mode .post-category-exam { background: rgba(59,130,246,0.25); color: #93c5fd; }
 body.dark-mode .post-category-suspension { background: rgba(239,68,68,0.25); color: #fca5a5; }
@@ -387,7 +387,7 @@ body.dark-mode .focus-banner { background: rgba(201,146,10,0.08); border-color: 
 .dark-mode .cal-event-item { background:rgba(255,255,255,0.05); }
 .dark-mode .cal-event-item .ev-title { color:#e2e8f0; }
 
-/* -- Calendar month label + Upcoming Events — light mode readable text -- */
+/* -- Calendar month label + Upcoming Events ï¿½ light mode readable text -- */
 #calMonthLabel { color: var(--primary) !important; }
 .cal-upcoming-label { color: var(--primary) !important; }
 
@@ -403,7 +403,7 @@ body.theme-womens:not(.dark-mode) .cal-upcoming-label { color: #6d28d9 !importan
 /* Christmas light */
 body.theme-christmas:not(.dark-mode) #calMonthLabel,
 body.theme-christmas:not(.dark-mode) .cal-upcoming-label { color: #15803d !important; }
-/* Dark mode — theme accent */
+/* Dark mode ï¿½ theme accent */
 body.dark-mode #calMonthLabel,
 body.dark-mode .cal-upcoming-label { color: var(--primary, #fcd34d) !important; }
 body.theme-intramurals.dark-mode #calMonthLabel,
@@ -443,7 +443,7 @@ body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; 
         <button type="button" class="user-info" onclick="window.location.href='Profile.aspx'">
             <div class="avatar" id="headerAvatar" style="overflow:hidden;">
                 <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
-                <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
+                <img src="<%= Session["ProfileImage"].ToString().Contains("?") ? Session["ProfileImage"].ToString() : Session["ProfileImage"].ToString() + "?v=" + DateTime.Now.Ticks %>" alt="Profile"
                     style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                 <% } else { %>
                 <i class="fas fa-user"></i>
@@ -871,77 +871,56 @@ body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; 
         fetch('CommentHandler.ashx?action=get&postId=' + postId, { credentials: 'same-origin' })
             .then(r => r.json()).then(data => {
                 if (!Array.isArray(data)) { listDiv.innerHTML = '<div class="no-comments">Could not load comments.</div>'; return; }
-                const comments = data;
-                if (!comments.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                const topLevel = comments.filter(c => !c.parentCommentId);
-                const replies = comments.filter(c => c.parentCommentId);
-                if (!topLevel.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
-                listDiv.innerHTML = topLevel.map(c => {
-                    let cAvatar = c.profileImage
-                        ? `<div class="comment-avatar" style="overflow:hidden;width:32px;height:32px;min-width:32px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                        : `<div class="comment-avatar"><i class="fas fa-user"></i></div>`;
-                    let commentReplies = replies.filter(r => r.parentCommentId === c.commentId);
-                    let repliesHtml = commentReplies.map(r => {
-                        let rAvatar = r.profileImage
-                            ? `<div class="comment-avatar" style="overflow:hidden;width:26px;height:26px;min-width:26px;"><img src="${r.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
-                            : `<div class="comment-avatar" style="width:26px;height:26px;min-width:26px;font-size:10px;"><i class="fas fa-user"></i></div>`;
-                        return `<div class="comment reply-comment" style="margin-left:42px;padding:6px 0;border-bottom:none;">
-                        ${rAvatar}
+                if (!data.length) { listDiv.innerHTML = '<div class="no-comments">No comments yet.</div>'; return; }
+
+                // Build a map: parentId -> children array (handles unlimited depth)
+                const childrenOf = {};
+                data.forEach(c => {
+                    const pid = c.parentCommentId || 'root';
+                    if (!childrenOf[pid]) childrenOf[pid] = [];
+                    childrenOf[pid].push(c);
+                });
+
+                function renderNode(c, depth) {
+                    const indent = Math.min(depth * 36, 108);
+                    const avatarSize = depth === 0 ? 32 : 26;
+                    const avatar = c.profileImage
+                        ? `<div class="comment-avatar" style="overflow:hidden;width:${avatarSize}px;height:${avatarSize}px;min-width:${avatarSize}px;"><img src="${c.profileImage}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" /></div>`
+                        : `<div class="comment-avatar" style="width:${avatarSize}px;height:${avatarSize}px;min-width:${avatarSize}px;font-size:${depth===0?13:10}px;"><i class="fas fa-user"></i></div>`;
+                    const children = (childrenOf[c.commentId] || []).map(child => renderNode(child, depth + 1)).join('');
+                    return `<div class="comment${depth > 0 ? ' reply-comment' : ''}" style="margin-left:${indent}px;padding:${depth>0?'6px':'10px'} 0;border-bottom:${depth>0?'none':'1px solid var(--border)'};">
+                        ${avatar}
                         <div style="flex:1;min-width:0;">
-                            <span class="comment-author">${escapeHtml(r.author)}</span>
-                            <div class="comment-text">${escapeHtml(r.text)}</div>
+                            <span class="comment-author">${escapeHtml(c.author)}</span>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
                             <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                                <div class="comment-time">${escapeHtml(r.date)}</div>
-                                <button type="button" class="comment-like-btn ${r.userLiked ? 'liked' : ''}"
-                                    onclick="likeComment(${r.commentId}, this)"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${r.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
-                                    <i class="${r.userLiked ? 'fas' : 'far'} fa-heart"></i>
-                                    <span class="clc">${r.likeCount > 0 ? r.likeCount : ''}</span>
+                                <div class="comment-time">${escapeHtml(c.date)}</div>
+                                <button type="button" class="comment-like-btn ${c.userLiked ? 'liked' : ''}"
+                                    onclick="likeComment(${c.commentId}, this)"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;">
+                                    <i class="${c.userLiked ? 'fas' : 'far'} fa-heart"></i>
+                                    <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
                                 </button>
-                                <button type="button" onclick="toggleReplyBox(${r.commentId}, ${postId})"
-                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
-                                    onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
+                                <button type="button" onclick="toggleReplyBox(${c.commentId}, ${postId})"
+                                    style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;">
                                     <i class="fas fa-reply"></i> Reply
                                 </button>
                             </div>
-                            <div id="replyBox_${r.commentId}" style="display:none;margin-top:8px;">
+                            <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
                                 <div class="comment-input" style="margin:0;">
-                                    <input type="text" id="replyInput_${r.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                    <button type="button" onclick="submitReply(${r.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
+                                    <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
+                                    <button type="button" onclick="submitReply(${c.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
                                 </div>
                             </div>
+                            ${children}
                         </div>
                     </div>`;
-                    }).join('');
-                    return `<div class="comment" data-comment-id="${c.commentId}">
-                    ${cAvatar}
-                    <div style="flex:1;min-width:0;">
-                        <span class="comment-author">${escapeHtml(c.author)}</span>
-                        <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <div style="display:flex;align-items:center;gap:12px;margin-top:4px;">
-                            <div class="comment-time">${escapeHtml(c.date)}</div>
-                            <button type="button" class="comment-like-btn ${c.userLiked ? 'liked' : ''}"
-                                onclick="likeComment(${c.commentId}, this)"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:${c.userLiked ? '#dc2626' : 'var(--muted)'};display:flex;align-items:center;gap:4px;padding:0;transition:color 0.2s;">
-                                <i class="${c.userLiked ? 'fas' : 'far'} fa-heart"></i>
-                                <span class="clc">${c.likeCount > 0 ? c.likeCount : ''}</span>
-                            </button>
-                            <button type="button" onclick="toggleReplyBox(${c.commentId}, ${postId})"
-                                style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--muted);padding:0;transition:color 0.2s;"
-                                onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--muted)'">
-                                <i class="fas fa-reply"></i> Reply
-                            </button>
-                        </div>
-                        <div id="replyBox_${c.commentId}" style="display:none;margin-top:8px;">
-                            <div class="comment-input" style="margin:0;">
-                                <input type="text" id="replyInput_${c.commentId}" placeholder="Write a reply..." style="font-size:12px;" />
-                                <button type="button" onclick="submitReply(${c.commentId}, ${postId})" style="padding:8px 16px;font-size:12px;">Reply</button>
-                            </div>
-                        </div>
-                        ${repliesHtml}
-                    </div>
-                </div>`;
-                }).join('');
+                }
+
+                const roots = childrenOf['root'] || [];
+                listDiv.innerHTML = roots.length
+                    ? roots.map(c => renderNode(c, 0)).join('')
+                    : '<div class="no-comments">No comments yet.</div>';
             }).catch(() => { listDiv.innerHTML = '<div class="no-comments">Could not load comments</div>'; });
     }
 
@@ -1066,7 +1045,7 @@ body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; 
             let bannerHtml = '';
             if (focusPostId > 0) {
                 bannerHtml = `<div class="focus-banner">
-                <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Student.aspx');renderBoard();">
+                <button type="button" class="focus-back-btn" onclick="focusPostId=0;history.replaceState(null,'','Student.aspx');renderAnnouncements();">
                     <i class="fas fa-arrow-left" style="margin-right:6px;"></i>Back to All Posts
                 </button>
             </div>`;
@@ -1327,7 +1306,7 @@ body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; 
             var dayEvents = calEvents.filter(function (e) { return e.eventDate === ds; });
             var isSelected = (ds === selectedCalDate);
 
-            // Build colored dots — one per event type (max 3)
+            // Build colored dots ï¿½ one per event type (max 3)
             var dots = '';
             var shown = {};
             dayEvents.forEach(function (ev) {

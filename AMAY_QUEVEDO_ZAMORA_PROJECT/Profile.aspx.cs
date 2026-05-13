@@ -171,7 +171,9 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         var result = cmd.ExecuteScalar();
                         if (result != null && result != DBNull.Value)
                         {
-                            ProfileImage = result.ToString();
+                            string dbPath = result.ToString();
+                            // Add cache-bust so browser always loads the current photo
+                            ProfileImage = dbPath + "?v=" + DateTime.Now.Ticks;
                             Session["ProfileImage"] = ProfileImage;
                         }
                         else

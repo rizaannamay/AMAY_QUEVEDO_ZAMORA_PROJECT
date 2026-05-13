@@ -564,7 +564,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                         "SELECT UserId, @aid, @msg, 0, GETDATE() FROM Users WHERE Role = 'Student'", con))
                     {
                         notifCmd.Parameters.AddWithValue("@aid", id);
-                        notifCmd.Parameters.AddWithValue("@msg", "📌 Pinned announcement: " + postTitle);
+                        notifCmd.Parameters.AddWithValue("@msg", "Pinned announcement: " + postTitle);
                         notifCmd.ExecuteNonQuery();
                     }
                 }

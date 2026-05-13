@@ -30,7 +30,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (approved)
             {
-                subject = "✅ Your Announcement Has Been Approved";
+                subject = "Your Announcement Has Been Approved";
                 body = $@"
 <div style='font-family:Segoe UI,Arial,sans-serif;max-width:600px;margin:0 auto;'>
   <div style='background:#c9920a;padding:24px 32px;border-radius:12px 12px 0 0;'>
@@ -50,7 +50,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
-                subject = "❌ Your Announcement Was Not Approved";
+                subject = "Your Announcement Was Not Approved";
                 string reasonHtml = string.IsNullOrWhiteSpace(rejectionReason)
                     ? ""
                     : $@"<div style='background:#fef2f2;border-left:4px solid #dc2626;padding:14px 18px;border-radius:6px;margin:16px 0;'>
@@ -91,7 +91,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
 
             if (approved)
             {
-                subject = "✅ Your Teacher Account Has Been Approved";
+                subject = "Your Teacher Account Has Been Approved";
                 body = $@"
 <div style='font-family:Segoe UI,Arial,sans-serif;max-width:600px;margin:0 auto;'>
   <div style='background:#c9920a;padding:24px 32px;border-radius:12px 12px 0 0;'>
@@ -111,7 +111,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             }
             else
             {
-                subject = "❌ Your Teacher Account Registration Was Not Approved";
+                subject = "Your Teacher Account Registration Was Not Approved";
                 body = $@"
 <div style='font-family:Segoe UI,Arial,sans-serif;max-width:600px;margin:0 auto;'>
   <div style='background:#c9920a;padding:24px 32px;border-radius:12px 12px 0 0;'>
@@ -148,10 +148,10 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
                 : "";
             string timeHtml = string.IsNullOrEmpty(timeStr)
                 ? ""
-                : $"<p style='margin:4px 0 0;font-size:13px;color:#6b7280;'>⏰ {timeStr}</p>";
+                : $"<p style='margin:4px 0 0;font-size:13px;color:#6b7280;'>Time: {timeStr}</p>";
 
             string scope = isPublic ? "Public Event" : "Personal Reminder";
-            string subject = $"📅 Reminder: \"{eventTitle}\" is Tomorrow";
+            string subject = $"Reminder: \"{eventTitle}\" is Tomorrow";
 
             string body = $@"
 <div style='font-family:Segoe UI,Arial,sans-serif;max-width:600px;margin:0 auto;'>
@@ -163,7 +163,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     <p style='font-size:15px;color:#374151;'>This is a reminder that the following event is scheduled for <strong>tomorrow</strong>:</p>
     <div style='background:#fef9e7;border-left:4px solid #c9920a;padding:16px 20px;border-radius:8px;margin:20px 0;'>
       <p style='margin:0;font-size:16px;font-weight:700;color:#1a2a3a;'>{HtmlEncode(eventTitle)}</p>
-      <p style='margin:6px 0 0;font-size:13px;color:#6b7280;'>📅 {dateStr}</p>
+      <p style='margin:6px 0 0;font-size:13px;color:#6b7280;'>Date: {dateStr}</p>
       {timeHtml}
       <p style='margin:6px 0 0;font-size:12px;color:#9ca3af;'>{HtmlEncode(eventType)} · {scope}</p>
     </div>
@@ -191,7 +191,7 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
             string dateStr = eventDate.ToString("dddd, MMMM d, yyyy");
             string timeStr = DateTime.Today.Add(eventTime).ToString("h:mm tt");
             string scope   = isPublic ? "Public Event" : "Personal Reminder";
-            string subject = $"⏰ Starting in 5 minutes: \"{HtmlEncode(eventTitle)}\"";
+            string subject = $"Starting in 5 minutes: \"{HtmlEncode(eventTitle)}\"";
 
             string body = $@"
 <div style='font-family:Segoe UI,Arial,sans-serif;max-width:600px;margin:0 auto;'>
@@ -203,8 +203,8 @@ namespace AMAY_QUEVEDO_ZAMORA_PROJECT
     <p style='font-size:15px;color:#374151;'>This is your <strong style='color:#dc2626;'>5-minute reminder</strong> — the following event is starting very soon:</p>
     <div style='background:#fff7ed;border-left:4px solid #ea580c;padding:16px 20px;border-radius:8px;margin:20px 0;'>
       <p style='margin:0;font-size:18px;font-weight:800;color:#1a2a3a;'>{HtmlEncode(eventTitle)}</p>
-      <p style='margin:8px 0 0;font-size:14px;color:#6b7280;'>📅 {dateStr}</p>
-      <p style='margin:4px 0 0;font-size:14px;color:#ea580c;font-weight:700;'>⏰ {timeStr} — Starting in 5 minutes!</p>
+      <p style='margin:8px 0 0;font-size:14px;color:#6b7280;'>Date: {dateStr}</p>
+      <p style='margin:4px 0 0;font-size:14px;color:#ea580c;font-weight:700;'>Time: {timeStr} — Starting in 5 minutes!</p>
       <p style='margin:6px 0 0;font-size:12px;color:#9ca3af;'>{HtmlEncode(eventType)} · {scope}</p>
     </div>
     <p style='font-size:14px;color:#6b7280;'>Please get ready now!</p>

@@ -60,7 +60,7 @@
         .profile-col-left  { display: flex; flex-direction: column; gap: 18px; }
         .profile-col-right { display: flex; flex-direction: column; gap: 18px; }
 
-        /* Topbar — matches dashboard header */
+        /* Topbar ï¿½ matches dashboard header */
         .topbar {
             background: var(--uni-header-bg);
             backdrop-filter: blur(10px);
@@ -333,7 +333,7 @@
                             <i class="fas fa-<%= Role == "Admin" ? "chalkboard-teacher" : "user-graduate" %>"
                                style="margin-right:5px;"></i><%= Role %>
                         </div>
-                        <div class="profile-tagline">Cebu Technological University — Campus Connect Portal</div>
+                        <div class="profile-tagline">Cebu Technological University ï¿½ Campus Connect Portal</div>
 
                         <asp:FileUpload ID="photoUpload" runat="server" ClientIDMode="Static"
                             accept="image/*" Style="display:none;" />
@@ -393,7 +393,7 @@
                         </div>
                     </div>
 
-                    <!-- Role — read only -->
+                    <!-- Role ï¿½ read only -->
                     <div class="info-row">
                         <div class="info-icon locked"><i class="fas fa-shield-alt"></i></div>
                         <div class="info-text">
@@ -420,7 +420,7 @@
                     </div><!-- end col-right -->
                 </div><!-- end profile-columns -->
 
-                <!-- Logout — always at the bottom -->
+                <!-- Logout ï¿½ always at the bottom -->
                 <button type="button" class="logout-btn" onclick="confirmLogout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -564,7 +564,7 @@
                     status.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>Uploading...';
                 }
 
-                // Upload via AJAX — no page reload
+                // Upload via AJAX ï¿½ no page reload
                 var fd = new FormData();
                 fd.append('photo', file);
 
@@ -576,9 +576,8 @@
                 .then(function(r) { return r.json(); })
                 .then(function(res) {
                     if (res.ok) {
-                        // Update avatar with the real server path + cache-bust
-                        var finalSrc = res.imagePath + '?v=' + Date.now();
-                        updateAvatarSrc(finalSrc);
+                        // imagePath already has cache-bust from server
+                        updateAvatarSrc(res.imagePath);
 
                         if (status) {
                             status.style.color = '#16a34a';
@@ -591,9 +590,9 @@
                         var headerAvatar = document.getElementById('headerAvatar');
                         if (headerAvatar) {
                             var hImg = headerAvatar.querySelector('img');
-                            if (hImg) { hImg.src = finalSrc; }
+                            if (hImg) { hImg.src = res.imagePath; }
                             else {
-                                headerAvatar.innerHTML = '<img src="' + finalSrc + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
+                                headerAvatar.innerHTML = '<img src="' + res.imagePath + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />';
                             }
                         }
                     } else {

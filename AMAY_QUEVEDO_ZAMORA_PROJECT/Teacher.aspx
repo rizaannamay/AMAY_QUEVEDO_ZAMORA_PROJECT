@@ -881,7 +881,7 @@
             border-color: #15803d !important; box-shadow: 0 0 0 3px rgba(21,128,61,0.20) !important;
         }
 
-        /* Christmas dark — inputs */
+        /* Christmas dark ï¿½ inputs */
         body.theme-christmas.dark-mode .comment-input input {
             background: rgba(3,14,8,0.88) !important; border-color: rgba(21,128,61,0.35) !important; color: #d1fae5 !important;
         }
@@ -893,7 +893,7 @@
         body.theme-christmas.dark-mode .modal-content {
             background: rgba(5,20,12,0.98) !important; border-color: rgba(21,128,61,0.30) !important;
         }
-        /* Intramurals dark — inputs */
+        /* Intramurals dark ï¿½ inputs */
         body.theme-intramurals.dark-mode .comment-input input {
             background: rgba(18,8,3,0.88) !important; border-color: rgba(255,122,0,0.30) !important; color: #ffd4a8 !important;
         }
@@ -905,7 +905,7 @@
         body.theme-intramurals.dark-mode .modal-content {
             background: rgba(18,8,3,0.98) !important; border-color: rgba(255,122,0,0.25) !important;
         }
-        /* Foundation dark — inputs */
+        /* Foundation dark ï¿½ inputs */
         body.theme-foundation.dark-mode .comment-input input {
             background: rgba(20,15,2,0.88) !important; border-color: rgba(234,179,8,0.28) !important; color: #fde68a !important;
         }
@@ -917,7 +917,7 @@
         body.theme-foundation.dark-mode .modal-content {
             background: rgba(20,15,2,0.98) !important; border-color: rgba(234,179,8,0.22) !important;
         }
-        /* Women's dark — inputs */
+        /* Women's dark ï¿½ inputs */
         body.theme-womens.dark-mode .comment-input input {
             background: rgba(15,8,28,0.88) !important; border-color: rgba(168,85,247,0.28) !important; color: #e9d5ff !important;
         }
@@ -936,7 +936,7 @@
         body.dark-mode .post-category-general { background: rgba(80,80,80,0.35); color: #d1d5db; }
         body.dark-mode .pin-btn-top.pinned { color: #fb923c; }
 
-        /* -- University Theme dark mode — announcement card overrides -- */
+        /* -- University Theme dark mode ï¿½ announcement card overrides -- */
         body.theme-foundation.dark-mode .announcement-card { background: rgba(20,15,2,0.94) !important; border-color: rgba(234,179,8,0.55) !important; box-shadow: 0 4px 20px rgba(234,179,8,0.10) !important; }
         body.theme-foundation.dark-mode .post-author, body.theme-foundation.dark-mode .post-title { color: #fde68a !important; }
         body.theme-foundation.dark-mode .post-text { color: #e5d9b6 !important; }
@@ -1120,7 +1120,7 @@
         body.dark-mode .cal-event-item { background:rgba(255,255,255,0.05); }
         body.dark-mode .cal-event-item .ev-title { color:#e2e8f0; }
 
-        /* -- Calendar month label + Upcoming Events — light mode readable text -- */
+        /* -- Calendar month label + Upcoming Events ï¿½ light mode readable text -- */
         #calMonthLabel { color: var(--primary) !important; }
         .cal-upcoming-label { color: var(--primary) !important; }
         body.theme-intramurals:not(.dark-mode) #calMonthLabel,
@@ -1160,7 +1160,7 @@
             <div class="header-actions">
                 <button type="button" class="notification-bell" id="mobileSearchBtn"
                     style="display:none;"
-                    onclick="navigateWithFlip('SearchDashboard.aspx')"
+                    onclick="navigateWithFlip('SearchStudent.aspx')"
                     title="Search">
                     <i class="fas fa-search bell-icon"></i>
                 </button>
@@ -1171,7 +1171,7 @@
                 <div class="user-info" onclick="window.location.href='Profile.aspx'">
                     <div class="avatar" id="headerAvatar" style="overflow:hidden;">
                         <% if (Session["ProfileImage"] != null && !string.IsNullOrEmpty(Session["ProfileImage"].ToString())) { %>
-                            <img src="<%= Session["ProfileImage"].ToString() %>" alt="Profile"
+                            <img src="<%= Session["ProfileImage"].ToString().Contains("?") ? Session["ProfileImage"].ToString() : Session["ProfileImage"].ToString() + "?v=" + DateTime.Now.Ticks %>" alt="Profile"
                                  style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" />
                         <% } else { %>
                             <i class="fas fa-user"></i>
@@ -1295,7 +1295,7 @@
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom:8px;">
-                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. — optional)</span></label>
+                        <label style="display:block;font-weight:600;margin-bottom:6px;font-size:13px;">Attach File <span style="font-weight:400;color:var(--muted);">(PDF, DOCX, etc. ï¿½ optional)</span></label>
                         <label style="display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px dashed var(--border);border-radius:12px;cursor:pointer;background:var(--surface-soft);transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
                             <i class="fas fa-paperclip" style="color:var(--primary);font-size:18px;"></i>
                             <span style="font-size:13px;color:var(--muted);">Click to choose a file</span>
@@ -1558,14 +1558,14 @@
 
             if (focusPostId > 0) {
                 let focusFiltered = filtered.filter(a => a.id === focusPostId);
-                // If the focused post is not in the list, it may be rejected — fetch its status
+                // If the focused post is not in the list, it may be rejected ï¿½ fetch its status
                 if (focusFiltered.length === 0) {
                     let savedId = focusPostId;
                     focusPostId = 0;
                     history.replaceState(null, '', 'Teacher.aspx');
                     let boardModeLabel = document.getElementById('boardModeLabel');
                     if (boardModeLabel) boardModeLabel.innerHTML = 'Showing: <span id="activeFilterLabel">' + filter + '</span>';
-                    // Check if it was rejected — show a notice in the dedicated rejection div
+                    // Check if it was rejected ï¿½ show a notice in the dedicated rejection div
                     fetch('AnnouncementHandler.ashx?action=getById&id=' + savedId, { credentials: 'same-origin' })
                         .then(r => r.json())
                         .then(res => {
