@@ -19,18 +19,22 @@
             border:      'rgba(201,146,10,0.25)',
             text:        '#1a2a3a',
             muted:       '#6b7c8f',
-            activeBg:    '#fef9e7'
+            activeBg:    '#fef9e7',
+            bg:          "url('wbg.jpg')",
+            bgDark:      "url('bg.jpg')"
         },
         'Intramurals': {
             cls:         'theme-intramurals',
             header:      'linear-gradient(135deg,#f97316 0%,#c2410c 48%,#431407 100%)',
             accent:      '#ff7b00',
             accentDark:  '#c2410c',
-            surface:     'rgba(15,15,15,0.68)',
+            surface:     'rgba(255,255,255,0.95)',
             border:      'rgba(255,123,0,0.25)',
-            text:        '#ffffff',
-            muted:       '#d1d5db',
-            activeBg:    'rgba(255,123,0,0.18)'
+            text:        '#1a1a1a',
+            muted:       '#444444',
+            activeBg:    'rgba(255,123,0,0.18)',
+            bg:          "url('LightIntramurals.jpg')",
+            bgDark:      "url('Intramurals_bg.jpg')"
         },
         'FoundationWeek': {
             cls:         'theme-foundation',
@@ -41,7 +45,9 @@
             border:      'rgba(234,179,8,0.35)',
             text:        '#152033',
             muted:       '#6b5b3e',
-            activeBg:    '#fff4c4'
+            activeBg:    '#fff4c4',
+            bg:          "url('Foundation_bg.jpg')",
+            bgDark:      "url('DarkFoundation.jpg')"
         },
         'WomensMonth': {
             cls:         'theme-womens',
@@ -52,7 +58,9 @@
             border:      'rgba(126,34,206,0.30)',
             text:        '#172033',
             muted:       '#64748b',
-            activeBg:    '#f3e8ff'
+            activeBg:    '#f3e8ff',
+            bg:          "url('Womens_bg.jpg')",
+            bgDark:      "url('DarkWomens.jpg')"
         },
         'Christmas': {
             cls:         'theme-christmas',
@@ -63,7 +71,9 @@
             border:      'rgba(21,128,61,0.30)',
             text:        '#0f172a',
             muted:       '#475569',
-            activeBg:    '#dcfce7'
+            activeBg:    '#dcfce7',
+            bg:          "url('Christmas_bg.jpg')",
+            bgDark:      "url('DarkChristmas.jpg')"
         }
     };
 
@@ -71,6 +81,10 @@
         'theme-default','theme-intramurals','theme-foundation',
         'theme-womens','theme-christmas'
     ];
+
+    function isDarkMode() {
+        return document.body && document.body.classList.contains('dark-mode');
+    }
 
     function applyUniversityTheme(name) {
         if (!name) name = 'Default';
@@ -89,12 +103,20 @@
         r.style.setProperty('--uni-accent-dark',t.accentDark);
         r.style.setProperty('--surface',        t.surface);
         r.style.setProperty('--border',         t.border);
-        r.style.setProperty('--page-text',      t.text);
-        r.style.setProperty('--primary',        t.text);
         r.style.setProperty('--muted',          t.muted);
         r.style.setProperty('--active-bg',      t.activeBg);
 
-        // 3. Also keep data-uni-theme for any legacy selectors
+        // 3. Set --bg-image based on current dark/light mode
+        var dark = isDarkMode();
+        r.style.setProperty('--bg-image', dark ? (t.bgDark || t.bg) : t.bg);
+
+        // 4. Set --page-text and --primary based on dark/light mode
+        //    In dark mode all themes use light text; in light mode use theme text
+        var textColor = dark ? '#e4e6eb' : t.text;
+        r.style.setProperty('--page-text', textColor);
+        r.style.setProperty('--primary',   textColor);
+
+        // 5. Also keep data-uni-theme for any legacy selectors
         b.setAttribute('data-uni-theme', name);
 
         try { localStorage.setItem('campus_uni_theme', name); } catch(e) {}
@@ -117,7 +139,7 @@
     // Sync across browser tabs
     window.addEventListener('storage', function(e){
         if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
-        // When dark/light mode toggles, re-apply current theme so bg swaps correctly
+        // When dark/light mode toggles, re-apply current theme so bg and text swap correctly
         if (e.key === 'campus_theme') {
             var current = null;
             try { current = localStorage.getItem('campus_uni_theme'); } catch(err) {}

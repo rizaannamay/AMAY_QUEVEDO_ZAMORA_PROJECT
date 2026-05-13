@@ -23,7 +23,6 @@ body.dark-mode {
     --muted-light:    #6b7280;
     --shadow:         0 8px 32px rgba(0, 0, 0, 0.70);
     --active-bg:      rgba(201, 146, 10, 0.15);
-    --bg-image:       url('bg.jpg');
     --accent:         #f59e0b;
     --danger:         #f87171;
     --danger-hover:   #ef4444;
@@ -75,19 +74,12 @@ body.theme-christmas.dark-mode {
 /* ── BODY ───────────────────────────────────────────────────────── */
 body.dark-mode {
     background-color: #121212;
-    background-image: linear-gradient(rgba(18, 18, 18, 0.92), rgba(18, 18, 18, 0.92)), url('bg.jpg');
+    background-image: url('bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     color: #e4e6eb;
-}
-
-body.dark-mode::before {
-    background-image: linear-gradient(rgba(18, 18, 18, 0.92), rgba(18, 18, 18, 0.92)), url('bg.jpg') !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-attachment: fixed !important;
 }
 
 /* ── HEADER / NAVBAR / TOPBAR ───────────────────────────────────── */

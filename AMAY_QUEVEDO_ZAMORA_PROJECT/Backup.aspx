@@ -129,9 +129,7 @@ body::before {
             color: #e4e6eb;
         }
         body.dark-mode::before {
-            background-image: linear-gradient(rgba(18,18,18,0.92),rgba(18,18,18,0.92)), url('bg.jpg') !important;
-            background-size: cover !important;
-            background-attachment: fixed !important;
+            display: none !important;
         }
         body.dark-mode .card {
             background: rgba(30, 30, 30, 0.95) !important;

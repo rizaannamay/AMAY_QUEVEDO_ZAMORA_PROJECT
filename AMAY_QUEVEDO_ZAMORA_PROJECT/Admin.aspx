@@ -1290,6 +1290,9 @@ body.theme-intramurals:not(.dark-mode) .form-group label { color: #c2410c !impor
 body.theme-intramurals:not(.dark-mode) .form-group input,
 body.theme-intramurals:not(.dark-mode) .form-group textarea,
 body.theme-intramurals:not(.dark-mode) .form-group select { background: rgba(255,255,255,0.90) !important; border-color: rgba(255,122,0,0.22) !important; color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .dropdown-item-panel { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .dropdown-item-panel:hover { color: #c2410c !important; background: rgba(249,115,22,0.10) !important; }
+body.theme-intramurals:not(.dark-mode) .panel-menu-item { color: #1a1a1a !important; }
 
 /* Intramurals � Admin Panels & Modals (DARK) */
 body.theme-intramurals.dark-mode .admin-panel-box,
@@ -2882,6 +2885,10 @@ body.theme-christmas .post-avatar {
             localStorage.setItem('campus_theme', isDark ? 'dark' : 'light');
             document.body.classList.toggle('dark-mode', isDark);
             document.querySelectorAll('.toggle-switch-panel').forEach(el => el.classList.toggle('active', isDark));
+            if (window.applyUniversityTheme) {
+                var cur = localStorage.getItem('campus_uni_theme') || 'Default';
+                window.applyUniversityTheme(cur);
+            }
         }
 
         function openNotificationDropdown() { navigateWithFlip('Notifications.aspx'); }

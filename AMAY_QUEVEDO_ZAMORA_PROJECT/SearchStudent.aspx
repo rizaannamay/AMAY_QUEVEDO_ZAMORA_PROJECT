@@ -12,6 +12,23 @@
     <link rel="stylesheet" href="dark-mode.css">
     <link rel="stylesheet" href="flatpickr.min.css">
     <script src="flatpickr.min.js"></script>
+
+    <!-- Apply theme immediately to prevent flash of wrong background -->
+    <script>
+    (function() {
+        var BG      = { Default: "url('wbg.jpg')",              Intramurals: "url('LightIntramurals.jpg')", FoundationWeek: "url('Foundation_bg.jpg')", WomensMonth: "url('Womens_bg.jpg')",    Christmas: "url('Christmas_bg.jpg')" };
+        var BG_DARK = { Default: "url('bg.jpg')",               Intramurals: "url('Intramurals_bg.jpg')",  FoundationWeek: "url('DarkFoundation.jpg')", WomensMonth: "url('DarkWomens.jpg')",   Christmas: "url('DarkChristmas.jpg')" };
+        var HDR     = { Default: '#c9920a', Intramurals: '#b91c1c', FoundationWeek: '#a87800', WomensMonth: '#7c3aed', Christmas: '#15803d' };
+        var OVR     = { Default: 'rgba(255,255,255,0)', Intramurals: 'rgba(180,30,30,0.18)', FoundationWeek: 'rgba(201,146,10,0.18)', WomensMonth: 'rgba(147,51,234,0.18)', Christmas: 'rgba(22,101,52,0.20)' };
+        var theme   = localStorage.getItem('campus_uni_theme') || 'Default';
+        var isDark  = localStorage.getItem('campus_theme') === 'dark';
+        var r = document.documentElement;
+        r.style.setProperty('--bg-image', (isDark ? BG_DARK[theme] : BG[theme]) || (isDark ? BG_DARK.Default : BG.Default));
+        r.style.setProperty('--uni-header-bg', HDR[theme] || HDR.Default);
+        r.style.setProperty('--uni-overlay', OVR[theme] || OVR.Default);
+        if (isDark) document.documentElement.classList.add('dark-mode-pre');
+    })();
+    </script>
       
     <style>
         * { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
@@ -56,9 +73,14 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: transparent;
+            background: var(--uni-overlay);
             z-index: 0;
             pointer-events: none;
+        }
+
+        /* In dark mode the overlay is already in the background-image gradient — hide ::before */
+        body.dark-mode::before {
+            display: none !important;
         }
 
         .relative.z-10 { position: relative; z-index: 1; }
@@ -90,10 +112,46 @@
 
         body.dark-mode {
             background-color: #121212;
-            background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg');
+            background-image: var(--bg-image);
             background-size: cover;
             background-attachment: fixed;
             color: #e4e6eb;
+        }
+
+        /* ── Theme-specific dark mode backgrounds ── */
+        body.theme-intramurals.dark-mode {
+            background-image: url('Intramurals_bg.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-color: #0d0000 !important;
+        }
+        body.theme-foundation.dark-mode {
+            background-image:url('DarkFoundation.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-color: #0a0800 !important;
+        }
+        body.theme-womens.dark-mode {
+            background-image: url('DarkWomens.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-color: #0a0014 !important;
+        }
+        body.theme-christmas.dark-mode {
+            background-image: url('DarkChristmas.jpg') !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-attachment: fixed !important;
+            background-color: #000a02 !important;
+        }
+
+        body.dark-mode .glass-nav {
+            background: var(--uni-header-bg) !important;
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
         }
 
         .glass-nav h1,
@@ -444,22 +502,28 @@
            DARK MODE OVERRIDES
         ══════════════════════════════════════════ */
         body.dark-mode .glass-sidebar {
-            background: rgba(15, 25, 55, 0.85);
-            border-color: rgba(255,255,255,0.08);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            background: rgba(10, 15, 35, 0.65);
+            border-color: rgba(255,255,255,0.10);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
         body.dark-mode .glass-card {
-            background: rgba(15, 25, 55, 0.80);
-            border-color: rgba(255,255,255,0.08);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            background: rgba(10, 15, 35, 0.60);
+            border-color: rgba(255,255,255,0.10);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
         body.dark-mode .glass-card:hover {
-            border-color: rgba(99,102,241,0.4);
+            border-color: rgba(255,255,255,0.20);
         }
         body.dark-mode .announce-card {
-            background: rgba(22, 36, 71, 0.95);
-            border-color: rgba(59,130,246,0.35);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+            background: rgba(10, 15, 35, 0.75);
+            border-color: rgba(255,255,255,0.12);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
         body.dark-mode .announce-card:hover {
             border-color: rgba(99,102,241,0.6);
@@ -704,13 +768,30 @@
         body.light-mode .user-profile-card .upc-posts   { color: #6b7c8f; }
 
         /* ── University Theme — announce-card overrides ── */
-        /* Intramurals (always dark) */
-        body.theme-intramurals .announce-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.40) !important; }
-        body.theme-intramurals .announce-card:hover { border-color: rgba(255,122,0,0.70) !important; }
-        body.theme-intramurals .card-title,
-        body.theme-intramurals .card-author-name { color: #ff9a3c !important; }
-        body.theme-intramurals .card-desc,
-        body.theme-intramurals .card-meta { color: #d1d5db !important; }
+        /* Intramurals dark mode */
+        body.theme-intramurals.dark-mode .announce-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.40) !important; }
+        body.theme-intramurals.dark-mode .announce-card:hover { border-color: rgba(255,122,0,0.70) !important; }
+        body.theme-intramurals.dark-mode .card-title,
+        body.theme-intramurals.dark-mode .card-author-name { color: #ff9a3c !important; }
+        body.theme-intramurals.dark-mode .card-desc,
+        body.theme-intramurals.dark-mode .card-meta { color: #d1d5db !important; }
+
+        /* Intramurals light mode — readable dark text on white cards */
+        body.theme-intramurals:not(.dark-mode) .announce-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(249,115,22,0.40) !important; }
+        body.theme-intramurals:not(.dark-mode) .announce-card:hover { border-color: rgba(249,115,22,0.70) !important; }
+        body.theme-intramurals:not(.dark-mode) .card-title,
+        body.theme-intramurals:not(.dark-mode) .card-author-name { color: #c2410c !important; }
+        body.theme-intramurals:not(.dark-mode) .card-desc { color: #1a1a1a !important; }
+        body.theme-intramurals:not(.dark-mode) .card-meta { color: #444444 !important; }
+        body.theme-intramurals:not(.dark-mode) .section-title { color: #c2410c !important; }
+        body.theme-intramurals:not(.dark-mode) .history-item { color: #1a1a1a !important; }
+        body.theme-intramurals:not(.dark-mode) .history-item:hover { color: #c2410c !important; background: rgba(249,115,22,0.10) !important; border-color: rgba(249,115,22,0.35) !important; }
+        body.theme-intramurals:not(.dark-mode) #resultCount { color: #c2410c !important; background: rgba(249,115,22,0.12) !important; border-color: rgba(249,115,22,0.30) !important; }
+        body.theme-intramurals:not(.dark-mode) .filter-select { color: #1a1a1a !important; background: #fff !important; border-color: rgba(249,115,22,0.30) !important; }
+        body.theme-intramurals:not(.dark-mode) .comment-author { color: #c2410c !important; }
+        body.theme-intramurals:not(.dark-mode) .comment-text { color: #1a1a1a !important; }
+        body.theme-intramurals:not(.dark-mode) .comment-time { color: #555 !important; }
+        body.theme-intramurals:not(.dark-mode) .no-comments { color: #666 !important; }
 
         /* Foundation Week — light */
         body.theme-foundation:not(.dark-mode) .announce-card { background: rgba(255,252,220,0.95) !important; border-color: rgba(234,179,8,0.45) !important; }
@@ -761,7 +842,7 @@
             <header class="glass-nav sticky top-0 z-40 shadow-lg">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex flex-wrap items-center justify-between py-3 md:py-4 gap-3">
-                        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo('Student.aspx')">
+                        <div class="flex items-center gap-3 cursor-pointer group" onclick="navigateTo(homeUrl)">
                             <div class="bg-white/20 p-2 rounded-xl shadow-xl transition group-hover:scale-105">
                                 <i class="fas fa-university text-white text-xl"></i>
                             </div>
@@ -777,10 +858,10 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-3 md:gap-4">
-                            <asp:HyperLink ID="homeLink" runat="server" NavigateUrl="~/Student.aspx"
-                                CssClass="p-2 hover:bg-white/20 rounded-full transition-all text-white">
+                            <a href="#" onclick="navigateTo(homeUrl); return false;"
+                                class="p-2 hover:bg-white/20 rounded-full transition-all text-white">
                                 <i class="fas fa-home text-xl"></i>
-                            </asp:HyperLink>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -944,7 +1025,7 @@
         function getBannerClass(cat) { if (cat === 'Exam Schedule') return 'banner-exam'; if (cat === 'Class Suspension') return 'banner-suspension'; if (cat === 'Campus Events') return 'banner-events'; return 'banner-default'; }
         function getBannerText(cat) { if (cat === 'Exam Schedule') return 'EXAM SCHEDULE'; if (cat === 'Class Suspension') return 'CLASS SUSPENSION'; if (cat === 'Campus Events') return 'CAMPUS EVENT'; return (cat || 'GENERAL').toUpperCase(); }
         function getCatClass(cat) { if (cat === 'Exam Schedule') return 'cat-exam'; if (cat === 'Class Suspension') return 'cat-suspension'; if (cat === 'Campus Events') return 'cat-event'; return 'cat-default'; }
-        function getCatIcon(cat) { if (cat === 'Exam Schedule') return '📅'; if (cat === 'Class Suspension') return '⚠️'; if (cat === 'Campus Events') return '🎉'; return '📢'; }
+        function getCatIcon(cat) { if (cat === 'Exam Schedule') return 'Exam'; if (cat === 'Class Suspension') return 'Suspension'; if (cat === 'Campus Events') return 'Event'; return 'General'; }
         function showToast(msg) { const t = document.createElement('div'); t.className = 'toast-msg'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2700); }
         function updateNotifBadge() { }
 
@@ -1221,7 +1302,7 @@
                         const likeStatI = card.querySelector('.post-stats span:first-child i');
                         if (likeStatI) { likeStatI.className = (res.liked ? 'fas' : 'far') + ' fa-heart'; likeStatI.style.color = res.liked ? '#f87171' : ''; }
                     }
-                    showToast(res.liked ? '❤️ Liked!' : 'Like removed');
+                    showToast(res.liked ? 'Liked!' : 'Like removed');
                 })
                 .catch(() => showToast('Could not update like'));
         }
@@ -1233,7 +1314,7 @@
                     if (!res.ok) { showToast('Error: ' + res.error); return; }
                     if (res.isPinned) pins[id] = true; else delete pins[id];
                     renderResults();
-                    showToast(res.isPinned ? '📌 Pinned!' : 'Unpinned');
+                    showToast(res.isPinned ? 'Pinned!' : 'Unpinned');
                 })
                 .catch(() => showToast('Could not update pin'));
         }
@@ -1281,7 +1362,7 @@
                             const cc = document.getElementById('cc-' + id);
                             if (cc) cc.textContent = list.length;
                         });
-                    showToast('💬 Comment posted!');
+                    showToast('Comment posted!');
                 })
                 .catch(() => { if (btn) { btn.disabled = false; btn.textContent = 'Post'; } showToast('Could not post comment'); });
         }
@@ -1290,8 +1371,8 @@
             const url = window.location.href.split('?')[0];
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(url)
-                    .then(() => showToast('🔗 Link copied!'))
-                    .catch(() => showToast('📤 Shared!'));
+                    .then(() => showToast('Link copied!'))
+                    .catch(() => showToast('Shared!'));
             } else {
                 const dummy = document.createElement('input');
                 dummy.value = url;
@@ -1299,7 +1380,7 @@
                 dummy.select();
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
-                showToast('🔗 Link copied!');
+                showToast('Link copied!');
             }
             fetch('NotificationHandler.ashx?action=notifyShare&postId=' + id, { credentials: 'same-origin' }).catch(() => { });
         }
@@ -1322,6 +1403,12 @@
         }
 
         function navigateTo(url) { window.location.href = url; }
+
+        // Role-aware home URL — set from server-side session
+        var userRole = '<%= Session["Role"] != null ? Session["Role"].ToString() : "Student" %>';
+        var homeUrl = userRole.toLowerCase() === 'admin' ? 'Admin.aspx'
+                    : userRole.toLowerCase() === 'teacher' ? 'Teacher.aspx'
+                    : 'Student.aspx';
 
         function init() {
             renderHistory();
@@ -1383,44 +1470,58 @@
         // Theme sync
         (function () {
             const KEY = 'campus_theme';
-            // SearchStudent uses teal/light as default — only apply dark class if dark
-            function applyTheme(isDark) {
-                document.body.classList.toggle('dark-mode', isDark);
-                document.body.classList.remove('light-mode'); // never apply light-mode
-            }
-            applyTheme(localStorage.getItem(KEY) === 'dark');
-            window.addEventListener('storage', e => {
-                if (e.key === KEY) applyTheme(e.newValue === 'dark');
-            });
 
-            // ── University Theme ─────────────────────────────────────
+            // ── University Theme definitions ─────────────────────────
             var UNIVERSITY_THEMES = {
-                'Default': { overlay: 'rgba(255,255,255,0)', header: '#c9920a', accent: '#c9920a', accentDark: '#a87800' },
-                'Intramurals': { overlay: 'rgba(180,30,30,0.18)', header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b' },
-                'FoundationWeek': { overlay: 'rgba(201,146,10,0.18)', header: '#a87800', accent: '#a87800', accentDark: '#7a5200' },
-                'WomensMonth': { overlay: 'rgba(147,51,234,0.18)', header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6' },
-                'Christmas': { overlay: 'rgba(22,101,52,0.20)', header: '#15803d', accent: '#15803d', accentDark: '#14532d' }
+                'Default':        { overlay: 'rgba(255,255,255,0)',    header: '#c9920a', accent: '#c9920a', accentDark: '#a87800', bg: "url('wbg.jpg')",              bgDark: "url('bg.jpg')" },
+                'Intramurals':    { overlay: 'rgba(180,30,30,0.18)',   header: '#b91c1c', accent: '#b91c1c', accentDark: '#991b1b', bg: "url('LightIntramurals.jpg')", bgDark: "url('Intramurals_bg.jpg')" },
+                'FoundationWeek': { overlay: 'rgba(201,146,10,0.18)',  header: '#a87800', accent: '#a87800', accentDark: '#7a5200', bg: "url('Foundation_bg.jpg')",    bgDark: "url('DarkFoundation.jpg')" },
+                'WomensMonth':    { overlay: 'rgba(147,51,234,0.18)',  header: '#7c3aed', accent: '#7c3aed', accentDark: '#5b21b6', bg: "url('Womens_bg.jpg')",        bgDark: "url('DarkWomens.jpg')" },
+                'Christmas':      { overlay: 'rgba(22,101,52,0.20)',   header: '#15803d', accent: '#15803d', accentDark: '#14532d', bg: "url('Christmas_bg.jpg')",     bgDark: "url('DarkChristmas.jpg')" }
             };
+            var _currentThemeName = localStorage.getItem('campus_uni_theme') || 'Default';
+
+            // Applies dark/light mode class AND swaps --bg-image to the correct variant
+            function applyThemeMode(isDark) {
+                document.body.classList.toggle('dark-mode', isDark);
+                document.body.classList.remove('light-mode');
+                var t = UNIVERSITY_THEMES[_currentThemeName] || UNIVERSITY_THEMES['Default'];
+                document.documentElement.style.setProperty('--bg-image', isDark ? (t.bgDark || t.bg) : t.bg);
+            }
+
+            // Applies university theme (accent, header, bg) and body class
             function applyUniversityTheme(name) {
+                _currentThemeName = name;
                 var t = UNIVERSITY_THEMES[name] || UNIVERSITY_THEMES['Default'];
+                var isDark = document.body.classList.contains('dark-mode');
                 document.documentElement.style.setProperty('--uni-overlay', t.overlay);
                 document.documentElement.style.setProperty('--uni-header-bg', t.header);
                 document.documentElement.style.setProperty('--uni-accent', t.accent);
                 document.documentElement.style.setProperty('--uni-accent-dark', t.accentDark);
-                // Apply body class for university-theme-decorations.css
+                document.documentElement.style.setProperty('--bg-image', isDark ? (t.bgDark || t.bg) : t.bg);
                 var ALL_CLASSES = ['theme-default', 'theme-intramurals', 'theme-foundation', 'theme-womens', 'theme-christmas'];
                 ALL_CLASSES.forEach(function (c) { document.body.classList.remove(c); });
                 var clsMap = { 'Default': 'theme-default', 'Intramurals': 'theme-intramurals', 'FoundationWeek': 'theme-foundation', 'WomensMonth': 'theme-womens', 'Christmas': 'theme-christmas' };
                 document.body.classList.add(clsMap[name] || 'theme-default');
                 localStorage.setItem('campus_uni_theme', name);
             }
+
+            // Apply dark/light mode first
+            applyThemeMode(localStorage.getItem(KEY) === 'dark');
+
+            // Apply saved university theme
             var saved = localStorage.getItem('campus_uni_theme');
             if (saved) applyUniversityTheme(saved);
+
+            // Fetch theme from server (may override localStorage)
             fetch('UserMgmtHandler.ashx?action=getTheme', { credentials: 'same-origin' })
                 .then(function (r) { return r.json(); })
                 .then(function (res) { if (res.ok) applyUniversityTheme(res.theme); })
                 .catch(function () { });
+
+            // Cross-tab sync
             window.addEventListener('storage', function (e) {
+                if (e.key === KEY) applyThemeMode(e.newValue === 'dark');
                 if (e.key === 'campus_uni_theme') applyUniversityTheme(e.newValue);
             });
         })();

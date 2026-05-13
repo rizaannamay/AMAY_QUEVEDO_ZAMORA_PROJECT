@@ -29,7 +29,7 @@ body.auth-page:not([class*='theme-']):not(.dark-mode) {
 }
 
 body.theme-default.dark-mode {
-    background-image: linear-gradient(rgba(18,18,18,0.92), rgba(18,18,18,0.92)), url('bg.jpg') !important;
+    background-image:url('bg.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
@@ -43,10 +43,10 @@ body.theme-default.dark-mode {
 
 /* ── Background dark */
 body.theme-intramurals.dark-mode {
-    background: url('Intramurals_bg.jpg') !important;
+    background-image: url('Intramurals_bg.jpg') !important;
     background-size: cover !important; background-position: center !important;
     background-repeat: no-repeat !important; background-attachment: fixed !important;
-    background-color: transparent !important;
+    background-color: #0d0000 !important;
 }
 /* Background light */
 body.theme-intramurals:not(.dark-mode) {
@@ -117,7 +117,8 @@ body.theme-intramurals:not(.dark-mode) .post-author,
 body.theme-intramurals:not(.dark-mode) .post-title,
 body.theme-intramurals:not(.dark-mode) .post-text,
 body.theme-intramurals:not(.dark-mode) .card-header,
-body.theme-intramurals:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
+body.theme-intramurals:not(.dark-mode) .panel-menu-item,
+body.theme-intramurals:not(.dark-mode) .dropdown-item-panel { color: #000000 !important; }
 body.theme-intramurals:not(.dark-mode) .panel-header h3 { color: #ff7b00 !important; }
 body.theme-intramurals:not(.dark-mode) .post-meta,
 body.theme-intramurals:not(.dark-mode) .admin-stat-lbl,
@@ -154,7 +155,8 @@ body.theme-intramurals.dark-mode .post-author,
 body.theme-intramurals.dark-mode .post-title,
 body.theme-intramurals.dark-mode .post-text,
 body.theme-intramurals.dark-mode .card-header,
-body.theme-intramurals.dark-mode .panel-menu-item { color: #ffffff !important; }
+body.theme-intramurals.dark-mode .panel-menu-item,
+body.theme-intramurals.dark-mode .dropdown-item-panel { color: #ffffff !important; }
 body.theme-intramurals.dark-mode .post-meta,
 body.theme-intramurals.dark-mode .admin-stat-lbl,
 body.theme-intramurals.dark-mode .time-ago { color: #cccccc !important; }
@@ -165,12 +167,12 @@ body.theme-intramurals.dark-mode .action-btn { color: #eeeeee !important; }
    ═══════════════════════════════════════════════ */
 
 body.theme-foundation.dark-mode {
-    background: url('DarkFoundation.jpg') !important;
+    background-image: url('DarkFoundation.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    background-color: transparent !important;
+    background-color: #0a0800 !important;
 }
 body.theme-foundation:not(.dark-mode) {
     background:url('Foundation_bg.jpg') !important;
@@ -239,7 +241,8 @@ body.theme-foundation:not(.dark-mode) .post-author,
 body.theme-foundation:not(.dark-mode) .post-title,
 body.theme-foundation:not(.dark-mode) .post-text,
 body.theme-foundation:not(.dark-mode) .card-header,
-body.theme-foundation:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
+body.theme-foundation:not(.dark-mode) .panel-menu-item,
+body.theme-foundation:not(.dark-mode) .dropdown-item-panel { color: #000000 !important; }
 body.theme-foundation:not(.dark-mode) .post-meta,
 body.theme-foundation:not(.dark-mode) .admin-stat-lbl,
 body.theme-foundation:not(.dark-mode) .time-ago { color: #444444 !important; }
@@ -275,7 +278,8 @@ body.theme-foundation.dark-mode .post-author,
 body.theme-foundation.dark-mode .post-title,
 body.theme-foundation.dark-mode .post-text,
 body.theme-foundation.dark-mode .card-header,
-body.theme-foundation.dark-mode .panel-menu-item { color: #ffffff !important; }
+body.theme-foundation.dark-mode .panel-menu-item,
+body.theme-foundation.dark-mode .dropdown-item-panel { color: #ffffff !important; }
 body.theme-foundation.dark-mode .post-meta,
 body.theme-foundation.dark-mode .admin-stat-lbl,
 body.theme-foundation.dark-mode .time-ago { color: #cccccc !important; }
@@ -286,12 +290,12 @@ body.theme-foundation.dark-mode .action-btn { color: #eeeeee !important; }
    ═══════════════════════════════════════════════ */
 
 body.theme-womens.dark-mode {
-    background: url('DarkWomens.jpg') !important;
+    background-image: url('DarkWomens.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    background-color: transparent !important;
+    background-color: #0a0014 !important;
 }
 body.theme-womens:not(.dark-mode) {
     background:url('Womens_bg.jpg') !important;
@@ -375,7 +379,8 @@ body.theme-womens:not(.dark-mode) .post-author,
 body.theme-womens:not(.dark-mode) .post-title,
 body.theme-womens:not(.dark-mode) .post-text,
 body.theme-womens:not(.dark-mode) .card-header,
-body.theme-womens:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
+body.theme-womens:not(.dark-mode) .panel-menu-item,
+body.theme-womens:not(.dark-mode) .dropdown-item-panel { color: #000000 !important; }
 body.theme-womens:not(.dark-mode) .post-meta,
 body.theme-womens:not(.dark-mode) .admin-stat-lbl,
 body.theme-womens:not(.dark-mode) .time-ago { color: #444444 !important; }
@@ -411,7 +416,8 @@ body.theme-womens.dark-mode .post-author,
 body.theme-womens.dark-mode .post-title,
 body.theme-womens.dark-mode .post-text,
 body.theme-womens.dark-mode .card-header,
-body.theme-womens.dark-mode .panel-menu-item { color: #ffffff !important; }
+body.theme-womens.dark-mode .panel-menu-item,
+body.theme-womens.dark-mode .dropdown-item-panel { color: #ffffff !important; }
 body.theme-womens.dark-mode .post-meta,
 body.theme-womens.dark-mode .admin-stat-lbl,
 body.theme-womens.dark-mode .time-ago { color: #cccccc !important; }
@@ -422,12 +428,12 @@ body.theme-womens.dark-mode .action-btn { color: #eeeeee !important; }
    ═══════════════════════════════════════════════ */
 
 body.theme-christmas.dark-mode {
-    background: url('DarkChristmas.jpg') !important;
+    background-image: url('DarkChristmas.jpg') !important;
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    background-color: transparent !important;
+    background-color: #000a02 !important;
 }
 body.theme-christmas:not(.dark-mode) {
     background:url('Christmas_bg.jpg') !important;
@@ -511,7 +517,8 @@ body.theme-christmas:not(.dark-mode) .post-author,
 body.theme-christmas:not(.dark-mode) .post-title,
 body.theme-christmas:not(.dark-mode) .post-text,
 body.theme-christmas:not(.dark-mode) .card-header,
-body.theme-christmas:not(.dark-mode) .panel-menu-item { color: #000000 !important; }
+body.theme-christmas:not(.dark-mode) .panel-menu-item,
+body.theme-christmas:not(.dark-mode) .dropdown-item-panel { color: #000000 !important; }
 body.theme-christmas:not(.dark-mode) .post-meta,
 body.theme-christmas:not(.dark-mode) .admin-stat-lbl,
 body.theme-christmas:not(.dark-mode) .time-ago { color: #444444 !important; }
@@ -547,7 +554,8 @@ body.theme-christmas.dark-mode .post-author,
 body.theme-christmas.dark-mode .post-title,
 body.theme-christmas.dark-mode .post-text,
 body.theme-christmas.dark-mode .card-header,
-body.theme-christmas.dark-mode .panel-menu-item { color: #ffffff !important; }
+body.theme-christmas.dark-mode .panel-menu-item,
+body.theme-christmas.dark-mode .dropdown-item-panel { color: #ffffff !important; }
 body.theme-christmas.dark-mode .post-meta,
 body.theme-christmas.dark-mode .admin-stat-lbl,
 body.theme-christmas.dark-mode .time-ago { color: #cccccc !important; }
@@ -608,6 +616,7 @@ body:not(.dark-mode) .section-title,
 body:not(.dark-mode) .user-name,
 body:not(.dark-mode) .brand,
 body:not(.dark-mode) .panel-menu-item,
+body:not(.dark-mode) .dropdown-item-panel,
 body:not(.dark-mode) .card-header,
 body:not(.dark-mode) .notif-message,
 body:not(.dark-mode) .summary-title,

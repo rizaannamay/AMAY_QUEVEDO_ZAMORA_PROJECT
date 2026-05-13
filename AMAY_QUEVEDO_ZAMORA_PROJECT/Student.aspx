@@ -250,10 +250,21 @@ body.dark-mode .action-btn.liked { color: #f87171; }
 body.dark-mode .pin-btn-top { color: rgba(148,163,184,0.5); }
 
 /* -- University Theme dark mode � announcement card overrides -- */
-body.theme-intramurals .announcement-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.55) !important; }
-body.theme-intramurals .post-author, body.theme-intramurals .post-title { color: #ff9a3c !important; }
-body.theme-intramurals .post-text { color: #e0e0e0 !important; }
-body.theme-intramurals .post-meta, body.theme-intramurals .action-btn { color: #d1d5db !important; }
+/* -- University Theme announcement card overrides -- */
+/* Intramurals dark mode */
+body.theme-intramurals.dark-mode .announcement-card { background: rgba(20,10,5,0.88) !important; border-color: rgba(255,122,0,0.55) !important; }
+body.theme-intramurals.dark-mode .post-author, body.theme-intramurals.dark-mode .post-title { color: #ff9a3c !important; }
+body.theme-intramurals.dark-mode .post-text { color: #e0e0e0 !important; }
+body.theme-intramurals.dark-mode .post-meta, body.theme-intramurals.dark-mode .action-btn { color: #d1d5db !important; }
+
+/* Intramurals light mode - readable dark text on white cards */
+body.theme-intramurals:not(.dark-mode) .announcement-card { background: rgba(255,255,255,0.95) !important; border-color: rgba(249,115,22,0.45) !important; }
+body.theme-intramurals:not(.dark-mode) .post-author, body.theme-intramurals:not(.dark-mode) .post-title { color: #c2410c !important; }
+body.theme-intramurals:not(.dark-mode) .post-text { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .post-meta { color: #444444 !important; }
+body.theme-intramurals:not(.dark-mode) .action-btn { color: #222222 !important; }
+body.theme-intramurals:not(.dark-mode) .dropdown-item-panel { color: #1a1a1a !important; }
+body.theme-intramurals:not(.dark-mode) .dropdown-item-panel:hover { color: #c2410c !important; background: rgba(249,115,22,0.10) !important; }
 
 body.theme-foundation.dark-mode .announcement-card { background: rgba(20,15,2,0.94) !important; border-color: rgba(234,179,8,0.55) !important; box-shadow: 0 4px 20px rgba(234,179,8,0.10) !important; }
 body.theme-foundation.dark-mode .post-author, body.theme-foundation.dark-mode .post-title { color: #fde68a !important; }
@@ -768,6 +779,11 @@ body.theme-christmas.dark-mode .cal-upcoming-label { color: #4ade80 !important; 
     function applyTheme(isDark) {
         document.body.classList.toggle('dark-mode', isDark);
         document.querySelectorAll('.toggle-switch-panel, #panelThemeToggle').forEach(el => el.classList.toggle('active', isDark));
+        // Re-apply university theme so --bg-image swaps to dark/light variant
+        if (window.applyUniversityTheme) {
+            var cur = localStorage.getItem('campus_uni_theme') || 'Default';
+            window.applyUniversityTheme(cur);
+        }
     }
     function toggleTheme() {
         let isDark = !document.body.classList.contains('dark-mode');
